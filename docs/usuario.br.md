@@ -11,29 +11,45 @@ do **administrador do sistema**.
 
 Todos os usuários são definidos pelo seguinte conjunto de informações:
 
-Campo | Tipo | Descrição | Exemplo 
-------|----- | --------- | --------
-Nome | string | O nome completo do usuário | 'João Alves Tavares'
-Email | string | O email principal do usuário | 'joaoemail@ccsa.ufrn.br'
-Telefone | string | O telefone principal do usuário | '+55 84 996369661'
-Senha | string | A senha definida pelo usuário para ter acesso à conta. Criptografada utilizado **bcrypt** e **salto**. | -
-CPF | string | O CPF do usuário | '04787998745'
-Categoria | string | O tipo de usuário no evento | 'Discente' || 'Docente' || 'Outro'
-Instituição de Ensino | string | A instituição de ensino caso o usuário seja da categoria **Discente** ou **Docente** | 'UFRN'
-URL Lattes | string | O URL para o Lattes do usuário | 'http://lattes.cnpq.br/002011647033'
-Tipo | string | Indica se o usuário é do tipo **administrador** ou **comum** | 'administrador' ou 'comum'
+Campo | Descrição | Exemplo 
+------| --------- | --------
+Nome | O nome completo do usuário | 'João Alves Tavares'
+Email | O email principal do usuário | 'joaoemail@ccsa.ufrn.br'
+Telefone | O telefone principal do usuário | '+55 84 996369661'
+Senha | A senha definida pelo usuário para ter acesso à conta. Criptografada utilizado **bcrypt** e **salto**. | -
+CPF | O CPF do usuário | '04787998745'
+Instituição de Ensino | A instituição de ensino caso o usuário seja da categoria **Discente** ou **Docente** | 'UFRN'
+País | O país de origem do usuário | 'Brasil'
+URL Lattes | O URL para o Lattes do usuário | 'http://lattes.cnpq.br/002011647033'
+URL Likedin | O URL para o LinkedIn do usuário | 'https://br.linkedin.com/in/joao-alves-00b034a'
+Tipo | Indica se o usuário é do tipo **administrador** ou **comum** | 'administrador' ou 'comum'
 
-## Administrador do sistema
+## Usuários administrador do sistema
 
-Os usuários do tipo **administrador do sistema** têm a cacidade de **gerenciar eventos** e de **gerenciar usuários**. Para acessar essas *funcionalidades*, haverá uma *área administrativa* somente para esses tipos de usuários.
+Os usuários do tipo **administrador do sistema** têm a cacidade de **gerenciar eventos**, **gerenciar usuários** e **transformar usuário em 'administrador do sistema'**. Para acessar essas *funcionalidades*, haverá uma *área administrativa* somente para esses tipos de usuários.
+
+A instalação do sistema já configura um usuário **administrador do sistema**. Outros **administradores do sistema** podem ser cadastrados a partir dele.
 
 ### Gerenciar eventos
 
-Um conjunto de capacidades primárias: **criar**, **visualizar**, **alterar** e **remover** eventos. E outras secundárias: **atribuir papel a um usuário em um evento**.
+Um conjunto de capacidades primárias: **criar**, **visualizar**, **alterar** e **desativar** eventos. E outras secundárias: **atribuir papel 'administrador do evento' a um usuário em um evento**.
 
-#### Atribuir papel a um usuário em um evento
+#### Atribuir papel 'administrador do evento' a um usuário em um evento
 
-Como definido na documentação de **Eventos**, todo **evento** necessita de um **administrador de evento** 
+Como definido na documentação de **Eventos**, somente um **administrador do evento** tem a capacidade de gerenciar os **módulos** e as **configurações** do evento em questão.
+
+O **administrador do evento** é o usuário de maior poder em um evento, pois contempla todas as **capacidades** que um *usuário comum* pode ter. 
+
+Somente um **administrador do sistema** pode atribuir o papel **administrador do evento** para *usuários*.
 
 ### Gerenciar usuários
 
+Um conjunto de capacidades primárias: **criar**, **visualizar**, **alterar** e **desativar** usuários.
+
+### Transformar usuário em 'administrador do sistema'
+
+Qualquer **usuário** cadastrado no sistema pode ser transformado em **administrador do sistema** por outro **administrador do sistema**.
+
+## Usuários comuns
+
+Os **usuários comuns** sempre terão uma relação com 0 ou mais **eventos** através de **papéis**. 
