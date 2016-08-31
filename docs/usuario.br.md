@@ -28,7 +28,7 @@ Tipo | Indica se o usuário é do tipo **administrador** ou **comum** | 'adminis
 
 Os usuários do tipo **administrador do sistema** têm a cacidade de **gerenciar eventos**, **gerenciar usuários** e **transformar usuário em 'administrador do sistema'**. Para acessar essas *funcionalidades*, haverá uma *área administrativa* somente para esses tipos de usuários.
 
-A instalação do sistema já configura um usuário **administrador do sistema**. Outros **administradores do sistema** podem ser cadastrados a partir dele.
+A instalação do sistema já configura um usuário **administrador do sistema**. Outros **administradores do sistema** podem ser cadastrados a partir dele. O sistema SÓ permite 'remover' um **administrador do sistema** se houver mais de um **adminsitrador do sistema** ativos. 
 
 ### Gerenciar eventos
 
