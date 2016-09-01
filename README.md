@@ -6,10 +6,10 @@ Plataforma para gestão de eventos acadêmicos que suporta o Seminário CCSA.
 ## [seminario/core](https://github.com/ccsa-ufrn/seminario/tree/master/core)
 Aplicação Node.JS de back-end da plataforma, contruída a partir do framework Express v4.14.0.
 
-## [seminario/docs](https://github.com/ccsa-ufrn/seminario/tree/master/docs)
+## [seminario/docs](https://github.com/ccsa-ufrn/seminario/tree/master/docs) :books:
 Documentação geral do projeto.
 
-## Como contribuir
+## Como contribuir :checkered_flag:
 Para enviar contribuições no código-fonte você deve:
 - Abrir um issue, caso a sua submissão resolva um bug, ou necessite de alguma discussão.
 - Seguir a GitHub workflow, detalhada abaixo.
