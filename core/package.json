@@ -1,0 +1,22 @@
+{
+  "name": "seminario",
+  "version": "1.0.0",
+  "description": "Sistema de gestão de eventos acadêmicos para o Seminário CCSA",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ccsa-ufrn/seminario"
+  },
+  "author": "CCSAdev",
+  "license": "MIT",
+  "homepage": "https://github.com/ccsa-ufrn/seminario",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "compression": "^1.6.2",
+    "express": "^4.14.0",
+    "helmet": "^2.1.1"
+  }
+}
