@@ -11,7 +11,7 @@
     "url": "git+https://github.com/ccsa-ufrn/seminario"
   },
   "author": "CCSAdev",
-  "license": "MIT",
+  "license": "GNU",
   "homepage": "https://github.com/ccsa-ufrn/seminario",
   "dependencies": {
     "body-parser": "^1.15.2",
