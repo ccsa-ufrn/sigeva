@@ -16,3 +16,4 @@ Relacionamento[]|Array[User, papeis[]]|Relacionamento de usuários com o evento|
 Criador|User|Referência ao Usuário de alto nível criador do Evento|-
 Papeis|Array[Role]|Papéis que os usuários podem assumir em ralacionamento com o evento|-
 Módulos[]|Array[Module]|Módulos que especificam funcionalidades|-
+Subeventos[]|Array[Subevent]|Eventos subordinados|-
