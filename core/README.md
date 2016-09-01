@@ -6,8 +6,8 @@ Back-end provedor de dados para a aplicação. O **core** foi desenvolvido em _N
 * Express: v4.14.0
 
 ## Quick Start Install
-[blank]
+:construction:
 ## Config file
-[blank]
+:construction:
 ## Deployment
-[blank]
+:construction:
