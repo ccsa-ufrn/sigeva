@@ -34,4 +34,5 @@ O pm2 irá iniciar 4 instancias do core. Para monitorar em tempo real estas inst
 pm2 monit
 ```
 O resultado será parecido com este:
+
 ![](http://i.imgur.com/Qn7rcIA.png)

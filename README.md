@@ -1,7 +1,9 @@
 # Seminário CCSA
 ![GPL](https://img.shields.io/badge/license-GPL-blue.svg)
 
-Plataforma para gestão de eventos acadêmicos que suporta o Seminário CCSA.
+Plataforma para gestão de eventos acadêmicos que suporta o Seminário de Pesquisa do Centro de Ciências Sociais Aplicadas ([CCSA](https://ccsa.ufrn.br)) da UFRN.
+
+Para obter informações sobre instalação, configuração e casos de uso, acesse a [Wiki do Seminário](https://github.com/ccsa-ufrn/seminario/wiki).
 
 ## [seminario/core](https://github.com/ccsa-ufrn/seminario/tree/master/core)
 Aplicação Node.JS de back-end da plataforma, contruída a partir do framework Express v4.14.0.
