@@ -1,9 +1,10 @@
 # seminario/core/
-Back-end provedor de dados para a aplicação Seminário CCSA. O **core** foi desenvolvido em _Node.JS_ com os seguintes requisitos:
+Back-end provedor de dados para a aplicação Seminário CCSA. O **core** foi desenvolvido em _Node.JS_ e banco de dados _MongoDB_ com os seguintes requisitos:
 
 ![Node](https://img.shields.io/badge/Node.js-v4.4.7-green.svg)
 ![NPM](https://img.shields.io/badge/npm-v2.15.9-blue.svg)
 ![Express](https://img.shields.io/badge/Express-v4.14.0-lightgrey.svg)
+![MongoDB](https://img.shields.io/badge/MongoDB-v3.2.9-green.svg)
 
 ## Instalação Rápida
 Baixe o diretório ccsa-ufrn/seminario
