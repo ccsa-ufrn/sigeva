@@ -16,11 +16,12 @@ var compression = require('compression');
 app.use(compression());
 
 //Setting routers
-var exampleRouter = require('./routers/example');
-app.use('/routing', exampleRouter);
+var adminRouters = require('./routers/admin');
+
+app.use('/admin', adminRouters);
 
 app.get('/', function(req, res) {
-	res.send("It's working");
+	res.send('Welcome!');
 });
 
 //Starting application

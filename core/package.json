@@ -14,7 +14,9 @@
   "license": "GNU",
   "homepage": "https://github.com/ccsa-ufrn/seminario",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
+    "bootstrap": "^4.0.0-alpha.4",
     "compression": "^1.6.2",
     "express": "^4.14.0",
     "helmet": "^2.1.1"
