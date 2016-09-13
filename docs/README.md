@@ -1,4 +1,4 @@
-# Sistema do Seminário de Pesquisa
+# Sistema do Seminário de Pesquisa [Documentação em Construção]
 
 O sistema é formado por duas grandes estruturas: **panel administrativo** e **painel de usuário**.
 

@@ -21,8 +21,21 @@ Por fim, pode inicializar o serviço:
 # npm start
 ```
 Se nenhum erro for mostrado a instalação foi realizada com sucesso.
+
+## Coding :D
+
+Antes de inicar qualquer codificação é necesário manter algumas tasks em "watch mode".
+
+Para isso, basta seguir os comandos:
+
+```
+# cd /app/core
+# npm run dev
+```
+
 ## Config file
 :construction:
+
 ## Deployment
 O Seminário CCSA utiliza o serviço PM2 da Keymetrics como gerenciador de processos Node.JS. ([Conheça aqui](http://pm2.keymetrics.io/)).
 
