@@ -26,7 +26,7 @@ CPF | O CPF do usuário | '04787998745'
 Instituição de Ensino | A instituição de ensino caso o usuário seja da categoria **Discente** ou **Docente** | 'UFRN'
 País | O país de origem do usuário | 'Brasil'
 URL Lattes | O URL para o Lattes do usuário | 'http://lattes.cnpq.br/002011647033'
-URL Likedin | O URL para o LinkedIn do usuário | 'https://br.linkedin.com/in/joao-alves-00b034a'
+URL Linkedin | O URL para o LinkedIn do usuário | 'https://br.linkedin.com/in/joao-alves-00b034a'
 Tipo | Indica se o usuário é do tipo **administrador** ou **comum** | 'administrador' ou 'comum'
 
 ## Usuários administrador do sistema
