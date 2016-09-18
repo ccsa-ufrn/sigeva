@@ -42,4 +42,4 @@ O padrão de desenvolvimento do 'seminário' está sendo feito com a utilizaçã
 ## Estrutura de serviços
 Os serviços de back-end e front-end são executados em processos idependentes.
 
-<img src="http://i.imgur.com/3OLBNcc.png" width="600px">
+<center><img src="http://i.imgur.com/3OLBNcc.png" width="600px"></center>
