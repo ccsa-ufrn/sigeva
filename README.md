@@ -15,6 +15,7 @@ Documentação geral do projeto.
 Para enviar contribuições no código-fonte você deve:
 - Abrir um issue, caso a sua submissão resolva um bug, ou necessite de alguma discussão.
 - Seguir a GitHub workflow, detalhada abaixo.
+- Seguir os padrões de desenvolvimento, detalhados mais a seguir.
 
 ### GitHub workflow
 1. 'Clone' o repositório do projeto
@@ -33,3 +34,7 @@ git commit -m 'fix bug 88888 - mensagem do commit'
 git push origin new-issue-88888
 ~~~
 - Envie um 'pull request' no GitHub.
+
+### Padrões de desenvolvimento
+
+O padrão de desenvolvimento do 'seminário' está sendo feito com a utilização da ferramenta [EditorConfig](http://editorconfig.org/), acesse o site e veja como instalar o plugin do EditorConfig no seu editor de código preferido. Além disso, veja o arquivo .editorconfig para saber quais os padrões de codificação configurados no 'seminario'.
