@@ -17,8 +17,10 @@ app.use(compression());
 
 //Setting routers
 var adminRouters = require('./routers/admin');
-
 app.use('/admin', adminRouters);
+
+var userRouters = require('./routers/user');
+app.use('/user', userRouters);
 
 app.get('/', function(req, res) {
 	res.send('Welcome!');
