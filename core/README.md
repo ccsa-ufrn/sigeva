@@ -1,5 +1,5 @@
 # seminario/core/
-Back-end provedor de dados para a aplicação Seminário CCSA. O **core** foi desenvolvido em _Node.JS_ e banco de dados _MongoDB_ com os seguintes requisitos:
+Back-end provedor de dados para a aplicação Sistema de Gestão de Eventos Acadêmicos. O **core** foi desenvolvido em _Node.JS_,utilizando _MongoDB_ com os seguintes requisitos:
 
 ![Node](https://img.shields.io/badge/Node.js-v4.4.7-green.svg)
 ![NPM](https://img.shields.io/badge/npm-v2.15.9-blue.svg)
@@ -22,28 +22,17 @@ Por fim, pode inicializar o serviço:
 ```
 Se nenhum erro for mostrado a instalação foi realizada com sucesso.
 
-## Coding :D
-
-Antes de inicar qualquer codificação é necesário manter algumas tasks em "watch mode".
-
-Para isso, basta seguir os comandos:
-
-```
-# cd /app/core
-# npm run dev
-```
-
 ## Config file
 :construction:
 
 ## Deployment
-O Seminário CCSA utiliza o serviço PM2 da Keymetrics como gerenciador de processos Node.JS. ([Conheça aqui](http://pm2.keymetrics.io/)).
+O Sistema de Gestão de Eventos Acadêmicos utiliza o serviço PM2 da Keymetrics como gerenciador de processos Node.JS. ([Conheça aqui](http://pm2.keymetrics.io/)).
 
-Em modo de produção um único script é utilizado para fazer deploy e monitoramento de toda aplicação (core). Para fazer deploy somente do core, execute os seguintes passos (com pm2 instalado):
+Em modo de produção, um único script é utilizado para fazer deploy e monitoramento de toda aplicação (core). Para fazer deploy somente do core, execute os seguintes passos (com pm2 instalado):
 ```
 # pm2 start process.yml --env [production|development]
 ```
-O pm2 irá iniciar 4 instancias do core. Para monitorar em tempo real estas instancias, informações de uso de memória e processamento execute:
+O pm2 irá iniciar 4 instancias do core. Para monitorar em tempo real estas instâncias, informações de uso de memória e processamento execute:
 ```
 pm2 monit
 ```

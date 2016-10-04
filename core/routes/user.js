@@ -1,32 +1,15 @@
-var express = require('express');
-var mongoose = require('mongoose');
-var config = require('../config');
+module.exports = function(router) {
 
-var router = express.Router();
-var userModel = require('../app/models/User');
-
-//Mongoose connection
-mongoose.connect(config.MONGO_DB_SRC);
-
-router.get('/new', function(req, res) {
-	console.log("Creating a new User");
-	//There go a example
-	var new_user = new userModel({name: "Maradona Morais", mail: "me@mrmorais.com.br"});
-	new_user.save(function(err) {
-		if(!err) {
-			res.json({success: true, data: {user: new_user}});
-		} else {
-			res.json({success: false, data: {err: "Undefined"}});
-		}
+	router.get('/user', function(req, res) {
+		res.json({page: 'user get'});
 	});
 
-});
-
-router.get('/all', function(req, res) {
-	console.log("Return all users");
-	userModel.find({}).exec(function(err, docs) {
-		res.json({success: true, data: docs});
+	router.get('/user/:id', function(req, res) {
+		res.json({page: 'user get by id'});
 	});
-});
 
-module.exports = router;
+	router.post('/user', function(req, res) {
+		res.json({page: 'user post by id'});
+	});
+
+}
