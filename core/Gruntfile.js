@@ -1,19 +1,37 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
     // Project configuration.
     grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json')
+        pkg: grunt.file.readJSON('package.json'),
+
+        watch: {
+            ts: {
+                files: 'app/ts/source/**/**.ts',
+                tasks: ['ts:default']
+            }
+        },
+
+        ts: {
+            default: {
+                options: {
+                    experimentalDecorators: true,
+                    target: 'es6',
+                    module: 'commonjs',
+                    moduleResolution: "node",
+                    sourceMap: true,
+                    emitDecoratorMetadata: true,
+                    removeComments: false,
+                    noImplicitAny: false
+                },
+                src: ['app/ts/source/**/**.ts'],
+                outDir: 'app/ts'
+            }
+        }
+
     });
 
-    // Load the plugin that provides the "uglify" task.
+    // Load plugins
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks("grunt-ts");
 
-    // Default task(s).
-    grunt.registerTask('default', ['uglify']);
 };
