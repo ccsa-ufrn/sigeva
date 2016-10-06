@@ -4,7 +4,7 @@
     "description": "Sistema de gestão de eventos acadêmicos",
     "main": "index.js",
     "scripts": {
-        "start": "concurrently \"node index.js\" \"grunt watch\" ",
+        "start": "concurrently \"nodemon -e js,pug,json index.js\" \"grunt watch\" ",
         "typings": "typings"
     },
     "repository": {
@@ -43,6 +43,7 @@
         "grunt": "^1.0.1",
         "typescript": "^2.0.3",
         "typings":"^1.4.0",
+        "nodemon": "^1.10.2",
         "grunt-contrib-clean": "^1.0.0",
         "grunt-contrib-concat": "^1.0.1",
         "grunt-contrib-copy": "^1.0.0",
