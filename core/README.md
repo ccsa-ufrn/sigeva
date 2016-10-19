@@ -22,6 +22,9 @@ Por fim, pode inicializar o serviço:
 ```
 Se nenhum erro for mostrado a instalação foi realizada com sucesso.
 
+## Arquitetura
+![](http://i.imgur.com/PyWqwtT.png)
+
 ## Config file
 :construction:
 
@@ -39,3 +42,8 @@ pm2 monit
 O resultado será parecido com este:
 
 ![](http://i.imgur.com/Qn7rcIA.png)
+
+## Referências
+ - [Protejendo a API com JWT](https://scotch.io/tutorials/authenticate-a-node-js-api-with-json-web-tokens)
+ - [Assegurando informações via transações em JSON](http://security.stackexchange.com/questions/58965/securing-json-data)
+ - [JWT](https://jwt.io/introduction/)
