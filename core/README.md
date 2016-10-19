@@ -25,6 +25,8 @@ Se nenhum erro for mostrado a instalação foi realizada com sucesso.
 ## Arquitetura
 ![](http://i.imgur.com/PyWqwtT.png)
 
+Para detalhes com relação a todos os recursos e suas queries disponíveis na api, [clique aqui](https://github.com/ccsa-ufrn/seminario/tree/master/core/docs).
+
 ## Config file
 :construction:
 
@@ -47,3 +49,4 @@ O resultado será parecido com este:
  - [Protejendo a API com JWT](https://scotch.io/tutorials/authenticate-a-node-js-api-with-json-web-tokens)
  - [Assegurando informações via transações em JSON](http://security.stackexchange.com/questions/58965/securing-json-data)
  - [JWT](https://jwt.io/introduction/)
+ - [Protocolo HTTP](https://tools.ietf.org/html/rfc7231#section-4.3)
