@@ -1,14 +1,16 @@
 var express = require('express');
 var jwt = require('jsonwebtoken');
 var mongoose = require('mongoose');
-var User = require('../models/User');
 var config = require('../config');
 var bcrypt = require('bcrypt');
+var User = require('../models/User');
 var router = express.Router();
 
+
+/** mongoose conn */
 mongoose.connect(config.MONGO_DB_SRC);
 
-/** AFTER FIRST USE, DELETE THIS */
+/** BEGIN - AFTER FIRST USE, DELETE THIS */
 router.get('/setup', function(req, res) {
 
     var mail = 'root@admin.com';
@@ -45,6 +47,7 @@ router.get('/setup', function(req, res) {
     });
 
 });
+/** END - AFTER FIRST USE, DELETE THIS */
 
 router.post('/authenticate', function(req, res) {
 
@@ -89,6 +92,6 @@ router.all('*', function(req, res, next) {
     
 });
 
-require('./user')(router);
+require('./users')(router, mongoose, config, User);
 
 module.exports = router;

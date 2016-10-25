@@ -65,4 +65,4 @@ O resultado da requisição:
 
 ## Rotas privadas
 
-### [Usuários](https://github.com/ccsa-ufrn/seminario/tree/master/core/docs/User.md)
+### [Usuários](https://github.com/ccsa-ufrn/seminario/tree/master/core/docs/Users.md)
