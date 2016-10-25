@@ -1,27 +1,28 @@
 {
-    "name": "sgea-core",
-    "version": "0.0.1",
-    "description": "Sistema de gestão de eventos acadêmicos",
-    "main": "index.js",
-    "scripts": {
-        "start": "nodemon index.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/ccsa-ufrn/seminario"
-    },
-    "author": "CCSAdev",
-    "license": "GNU",
-    "homepage": "https://github.com/ccsa-ufrn/seminario",
-    "dependencies": {
-        "bcrypt-nodejs": "0.0.3",
-        "body-parser": "^1.15.2",
-        "compression": "^1.6.2",
-        "express": "^4.14.0",
-        "helmet": "^2.1.1",
-        "mongoose": "^4.6.0"
-    },
-    "devDependencies": {
-        "nodemon": "^1.10.2"
-    }
+  "name": "sgea-core",
+  "version": "0.0.1",
+  "description": "Sistema de gestão de eventos acadêmicos",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ccsa-ufrn/seminario"
+  },
+  "author": "CCSAdev",
+  "license": "GNU",
+  "homepage": "https://github.com/ccsa-ufrn/seminario",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.2",
+    "compression": "^1.6.2",
+    "express": "^4.14.0",
+    "helmet": "^2.1.1",
+    "jsonwebtoken": "^7.1.9",
+    "mongoose": "^4.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.10.2"
+  }
 }

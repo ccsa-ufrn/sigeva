@@ -10,7 +10,7 @@ A única rota pública é a para autenticação e recebimento de um token. É ne
 o **email** e a **senha** em method *POST* para realizar a autenticação. 
 
 ~~~
-POST [host]/api/[v1]/authentication
+POST /authentication
     
 email = [user_email]
 password = [user_password]
@@ -21,8 +21,8 @@ O resultado da requisição:
 ~~~ json
 {
     "status": "success|error",
-    "msg": "Invalid credentials", // in case of error
-    "token": "[jwt_token]" // in case of success
+    "msg": "Invalid credentials",
+    "token": "[jwt_token]"
 }
 ~~~
 
@@ -36,5 +36,18 @@ Exemplo de um resultado em caso de sucesso:
 ~~~
 
 ## Rotas privadas
+
+### Usuários
+
+#### GET /user 
+
+Retorna todos os usuários do sistema.
+
+##### Parâmetros
+~~~
+pag = number // O número da página 
+qtd = number // Quantidade de elementos por página
+search = number // Retornar resultados que contém search
+~~~
 
 ### Usuário
