@@ -11,38 +11,39 @@ mongoose.connect(config.MONGO_DB_SRC);
 /** AFTER FIRST USE, DELETE THIS */
 router.get('/setup', function(req, res) {
 
-    var password = '123456';
+    var mail = 'root@admin.com';
+    var password = '123456@admin';
 
-    bcrypt.genSalt(10, function(err, salt) {
-        bcrypt.hash(password, salt, function(err, hash) {
+    User.findOne({mail: mail}).select('_id mail pass').exec(function(err, user) {
 
-            var user = new User({
-                name: 'Victor Almeida Schinaider',
-                mail: 'victorschinaider@outlook.com',
-                pass: hash,
-                type: 'administrator'
+        if(user !== null) {
+
+            bcrypt.genSalt(10, function(err, salt) {
+                bcrypt.hash(password, salt, function(err, hash) {
+
+                    var user = new User({
+                        mail: mail,
+                        pass: hash,
+                        type: 'administrator'
+                    });
+
+                    user.save(function(err) {
+                        if(err) {
+                            res.json({status: 'error', errorcode: 2, msg: err});
+                        } else {
+                            res.json({status: 'success'});
+                        }
+                    });
+
+                });
             });
 
-            user.save(function(err) {
-                if(err) {
-                    res.json({err: err});
-                } else {
-                    res.json({ status: 'ok' });
-                }
-            });
+        } else {
+            res.json({status: 'error', errorcode: 1, msg: 'first user already created'});
+        }
 
-        });
     });
 
-});
-
-router.all('*', function(req, res, next) {
-
-    /*if(req.url !== '/authenticate') {
-
-    }*/
-
-    next();
 });
 
 router.post('/authenticate', function(req, res) {
@@ -50,7 +51,7 @@ router.post('/authenticate', function(req, res) {
     var mail = req.body.mail;
     var password = req.body.password;
 
-    User.findOne({mail: mail}).select('_id name mail pass').exec(function(err, user) {
+    User.findOne({mail: mail}).select('_id mail pass').exec(function(err, user) {
 
         if(user === null) {
             res.json({status: 'error', errorcode: 1, msg: 'user not exists'});
@@ -66,6 +67,25 @@ router.post('/authenticate', function(req, res) {
             });
         }
     });
+    
+});
+
+router.all('*', function(req, res, next) {
+
+    if(req.url !== '/authenticate' || req.url !== '/setup') {
+
+        jwt.verify(req.headers['authorization'], config.JWT_KEY, function(err, decoded) {
+            if(decoded === undefined) {
+                res.json({status: 'error', errorcode: 1, msg: 'invalid credentials'});
+            } else {
+                next();
+            }
+        });
+
+    } else {
+        next();
+    }
+
     
 });
 

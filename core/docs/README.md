@@ -4,17 +4,21 @@ O projeto é composto de uma única **rota pública** e diversas **rotas privada
 A única rota pública é para autenticação, utilizando o [JWT](https://jwt.io/). 
 Já as rotas privadas existem para acessar os recursos.
 
-## Rota pública
+## Rotas públicas
 
-A única rota pública é a para autenticação e recebimento de um token. É necessário enviar 
+### POST /authentication
+
+A rota pública para autenticação e recebimento de um token. É necessário enviar 
 o **email** e a **senha** em method *POST* para realizar a autenticação. 
 
+#### Parâmetros
+
 ~~~
-POST /authentication
-    
 mail = [user_mail]
 password = [user_password]
 ~~~
+
+#### Respostas
 
 O resultado da requisição:
 
@@ -36,19 +40,29 @@ Exemplo de um resultado em caso de sucesso:
 }
 ~~~
 
+### GET /setup (DEV - TEMPORÁRIO)
+
+Rota utilizada uma única vez para instalar as configurações iniciais do sistema.
+Configurar de acordo com as necessidades.
+
+#### Parâmetros
+
+~~~
+[sem parâmetros]
+~~~
+
+#### Respostas
+
+O resultado da requisição:
+
+~~~ json
+{
+    "status": "success|error",
+    "msg": "first user already created",
+    "errorcode": 1
+}
+~~~
+
 ## Rotas privadas
 
-### Usuários
-
-#### GET /user 
-
-Retorna todos os usuários do sistema.
-
-##### Parâmetros
-~~~
-pag = number // O número da página 
-qtd = number // Quantidade de elementos por página
-search = number // Retornar resultados que contém search
-~~~
-
-### Usuário
+### [Usuários](https://github.com/ccsa-ufrn/seminario/tree/master/core/docs/User.md)
