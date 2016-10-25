@@ -12,7 +12,7 @@ o **email** e a **senha** em method *POST* para realizar a autenticação.
 ~~~
 POST /authentication
     
-email = [user_email]
+mail = [user_mail]
 password = [user_password]
 ~~~
 
@@ -21,7 +21,8 @@ O resultado da requisição:
 ~~~ json
 {
     "status": "success|error",
-    "msg": "Invalid credentials",
+    "msg": "user not exists|wrong password",
+    "errorcode": 1|2,
     "token": "[jwt_token]"
 }
 ~~~
