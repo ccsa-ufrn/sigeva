@@ -6,6 +6,8 @@ Já as rotas privadas existem para acessar os recursos.
 
 ## Rotas públicas
 
+(VÃO TER ALGUMAS ROTAS PÚBLICAS ALÉM DESTAS)
+
 ### POST /authentication
 
 A rota pública para autenticação e recebimento de um token. É necessário enviar 

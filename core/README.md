@@ -5,9 +5,14 @@ Back-end provedor de dados para a aplicação Sistema de Gestão de Eventos Acad
 ![NPM](https://img.shields.io/badge/npm-v2.15.9-blue.svg)
 ![Express](https://img.shields.io/badge/Express-v4.14.0-lightgrey.svg)
 ![MongoDB](https://img.shields.io/badge/MongoDB-v3.2.9-green.svg)
+![Python](https://img.shields.io/badge/Python-v2.7-green.svg)
 
 ## Instalação Rápida
-Baixe o diretório ccsa-ufrn/seminario
+Antes de iniciar realmente a instalação do 'core', é necessário que uma versão
+do **Python 2.7** esteja instalada na máquina que vai rodar o programa, pois
+a biblioteca para a geração e verificação de hashs em **bcrypt** depende do Python.
+
+Baixe o diretório ccsa-ufrn/seminario.
 ```
 # git clone https://github.com/ccsa-ufrn/seminario.git app
 ```
