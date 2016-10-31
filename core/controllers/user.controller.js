@@ -1,7 +1,7 @@
-module.exports = (function() {
+var userController = { };
 
-    function storeUser() {
-        console.log('testando funcao');
-    }
+userController.storeUser = function() {
+    console.log('testando funcao');
+}
 
-}());
+module.exports = userController;

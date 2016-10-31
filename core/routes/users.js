@@ -1,7 +1,9 @@
-module.exports = function(router, mongoose, config, User, bcrypt) {
+module.exports = function(router, mongoose, config, User, UserController, bcrypt) {
 
 	router.get('/user', function(req, res) {
 		
+		UserController.storeUser();
+
 		User.find().select('_id name mail').exec(function(err, users) {
 			res.json({status: 'success', data: users});
 		});
