@@ -35,6 +35,9 @@ Para detalhes com relação a todos os recursos e suas queries disponíveis na a
 ## Config file
 :construction:
 
+## Testing
+under construction
+
 ## Deployment
 O Sistema de Gestão de Eventos Acadêmicos utiliza o serviço PM2 da Keymetrics como gerenciador de processos Node.JS. ([Conheça aqui](http://pm2.keymetrics.io/)).
 
@@ -55,3 +58,4 @@ O resultado será parecido com este:
  - [Assegurando informações via transações em JSON](http://security.stackexchange.com/questions/58965/securing-json-data)
  - [JWT](https://jwt.io/introduction/)
  - [Protocolo HTTP](https://tools.ietf.org/html/rfc7231#section-4.3)
+ - [Frisbyjs to test rest api](http://frisbyjs.com/docs/api/)

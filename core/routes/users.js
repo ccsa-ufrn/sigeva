@@ -1,10 +1,15 @@
-module.exports = function(router, mongoose, config, User, UserController, bcrypt) {
+module.exports = function(router, config, User, utils, bcrypt) {
 
 	router.get('/user', function(req, res) {
-		
-		UserController.storeUser();
 
-		User.find().select('_id name mail').exec(function(err, users) {
+		/**
+		 * Parameter: fields
+		 * Description: get fields that will be returned by query.
+		 */
+		let fields = req.query.fields;
+		fields ? fields = utils.getFields(fields) : fields = '_id name mail';
+
+		User.find().select(fields).exec(function(err, users) {
 			res.json({status: 'success', data: users});
 		});
 

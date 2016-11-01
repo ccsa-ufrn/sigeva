@@ -3,6 +3,7 @@ var jwt = require('jsonwebtoken');
 var mongoose = require('mongoose');
 var config = require('../config');
 var bcrypt = require('bcrypt');
+var utils = require('../libs/utils.lib');
 var User = require('../models/user.model');
 var router = express.Router();
 
@@ -94,6 +95,6 @@ router.all('*', function(req, res, next) {
     
 });
 
-require('./users')(router, mongoose, config, User, require('../controllers/user.controller'), bcrypt);
+require('./users')(router, config, User, utils, bcrypt);
 
 module.exports = router;
