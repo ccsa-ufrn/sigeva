@@ -18,17 +18,18 @@ Todos os usuários são definidos pelo seguinte conjunto de informações:
 
 Campo | Descrição | Exemplo
 ------| --------- | --------
-Foto | Foto do usuário | '/web/public/foto.png'
-Nome | O nome completo do usuário | 'João Alves Tavares'
-Email | O email principal do usuário | 'joaoemail@ccsa.ufrn.br'
-Telefone | O telefone principal do usuário | '+55 84 996369661'
-Senha | A senha definida pelo usuário para ter acesso à conta. Criptografada utilizado **bcrypt** e **salto**. | -
-CPF | O CPF do usuário | '04787998745'
-Instituição de Ensino | A instituição de ensino caso o usuário seja da categoria **Discente** ou **Docente** | 'UFRN'
-País | O país de origem do usuário | 'Brasil'
-URL Lattes | O URL para o Lattes do usuário | 'http://lattes.cnpq.br/002011647033'
-URL Linkedin | O URL para o LinkedIn do usuário | 'https://br.linkedin.com/in/joao-alves-00b034a'
-Tipo | Indica se o usuário é do tipo **administrador** ou **comum** | 'administrador' ou 'comum'
+photo | Foto do usuário | '/web/public/foto.png'
+name | O nome completo do usuário | 'João Alves Tavares'
+mail | O email principal do usuário (Campo único)| 'joaoemail@ccsa.ufrn.br'
+phone | O telefone principal do usuário | '+55 84 996369661'
+pass | A senha definida pelo usuário para ter acesso à conta. Criptografada utilizado **bcrypt** e **salto**. | -
+pdf | O CPF do usuário (campo único) | '04787998745'
+institution | A instituição de ensino caso o usuário seja da categoria **Discente** ou **Docente** | 'UFRN'
+country | O país de origem do usuário | 'Brasil'
+lattes_urll | O URL para o Lattes do usuário | 'http://lattes.cnpq.br/002011647033'
+linkedin_url | O URL para o LinkedIn do usuário | 'https://br.linkedin.com/in/joao-alves-00b034a'
+type | Indica se o usuário é do tipo **administrador** ou **comum** | 'administrador' ou 'comum'
+active | Indica se um usuário está ativo ou não | true or false
 
 ## Usuários administrador do sistema
 

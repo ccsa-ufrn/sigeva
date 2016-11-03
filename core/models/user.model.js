@@ -11,7 +11,9 @@ var userSchema = new Schema({
 	country: String,
 	lattes_url: String,
 	linkedin_url: String,
-	type: String
+	type: String,
+	photo: String,
+	active: Boolean
 });
 
 var User = mongoose.model('User', userSchema);

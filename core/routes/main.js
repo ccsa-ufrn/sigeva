@@ -28,6 +28,7 @@ router.get('/setup', function(req, res) {
                         name: 'Administrador',
                         mail: mail,
                         pass: hash,
+                        active: true,
                         type: 'administrator'
                     });
 

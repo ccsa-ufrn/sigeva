@@ -28,10 +28,14 @@ module.exports = function(router, config, User, utils, bcrypt) {
 
 	router.post('/user', function(req, res) {
 
-		var resInvalid = {status: 'error', msg: 'some fields are required', errorcode: 2};
+		var resInvalid = {
+			status: 'error', 
+			msg: 'some fields are required', 
+			errorcode: 2
+		};
 		var obj = {};
 
-		req.body.name === undefined ? res.json(resInvalid) : obj['name'] = req.body.name;
+		req.body.name ? obj['name'] = req.body.name : res.json(resInvalid);
 		req.body.mail === undefined ? res.json(resInvalid) : obj['mail'] = req.body.mail;
 		req.body.pass === undefined ? res.json(resInvalid) : obj['pass'] = req.body.pass;
 		if(req.body.phone !== undefined) { obj['phone'] = req.body.phone; }
@@ -41,6 +45,7 @@ module.exports = function(router, config, User, utils, bcrypt) {
 		if(req.body.lattes_url !== undefined) { obj['lattes_url'] = req.body.lattes_url; }
 		if(req.body.linkedin_url !== undefined) { obj['linkedin_url'] = req.body.linkedin_url; }
 		obj.type = 'common';
+		obj.active = true;
 
 		bcrypt.genSalt(10, function(err, salt) {
 			bcrypt.hash(obj.pass, salt, function(err, hash) {
@@ -61,7 +66,5 @@ module.exports = function(router, config, User, utils, bcrypt) {
 		});
 
 	});
-
-			
 
 }

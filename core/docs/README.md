@@ -26,8 +26,8 @@ O resultado da requisição:
 ~~~ json
 {
     "status": "success|error",
-    "msg": "user not exists|wrong password",
-    "errorcode": 1|2,
+    "msg": "user not exists|wrong password|disabled user",
+    "errorcode": 1 2 3,
     "token": "[jwt_token]"
 }
 ~~~
