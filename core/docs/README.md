@@ -1,12 +1,11 @@
 # CORE - API
 
-O projeto é composto de uma única **rota pública** e diversas **rotas privadas**. 
-A única rota pública é para autenticação, utilizando o [JWT](https://jwt.io/). 
-Já as rotas privadas existem para acessar os recursos.
+O projeto é composto de **rotas públicas**, **rotas privadas** e **rotas mescladas**. 
+As **rotas públicas** não necessitam de autenticação via [JWT](https://jwt.io/). 
+Já as **rotas privadas** exigem autenticação para serem utilizadas.
+As **rotas mescladas** indicam que algumas funcionalidades serão *públicas* e outras *privadas*.
 
 ## Rotas públicas
-
-(VÃO TER ALGUMAS ROTAS PÚBLICAS ALÉM DESTAS)
 
 ### POST /authentication
 
@@ -42,7 +41,7 @@ Exemplo de um resultado em caso de sucesso:
 }
 ~~~
 
-### GET /setup (DEV - TEMPORÁRIO)
+### GET /setup
 
 Rota utilizada uma única vez para instalar as configurações iniciais do sistema.
 Configurar de acordo com as necessidades.
@@ -65,6 +64,18 @@ O resultado da requisição:
 }
 ~~~
 
+## Rotas mescladas
+
+Para entender os parâmetros das requisições, segue uma lista de padronização no momento de visualizar **valores para parâmetros**:
+
+- [value1,value2,value3] **means** value1 **or** value2 **or** value3
+- {value1, value2, value3} **means** value1 **or** value1, value2 **or** value2, value3 **or** ...
+- #descriptive# **means** just a descriptive text to kinds of values
+- (private) **means** only authenticated and with permissions
+- (default [= value]) **means** indicate default value 
+
+### [Usuários](https://github.com/ccsa-ufrn/seminario/tree/master/core/docs/Users.mix.md)
+
 ## Rotas privadas
 
-### [Usuários](https://github.com/ccsa-ufrn/seminario/tree/master/core/docs/Users.md)
+### [Usuários](https://github.com/ccsa-ufrn/seminario/tree/master/core/docs/Users.priv.md)

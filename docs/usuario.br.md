@@ -18,6 +18,7 @@ Todos os usuários são definidos pelo seguinte conjunto de informações:
 
 Campo | Descrição | Exemplo
 ------| --------- | --------
+Foto | Foto do usuário | '/web/public/foto.png'
 Nome | O nome completo do usuário | 'João Alves Tavares'
 Email | O email principal do usuário | 'joaoemail@ccsa.ufrn.br'
 Telefone | O telefone principal do usuário | '+55 84 996369661'

@@ -53,7 +53,7 @@ frisby.create('Ensure that first admin user is created')
             .afterJSON(function(json) {
 
                 /** Get users basic list */
-                frisby.create('Returning basic list of users')
+                frisby.create('Ensure that is return a basic list of users')
                     .addHeader('Authorization', json.token)
                     .get(config.HOST+'/user')
                     .expectJSONTypes({
@@ -62,6 +62,15 @@ frisby.create('Ensure that first admin user is created')
                     })
                     .expectJSON('data.?', { // Verifica se dentro da array data, existe o valor definido abaixo
                         mail: "root@admin.com"
+                    })
+                .toss();
+
+                /** Get users with defined fields */
+                frisby.create('Ensure that is returning only some fields')
+                    .addHeader('Authorization', json.token)
+                    .get(config.HOST+'/user?fields=name,mail')
+                    .expectJSONTypes({
+                        status: String
                     })
                 .toss();
 

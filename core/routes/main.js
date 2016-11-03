@@ -25,6 +25,7 @@ router.get('/setup', function(req, res) {
                 bcrypt.hash(password, salt, function(err, hash) {
 
                     var user = new User({
+                        name: 'Administrador',
                         mail: mail,
                         pass: hash,
                         type: 'administrator'
