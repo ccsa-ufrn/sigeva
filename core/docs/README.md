@@ -1,6 +1,6 @@
 # CORE - API
 
-O projeto é composto de **rotas públicas**, **rotas privadas** e **rotas mescladas**. 
+O projeto é composto de **rotas públicas**, **rotas privadas**, **rotas mescladas** e **rotas internas**. 
 As **rotas públicas** não necessitam de autenticação via [JWT](https://jwt.io/). 
 Já as **rotas privadas** exigem autenticação para serem utilizadas.
 As **rotas mescladas** indicam que algumas funcionalidades serão *públicas* e outras *privadas*.
@@ -64,6 +64,37 @@ O resultado da requisição:
 }
 ~~~
 
+### POST /user
+
+Insere um novo usuário. Campos com * são requeridos.
+(Vai ser necessário criar um token temporário para a criação de um novo usuário, para que ninguém possa criar diretamento
+via uma requisição POST de outro lugar. Além disso, vai ser necessário fazer verificações de registros por mesmo IP e 
+verificar quantidade de registros excessivas, para identificar possíveis tentativas de ataques)
+
+### Parâmetros
+~~~
+*name: string
+*mail: string
+*password: string
+*cpf: number
+*token: string // verifies if request is trusted
+phone: string
+institution: string
+country: string
+lattes_url: string
+linkedin_url: string
+~~~
+
+### Retorno
+
+~~~ json
+{
+    "status": "success|error",
+    "msg": "some fields are required|[custom error]",
+    "errorcode": 2 3
+}
+~~~
+
 ## Rotas mescladas
 
 Para entender os parâmetros das requisições, segue uma lista de padronização no momento de visualizar **valores para parâmetros**:
@@ -79,3 +110,31 @@ Para entender os parâmetros das requisições, segue uma lista de padronizaçã
 ## Rotas privadas
 
 ### [Usuários](https://github.com/ccsa-ufrn/seminario/tree/master/core/docs/Users.priv.md)
+
+## Rotas internas
+
+Essas rotas permitem somente requisições de hosts contidos em INTERNAL_HOSTS, no arquivo de configuração.
+
+### GET /token-for-public-routes
+
+Retorna um token para ser utilizado para rotas públicas, ver [Cross-site request forgery](https://pt.wikipedia.org/wiki/Cross-site_request_forgery).
+
+#### Parâmetros
+
+~~~
+[sem parâmetros]
+~~~
+
+#### Respostas
+
+O resultado da requisição:
+
+~~~ json
+{
+    "status": "success|error",
+    "errorcode": 1,
+    "data": {
+        "token" : "the_token"
+    }
+}
+~~~

@@ -60,33 +60,3 @@ cpf(private), institution(default), country(private), lattes_url, linkedin_url, 
     "data": {}
 }
 ~~~
-
-## POST /user
-
-Insere um novo usuário. Campos com * são requeridos.
-(Vai ser necessário criar um token temporário para a criação de um novo usuário, para que ninguém possa criar diretamento
-via uma requisição POST de outro lugar)
-
-### Parâmetros
-~~~
-*name: string
-*mail: string
-*password: string
-*cpf: number
-*token: string // verifies if request is trusted
-phone: string
-institution: string
-country: string
-lattes_url: string
-linkedin_url: string
-~~~
-
-### Retorno
-
-~~~ json
-{
-    "status": "success|error",
-    "msg": "some fields are required|[custom error]",
-    "errorcode": 2 3
-}
-~~~
