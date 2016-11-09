@@ -8,10 +8,15 @@ var User = require('../models/user.model');
 var router = express.Router();
 
 
-/** mongoose conn */
+/** 
+ * MONGOOSE CONNECTION
+ * */
 mongoose.connect(config.MONGO_DB_SRC);
 
-/** BEGIN - AFTER FIRST USE, DELETE THIS */
+/**
+ * GET /setup
+ * Bootstraps the app, it can be executed only the first time
+ */
 router.get('/setup', function(req, res) {
 
     var mail = 'root@admin.com';
@@ -50,8 +55,11 @@ router.get('/setup', function(req, res) {
     });
 
 });
-/** END - AFTER FIRST USE, DELETE THIS */
 
+/**
+ * POST /authenticate
+ * Authenticate a user and return a jwt token
+ */
 router.post('/authenticate', function(req, res) {
 
     var mail = req.body.mail;
@@ -65,7 +73,7 @@ router.post('/authenticate', function(req, res) {
         } else {
             bcrypt.compare(password, user.pass, function(err, r) {
                 if(r == true) {
-                    jwt.sign(user._id, config.JWT_KEY, { expiresIn: '24h' }, function(err, token) {
+                    jwt.sign({ id: user.id }, config.JWT_KEY, { expiresIn: '24h' }, function(err, token) {
                         res.json({status: 'success', token: token});
                         return;
                     });
@@ -81,22 +89,36 @@ router.post('/authenticate', function(req, res) {
 
 router.all('*', function(req, res, next) {
 
-    if(req.url !== '/authenticate' || req.url !== '/setup') {
+    jwt.verify(req.headers['authorization'], config.JWT_KEY, function(err, decoded) {
+        if(decoded !== undefined) {
 
-        jwt.verify(req.headers['authorization'], config.JWT_KEY, function(err, decoded) {
-            if(decoded === undefined) {
-                res.json({status: 'error', errorcode: 1, msg: 'invalid credentials'});
-            } else {
+            User
+			.findOne()
+			.where('_id').equals(new mongoose.Types.ObjectId(decoded.id)).
+			select('_id name mail active type').
+			exec(function(err, user) {
+                req.user = user;
                 next();
-            }
-        });
+			});
 
+        } else {
+            next();
+        }
+        
+    });
+
+});
+
+let private_route = function(req, res) {
+
+    if(req.user === undefined) {
+        res.json({status: 'error', errorcode: 1, msg: 'invalid credentials'});
     } else {
         next();
     }
-    
-});
 
-require('./users')(router, config, User, utils, bcrypt);
+};
+
+require('./users')(router, private_route, mongoose, config, User, utils, bcrypt, jwt);
 
 module.exports = router;

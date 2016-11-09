@@ -106,6 +106,47 @@ frisby.create('Ensure that first admin user is created')
                     .expectJSONLength('data.*', 1) // It's number of fields more _id field
                 .toss();
 
+                /**
+                 * Ensure that is creating a new access token
+                 * (Vou ter que criar um access token para cada request)
+                 */
+                frisby.create('Ensure that is creating a new access token')
+                    .get(config.HOST+'/access-token')
+                    .afterJSON(function(json_token) {
+
+                        let access_token = json_token.token;
+
+                        /**
+                         * Ensure that is creating a new user with minimum requeriments
+                         */
+                        frisby.create('Ensure that is creating a new user with minimum requeriments')
+                            .post(config.HOST+'/user', {
+                                name: 'User test',
+                                mail: 'usertest@outlook.com',
+                                password: '123456@teste',
+                                cpf: '11122233389',
+                                token: access_token
+                            })
+                            .expectJSONTypes('data.*',{
+                                status: String
+                            })
+                            .expectJSONLength('data.*', 1)
+                            .afterJSON(function(json_result_creation) {
+
+                                /**
+                                 * Ensure that user is in database
+                                 */
+
+
+                            })
+                        .toss();
+
+
+
+                    })
+                .toss();
+
+                
             })
             .expectStatus(200)
             .expectHeaderContains('Content-Type', 'json')

@@ -1,7 +1,7 @@
 # seminario/core/
 Back-end provedor de dados para a aplicação Sistema de Gestão de Eventos Acadêmicos. O **core** foi desenvolvido em _Node.JS_,utilizando _MongoDB_ com os seguintes requisitos:
 
-![Node](https://img.shields.io/badge/Node.js-v4.4.7-green.svg)
+![Node](https://img.shields.io/badge/Node.js-v7.0.0-green.svg)
 ![NPM](https://img.shields.io/badge/npm-v2.15.9-blue.svg)
 ![Express](https://img.shields.io/badge/Express-v4.14.0-lightgrey.svg)
 ![MongoDB](https://img.shields.io/badge/MongoDB-v3.2.9-green.svg)
@@ -28,7 +28,7 @@ Por fim, pode inicializar o serviço:
 Se nenhum erro for mostrado a instalação foi realizada com sucesso.
 
 ## Arquitetura
-![](http://i.imgur.com/PyWqwtT.png)
+![](http://i.imgur.com/qGy03Xq.png)
 
 Para detalhes com relação a todos os recursos e suas queries disponíveis na api, [clique aqui](https://github.com/ccsa-ufrn/seminario/tree/master/core/docs).
 
@@ -36,7 +36,10 @@ Para detalhes com relação a todos os recursos e suas queries disponíveis na a
 :construction:
 
 ## Testing
-under construction
+Para testar, apenas rode:
+```
+npm run test
+```
 
 ## Deployment
 O Sistema de Gestão de Eventos Acadêmicos utiliza o serviço PM2 da Keymetrics como gerenciador de processos Node.JS. ([Conheça aqui](http://pm2.keymetrics.io/)).

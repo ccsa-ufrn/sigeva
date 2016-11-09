@@ -115,9 +115,11 @@ Para entender os parâmetros das requisições, segue uma lista de padronizaçã
 
 Essas rotas permitem somente requisições de hosts contidos em INTERNAL_HOSTS, no arquivo de configuração.
 
-### GET /token-for-public-routes
+### GET /access-token
 
-Retorna um token para ser utilizado para rotas públicas, ver [Cross-site request forgery](https://pt.wikipedia.org/wiki/Cross-site_request_forgery).
+Retorna um token para ser utilizado por 'formulários', 
+ver [Cross-site request forgery](https://pt.wikipedia.org/wiki/Cross-site_request_forgery).
+Tokens têm tempo de vida de 15 minutos, apenas.
 
 #### Parâmetros
 
