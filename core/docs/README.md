@@ -5,6 +5,18 @@ As **rotas públicas** não necessitam de autenticação via [JWT](https://jwt.i
 Já as **rotas privadas** exigem autenticação para serem utilizadas.
 As **rotas mescladas** indicam que algumas funcionalidades serão *públicas* e outras *privadas*.
 
+## Requisições
+
+~~~
+METODO_HTTP /ENTIDADE?{parametro_1}={valor_p11}&{parametro_2}={valor_p21},{valor_p22},...,{valor_p23}&{parametro_n}={valor_pn1}
+~~~
+
+Em que:
+
+~~~
+METODO_HTTP = GET, POST, PUT, DELETE
+~~~
+
 ## Rotas públicas
 
 ### POST /authentication
