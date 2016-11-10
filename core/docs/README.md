@@ -3,152 +3,40 @@
 O projeto é composto de **rotas públicas**, **rotas privadas**, **rotas mescladas** e **rotas internas**. 
 As **rotas públicas** não necessitam de autenticação via [JWT](https://jwt.io/). 
 Já as **rotas privadas** exigem autenticação para serem utilizadas.
-As **rotas mescladas** indicam que algumas funcionalidades serão *públicas* e outras *privadas*.
+As **rotas mescladas** indicam que algumas funcionalidades serão *públicas* e outras *privadas*, normalmente necessitando de algum tipo de controle de usuário.
 
 ## Requisições
 
+As **rotas** são baseadas em **entidades** e suas **funcionalidades**.
+
 ~~~
-METODO_HTTP /ENTIDADE?{parametro_1}={valor_p11}&{parametro_2}={valor_p21},{valor_p22},...,{valor_p23}&{parametro_n}={valor_pn1}
+{metodo_http} /{entidade}[/{id_entidade}][/{acao}]?{queries}
 ~~~
 
 Em que:
-
 ~~~
-METODO_HTTP = GET, POST, PUT, DELETE
-~~~
-
-## Rotas públicas
-
-### POST /authentication
-
-A rota pública para autenticação e recebimento de um token. É necessário enviar 
-o **email** e a **senha** em method *POST* para realizar a autenticação. 
-
-#### Parâmetros
-
-~~~
-mail = [user_mail]
-password = [user_password]
+{metodo_http} = GET, POST, PUT, DELETE
+{entidade} = user, event, inscription, ...
+{id_entidade} = identificado da entidade
+{queries} = {parametros=valores}
+{acao} = uma determinada ação dentro da entidade
 ~~~
 
-#### Respostas
-
-O resultado da requisição:
-
-~~~ json
-{
-    "status": "success|error",
-    "msg": "user not exists|wrong password|disabled user",
-    "errorcode": 1 2 3,
-    "token": "[jwt_token]"
-}
+Exemplo:
+~~~
+GET /user?fields=name,photo&orderBy=name(asc)  
+PUT /user/12  
+POST /token/access-token
 ~~~
 
-Exemplo de um resultado em caso de sucesso:
+No primeiro caso, retorna os campos 'name' e 'photo' de todas as entidades 'user', ordernado por 'name' de forma crescente.
+No segundo caso, altera campos da entidade 'user' de identificador '12'.
+No terceiro caso, cria um access-token, sendo 'token' a entidade e 'access-token' a ação.
 
-~~~ json
-{
-    "status": "success",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
-}
-~~~
+## Entidades 
 
-### GET /setup
-
-Rota utilizada uma única vez para instalar as configurações iniciais do sistema.
-Configurar de acordo com as necessidades.
-
-#### Parâmetros
-
-~~~
-[sem parâmetros]
-~~~
-
-#### Respostas
-
-O resultado da requisição:
-
-~~~ json
-{
-    "status": "success|error",
-    "msg": "first user already created",
-    "errorcode": 1
-}
-~~~
-
-### POST /user
-
-Insere um novo usuário. Campos com * são requeridos.
-(Vai ser necessário criar um token temporário para a criação de um novo usuário, para que ninguém possa criar diretamento
-via uma requisição POST de outro lugar. Além disso, vai ser necessário fazer verificações de registros por mesmo IP e 
-verificar quantidade de registros excessivas, para identificar possíveis tentativas de ataques)
-
-### Parâmetros
-~~~
-*name: string
-*mail: string
-*password: string
-*cpf: number
-*token: string // verifies if request is trusted
-phone: string
-institution: string
-country: string
-lattes_url: string
-linkedin_url: string
-~~~
-
-### Retorno
-
-~~~ json
-{
-    "status": "success|error",
-    "msg": "some fields are required|[custom error]",
-    "errorcode": 2 3
-}
-~~~
-
-## Rotas mescladas
-
-Para entender os parâmetros das requisições, segue uma lista de padronização no momento de visualizar **valores para parâmetros**:
-
-- [value1,value2,value3] **means** value1 **or** value2 **or** value3
-- {value1, value2, value3} **means** value1 **or** value1, value2 **or** value2, value3 **or** ...
-- #descriptive# **means** just a descriptive text to kinds of values
-- (private) **means** only authenticated and with permissions
-- (default [= value]) **means** indicate default value 
-
-### [Usuários](https://github.com/ccsa-ufrn/seminario/tree/master/core/docs/Users.mix.md)
-
-## Rotas privadas
-
-### [Usuários](https://github.com/ccsa-ufrn/seminario/tree/master/core/docs/Users.priv.md)
-
-## Rotas internas
-
-Essas rotas permitem somente requisições de hosts contidos em INTERNAL_HOSTS, no arquivo de configuração.
-
-### GET /access-token
-
-Retorna um token para ser utilizado por 'formulários', 
-ver [Cross-site request forgery](https://pt.wikipedia.org/wiki/Cross-site_request_forgery).
-Tokens têm tempo de vida de 15 minutos, apenas.
-
-#### Parâmetros
-
-~~~
-[sem parâmetros]
-~~~
-
-#### Respostas
-
-O resultado da requisição:
-
-~~~ json
-{
-    "status": "success|error",
-    "errorcode": 1,
-    "data": {
-        "token" : "the_token"
-    }
-}
-~~~
+Entidade | Descrição
+---------|-----------
+[User](https://github.com/ccsa-ufrn/seminario/tree/master/core/docs/User.br.md) | Representa um usuário do sistema. 
+[Token](https://github.com/ccsa-ufrn/seminario/tree/master/core/docs/Token.br.md) | Representa uma entidade relacionada com a geração e verificação de todos os tipos de tokens do sistema
+[System](https://github.com/ccsa-ufrn/seminario/tree/master/core/docs/System.br.md) | Representa uma entidade relacionada com as funcionalidades básicas e configurações do sistema.
