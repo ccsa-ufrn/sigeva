@@ -29,5 +29,5 @@ Leia a documentação de  [Papel][papel] para compreender o campo **Papéis**.
 ### Eventos subordinados
 Um evento pode ocorrer junto a outros eventos, ou até mesmo, composto por diversos eventos. O campo **Subeventos** agrupa informações de eventos subordinados, mas estes não possuem o mesmo nível de complexidade de um evento do tipo **Evento**, o campo fornece apenas informações simples.
 
-[usuario]:<https://github.com/ccsa-ufrn/seminario/blob/master/docs/usuario.br.md>
+[usuario]:<https://github.com/ccsa-ufrn/seminario/blob/master/docs/user.br.md>
 [papel]:<https://github.com/ccsa-ufrn/seminario/blob/master/docs/papel.br.md>

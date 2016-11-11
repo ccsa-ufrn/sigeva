@@ -1,6 +1,12 @@
 var request = require('request');
 var frisby = require('frisby');
 var config = require('../config');
+var http = require('http');
+
+/** HERE COMES THE TEST */
+
+
+
 
 /** 
  * Wrong user 

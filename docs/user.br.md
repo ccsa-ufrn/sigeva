@@ -8,7 +8,10 @@ os **usuários** podem ser de dois tipos: **administrador do sistema** ou **comu
 	<img src="http://i.imgur.com/dOcOSQM.png" >
 </p>
 
-Os **administradores do sistema** são responsáveis por gerenciar [**eventos**][evento] e outros **usuários** em *escopo global*. Todos os **usuários**, ao serem criados, são do tipo **comum**, e qualquer **usuário/comum** pode se tornar **administrador do sistema**. Além disso, o tipo **comum** é um subconjunto do **administrador do sistema**.
+Os **administradores do sistema** são responsáveis por gerenciar [**eventos**][evento] e outros **usuários** 
+em *escopo global*. Todos os **usuários**, ao serem criados, são do tipo **comum**, e qualquer **usuário/comum** 
+pode se tornar **administrador do sistema**. Além disso, o tipo **comum** é um subconjunto 
+do **administrador do sistema**.
 
 <p align="center">
 	<img src="http://i.imgur.com/hVbto44.png">
@@ -22,11 +25,11 @@ photo | Foto do usuário | '/web/public/foto.png'
 name | O nome completo do usuário | 'João Alves Tavares'
 mail | O email principal do usuário (Campo único)| 'joaoemail@ccsa.ufrn.br'
 phone | O telefone principal do usuário | '+55 84 996369661'
-pass | A senha definida pelo usuário para ter acesso à conta. Criptografada utilizado **bcrypt** e **salto**. | -
-pdf | O CPF do usuário (campo único) | '04787998745'
+password | A senha definida pelo usuário para ter acesso à conta. Criptografada utilizado **bcrypt** e **salt**. | -
+identifier_doc | Um documento identificador e único por **country**, no Brasil poderia ser o CPF | '04787998745'
 institution | A instituição de ensino caso o usuário seja da categoria **Discente** ou **Docente** | 'UFRN'
 country | O país de origem do usuário | 'Brasil'
-lattes_urll | O URL para o Lattes do usuário | 'http://lattes.cnpq.br/002011647033'
+lattes_url | O URL para o Lattes do usuário | 'http://lattes.cnpq.br/002011647033'
 linkedin_url | O URL para o LinkedIn do usuário | 'https://br.linkedin.com/in/joao-alves-00b034a'
 type | Indica se o usuário é do tipo **administrador** ou **comum** | 'administrador' ou 'comum'
 active | Indica se um usuário está ativo ou não | true or false

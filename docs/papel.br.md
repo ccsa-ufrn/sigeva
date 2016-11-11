@@ -38,5 +38,5 @@ Pode, somente, criar [**usuários**][usuario]. Pode visualizar informações de 
 Pode *atribuir* ou *remover atribuição* de um **papel** a um [**usuário**][usuario].
 
 
-[usuario]:<https://github.com/ccsa-ufrn/seminario/blob/master/docs/usuario.br.md>
+[usuario]:<https://github.com/ccsa-ufrn/seminario/blob/master/docs/user.br.md>
 [evento]:<https://github.com/ccsa-ufrn/seminario/blob/master/docs/evento.br.md>
