@@ -3,40 +3,41 @@ var frisby = require('frisby');
 var config = require('../config');
 var http = require('http');
 
-/** HERE COMES THE TEST */
-
-
-
-
-/** 
- * Wrong user 
- */
-frisby.create('Ensure that there isnt a user')
-    .post(config.HOST+'/authenticate')
+/** TESTING IF REQUESTS EXIST */
+frisby.create('Ensure that GET /user exists')
+    .get(config.HOST+'/user')
     .expectStatus(200)
-    .expectHeaderContains('Content-Type', 'json')
-    .expectJSON({
-        status: "error",
-        errorcode: 1,
-        msg: "user not exists"
-    })
-    .expectJSONTypes({
-        status: String,
-        errorcode: Number,
-        msg: String
-    })
 .toss();
 
-/** 
- * First admin user 
- */
-frisby.create('Ensure that first admin user is created')
+frisby.create('Ensure that GET /user/:id exists')
+    .get(config.HOST+'/user/as12')
+    .expectStatus(200)
+.toss();
+
+frisby.create('Ensure that POST /user exists')
+    .post(config.HOST+'/user')
+    .expectStatus(200)
+.toss();
+
+frisby.create('Ensure that POST /user/upload-photo exists')
+    .post(config.HOST+'/user/upload-photo')
+    .expectStatus(200)
+.toss();
+
+frisby.create('Ensure that PUT /user/:id exists')
+    .put(config.HOST+'/user/as12')
+    .expectStatus(200)
+.toss();
+
+frisby.create('Ensure that DELETE /user/:id exists')
+    .delete(config.HOST+'/user/as12')
+    .expectStatus(200)
+.toss();
+
+
+/*frisby.create('Ensure that first admin user is created')
     .get(config.HOST+'/setup')
     .after(function(err, res, body) {
-
-        /** 
-         * Correct user, wrong password 
-         */
         frisby.create('Ensure that user is using wrong password')
             .post(config.HOST+'/authenticate', {
                 mail: 'root@admin.com',
@@ -56,9 +57,6 @@ frisby.create('Ensure that first admin user is created')
             })
         .toss();
 
-        /** 
-         * Correct user and password 
-         */
         frisby.create('Ensure that api is authenticating an administrator user')
             .post(config.HOST+'/authenticate', {
                 mail: 'root@admin.com',
@@ -66,9 +64,6 @@ frisby.create('Ensure that first admin user is created')
             })
             .afterJSON(function(json) {
 
-                /** 
-                 * Get users basic list 
-                 */
                 frisby.create('Ensure that is return a basic list of users')
                     .addHeader('Authorization', json.token)
                     .get(config.HOST+'/user')
@@ -82,9 +77,6 @@ frisby.create('Ensure that first admin user is created')
                     .expectJSONLength('data.*', 3) // The default number of fields
                 .toss();
 
-                /** 
-                 * Get users with defined fields 
-                 */
                 frisby.create('Ensure that is returning only some fields')
                     .addHeader('Authorization', json.token)
                     .get(config.HOST+'/user?fields=name,mail')
@@ -93,38 +85,24 @@ frisby.create('Ensure that first admin user is created')
                     })
                     .expectJSONLength('data.*', 3) // It's number of fields more _id field
                 .toss();
-
-                /** 
-                 * Ensure that if fields is empty, return standard
-                 */
                 frisby.create('Ensure that is only returning _id')
                     .addHeader('Authorization', json.token)
                     .get(config.HOST+'/user?fields=')
                     .expectJSONLength('data.*', 3) // It's number of fields more _id field
                 .toss();
 
-                /** 
-                 * Ensure that is not trying to return unknow fields
-                 */
                 frisby.create('Ensure that is only returning _id')
                     .addHeader('Authorization', json.token)
                     .get(config.HOST+'/user?fields=field1,field2,strangefield')
                     .expectJSONLength('data.*', 1) // It's number of fields more _id field
                 .toss();
 
-                /**
-                 * Ensure that is creating a new access token
-                 * (Vou ter que criar um access token para cada request)
-                 */
                 frisby.create('Ensure that is creating a new access token')
                     .get(config.HOST+'/access-token')
                     .afterJSON(function(json_token) {
 
                         let access_token = json_token.token;
 
-                        /**
-                         * Ensure that is creating a new user with minimum requeriments
-                         */
                         frisby.create('Ensure that is creating a new user with minimum requeriments')
                             .post(config.HOST+'/user', {
                                 name: 'User test',
@@ -138,11 +116,6 @@ frisby.create('Ensure that first admin user is created')
                             })
                             .expectJSONLength('data.*', 1)
                             .afterJSON(function(json_result_creation) {
-
-                                /**
-                                 * Ensure that user is in database
-                                 */
-
 
                             })
                         .toss();
@@ -168,4 +141,4 @@ frisby.create('Ensure that first admin user is created')
 
 
     })
-.toss();
+.toss(); */

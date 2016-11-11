@@ -111,12 +111,14 @@ module.exports = function(router, private_route, mongoose, config, User, utils, 
 	 */
 	router.get('/user/:id', function(req, res) {
 
-		User.findOne()
+		res.json({});
+
+		/*User.findOne()
 		.where('_id').equals(new mongoose.Types.ObjectId(req.params.id)).
 		select('_id name mail').
 		exec(function(err, user) {
 			res.json({status: 'success', data: user});
-		});
+		});*/
 
 	});
 
@@ -171,6 +173,14 @@ module.exports = function(router, private_route, mongoose, config, User, utils, 
 	});
 
 	router.post('/user/upload-photo', private_route, function(req, res) {
+		res.json({});
+	});
+
+	router.put('/user/:id', private_route, function(req, res) {
+		res.json({});
+	});
+
+	router.delete('/user/:id', private_route, function(req, res) {
 		res.json({});
 	});
 
