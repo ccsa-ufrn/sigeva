@@ -1,10 +1,10 @@
-module.exports = function(router, private_route, mongoose, config, utils, bcrypt, jwt) {
+module.exports = function(router, private_route, mongoose, config, utils, User, bcrypt, jwt) {
 
     /**
      * GET system/setup
      * Bootstraps the app, it can be executed only one time
      */
-    router.get('system/setup', function(req, res) {
+    router.get('/system/setup', function(req, res) {
 
         var mail = 'root@admin.com';
         var password = '123456@admin';

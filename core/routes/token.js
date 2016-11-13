@@ -4,7 +4,7 @@ module.exports = function(router, private_route, mongoose, config, utils, bcrypt
      * POST token/authenticate
      * Authenticate a user and return a jwt token
      */
-    router.post('token/authenticate', function(req, res) {
+    router.post('/token/authenticate', function(req, res) {
 
         var mail = req.body.mail;
         var password = req.body.password;
@@ -28,7 +28,7 @@ module.exports = function(router, private_route, mongoose, config, utils, bcrypt
                 });
             }
         });
-        
+
     });
 
 }

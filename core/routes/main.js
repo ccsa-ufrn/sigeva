@@ -4,12 +4,12 @@ var mongoose = require('mongoose');
 var config = require('../config');
 var bcrypt = require('bcrypt');
 var utils = require('../libs/utils.lib');
-var User = require('../models/user.model');
 var router = express.Router();
 
-/** 
- * MONGOOSE CONNECTION
- * */
+/** Models  */
+var User = require('../models/user.model');
+
+/**  Mongoose Connection **/
 mongoose.connect(config.MONGO_DB_SRC);
 
 router.all('*', function(req, res, next) {
@@ -19,9 +19,9 @@ router.all('*', function(req, res, next) {
 
             User
 			.findOne()
-			.where('_id').equals(new mongoose.Types.ObjectId(decoded.id)).
-			select('_id name mail active type').
-			exec(function(err, user) {
+			.where('_id').equals(new mongoose.Types.ObjectId(decoded.id))
+			.select('_id name mail active type')
+			.exec(function(err, user) {
                 req.user = user;
                 next();
 			});
@@ -29,14 +29,10 @@ router.all('*', function(req, res, next) {
         } else {
             next();
         }
-        
+
     });
 
 });
-
-router.get('test', function(req, res){
-    res.json({});
-})
 
 let private_route = function(req, res) {
 
@@ -48,7 +44,7 @@ let private_route = function(req, res) {
 
 };
 
-require('./system')(router, private_route, mongoose, config, utils, bcrypt, jwt);
+require('./system')(router, private_route, mongoose, config, User, utils, bcrypt, jwt);
 require('./token')(router, private_route, mongoose, config, utils, bcrypt, jwt);
 require('./user')(router, private_route, mongoose, config, User, utils, bcrypt, jwt);
 
