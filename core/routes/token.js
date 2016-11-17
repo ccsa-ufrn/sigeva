@@ -1,4 +1,4 @@
-module.exports = function(router, private_route, mongoose, config, utils, bcrypt, jwt) {
+module.exports = function(router, private_route, mongoose, config, User, utils, bcrypt, jwt) {
 
     /**
      * POST token/authenticate

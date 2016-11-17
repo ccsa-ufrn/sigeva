@@ -8,7 +8,7 @@ Retorna usuários do sistema.
 
 ### Queries
 
-Parâmetros | Descrição | Valores
+Query | Descrição | Valores
 -----------|-----------|-----------
 **pag:** number | Indica a página para retorno de usuários | Valores a partir de **1**.<br>Ex.: pag=10.<br>**default:** (pag=1)
 **qtt:** number | Indica a quantidade de resultados por página que serão exibidos | Valores a partir de **1**.<br>**default:** (pag=10)

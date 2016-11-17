@@ -45,7 +45,7 @@ let private_route = function(req, res) {
 };
 
 require('./system')(router, private_route, mongoose, config, User, utils, bcrypt, jwt);
-require('./token')(router, private_route, mongoose, config, utils, bcrypt, jwt);
+require('./token')(router, private_route, mongoose, config, User, utils, bcrypt, jwt);
 require('./user')(router, private_route, mongoose, config, User, utils, bcrypt, jwt);
 
 module.exports = router;

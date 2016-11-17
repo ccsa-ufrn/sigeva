@@ -1,16 +1,28 @@
 # Token
 
+Entidade responsável pela geração de tokens utilizados pelo sistema.
+
 ## POST /authentication
 
-A rota pública para autenticação e recebimento de um token. É necessário enviar 
-o **email** e a **senha** em method *POST* para realizar a autenticação. 
+Rota pública para autenticação e recebimento de um token. É necessário enviar 
+o **mail** e a **password** em method *POST* para realizar a autenticação. 
+
+### Queries
+
+Query | Descrição | Valores
+-----------|-----------|-----------
+Não permite queries.
 
 ### Parâmetros
 
-~~~
-mail = [user_mail]
-password = [user_password]
-~~~
+Parâmetros | Descrição 
+-----------|-----------
+mail | O email do usuário cadastrado 
+password | A senha do usuário
+
+### Permissões
+
+- Rota **pública**
 
 ### Respostas
 
@@ -25,14 +37,6 @@ O resultado da requisição:
 }
 ~~~
 
-Exemplo de um resultado em caso de sucesso:
-
-~~~ json
-{
-    "status": "success",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
-}
-~~~
 
 ## GET /access-token
 
