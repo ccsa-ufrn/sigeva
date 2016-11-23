@@ -2,13 +2,10 @@ let request = require('request');
 let config = require('../config');
 let http = require('http');
 let jasmine = require('jasmine');
-let mongoose = require('mongoose');
+let User = require('../models/user.model');
+let functions = require('./libs/functions.lib');
 let fs = require('fs');
 let async = require('async');
-let functions = require('./helpers/functions.helper');
-let User = require('../models/user.model');
-
-mongoose.connect(config.MONGO_DB_TEST);
 
 describe("In User routes, the route", function() { 
 

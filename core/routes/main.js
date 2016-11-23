@@ -9,9 +9,6 @@ var router = express.Router();
 /** Models  */
 var User = require('../models/user.model');
 
-/**  Mongoose Connection **/
-mongoose.connect(config.MONGO_DB_SRC);
-
 router.all('*', function(req, res, next) {
 
     jwt.verify(req.headers['authorization'], config.JWT_KEY, function(err, decoded) {

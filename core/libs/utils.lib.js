@@ -19,4 +19,22 @@ utils.getFields = function(fields, blacklist = []) {
     return fields.join(' ');
 }
 
+/**
+ * Get the startup mode from server.
+ * It's based in args on server init.
+ */
+utils.getStartUpMode = function() {
+    let startUpMode = 'DEV';
+
+    if(process.argv[2]) {
+        let startUpModeTemp = process.argv[2].toUpperCase();
+        
+        if(startUpModeTemp === 'DEV' || startUpModeTemp === 'TEST' || startUpModeTemp === 'PRODUCTION') {
+            startUpMode = startUpModeTemp;
+        }
+    }
+
+    return startUpMode;
+}
+
 module.exports = utils;

@@ -2,15 +2,12 @@
 
 Entidade responsável pela geração de tokens utilizados pelo sistema.
 
-## POST /authentication
+## POST /token/authentication
 
 Rota pública para autenticação e recebimento de um token. É necessário enviar 
 o **mail** e a **password** em method *POST* para realizar a autenticação. 
 
 ### Queries
-
-Query | Descrição | Valores
------------|-----------|-----------
 Não permite queries.
 
 ### Parâmetros
@@ -21,8 +18,7 @@ mail | O email do usuário cadastrado
 password | A senha do usuário
 
 ### Permissões
-
-- Rota **pública**
+Rota pública
 
 ### Respostas
 
@@ -38,7 +34,7 @@ O resultado da requisição:
 ~~~
 
 
-## GET /access-token
+## GET /token/access-token
 
 Retorna um token para ser utilizado por 'formulários', 
 ver [Cross-site request forgery](https://pt.wikipedia.org/wiki/Cross-site_request_forgery).

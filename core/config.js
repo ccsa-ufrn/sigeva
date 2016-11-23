@@ -1,6 +1,7 @@
 module.exports = {
 	APP_NAME: "Sistema de Gestão de Eventos Acadêmicos", // Aplication name
-	MONGO_DB_SRC: "mongodb://localhost/seminario_dev", // Mongo database source
+	MONGO_DB_PRODUCTION: "mongodb://localhost/seminario",
+	MONGO_DB_DEV: "mongodb://localhost/seminario_dev",
 	MONGO_DB_TEST: "mongodb://localhost/seminario_test", // Mongo database test
 	JWT_KEY: "VLAYZPn78JEdwQkk5aps7fCrzMUKbPDHr4xfvwYt", // JSON Web Token private Key
 	HOST: "http://localhost:3000",
