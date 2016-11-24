@@ -38,6 +38,7 @@ Para detalhes com relação a todos os recursos e suas queries disponíveis na a
 ## Testing
 Para testar, apenas rode:
 ```
+npm start test // Inicia o servidor em modo desenvolvimento
 npm run test
 ```
 

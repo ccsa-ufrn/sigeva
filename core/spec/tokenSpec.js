@@ -2,10 +2,6 @@ let request = require('request');
 let config = require('../config');
 let http = require('http');
 let jasmine = require('jasmine');
-let User = require('../models/user.model');
-let functions = require('./libs/functions.lib');
-let fs = require('fs');
-let async = require('async');
 
 describe("In Token routes, the route", function() { 
 
@@ -24,13 +20,24 @@ describe("In Token routes, the route", function() {
     
     });
 
+    it('[GET /token/access-token] should be ON', function(done) {
+    
+        request
+        .get(config.HOST+'/token/access-token')
+        .on('response', function(res) {
+            expect(res.statusCode).toBe(200);
+            done();
+        })
+        .on('error', function(err) {
+            console.log(err);
+            done();
+        });
+    
+    });
+
 });
 
 describe('An anonymous user', function() {
-
-    beforeAll(function(done) {
-        functions.createUsers(User, fs, async, function() { done(); });
-    });
 
     it('should try to authenticate with non-existent mail, then he will receive a error', function(done) {
         
@@ -89,7 +96,7 @@ describe('An anonymous user', function() {
 
     it(`should try to authenticate with an existent mail, 
     a correct password and an enable user, 
-    then he will receive a success`, 
+    then he will receive a token`, 
     function(done) {
         
         request
@@ -99,16 +106,11 @@ describe('An anonymous user', function() {
             },
             function(err, res, body) {
                 let obj = JSON.parse(body);
-                expect()
-                expect(obj.errorcode).toBe(undefined);
+                expect(obj.token).not.toBe(undefined);
                 done();
             }
         );
 
-    });
-
-    afterAll(function(done) {
-        functions.removeUsers(User, fs, async, function() { done(); });
     });
 
 });

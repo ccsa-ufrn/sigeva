@@ -38,5 +38,15 @@ module.exports = function(router, private_route, mongoose, config, User, utils, 
 
     });
 
+    /**
+     * GET token/access-token
+     * Return a access token
+     */
+    router.get('/token/access-token', function(req, res) {
+
+        res.json({ success: true })
+
+    });
+
 }
 

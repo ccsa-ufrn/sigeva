@@ -37,4 +37,40 @@ utils.getStartUpMode = function() {
     return startUpMode;
 }
 
+/**
+ * Return true if arr is sorted,
+ * return false otherwise.
+ */
+utils.isSorted = function(arr){    
+    if(arr.length == 0) 
+        return true;
+    
+    for (let i = 0; i < arr.length-1; i++)
+        if(arr[i] > arr[i+1])
+            return false;
+
+    return true;
+}
+
+/**
+ * It bootstraps the database to test system
+ */
+utils.bootstrapCollections = function(app) {
+
+    let config = require('../config');
+    let testHelperFunctions = require('./testHelperFunctions.lib');
+    let User = require('../models/user.model');
+    let fs = require('fs');
+    let async = require('async');
+
+    testHelperFunctions.createUsers(User, fs, async, function() {
+
+        app.listen(config.SERVER_PORT, function() {
+            console.log(`Express started on port ${config.SERVER_PORT}, on TEST mode.`);
+        });
+
+    });
+
+}
+
 module.exports = utils;

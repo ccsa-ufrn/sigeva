@@ -20,6 +20,7 @@ if(startUpMode === 'PRODUCTION') {
 	mongoose.connect(config.MONGO_DB_PRODUCTION);
 } else if(startUpMode === 'TEST') {
 	mongoose.connect(config.MONGO_DB_TEST);
+	utils.bootstrapCollections(app);
 } else {
 	mongoose.connect(config.MONGO_DB_DEV);
 }
@@ -34,11 +35,19 @@ app.use(helmet());
 // Setting compression - G-Zip
 app.use(compression());
 
-// Setting routes
+/**
+ * Setting up the routes configs
+ */
 app.use('/', apiRoutes);
 
-// Starting server
-let port = 3000;
-app.listen(port, function() {
-	console.log(`Express started on port ${port}, on ${startUpMode} mode.`);
-});
+/**
+ * Start server if it's in production or dev mode
+ * In 'test' mode, the server is started after 
+ * setup the collections by bootstrapCollections 
+ * function.
+ */ 
+if(startUpMode === 'PRODUCTION' || startUpMode === 'DEV') {
+	app.listen(config.SERVER_PORT, function() {
+		console.log(`Express started on port ${port}, on ${startUpMode} mode.`);
+	});
+}

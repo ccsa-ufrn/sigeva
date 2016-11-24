@@ -1,13 +1,10 @@
 # User
-
 Representa a principal entidade do sistema. 
 
 ## GET /user 
-
 Retorna usuários do sistema.
 
 ### Queries
-
 Query | Descrição | Valores
 -----------|-----------|-----------
 **pag:** number | Indica a página para retorno de usuários | Valores a partir de **1**.<br>Ex.: pag=10.<br>**default:** (pag=1)
@@ -18,13 +15,24 @@ Query | Descrição | Valores
 **active:** boolean | Indica se vai retornar somente usuários ativos ou também os inativos | true<br>false<br>**Default:** (true) 
 **order:** string | Indica o um campo definido em {field} que será utilizado para ordernar, e o tipo de ordenação | {field}(asc)<br>**ex:**<br>name(asc)<br>name(desc)<br>**Default:** (name(asc)) 
 
-### Permissões (Em desenvolvimento)
+### Parâmetros
+Não permite parâmetros
 
-- É **necessário** estar autenticado para realizar essa requisição.
+### Permissões
+- É necessário estar autenticado para realizar essa requisição.
 
-### Repostas
+### Respostas
+O resultado da requisição:
 
-(Em construção)
+~~~
+{
+    "status": "success|error",
+    "msg": "invalid credentials",
+    "errorcode": 1,
+    "data": [],
+    "count": number
+}
+~~~
 
 ## GET /user/:id
 
@@ -35,15 +43,26 @@ Parâmetros | Descrição | Valores
 -----------|-----------|-----------
 **fields:** string | Indica quais campos devem ser retornados da consulta | Os valores possíveis são: <br>_id<br>name<br>mail<br>photo<br>phone<br>identifier_doc<br>institution<br>country<br>lattes_url<br>linkedin_url<br>type<br>active<br>**default:** (_id, name, mail)
 
-### Permissões (Em desenvolvimento)
+### Parâmetros
+Não permite parâmetros
 
-- É **necessário** estar autenticado para realizar essa requisição.
+### Permissões
+- É necessário estar autenticado para realizar essa requisição.
 
 ### Repostas
+O resultado da requisição:
 
-(Em construção)
+~~~
+{
+    "status": "success|error",
+    "msg": "invalid credentials",
+    "errorcode": 1,
+    "data": [],
+    "count": number
+}
+~~~
 
-### Sub entidades
+### Subentidades
 
 Entidade | Descrição
 -----------|-----------

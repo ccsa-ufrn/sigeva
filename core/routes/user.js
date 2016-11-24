@@ -7,7 +7,7 @@ module.exports = function(router, private_route, mongoose, config, User, utils, 
 	 * TO DO:
 	 *  - Parameters limitation needs to be specified.
 	 */
-	router.get('/user', function(req, res) {
+	router.get('/user', private_route, function(req, res) {
 
 		/**
 		 * Parameter: qtt

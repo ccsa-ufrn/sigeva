@@ -20,6 +20,7 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
+    "csurf": "^1.9.0",
     "express": "^4.14.0",
     "helmet": "^2.1.1",
     "jsonwebtoken": "^7.1.9",

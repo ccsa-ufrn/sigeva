@@ -31,7 +31,7 @@ router.all('*', function(req, res, next) {
 
 });
 
-let private_route = function(req, res) {
+let private_route = function(req, res, next) {
 
     if(req.user === undefined) {
         res.json({status: 'error', errorcode: 1, msg: 'invalid credentials'});
