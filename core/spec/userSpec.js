@@ -172,6 +172,70 @@ describe("An authenticated user", function() {
             }
         );
 
-    })
+    });
+
+    it(`should retrieve all active and disabled users`, function(done){ 
+        
+        request
+        .get({
+                url: config.HOST+'/user?onlyActive=false',
+                headers: {
+                    'Authorization' : jwt
+                }
+            },
+            function(err, res, body) {
+                let obj = JSON.parse(body);
+
+                expect(obj.data).not.toBe(undefined);
+                expect(obj.data.length).toBe(10);
+
+                done();
+            }
+        );
+
+    });
+
+    it(`should try to retrieve only 3 users, and he'll achieve`, function(done){ 
+        
+        request
+        .get({
+                url: config.HOST+'/user?qtt=3',
+                headers: {
+                    'Authorization' : jwt
+                }
+            },
+            function(err, res, body) {
+                let obj = JSON.parse(body);
+
+                expect(obj.data).not.toBe(undefined);
+                expect(obj.data.length).toBe(3);
+
+                done();
+            }
+        );
+
+    });
+
+    it(`should try to retrieve only 2 users on second page, 
+        and he'll achieve`, function(done){ 
+        
+        request
+        .get({
+                url: config.HOST+'/user?pag=2&qtt=2',
+                headers: {
+                    'Authorization' : jwt
+                }
+            },
+            function(err, res, body) {
+                let obj = JSON.parse(body);
+
+                expect(obj.data).not.toBe(undefined);
+                expect(obj.data.length).toBe(2);
+
+                done();
+            }
+        );
+
+    });
 
 });

@@ -12,7 +12,7 @@ Query | Descrição | Valores
 **search:** string | Indica um valor que deve estar contido no campo definido $searchBy dos resultados de retorno | Qualquer valor.<br>**default:** (retorna todos os valores)
 **searchBy:** string | Indica qual campo deve ser realizada a busca quando $search estiver definido | Os valores possíveis são:<br>name<br>mail<br>phone<br>identifier_doc<br>institution<br>country<br>type<br>**default:** (name)
 **fields:** string | Indica quais campos devem ser retornados da consulta | Os valores possíveis são: <br>_id<br>name<br>mail<br>photo<br>phone<br>identifier_doc<br>institution<br>country<br>lattes_url<br>linkedin_url<br>type<br>active<br>**default:** (_id, name, mail)
-**active:** boolean | Indica se vai retornar somente usuários ativos ou também os inativos | true<br>false<br>**Default:** (true) 
+**onlyActive:** boolean | Indica se vai retornar somente usuários ativos ou também os inativos | true<br>false<br>**Default:** (true) 
 **order:** string | Indica o um campo definido em {field} que será utilizado para ordernar, e o tipo de ordenação | {field}(asc)<br>**ex:**<br>name(asc)<br>name(desc)<br>**Default:** (name(asc)) 
 
 ### Parâmetros
@@ -69,7 +69,7 @@ Entidade | Descrição
 [Inscription](https://github.com/ccsa-ufrn/seminario/tree/master/core/docs/Inscription.br.md) | Retorna as inscrições do usuário
 [Event](https://github.com/ccsa-ufrn/seminario/tree/master/core/docs/Event.br.md) | Retorna eventos que o usuário está inscrito
 
-### POST /user
+## POST /user
 
 Insere um novo usuário. Campos com * são requeridos.
 (Vai ser necessário criar um token temporário para a criação de um novo usuário, para que ninguém possa criar diretamento

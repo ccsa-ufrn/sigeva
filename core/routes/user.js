@@ -23,27 +23,31 @@ module.exports = function(router, private_route, mongoose, config, User, utils, 
 
 		/**
 		 * Parameter: fields
-		 * Description: get fields that will be returned by query. (default = _id name [mail])
+		 * Description: get fields that will be returned by query. 
+		 * (default = _id name [mail])
 		 */
 		let fields = req.query.fields;
 
 		/**
 		 * Parameter: search
-		 * Description: search for results that has $search in $searchBy field
+		 * Description: search for results that has $search in 
+		 * $searchBy field
 		 */
 		let search = req.query.search;
 
 		/**
 		 * Parameter: searchBy
-		 * Description: it indicates the field that will be searched with $search value (default = name)
+		 * Description: it indicates the field that will be searched 
+		 * with $search value (default = name)
 		 */
 		let searchBy = req.query.searchBy;
 
 		/**
-		 * Parameter: active
-		 * Description: if it's true, return just actives users, otherwise return all (default = true)
+		 * Parameter: onlyActive
+		 * Description: It indicates if it'll return all users 
+		 * (onlyActive = false) or only active users (onlyActive = true)
 		 */
-		let active = req.query.active;
+		let onlyActive = req.query.onlyActive;
 
 		/**
 		 * Filtering parameters
@@ -51,7 +55,7 @@ module.exports = function(router, private_route, mongoose, config, User, utils, 
 		let blacklist_fields = [];
 		let default_fields = '_id name mail';
 
-		let find;
+		let find = {};
 		let find_search = {
 			'$regex': search,
 			$options: 'i'
@@ -68,17 +72,23 @@ module.exports = function(router, private_route, mongoose, config, User, utils, 
 
 		fields ? fields = utils.getFields(fields, blacklist_fields) : fields = default_fields;
 		fields === '' ? fields = default_fields : (fields = fields);
-		active ? (active = active) : active = 'true';
+		onlyActive ? (onlyActive = onlyActive === 'true') : onlyActive = 'true' === 'true';
 		qtt ? qtt = parseInt(qtt) : qtt = 10;
 		pag ? pag = parseInt(pag) : pag = 1;
 
+		onlyActive ? find['active'] = true : false;
+
+		console.log(find);
+
 		/** Erro nessa linha aqui em baixo */
-		search ? ( 
+		/*search ? ( 
 			utils.getFields(searchBy, blacklist_searchBy) 
-			? find = {[searchBy] : find_search} 
-			: find = {name: find_search} 
+			? find[searchBy] = find_search
+			: find[name] = find_search 
 		) 
-		: find = null;
+		: find = null;*/		
+
+		
 
 		/**
 		 * Executing query
