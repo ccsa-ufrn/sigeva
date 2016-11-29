@@ -2,19 +2,20 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var helmet = require('helmet');
 var compression = require('compression');
-var routes = require('./routes/routes');
 var app = express();
 
 app.disable('x-powered-by');
 app.enable('view cache');
 
-app.set('views', './views');
+app.set('views', './');
 app.set('view engine', 'pug');
 
 // Setting static content
 app.use('/public', express.static('app'));
 app.use('/public/js', express.static('app/ts'));
 app.use('/public', express.static('node_modules'));
+app.use('/public', express.static('systemjs'));
+app.use('/public/templates', express.static('templates'));
 
 // Setting body parser
 app.use(bodyParser.urlencoded({extended: false}));
@@ -27,7 +28,9 @@ app.use(helmet());
 app.use(compression());
 
 // Setting routes
-app.use('/', routes)
+app.get('*', function(req, res) {
+	res.render('index');
+});
 
 // Starting server
 app.listen(8080, function() {

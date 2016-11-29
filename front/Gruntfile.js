@@ -6,8 +6,12 @@ module.exports = function (grunt) {
 
         watch: {
             ts: {
-                files: 'app/ts/source/**/**.ts',
+                files: 'source/ts/**/**.ts',
                 tasks: ['ts:default']
+            },
+            scss: {
+                files: 'source/scss/**/**.scss',
+                tasks: ['sass:default']
             }
         },
 
@@ -23,8 +27,23 @@ module.exports = function (grunt) {
                     removeComments: false,
                     noImplicitAny: false
                 },
-                src: ['app/ts/source/**/**.ts'],
+                src: ['source/ts/**/**.ts'],
                 outDir: 'app/ts'
+            }
+        },
+
+        sass: {
+            default: {
+                options: {
+                    style: 'compressed'
+                },
+                files: [{
+                    expand: true,
+                    cwd: 'source/scss',
+                    src: ['**.scss'],
+                    dest: 'app/css',
+                    ext: '.css'
+                }]
             }
         }
 
@@ -32,6 +51,9 @@ module.exports = function (grunt) {
 
     // Load plugins
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks("grunt-ts");
+
+    grunt.registerTask('default', ['ts:default','sass:default']);
 
 };

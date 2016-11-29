@@ -14,7 +14,11 @@ let AppComponent = class AppComponent {
 AppComponent = __decorate([
     core_1.Component({
         selector: 'app',
-        template: 'Welcome to the site!'
+        styleUrls: [],
+        template: `
+        <h1>Olá mundo</h1>
+        <router-outlet></router-outlet>
+    `
     }), 
     __metadata('design:paramtypes', [])
 ], AppComponent);
