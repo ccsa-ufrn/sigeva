@@ -28,7 +28,7 @@ module.exports = function (grunt) {
                     noImplicitAny: false
                 },
                 src: ['source/ts/**/**.ts'],
-                outDir: 'app/ts'
+                outDir: 'app/js'
             }
         },
 

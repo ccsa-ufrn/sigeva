@@ -12,7 +12,8 @@ app.set('view engine', 'pug');
 
 // Setting static content
 app.use('/public', express.static('app'));
-app.use('/public/js', express.static('app/ts'));
+app.use('/public/files', express.static('files'));
+app.use('/public/js', express.static('app/js'));
 app.use('/public', express.static('node_modules'));
 app.use('/public', express.static('systemjs'));
 app.use('/public/templates', express.static('templates'));
@@ -27,12 +28,20 @@ app.use(helmet());
 // Setting compression - G-Zip
 app.use(compression());
 
-// Setting routes
+/**
+ * Routes definitions
+ */
+app.get('/dashboard*', function(req, res) {
+	res.render('dashboard');
+});
+
 app.get('*', function(req, res) {
 	res.render('index');
 });
 
-// Starting server
+/**
+ * Starting the server
+ */
 app.listen(8080, function() {
 	console.log('Front-end started on port 8080.');
 });
