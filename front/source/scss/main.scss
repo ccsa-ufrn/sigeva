@@ -1,7 +1,31 @@
 body {
+    padding-top: 80px;
 }
 
 .bs-organizer {
     border: 1px solid #d9d9d9;
     border-radius: 4px;
+
+    header {
+        background-color: #0275d8;
+
+        h1 {
+            color: white;
+            margin: 0px;
+            padding: 0px;
+            font-size: 22px;
+        }
+    }
+}
+
+.bs-global-padding {
+    padding: 10px;
+}
+
+.bs-global-margin-bottom {
+    margin-bottom: 10px;
+}
+
+.bs-fix-bottom {
+    padding-bottom: 0px;
 }
