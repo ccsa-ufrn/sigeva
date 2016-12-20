@@ -1,29 +1,32 @@
-# Sistema de Gestão de Eventos Acadêmicos
+# Sistema de Gestão de Eventos Acadêmicos (sigeva)
 ![GPL](https://img.shields.io/badge/license-GPL-blue.svg)
 
 Sistema de gestão de eventos acadêmicos que suporta o Seminário de Pesquisa do Centro de Ciências Sociais Aplicadas ([CCSA](https://ccsa.ufrn.br)) da UFRN.
 
 Para obter informações sobre instalação, configuração e uso, acesse a [wiki do projeto](https://github.com/ccsa-ufrn/seminario/wiki).
 
-## [seminario/core](https://github.com/ccsa-ufrn/seminario/tree/master/core)
-Aplicação Express.js/Node.js de back-end do sistema.
+## [sigeva/api](https://github.com/ccsa-ufrn/sigeva-api)
+API do Sistema de Gestão de Eventos Acadêmicos.
 
-## [seminario/front](https://github.com/ccsa-ufrn/seminario/tree/master/front)
-Aplicação ExpressJs/Angular2Js de front-end do sistema.
+## [sigeva/web](https://github.com/ccsa-ufrn/sigeva-web)
+Versão WEB do Sistema de Gestão de Eventos Acadêmicos.
 
-## [seminario/wiki](https://github.com/ccsa-ufrn/seminario/wiki) :books:
+## sigeva/mobile
+(futuro)
+
+## [sigeva/wiki](https://github.com/ccsa-ufrn/seminario/wiki) :books:
 Documentação para utilizadores do projeto.
 
-## [seminario/docs](https://github.com/ccsa-ufrn/seminario/tree/master/docs) :books:
+## [sigeva/docs](https://github.com/ccsa-ufrn/seminario/tree/master/docs) :books:
 Documentação para desenvolvedores do projeto.
 
-## Como contribuir :checkered_flag:
+## Como Contribuir :checkered_flag:
 Para enviar contribuições no código-fonte você deve:
 - Abrir um issue, caso a sua submissão resolva um bug, ou necessite de alguma discussão.
 - Seguir a GitHub workflow, detalhada abaixo.
 - Seguir os padrões de desenvolvimento, detalhados mais a seguir.
 
-### GitHub workflow
+### GitHub Workflow
 1. 'Clone' o repositório do projeto
 - Crie uma 'branch' para o seu bug/release (deve possuir o ID da issue aberta):
 ~~~
@@ -41,7 +44,7 @@ git push origin new-issue-88888
 ~~~
 - Envie um 'pull request' no GitHub.
 
-### Padrões de desenvolvimento
+### Padrão de Desenvolvimento
 
 O padrão de desenvolvimento do Sistema de Gestão de Eventos Acadêmicos está sendo feito com a utilização da ferramenta [EditorConfig](http://editorconfig.org/), acesse o site e veja como instalar o plugin do EditorConfig no seu editor de código preferido. Além disso, veja o arquivo .editorconfig para saber quais os padrões de codificação.
 
