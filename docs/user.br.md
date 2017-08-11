@@ -1,16 +1,15 @@
 # Usuários
 
 Os **usuários** são as entidades básicas do sistema. Eles vão realizar, praticamente,
-todas as ações disponíveis em cada **módulo** do programa. Em uma visão mais global,
+todas as ações disponíveis em **módulos** do programa aos quais ele tem acesso. Em uma visão mais global,
 os **usuários** podem ser de dois tipos: **administrador do sistema** ou **comum**.
 
 <p align="center">
 	<img src="http://i.imgur.com/dOcOSQM.png" >
 </p>
 
-Os **administradores do sistema** são responsáveis por gerenciar [**eventos**][evento] e outros **usuários** 
-em *escopo global*. Todos os **usuários**, ao serem criados, são do tipo **comum**, e qualquer **usuário/comum** 
-pode se tornar **administrador do sistema**. Além disso, o tipo **comum** é um subconjunto 
+Os **administradores do sistema** são responsáveis por gerenciar [**eventos**][evento] e outros **usuários** em *escopo global*. Todos os **usuários**, ao serem criados, são do tipo **comum**, e qualquer **usuário/comum**
+pode se tornar **administrador do sistema**. Além disso, o tipo **comum** é um subconjunto
 do **administrador do sistema**.
 
 <p align="center">
@@ -24,19 +23,39 @@ Campo | Descrição | Exemplo
 photo | Foto do usuário | '/web/public/foto.png'
 name | O nome completo do usuário | 'João Alves Tavares'
 mail | O email principal do usuário (Campo único)| 'joaoemail@ccsa.ufrn.br'
-phone | O telefone principal do usuário | '+55 84 996369661'
 password | A senha definida pelo usuário para ter acesso à conta. Criptografada utilizado **bcrypt** e **salt**. | -
+type[] | Indica quais os tipos o usuário assume nos sistema (pode possuir até dois valores, mas nunca vazio) | [administrador, comum]
+active | Indica se um usuário está ativo ou não | true or false
+fields | Campos de informações adicionais que podem ser definidas pelo administrador | [phone, country]
+events[] | Referência para eventos que o usuário está associado | [ObjectID, ObjectID]
+
+Estas informações são informações principais, que deve obrigatóriamente serem informadas pelo usuário (ou deduzidas pelo sistema).
+
+O campo fields (distinado à informações adicionais) representa quais campos o sistema deve receber do usuário além das informações principais.
+
+:exclamation: NOTE:  O campo fields se aplica somente a usuários com o tipo comum. Ou seja, os **administradores do sistema** não necessitam de informações complementares; mas se possuir, também, o tipo **comum** as informações complementares são aplicadas.
+
+:exclamation: NOTE: O campo events também não se aplica a usuários que possuem apenas o tipo **administrador do sistema**, já que este não tem associações com eventos, sim com o sistema.
+
+Exemplos de informações adicionais:
+
+Campo | Descrição | Exemplo
+------| --------- | --------
+phone | O telefone principal do usuário | '+55 84 996369661'
 identifier_doc | Um documento identificador e único por **country**, no Brasil poderia ser o CPF | '04787998745'
 institution | A instituição de ensino caso o usuário seja da categoria **Discente** ou **Docente** | 'UFRN'
 country | O país de origem do usuário | 'Brasil'
 lattes_url | O URL para o Lattes do usuário | 'http://lattes.cnpq.br/002011647033'
 linkedin_url | O URL para o LinkedIn do usuário | 'https://br.linkedin.com/in/joao-alves-00b034a'
-type | Indica se o usuário é do tipo **administrador** ou **comum** | 'administrador' ou 'comum'
-active | Indica se um usuário está ativo ou não | true or false
 
 ## Usuários administrador do sistema
 
-Os usuários do tipo **administrador do sistema** têm a cacidade de **gerenciar eventos**, **gerenciar usuários** e **transformar usuário em 'administrador do sistema'**. Para acessar essas *funcionalidades*, haverá uma *área administrativa* somente para esses tipos de usuários.
+Os usuários do tipo **administrador do sistema** têm a capacidade de:
+- Criar/Gerenciar/Remover eventos
+	- Configurar tipos
+	- Gerenciar plugins agregados
+- Adicionar/Gerenciar/Remover usuários
+	- Tornar usuário administrador
 
 A instalação do sistema já configura um usuário **administrador do sistema**. Outros **administradores do sistema** podem ser cadastrados a partir dele. O sistema SÓ permite 'remover' um **administrador do sistema** se houver mais de um **adminsitrador do sistema** ativos.
 
@@ -46,15 +65,15 @@ Um conjunto de capacidades primárias: **criar**, **visualizar**, **alterar** e 
 
 #### Atribuir papel 'administrador do evento' a um usuário em um evento
 
-Como definido na documentação de [**Eventos**][evento], somente um **administrador do evento** tem a capacidade de gerenciar os **módulos** e as **configurações** do evento em questão.
+Como definido na documentação de [**Eventos**][evento], o **administrador do sistema** ou um **administrador do evento** têm a capacidade de gerenciar os **plugins** e as **configurações** do evento em questão.
 
-O **administrador do evento** é o usuário de maior poder em um evento, pois contempla todas as **capacidades** que um *usuário comum* pode ter.
+O **administrador do evento** é o usuário de maior poder em um evento, e tabém contempla todas as **capacidades** que um *usuário comum* pode ter.
 
 Somente um **administrador do sistema** pode atribuir o papel **administrador do evento** para *usuários*.
 
 ### Gerenciar usuários
 
-Um conjunto de capacidades primárias: **criar**, **visualizar**, **alterar** e **desativar** usuários.
+Um conjunto de capacidades primárias: **criar**, **visualizar**, **alterar** e **desativar** usuários. E outras secundárias: **Utilizar o sistema como um usuário**
 
 ### Transformar usuário em 'administrador do sistema'
 
@@ -63,6 +82,12 @@ Qualquer **usuário** cadastrado no sistema pode ser transformado em **administr
 ## Usuários comuns
 
 Os **usuários comuns** sempre terão uma relação com 0 ou mais [**eventos**][evento] através de [**papéis**][papel].
+
+Os usuários deste tipo têm as capacidades de:
+- Realizar inscrição em evento
+- Editar informações pessoais
+- Realizar ações definidas por plugins com base no papel
+- Acessar menus definidos por plugins com base no papel
 
 [usuario]:<https://github.com/ccsa-ufrn/seminario/blob/master/docs/usuario.br.md>
 [evento]:<https://github.com/ccsa-ufrn/seminario/blob/master/docs/evento.br.md>
