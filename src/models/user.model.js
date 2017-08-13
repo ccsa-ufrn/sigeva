@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose'
+import mongoose, {Schema} from 'mongoose';
 
 /* @@ User Model
  *
@@ -12,7 +12,7 @@ import * as mongoose from 'mongoose'
  * Read the docs to have a full description: /docs/user.br.md (in portuguese)
  */
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
 	name: { // User's full name
 		type: String,
 		required: true
@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
 	emailConfirmation: { // tells if the user's mail was confirmed
 		type: Boolean,
 		default: false
-	}
+	},
 	password: { // Encrypted user's password
 		type: String,
 		required: true
@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now
 	}
-})
+});
 
-const userModel = mongoose.model('User', userSchema)
-export default userModel
+const userModel = mongoose.model('User', userSchema);
+module.exports = userModel;
