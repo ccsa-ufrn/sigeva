@@ -23,7 +23,8 @@
   "homepage": "https://github.com/ccsa-ufrn/sigeva#readme",
   "dependencies": {
     "express": "^4.15.3",
-    "mongoose": "^4.11.6"
+    "mongoose": "^4.11.6",
+    "seneca": "^3.4.2"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
