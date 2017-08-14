@@ -7,6 +7,11 @@ Sistema que suporta o evento Seminário de Pesquisa do Centro de Ciências Socia
 
 Para obter informações sobre instalação, configuração e uso, acesse a [wiki do projeto](https://github.com/ccsa-ufrn/seminario/wiki).
 
+### Requisitos de sistema
+- Node.js >= v7.0.0
+- NPM >= 3.10.8
+- MongoDB >= 3.2.11
+
 ## [sigeva/wiki](https://github.com/ccsa-ufrn/seminario/wiki) :books:
 Documentação para utilizadores do projeto.
 
