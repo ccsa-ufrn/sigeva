@@ -24,6 +24,8 @@
   "dependencies": {
     "express": "^4.15.3",
     "mongoose": "^4.11.6",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
     "seneca": "^3.4.2"
   },
   "devDependencies": {
