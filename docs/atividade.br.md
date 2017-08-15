@@ -21,9 +21,9 @@ Caso seja necessário, o administrador pode determinar que no momento da submiss
 
 Após a definição do tipo, devem ser selecionados quais papéis possuem quais permissões com relação aquele tipo de atividade.
 
-<center>
-	<img src="http://i.imgur.com/owp7lic.jpg">
-</center>
+<p align="center">
+<img src="http://i.imgur.com/owp7lic.jpg">
+</p>
 
 - **Permissão de oferta**: Garante o poder de submeter uma proposta de oferta da atividade. (Ex.: Minicurso=Docente|Técnico|Disc.Pos.; Conferência=Coord. Ev.)
 - **Permissão de adoção**: Garante o poder de integrar o usuário à uma proposta de oferta da atividade. (Ex.: Minicurso=Docente; Oficina=Docente;)
