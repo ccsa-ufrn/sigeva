@@ -12,9 +12,27 @@ Os **administradores do sistema** são responsáveis por gerenciar [**eventos**]
 pode se tornar **administrador do sistema**. Além disso, o tipo **comum** é um subconjunto
 do **administrador do sistema**.
 
+### Escopos e permissões
+
 <p align="center">
 	<img src="http://i.imgur.com/PbDZtRm.jpg">
 </p>
+
+Existem dois tipos de escopos no SIGEVA que o usuário possui: o **escopo de sistema** que relaciona o usuário com os recursos administrativos da plataforma; e o **escopo de evento**, que relaciona (para cada evento que o usuário participa) a forma de relacionamento com os recursos funcionais do evento.
+
+O primeiro usuário cadastrado no SIGEVA, o **Usuário Mestre** possui o tipo **administrador**, o que lhe garante todas as prerrogativas perante a plataforma SIGEVA; à este usuário pode ser, também, atribuído o tipo **comum**, garantindo-lhe a possibilidade de interagir (inscrever, submeter, etc.) com eventos.
+
+:exclamation: NOTE: O tipo **usuário comum** é necessário para fazer interações funcionais com eventos.
+
+Usuários que se cadastram pelo formulário comum de ingresso no sistema são, por definição, usuários comuns. Quando estes usuários comuns começam a coordenar ou participar de eventos, entramos em uma nova perspectiva de visão do sistema e falamos sobre **escopo de evento**.
+
+No **escopo de evento** o **usuário comum** pode ter diferentes papéis (entenda papel como formas de interação com o evento), estes papéis podem ser dos tipos públicos ou privados.
+- O **papel público** é aquele que ao se inscrever no evento o usuário autodeclara (Por exemplo: Discente, Docente, Técnico Administrativo, Sem Vínculo Institucional); e
+- O **papel privado** é aquele que é concedido hierárquicamente à um usuário inscrito em um evento por um competente. (Por exemplo: Coordenador de Evento, Coordenador de GT, Avaliador)
+
+:exclamation: NOTE: Em um evento o usuário deve possuir somente um papel público (ou seja, os papéis publicos devem ser excludentes entre si) e nenhum ou muitos papéis privados.
+
+### Propriedades
 
 Todos os usuários são definidos pelo seguinte conjunto de informações:
 
