@@ -13,7 +13,7 @@ pode se tornar **administrador do sistema**. Além disso, o tipo **comum** é um
 do **administrador do sistema**.
 
 <p align="center">
-	<img src="http://i.imgur.com/hVbto44.png">
+	<img src="http://i.imgur.com/PbDZtRm.jpg">
 </p>
 
 Todos os usuários são definidos pelo seguinte conjunto de informações:
