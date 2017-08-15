@@ -79,11 +79,9 @@ Os usuários do tipo **administrador do sistema** têm a capacidade de:
 
 A instalação do sistema já configura um usuário **administrador do sistema**. Outros **administradores do sistema** podem ser cadastrados a partir dele. O sistema SÓ permite 'remover' um **administrador do sistema** se houver mais de um **adminsitrador do sistema** ativos.
 
-### Gerenciar eventos
+- **Gerenciar eventos**
 
 Um conjunto de capacidades primárias: **criar**, **visualizar**, **alterar** e **desativar** eventos. E outras secundárias: **atribuir papel 'administrador do evento' a um usuário em um evento**.
-
-#### Atribuir papel 'administrador do evento' a um usuário em um evento
 
 Como definido na documentação de [**Eventos**][evento], o **administrador do sistema** ou um **administrador do evento** têm a capacidade de gerenciar os **plugins** e as **configurações** do evento em questão.
 
@@ -91,23 +89,23 @@ O **administrador do evento** é o usuário de maior poder em um evento, e tabé
 
 Somente um **administrador do sistema** pode atribuir o papel **administrador do evento** para *usuários*.
 
-### Gerenciar usuários
+- **Gerenciar usuários**
 
 Um conjunto de capacidades primárias: **criar**, **visualizar**, **alterar** e **desativar** usuários. E outras secundárias: **Utilizar o sistema como um usuário**
 
-### Transformar usuário em 'administrador do sistema'
+- **Transformar usuário em 'administrador do sistema'**
 
-Qualquer **usuário** cadastrado no sistema pode ser transformado em **administrador do sistema** por outro **administrador do sistema**.
+Qualquer **usuário** do tipo comum cadastrado no sistema pode ser transformado em **administrador do sistema** por outro **administrador do sistema**, através da adição do tipo **administrador do sistema**.
 
 ## Usuários comuns
 
-Os **usuários comuns** sempre terão uma relação com 0 ou mais [**eventos**][evento] através de [**papéis**][papel].
+Os **usuários comuns** sempre terão uma relação com 0 ou mais [**eventos**][evento] através de [**papéis**][papel] públicos ou privados.
 
 Os usuários deste tipo têm as capacidades de:
-- Realizar inscrição em evento
+- Realizar inscrição em evento (em que faz a declaração do papel público)
 - Editar informações pessoais
-- Realizar ações definidas por plugins com base no papel
-- Acessar menus definidos por plugins com base no papel
+- Realizar ações definidas por plugins com base no papel público/privado
+- Acessar menus definidos por plugins com base no papel público/privado
 
 [usuario]:<https://github.com/ccsa-ufrn/seminario/blob/master/docs/usuario.br.md>
 [evento]:<https://github.com/ccsa-ufrn/seminario/blob/master/docs/evento.br.md>
