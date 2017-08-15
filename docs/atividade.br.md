@@ -22,7 +22,7 @@ Caso seja necessário, o administrador pode determinar que no momento da submiss
 Após a definição do tipo, devem ser selecionados quais papéis possuem quais permissões com relação aquele tipo de atividade.
 
 <p align="center">
-<img src="http://i.imgur.com/owp7lic.jpg">
+<img src="http://i.imgur.com/MARleqh.jpg">
 </p>
 
 - **Permissão de oferta**: Garante o poder de submeter uma proposta de oferta da atividade. (Ex.: Minicurso=Docente|Técnico|Disc.Pos.; Conferência=Coord. Ev.)
