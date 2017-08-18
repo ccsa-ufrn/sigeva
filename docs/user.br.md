@@ -38,16 +38,16 @@ Todos os usuários são definidos pelo seguinte conjunto de informações:
 
 Campo | Descrição | Exemplo
 ------| --------- | --------
-name | O nome completo do usuário | 'João Alves Tavares'
-mail | O email principal do usuário (Campo único)| 'joaoemail@ccsa.ufrn.br'
-emailConfirmation | Define se o e-mail foi confirmado | false
-password | A senha definida pelo usuário para ter acesso à conta. Criptografada utilizado **bcrypt** e **salt**. | -
-photo | Foto do usuário | '/web/public/foto.png'
-ofType[] | Indica quais os tipos o usuário assume nos sistema (pode possuir até dois valores, mas nunca vazio) | [administrador, comum]
-ofField[] | Campos de informações adicionais que podem ser definidas pelo administrador | [phone, country]
-events[] | Referência para eventos que o usuário está associado | [ObjectID, ObjectID]
-active | Indica se um usuário está ativo ou não | true or false
-createdAt | Data em que o usuário foi cadastrado | '2017-08-12 22:01:12'
+name:String | O nome completo do usuário | 'João Alves Tavares':String
+mail:String | O email principal do usuário (Campo único)| 'joaoemail@ccsa.ufrn.br':String
+emailConfirmation:Boolean | Define se o e-mail foi confirmado | false:Boolean
+password:String | A senha definida pelo usuário para ter acesso à conta. Criptografada utilizado **bcrypt** e **salt**. | 'f$4271gaf1527jls%6':String
+photo:File | Foto do usuário | photo:File
+ofType[]:String | Indica quais os tipos o usuário assume nos sistema (pode possuir até dois valores, mas nunca vazio) | ['administrator', 'common']
+ofField[]:Field | Campos de informações adicionais que podem ser definidas pelo administrador | [Field('Telefone', 'phone', String)]
+ofEvent[]:ObjectID | Referência para eventos que o usuário está associado | [ObjectID('2ffd52652f34'), ObjectID('3f2515f3h2g4')]
+active:Boolean | Indica se um usuário está ativo ou não | true
+createdAt:Date | Data em que o usuário foi cadastrado | '2017-08-12 22:01:12'
 
 Estas informações são informações principais, que deve obrigatóriamente serem informadas pelo usuário (ou deduzidas pelo sistema).
 
