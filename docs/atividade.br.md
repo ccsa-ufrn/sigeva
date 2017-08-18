@@ -33,7 +33,7 @@ Campo | Descrição | Exemplo
 name:String | O nome do tipo de atividade | 'Minicurso'
 slugName:String | Nome em formato URL e human-readable | 'mesa-redonda'
 description | Descrição do tipo de atividade | 'Oficinas de colonização exoplanetária'
-ofBidRequiredFiles[]:FileRequirement | Arquivos solicitados na submissão de proposta | [FileRequirement('Conteúdo programático', '.pdf | .doc | .odt')]
+ofBidRequiredFiles[]:FileRequirement | Arquivos solicitados na submissão de proposta | [FileRequirement('Conteúdo programático', '.pdf / .doc / .odt')]
 ofBidRequiredFields[]:Field | Dados requeridos na submissão de proposta | [Field('Número de vagas', 'vacants', Number)]
 bidPeriod:DateRange | Período para submissão de propostas | DataRange('2017-08-18 09:53', '2017-08-20 09:53')
 enrollmentPeriod:DateRange | Período para efetuar inscrições | DataRange('2017-08-18 09:53', '2017-08-20 09:53')
