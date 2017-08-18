@@ -1,6 +1,6 @@
 # Atividades
 
-Uma **atividade** associada à um evento é uma entidade controlada por módulo (de nome **ActivityModule**). A definição de uma atividade é: processo que ocorre durante um horário, data e local e requer (em alguns casos) a prévia inscrição (em alguns casos) de acordo com o número total de vagas ofertadas.
+Uma **atividade** associada a um evento é uma entidade controlada por módulo (de nome **ActivityModule**). A definição de uma atividade é: processo que ocorre durante um horário, data e local e requer a prévia inscrição de acordo com o número total de vagas ofertadas.
 
 Pelo fato de ser um módulo, menus e permissões garantidas a **usuários comuns** às atividades são definidas com base em seus devidos papéis. Esta documentação conta com casos de uso considerando o Seminário do CCSA.
 
@@ -14,7 +14,6 @@ O tipo de atividade pode ser criado pelo **administrador do sistema** nas config
 - Período para submissão de propostas (Datas inicial e final)
 - Período para inscrição em atividades (Datas inicial e final)
 - Data para disponibilização de certificados
-- Quantidade máxima de atividades deste tipo um usuário pode participar
 - Solicitar pagamento para inscrição na atividade? (Sim ou Não)
 
 Permissões aplicáveis ao propositor da atividade
@@ -24,6 +23,25 @@ Caso seja necessário, o administrador pode determinar que no momento da submiss
 
 TODO: Informações sobre quantidades de horas que uma atividade possui (é definido por proposta ou todas atividades possuem a mesma quantidade?)
 TODO: Perceber onde se encaixa a informação de que o inscrito deve comparecer a 2 de 3 encontros da atividade (caso existam 3 encontros)
+
+### Propriedades
+
+O tipo de uma atividade é definido de acordo com as seguintes propriedades:
+
+Campo | Descrição | Exemplo
+------| --------- | -------
+name:String | O nome do tipo de atividade | 'Minicurso'
+slugName:String | Nome em formato URL e human-readable | 'mesa-redonda'
+description | Descrição do tipo de atividade | 'Oficinas de colonização exoplanetária'
+ofBidRequiredFiles[]:FileRequirement | Arquivos solicitados na submissão de proposta | [FileRequirement('Conteúdo programático', '.pdf|.doc|.odt')]
+ofBidRequiredFields[]:Field | Dados requeridos na submissão de proposta | [Field('Número de vagas', 'vacants', Number)]
+bidPeriod:DateRange | Período para submissão de propostas | DataRange('2017-08-18 09:53', '2017-08-20 09:53')
+enrollmentPeriod:DateRange | Período para efetuar inscrições | DataRange('2017-08-18 09:53', '2017-08-20 09:53')
+ofEnrollmentRule[]:Rule | Regras para efetuar inscrição em uma atividade | [Rule('payment_required', 'Pagamento da inscrição necessário', null), Rule('')]
+active:Boolean | Indica se uma atividade está ativa ou não | true
+createdAt:Date | Data em que a atividade foi criada | '2017-08-18 09:53'
+
+DISCUTIR: `ofBidRequiredFiles` e `ofBidRequiredFields` podem ser mesclados e ter o tipo Mixed? Como deve ficar o tipo Permission?
 
 ### Permissões
 
