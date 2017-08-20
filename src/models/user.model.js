@@ -1,5 +1,4 @@
 import mongoose, {Schema} from 'mongoose';
-import {fieldSchema} from './field.model.js';
 
 /* @@ User Model
  *
@@ -14,6 +13,7 @@ import {fieldSchema} from './field.model.js';
  * @ Log
  * Maradona Morais '2017-08-13 17:06': First definition
  * Maradona Morais '2017-08-20 00:23': Create multiples exports (both, schema and model) + Field subdocument support
+ * Maradona Morais '2017-08-20 14:15': Remove field with current definition, it is a definition for FieldRequirement
  */
 
 const userSchema = new Schema({
@@ -38,7 +38,7 @@ const userSchema = new Schema({
 	photo: String, // path to user's profile photograph
 	ofTypes: [String], // types of user: Administrator, Common or both.
 	// ofFields uses subdocs Mongoose's feature: http://mongoosejs.com/docs/subdocs.html
-	ofFields: [fieldSchema], // Array of fields that can be defined by a administrator
+	ofFields: [], // Array of fields that can be defined by a administrator TODO: Link with field
 	ofEvents: [Schema.Types.ObjectId], // Array of references to events that the user is enrolled in
 	active: { // tells if the account was desactivated
 		type: Boolean,

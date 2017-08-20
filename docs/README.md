@@ -1,7 +1,7 @@
-# Sistema do Seminário de Pesquisa [Documentação em Construção]
+### Documentação Sigeva [em curso]
 
-O sistema é formado por duas grandes estruturas: **panel administrativo** e **painel de usuário**.
+**Diagrama de classes**
 
 <p align="center">
-    <img src="http://i.imgur.com/wAbs5VY.png" >
+    <img src="https://i.imgur.com/4W2sFJG.jpg" >
 </p>

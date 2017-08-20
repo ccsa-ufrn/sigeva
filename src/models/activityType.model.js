@@ -1,4 +1,5 @@
 import {Schema}, mongoose from 'mongoose';
+import {dateRangeSchema} from './dateRange.model';
 
 /* @@ Activity Type Model
  *
@@ -8,7 +9,8 @@ import {Schema}, mongoose from 'mongoose';
  * Mongoose Models documentation: http://mongoosejs.com/docs/models.html
  *
  * @ Log
- * Maradona Morais '2017-08-20 ': 
+ * Maradona Morais '2017-08-20 00:40': Start definition
+ * Maradona Morais '2017-08-20 14:34': Inserts fieldRequirement link + initial definition done
  */
 
 const activityTypeSchema = new Schema({
@@ -22,6 +24,21 @@ const activityTypeSchema = new Schema({
 	},
 	description: String, // Activity Type brief description
 	ofProposalRequiredFiles: [Schema.Types.Mixed], // Required files to make a proposal TODO: Create FileRequirement schema
-	ofProposalRequiredFields: [Field], // Required fields to a proposal 
+	ofProposalRequiredFields: [Schema.Types.ObjectId], // Required fields to make a proposal 
+	proposalPeriod: dateRangeSchema, // Date range to make a proposal
+	enrollmentPeriod: dateRangeSchema, // Date range to enroll a activity of this type
+	ofProposeRules: Schema.Types.Mixed, // Rules to make a proposal TODO: Create Rule schema
+	ofEnrollmentRules: Schema.Types.Mixed, // Rules to enroll a activity TODO: Create Rule schema
+	active: { // Tells if the instance is active
+		type: Boolean,
+		default: true
+	},
+	createdAt: { // Date of creation of the instance
+		type: Date,
+		default: Date.now
+	}
 });
 
+const activityTypeModel = mongoose.model('ActivityType', activityTypeSchema);
+export activityTypeSchema;
+export default activityTypeModel;
