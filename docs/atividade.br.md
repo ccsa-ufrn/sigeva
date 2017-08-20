@@ -33,15 +33,15 @@ Campo | Descrição | Exemplo
 name:String | O nome do tipo de atividade | 'Minicurso'
 slugName:String | Nome em formato URL e human-readable | 'mesa-redonda'
 description | Descrição do tipo de atividade | 'Oficinas de colonização exoplanetária'
-ofBidRequiredFiles[]:FileRequirement | Arquivos solicitados na submissão de proposta | [FileRequirement('Conteúdo programático', '.pdf / .doc / .odt')]
-ofBidRequiredFields[]:Field | Dados requeridos na submissão de proposta | [Field('Número de vagas', 'vacants', Number)]
-bidPeriod:DateRange | Período para submissão de propostas | DataRange('2017-08-18 09:53', '2017-08-20 09:53')
+ofProposalRequiredFiles[]:FileRequirement | Arquivos solicitados na submissão de proposta | [FileRequirement('Conteúdo programático', '.pdf / .doc / .odt')]
+ofProposalRequiredFields[]:Field | Dados requeridos na submissão de proposta | [Field('Número de vagas', 'vacants', Number)]
+proposalPeriod:DateRange | Período para submissão de propostas | DataRange('2017-08-18 09:53', '2017-08-20 09:53')
 enrollmentPeriod:DateRange | Período para efetuar inscrições | DataRange('2017-08-18 09:53', '2017-08-20 09:53')
 ofEnrollmentRule[]:Rule | Regras para efetuar inscrição em uma atividade | [Rule('payment_required', 'Pagamento da inscrição necessário', null), Rule('')]
 active:Boolean | Indica se uma atividade está ativa ou não | true
 createdAt:Date | Data em que a atividade foi criada | '2017-08-18 09:53'
 
-DISCUTIR: `ofBidRequiredFiles` e `ofBidRequiredFields` podem ser mesclados e ter o tipo Mixed? Como deve ficar o tipo Permission?
+DISCUTIR: `ofProposalRequiredFiles` e `ofProposalRequiredFields` podem ser mesclados e ter o tipo Mixed? Como deve ficar o tipo Permission?
 
 ### Permissões
 
