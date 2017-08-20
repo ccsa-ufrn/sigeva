@@ -37,7 +37,8 @@ ofProposalRequiredFiles[]:FileRequirement | Arquivos solicitados na submissão d
 ofProposalRequiredFields[]:Field | Dados requeridos na submissão de proposta | [Field('Número de vagas', 'vacants', Number)]
 proposalPeriod:DateRange | Período para submissão de propostas | DataRange('2017-08-18 09:53', '2017-08-20 09:53')
 enrollmentPeriod:DateRange | Período para efetuar inscrições | DataRange('2017-08-18 09:53', '2017-08-20 09:53')
-ofEnrollmentRule[]:Rule | Regras para efetuar inscrição em uma atividade | [Rule('payment_required', 'Pagamento da inscrição necessário', null), Rule('')]
+ofProposeRules[]: Rule | Regras para efetuar proposta de atividade | [Rule('payment_required', 'Pagamento da inscrição necessário', null)]
+ofEnrollmentRules[]:Rule | Regras para efetuar inscrição em uma atividade | [Rule('payment_required', 'Pagamento da inscrição necessário', null)]
 active:Boolean | Indica se uma atividade está ativa ou não | true
 createdAt:Date | Data em que a atividade foi criada | '2017-08-18 09:53'
 
