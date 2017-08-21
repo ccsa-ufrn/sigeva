@@ -14,6 +14,8 @@ creator:User | Administrador criador do evento | ObjectId('2383j3jk2jl3f3')
 ofRoles[]:Role | Papéis criados e definidos para o evento | [ObjectId('5dd526hfj4k6kh6j')]
 ofModules[]:Module | Módulos plugados ao evento | [Module()]
 ofSubevents[]:Subevent | Subeventos agregados | [Subevent(), Subevent()]
+active: Boolean | Informa se a instância está ativa | true
+createdAt: Date | Data de criação do objeto | '2018-08-20 12:20'
 
 ### Formas de Relacionamento
 O relacionamento entre um [**Usuário**][usuario] e um **Evento** é firmado através da existência de um [**Papel**][papel], que aponta quais os privilégios o usuário possuirá na participação daquele evento. Todo evento necessita ter no mínimo um relacionamento: um **coordenador de evento**.
