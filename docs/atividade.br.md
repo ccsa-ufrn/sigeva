@@ -116,3 +116,9 @@ A verificação da efetiva participação dos usuários em atividades nas quais 
 #### Certificação
 
 A certificação é feita para os inscritos nas atividades e também para os propositores das mesmas. A data para liberação dos certificados deve ser definida nas configurações dos tipos de atividades e, a partir desta data, deve aparecer o menu referente a certificação para os usuários.
+
+### Relacionamento entre entidades
+
+<p align="center">
+<img src="http://i.imgur.com/MARleqh.jpg">
+</p>
