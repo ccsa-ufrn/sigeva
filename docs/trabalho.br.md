@@ -48,6 +48,8 @@ active:Boolean | Indica se um trabalho está ativa ou não | true
 createdAt:Date | Data em que o trabalho foi submetido | '2017-08-18 09:53'
 userID: INT | ID do usuário que submeteu o trabalho | '157'
 ofUsers[]: String | Nome de todos usuários que estão envolvidos no trabalho | 'Maradona, Marconi, Thayrone, Noeli'
+ratedAt: date | Data na qual a atividade foi avaliada | '2017-10-20 10:52'
+ratedBy: String | Nome do coordenador de GT ou de evento que avaliou o trabalho | 'Noeli'
 
 ### Permissões
 
