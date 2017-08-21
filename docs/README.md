@@ -3,5 +3,5 @@
 **Diagrama de classes**
 
 <p align="center">
-    <img src="https://i.imgur.com/4W2sFJG.jpg" >
+    <img src="https://i.imgur.com/vqxuAr3.jpg" >
 </p>
