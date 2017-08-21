@@ -24,7 +24,7 @@ Caso seja necessário, o administrador pode determinar que no momento da submiss
 TODO: Informações sobre quantidades de horas que uma atividade possui (é definido por proposta ou todas atividades possuem a mesma quantidade?)
 TODO: Perceber onde se encaixa a informação de que o inscrito deve comparecer a 2 de 3 encontros da atividade (caso existam 3 encontros)
 
-### Propriedades
+### Propriedades de Tipo de Atividade
 
 O tipo de uma atividade é definido de acordo com as seguintes propriedades:
 
@@ -43,6 +43,22 @@ active:Boolean | Indica se uma atividade está ativa ou não | true
 createdAt:Date | Data em que a atividade foi criada | '2017-08-18 09:53'
 
 DISCUTIR: `ofProposalRequiredFiles` e `ofProposalRequiredFields` podem ser mesclados e ter o tipo Mixed? Como deve ficar o tipo Permission?
+
+### Propriedades de Atividade
+
+Uma submissão de atividade deve conter as seguintes propriedades:
+
+Campo | Descrição | Exemplo
+------|-----------|--------
+title: String | Título completo da atividade | "Introdução ao R"
+type: ActivityType | Referência ao tipo de atividade | ObjectId("382hsk18087h")
+ofFiles[]: File | Arquivos solicitados para submissão | File("intro_r.pdf")
+ofFields[]: Field | Campos solicitados para submissão | Field(28, FieldRequirement())
+ofEnrollments[]: Enrollment | Relações de inscrição entre usuário e atividade | [Enrollment(User())]
+ofProposers[]: User | Usuários que propõem a atividade | [ObjectId("g5hj2jk18l")]
+creator: User | Usuário que criou a atividade | ObjectId("g5hj2jk18l")
+active: Boolean | Indica se a instância está ativa | true
+createdAt: Date | Data de criação da instância | '2017-08-21 09:53'
 
 ### Permissões
 
