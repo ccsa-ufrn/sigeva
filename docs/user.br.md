@@ -45,7 +45,7 @@ password:String | A senha definida pelo usuário para ter acesso à conta. Cript
 photo:File | Foto do usuário | photo:File
 ofTypes[]:String | Indica quais os tipos o usuário assume nos sistema (pode possuir até dois valores, mas nunca vazio) | ['administrator', 'common']
 ofFields[]:Field | Campos de informações adicionais que podem ser definidas pelo administrador | [Field('Telefone', 'phone', String)]
-ofEvent[]:ObjectID | Referência para eventos que o usuário está associado | [ObjectID('2ffd52652f34'), ObjectID('3f2515f3h2g4')]
+ofEvents[]:ObjectID | Referência para eventos que o usuário está associado | [ObjectID('2ffd52652f34'), ObjectID('3f2515f3h2g4')]
 active:Boolean | Indica se um usuário está ativo ou não | true
 createdAt:Date | Data em que o usuário foi cadastrado | '2017-08-12 22:01:12'
 
