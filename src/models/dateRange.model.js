@@ -1,4 +1,4 @@
-import {Schema}, mongoose from 'mongoose';
+import mongoose, {Schema} from 'mongoose';
 
 /* @@ Date Range Model
  *
@@ -22,5 +22,5 @@ const dateRangeSchema = new Schema({
 });
 
 const dateRangeModel = mongoose.model('DateRange', dateRangeSchema);
-export dateRangeSchema;
+export {dateRangeSchema};
 export default dateRangeModel;

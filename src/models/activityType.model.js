@@ -1,4 +1,4 @@
-import {Schema}, mongoose from 'mongoose';
+import mongoose, {Schema} from 'mongoose';
 import {dateRangeSchema} from './dateRange.model';
 
 /* @@ Activity Type Model
@@ -40,5 +40,5 @@ const activityTypeSchema = new Schema({
 });
 
 const activityTypeModel = mongoose.model('ActivityType', activityTypeSchema);
-export activityTypeSchema;
+export {activityTypeSchema};
 export default activityTypeModel;

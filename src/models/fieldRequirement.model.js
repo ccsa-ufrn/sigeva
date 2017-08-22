@@ -26,5 +26,5 @@ const fieldRequirementSchema = new Schema({
 });
 
 const fieldRequirementModel = mongoose.model('FieldRequirement', fieldRequirementSchema);
-export fieldRequirementSchema;
+export {fieldRequirementSchema};
 export default fieldRequirementModel;

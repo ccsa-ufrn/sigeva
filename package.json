@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/ccsa-ufrn/sigeva#readme",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "express": "^4.15.4",
     "mongoose": "^4.11.6",
     "react": "^15.6.1",
