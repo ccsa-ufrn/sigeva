@@ -9,7 +9,13 @@ export default class {
 	 */
 	constructor() {
 		this.DAO = new userDAO();
-		this.userObject = DAO.createObject();
+		this.userObject = this.DAO.createObject();
+	}
+
+	setData(data) {
+		this.userObject.name = data.name;
+		this.userObject.email = data.email;
+		this.userObject.password = data.password;
 	}
 
 	// TODO: Maybe it is not this way
@@ -27,6 +33,7 @@ export default class {
 	}
 
 	store() {
+		this.DAO.insertUser(this.userObject);
 		// If is a new user 'store()' must call .insertUser from DAO
 		// If is a old user 'store()' must call .updateUser from DAO
 	}
