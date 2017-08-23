@@ -8,7 +8,16 @@ export default function() {
 	mongoose.Promise = require('bluebird'); // Fix mongoose Promise deprecation by using Bluebird
 
 	// Starts the mongoose connection to database
-	mongoose.connect(mongo_connection, {
+	let uri;
+	if (process.env.NODE_ENV == "test") {
+		uri = mongo_connection.test;
+	} else if (process.env.NODE_ENV == "dev") {
+		uri = mongo_connection.development;
+	} else {
+		uri = mongo_connection.production;
+	}
+
+	mongoose.connect(uri, {
 		useMongoClient: true,
 	});
 

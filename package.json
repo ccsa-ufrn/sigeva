@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "nodemon src/controllers/Server.js --exec babel-node --presets es2015",
+	"test": "mocha dist/tests --timeout 10000",
     "build_server": "babel src -d dist",
     "build_react": "webpack --config webpack.config.js"
   },
@@ -35,6 +36,9 @@
     "babel-loader": "^7.1.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "chai": "^4.1.1",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.5.0",
     "nodemon": "^1.11.0",
     "webpack": "^3.5.4"
   }

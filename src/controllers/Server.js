@@ -1,19 +1,5 @@
-import express from 'express'
-import {application} from '../../config';
-import connector from './MongoConnector';
-
-// IMPORT ROUTERS
-import userRouter from './user/UserRouter';
-
-const app = express()
-connector() // Execute connection to database
-
-// ROUTINGS
-app.get('/', (req, res) => {
-	res.json({foo: "bar"});
-})
-
-app.use('/user', userRouter)
+import app from './App'
+import {application} from '../../config'
 
 // STARTS THE SERVER
 app.listen(application.port, () => {
