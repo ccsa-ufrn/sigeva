@@ -13,18 +13,18 @@ export default function() {
 		uri = mongo_connection.test;
 	} else if (process.env.NODE_ENV == "dev") {
 		uri = mongo_connection.development;
-	} else {
+	} else if (process.env.NODE_ENV == "prod") {
 		uri = mongo_connection.production;
 	}
 
 	mongoose.connect(uri, {
-		useMongoClient: true,
+		useMongoClient: true
 	});
 
 	// CONNECTION EVENTS
 	// When successfully connected
 	mongoose.connection.on('connected', ()=> {
-		console.log(`Mongoose default connection open to ${mongo_connection}`)
+		console.log(`Mongoose default connection open`)
 	})
 
 	// If connection throws an error
