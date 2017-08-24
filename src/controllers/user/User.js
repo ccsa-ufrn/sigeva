@@ -1,4 +1,5 @@
 import userDAO from './UserDAO'
+import * as UserHelper from './UserHelper';
 
 /** User
  * Stores and manipulates User Database Object
@@ -12,10 +13,27 @@ export default class {
 		this.userObject = this.DAO.createObject();
 	}
 
+	/**
+	 * Validate and sets user's informations
+	 * @param data set of fields to load
+	 * @return true if the data is valid, false otherwise.
+	 */
 	setData(data) {
-		this.userObject.name = data.name;
-		this.userObject.email = data.email;
-		this.userObject.password = data.password;
+		let fixedFields = ["name", "email", "password"];
+
+		return new Promise((resolve, reject)=>{
+			// Validate fixed data
+			fixedFields.forEach((field) => {
+				if (data[field]) 
+					this.userObject[field] = data[field];
+				else
+					reject({error: "Informe todos os campos obrigatórios"});
+			});
+
+			// TODO Validade fields defined in configuration
+			// Formats user before return (preserving sensible data)
+			resolve(UserHelper.formatUser(this.userObject, fixedFields));
+		});
 	}
 
 	// TODO: Maybe it is not this way

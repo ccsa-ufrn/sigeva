@@ -5,7 +5,7 @@ import mongoose from 'mongoose'
  * MongoConnector: connects application to mongo database.
  */
 export default function() {
-	mongoose.Promise = require('bluebird'); // Fix mongoose Promise deprecation by using Bluebird
+	mongoose.Promise = Promise; // Fix mongoose Promise deprecation by using ES6 Promise
 
 	// Starts the mongoose connection to database
 	let uri;

@@ -10,6 +10,23 @@ import User from './User';
 
 var userRouter = Router();
 
+/**
+ * Create a new user
+ * @param fields representing a user
+ * @return Created user object
+ */
+userRouter.post('/', (req, res)=> {
+	// Recieves 'name', 'email', 'password' + defined fields
+	var user = new User();
+	user.setData(req.body)
+	.then((data)=>{
+		user.store(); // TODO Promisefy .store()
+		res.json(Response(false, data));
+	}).catch((data)=>{
+		res.json(Response(true, {}, data.error));
+	});
+});
+
 /** 
  * Get user by ID
  * @param field user fields to be returned in request
@@ -29,14 +46,6 @@ userRouter.get('/:id', (req, res)=> {
 
 userRouter.get('/', (req, res)=> {
 	res.json({router: "user"});
-})
-
-userRouter.get('/create_new', (req, res)=> {
-	var user = new User();
-	var data = {name: "Maradona42", email: "mr@hotmail.com", password: "senha"};
-	user.setData(data);
-	user.store();
-	res.json({success: true});
 })
 
 export default userRouter;
