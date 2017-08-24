@@ -120,5 +120,5 @@ A certificação é feita para os inscritos nas atividades e também para os pro
 ### Relacionamento entre entidades
 
 <p align="center">
-<img src="http://i.imgur.com/MARleqh.jpg">
+	<img src="http://i.imgur.com/o3BCctC.jpg">
 </p>
