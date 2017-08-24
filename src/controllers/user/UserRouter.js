@@ -1,11 +1,31 @@
 import {Router} from 'express'
-import User from './User'
+import * as UserHelper from './UserHelper';
+import Response from '../Response';
+
+import User from './User';
 
 /** User Router
  * Defines API's routers to interact with users
  */
 
 var userRouter = Router();
+
+/** 
+ * Get user by ID
+ * @param field user fields to be returned in request
+ * @return User Object
+ */
+userRouter.get('/:id', (req, res)=> {
+	const id = req.params.id;
+	const fields =  (req.query.fields) ? req.query.fields : '_id'; /* returns ID by default */
+
+	const fieldsStr = UserHelper.parse(fields);
+
+	/* let user = new User(id);
+	let data = user.getFields(fieldsStr);
+	res.json(Response(true, data));*/
+	res.json(Response(true, {}, "There's a error"))
+})
 
 userRouter.get('/', (req, res)=> {
 	res.json({router: "user"});

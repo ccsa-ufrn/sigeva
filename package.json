@@ -4,8 +4,8 @@
   "description": "Sistema de gestão de eventos acadêmicos",
   "main": "main.js",
   "scripts": {
-    "start": "nodemon src/controllers/Server.js --exec babel-node --presets es2015",
-	"test": "mocha dist/tests --timeout 10000",
+    "start": "NODE_ENV=dev nodemon src/controllers/Server.js --exec babel-node --presets es2015",
+    "test": "mocha dist/tests --timeout 10000",
     "build_server": "babel src -d dist",
     "build_react": "webpack --config webpack.config.js"
   },
@@ -24,6 +24,7 @@
   "homepage": "https://github.com/ccsa-ufrn/sigeva#readme",
   "dependencies": {
     "bluebird": "^3.5.0",
+    "body-parser": "^1.17.2",
     "express": "^4.15.4",
     "mongoose": "^4.11.6",
     "react": "^15.6.1",
