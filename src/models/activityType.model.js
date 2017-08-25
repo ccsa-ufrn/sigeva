@@ -10,7 +10,7 @@ import {dateRangeSchema} from './dateRange.model';
  *
  * @ Log
  * Maradona Morais '2017-08-20 00:40': Start definition
- * Maradona Morais '2017-08-20 14:34': Inserts fieldRequirement link + initial definition done
+ * Maradona Morais '2017-08-20 14:34': Inserts fieldRequest link + initial definition done
  */
 
 const activityTypeSchema = new Schema({

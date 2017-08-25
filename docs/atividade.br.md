@@ -53,7 +53,7 @@ Campo | Descrição | Exemplo
 title: String | Título completo da atividade | "Introdução ao R"
 type: ActivityType | Referência ao tipo de atividade | ObjectId("382hsk18087h")
 ofFiles[]: File | Arquivos solicitados para submissão | File("intro_r.pdf")
-ofFields[]: Field | Campos solicitados para submissão | Field(28, FieldRequirement())
+ofFields[]: Field | Campos solicitados para submissão | Field(28, FieldRequest())
 ofEnrollments[]: Enrollment | Relações de inscrição entre usuário e atividade | [Enrollment(User())]
 ofProposers[]: User | Usuários que propõem a atividade | [ObjectId("g5hj2jk18l")]
 creator: User | Usuário que criou a atividade | ObjectId("g5hj2jk18l")

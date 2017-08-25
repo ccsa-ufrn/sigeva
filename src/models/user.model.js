@@ -13,7 +13,7 @@ import mongoose, {Schema} from 'mongoose';
  * @ Log
  * Maradona Morais '2017-08-13 17:06': First definition
  * Maradona Morais '2017-08-20 00:23': Create multiples exports (both, schema and model) + Field subdocument support
- * Maradona Morais '2017-08-20 14:15': Remove field with current definition, it is a definition for FieldRequirement
+ * Maradona Morais '2017-08-20 14:15': Remove field with current definition, it is a definition for Field Request
  */
 
 const userSchema = new Schema({
