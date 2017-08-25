@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "NODE_ENV=dev nodemon src/controllers/Server.js --exec babel-node --presets es2015",
-    "test": "mocha dist/tests --timeout 10000",
+    "test": "NODE_ENV=test npm run build_server && mocha dist/tests --timeout 10000",
     "build_server": "babel src -d dist",
     "build_react": "webpack --config webpack.config.js"
   },
