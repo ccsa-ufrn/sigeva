@@ -1,5 +1,5 @@
 import userDAO from './UserDAO'
-import * as UserHelper from './UserHelper';
+import * as UserHelper from './UserHelper'
 
 /** User
  * Stores and manipulates User Database Object
@@ -16,7 +16,7 @@ export default class {
 	/**
 	 * Validate and sets user's informations
 	 * @param data set of fields to load
-	 * @return true if the data is valid, false otherwise.
+	 * @return parsed user fields are ok, error message otherwise.
 	 */
 	setData(data) {
 		let fixedFields = ["name", "email", "password"];
