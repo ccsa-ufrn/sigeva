@@ -24,7 +24,7 @@ export default class {
 		return new Promise((resolve, reject)=>{
 			// Validate fixed data
 			fixedFields.forEach((field) => {
-				if (data[field]) 
+				if (data[field])
 					this.userObject[field] = data[field];
 				else
 					reject({error: "Informe todos os campos obrigatórios"});
@@ -55,5 +55,5 @@ export default class {
 		// If is a new user 'store()' must call .insertUser from DAO
 		// If is a old user 'store()' must call .updateUser from DAO
 	}
-	
+
 }

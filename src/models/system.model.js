@@ -8,7 +8,10 @@ import mongoose, {Schema} from 'mongoose';
  */
 
 const systemSchema = new Schema({
-	name: String,	// Representative name of configuration
+	name: { // Representative name of configuration
+		type: String,
+		unique: true
+	},
 	data: Schema.Types.Mixed // Data for the configuration
 });
 

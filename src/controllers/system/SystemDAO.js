@@ -18,13 +18,12 @@ export default class {
      */
     insertSystem(system_) {
         return new Promise((resolve, reject) => {
-            system_.save((err) => {
+            system_.save((err, doc) => {
                 if (err)
                     reject();
-                resolve();
+                resolve(doc);
             });
         });
-
     }
 
     /**

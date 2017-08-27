@@ -1,5 +1,6 @@
-import SystemDAO from './SystemDAO'
-import systemModel from '../../models/system.model'
+import SystemDAO from './SystemDAO';
+import systemModel from '../../models/system.model';
+import systemSchema from '../../models/system.model';
 
 /**
  * System
@@ -16,20 +17,31 @@ export default class {
     }
 
     /**
+     */
+    loadSystem(obj_) {
+        this.systemObject = obj_;
+    }
+
+    /**
      * Set data to a System configuration
      */
     setData(data_) {
-        this.systemObject.name = data_.name;
-        this.systemObject.data = data_.data;
+        console.log(systemSchema);
+        systemSchema.schema.eachPath((path)=>{
+			if (data_[path])
+				this.systemObject[path] = data_[path];
+		});
+
     }
 
+    /**
+     * Stores the Object in the database
+     */
     store() {
-        return new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject) => {
             this.DAO.insertSystem(this.systemObject)
-            .then(resolve)
-            .catch(reject);
-        })
-
+            .then(resolve, reject);
+        });
     }
 
     /**

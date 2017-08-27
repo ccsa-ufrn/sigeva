@@ -5,6 +5,7 @@ import fieldRequestModel from '../../models/fieldRequest.model'
  *
  * Maradona Morais '2017-08-25 14:08': First definition
  * Maradona Morais '2017-08-25 21:35': Create functions: createObject, insertFielRequest, printObject
+ * Maradona Morais '2017-08-27 16:03': Support Promise in insertFielRequest()
  */
 
 export default class {
@@ -21,10 +22,13 @@ export default class {
 	 * @param fieldRequest FieldRequest D.O.
 	 */
 	insertFieldRequest(fieldRequest_) {
-		fieldRequest_.save((err) => {
-			if(err)
-				console.log(err);
-		});
+		return new Promise((resolve, reject) => {
+            fieldRequest_.save((err, doc) => {
+                if (err)
+                    reject();
+                resolve(doc);
+            });
+        });
 	}
 
 	/**
