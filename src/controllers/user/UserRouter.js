@@ -16,18 +16,17 @@ var userRouter = Router();
  * @return Created user object
  */
 userRouter.post('/', (req, res)=> {
-	// Recieves 'name', 'email', 'password' + defined fields
 	var user = new User();
 	user.setData(req.body)
 	.then((data)=>{
-		user.store(); // TODO Promisefy .store()
+		//user.store(); // TODO Promisefy .store()
 		res.json(Response(false, data));
 	}).catch((data)=>{
 		res.json(Response(true, {}, data.error));
 	});
 });
 
-/** 
+/**
  * Get user by ID
  * @param field user fields to be returned in request
  * @return User Object

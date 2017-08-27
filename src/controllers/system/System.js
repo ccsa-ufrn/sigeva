@@ -1,6 +1,7 @@
 import SystemDAO from './SystemDAO';
 import systemModel from '../../models/system.model';
 import systemSchema from '../../models/system.model';
+import fieldRequestModel from '../../models/fieldRequest.model';
 
 /**
  * System
@@ -41,6 +42,21 @@ export default class {
         return new Promise((resolve, reject) => {
             this.DAO.insertSystem(this.systemObject)
             .then(resolve, reject);
+        });
+    }
+
+    /**
+     * Gets registerFieldRequests
+     */
+    getRegisterFieldRequests() {
+        var query = systemModel.findOne({name: "register_fields"});
+        query.select('data');
+        query.populate('data', 'name readableName HTMLtype required editable', fieldRequestModel);
+        return new Promise((resolve, reject)=>{
+            this.DAO.executeQuery(query)
+                .then((result)=>{
+                    resolve(result.data);
+                }).catch(reject);
         });
     }
 

@@ -1,4 +1,5 @@
 import userDAO from './UserDAO'
+import System from '../system/System';
 import * as UserHelper from './UserHelper'
 
 /** User
@@ -19,20 +20,27 @@ export default class {
 	 * @return parsed user fields are ok, error message otherwise.
 	 */
 	setData(data) {
-		let fixedFields = ["name", "email", "password"];
+		var system = new System();
 
-		return new Promise((resolve, reject)=>{
-			// Validate fixed data
-			fixedFields.forEach((field) => {
-				if (data[field])
-					this.userObject[field] = data[field];
-				else
-					reject({error: "Informe todos os campos obrigatórios"});
-			});
-
-			// TODO Validade fields defined in configuration
-			// Formats user before return (preserving sensible data)
-			resolve(UserHelper.formatUser(this.userObject, fixedFields));
+		return new Promise((resolve, reject)=> {
+			// TODO All fields must be validate before saved
+			system.getRegisterFieldRequests()
+			.then((fieldRequests)=>{
+				fieldRequests.forEach((fieldReq)=>{
+					if (data[fieldReq.name]) { // The body.field with that name exists
+						console.log(fieldReq.readableName + " = " + data[fieldReq.name]);
+						// TODO if the field is a password it must be encrypted
+						// TODO Create a field in ofFields with ref to fieldReq._id
+					} else { // The body.field dont exists
+						if (fieldReq.required) // It's is required to make a register
+							reject({error: "Campos obrigatórios não preenchidos"});
+							// TODO Adds in a array of errors to reject
+					}
+				});
+				resolve({stub: true});
+				// TODO Use the UserHelper to format the user after return it
+				//UserHelper.formatUser(this.userObject, fields)
+			}).catch(reject);
 		});
 	}
 

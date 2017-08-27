@@ -17,18 +17,18 @@ let requests = [
     FieldRequest.createData("password", "Senha", "text", false, true)
 ];
 
-var fr_ids=[];
+var rf_ids=[];
 async.forEachOf(requests, (value, key, callback)=>{
     let fr = new FieldRequest();
     fr.setData(value);
     fr.store().then((_doc)=>{
-        fr_ids.push(_doc._id);
+        rf_ids.push(_doc._id);
         callback();
     });
 }, (err)=> {
     let register_fields = {
         name: "register_fields",
-        data: fr_ids
+        data: rf_ids
     };
     let sys = new System();
     sys.setData(register_fields);
