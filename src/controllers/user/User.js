@@ -17,7 +17,7 @@ export default class {
 	/**
 	 * Validate and sets user's informations
 	 * @param data set of fields to load
-	 * @return parsed user fields are ok, error message otherwise.
+	 * @return parsed user fields | error message.
 	 */
 	setData(data) {
 		var system = new System();
