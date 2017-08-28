@@ -24,7 +24,7 @@ const eventSchema = new Schema ({
 	subtitle: { // Event theme
         type: String,
         required: true
-    },
+    },/*
 	eventPeriod: {  // Event Period
         type: dateRangeSchema,
         required: true
@@ -40,7 +40,7 @@ const eventSchema = new Schema ({
     userCreator: { // User creattor
         type: userSchema,
         required: true
-    },
+    },*/
     active: { // Instance ON
         type: Boolean,
         default: true

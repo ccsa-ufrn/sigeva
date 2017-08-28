@@ -20,18 +20,20 @@ export default class {
 	 * Saves on the database a Event Database Object
 	 * @param event Event Database Object
 	 */
-	insertEvent(event) {
-		event.save((err)=>{
-			if(err)
-				console.log(err);
-		});
-	}
+	insertEvent(event_) {
+        event_.save((err)=>{
+            if(err)
+                console.log(err);
+        });
+    }
+
+
 
 	/**
 	 * Prints on console logger the crude Event Database Object
 	 */
-	printObject(event) {
-		console.log(event);
+	printObject(event_) {
+		console.log(event_);
 	}
 
 }

@@ -26,7 +26,7 @@ export default class {
 				console.log(err);
 		});
 	}
-	
+
 	/**
 	 * Prints on console logger the crude User Database Object
 	 */
