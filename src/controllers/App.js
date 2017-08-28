@@ -4,6 +4,7 @@ import connector from './MongoConnector';
 
 // IMPORT ROUTERS
 import userRouter from './user/UserRouter';
+import eventRouter from './event/EventRouter';
 
 const app = express();
 
@@ -22,5 +23,6 @@ app.get('/', (req, res) => {
 })
 
 app.use('/user', userRouter);
+app.use('/event', eventRouter)
 
 export default app;
