@@ -4,7 +4,8 @@ import Response from '../Response';
 
 import User from './User';
 
-/** User Router
+/**
+ * User Router
  * Defines API's routers to interact with users
  */
 
@@ -22,7 +23,7 @@ userRouter.post('/', (req, res)=> {
 		//user.store(); // TODO Promisefy .store()
 		res.json(Response(false, data));
 	}).catch((data)=>{
-		res.json(Response(true, {}, data.error));
+		res.json(Response(true, data, "Erro ao fazer cadastro"));
 	});
 });
 

@@ -16,6 +16,7 @@ const parseFields = (fields) => {
 
 /**
  * Extracts from userObject only defined fields
+ * @deprecated User fields are not working the same way
  */
 const formatUser = (userObject, fields) => {
 	let parsedUser = {};
@@ -24,6 +25,22 @@ const formatUser = (userObject, fields) => {
 			parsedUser[field] = userObject[field]
 	});
 	return parsedUser;
+};
+
+/**
+ * Validates a email address
+ */
+const isEmail = (email) => {
+	return /\S+@\S+\.\S+/.test(email);
+};
+
+/**
+ * Validates a password field
+ */
+const isPassword = (password) => {
+	password = password.trim();
+	if (password.length <= 5) return false;
+	return true;
 }
 
-export {parseFields, formatUser};
+export {parseFields, formatUser, isEmail, isPassword};
