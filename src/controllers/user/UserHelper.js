@@ -1,7 +1,10 @@
-import fieldModel from '../../models/field.model';
-import fieldRequestModel from '../../models/fieldRequest.model';
+import User from './User';
 
+import fieldModel from '../../models/field.model';
+
+import fieldRequestModel from '../../models/fieldRequest.model';
 import FieldRequest from '../fieldRequest/FieldRequest';
+
 import async from 'async';
 
 /**
@@ -24,27 +27,36 @@ const parseFields = (fields) => {
  * Formats the user fields, getting the fieldRequest info and
  * extracting only required fields
  */
-const formatUserFields = (userObject_, fields_) => {
-	let userFields = userObject_.ofFields;
-	var userFieldsParsed = [];
+const formatUserOfFields = (userObject_) => {
+	let userOfFields = userObject_.ofFields;
+	var userOfFieldsParsed = [];
 
 	// We async operations, so lets return as a Promise
 	return new Promise((resolve, reject)=>{
 		// For each user.ofFields I need to see into its fieldRequest to know specifications about the field
-		async.eachOfSeries(userFields, (field, key, callback)=>{
+		async.eachOfSeries(userOfFields, (field, key, callback)=>{
 			// Create a FieldRequest and load it by ID
 			let fieldRequest = new FieldRequest();
 			fieldRequest.loadById(field.request).then(()=>{
 				let fieldRequestData = fieldRequest.getData(); // Get formated fieldRequest data
+				
 				fieldRequestData.value = field.value; // Increase value to fieldRequestData
-				if (fields_.includes(fieldRequestData.name)) // If the fieldRequest is in the selected by fields_
-					userFieldsParsed.push(fieldRequestData); // Can send it to return, by appending to parseds fields
+				userOfFieldsParsed.push(fieldRequestData); // Can send it to return, by appending to parseds fields
+			
 				callback();
 			}).catch(reject);
 		}, ()=> {
-			resolve(userFieldsParsed); // Finnaly, send it back
+			resolve(userOfFieldsParsed); // Finnaly, send it back
 		});
 	});
+};
+
+const formatUser = (userObject_, userOfFieldsParsed_) => {
+	return {
+		name: userObject_.name,
+		email: userObject_.email,
+		fields: userOfFieldsParsed_
+	};
 };
 
 /**
@@ -55,11 +67,11 @@ const isEmail = (email) => {
 };
 
 /**
- * Validates a password field
+ * Validates a field looking if 
  */
-const isPassword = (password) => {
-	password = password.trim();
-	if (password.length <= 5) return false;
+const isBetweenLength = (field, min, max=255) => {
+	field = field.trim(); // Removes spaces bars from the borders
+	if (field.length < min || field.length > max) return false;
 	return true;
 };
 
@@ -70,6 +82,17 @@ const createField = (fieldValue_, fieldRequestId_)=> {
 	return new fieldModel({value: fieldValue_, request: fieldRequestId_});
 };
 
+/**
+ * Returns a promise that informs if already exists a user using a given email
+ * @return promise with resolve(true|false)
+ */
+const emailAlreadyExists = (email_) => {
+	let user = new User();
+	return new Promise((resolve, reject) => {
+		user.loadByEmail(email_)
+		.then(()=>{ resolve(true); })
+		.catch(()=>{ resolve(false) });
+	});
+};
 
-
-export {parseFields, formatUserFields, isEmail, isPassword, createField};
+export {parseFields, formatUserOfFields, formatUser, isEmail, isBetweenLength, createField, emailAlreadyExists};

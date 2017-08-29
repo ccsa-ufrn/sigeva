@@ -25,49 +25,75 @@ export default class {
 	 * @param data set of fields to load
 	 * @return parsed user fields | error message.
 	 */
-	setData(data) {
+	setData(data_) {
+		let fixed_fields = ['name', 'password', 'email'];
+		var errors = []; // Array of errors
+
+		// Validade fixed fields
+		fixed_fields.forEach((field) => {
+			if (data_[field]) {
+				// Validade name
+				if (field == 'name') {
+					if (!UserHelper.isBetweenLength(data_[field], 3))
+						errors.push({field: field, message: "Valor inválido para " + field});
+				}
+
+				// Validate email
+				if (field == 'email') {
+					if (!UserHelper.isEmail(data_[field]) || !UserHelper.isBetweenLength(data_[field], 3, 65))
+						errors.push({field: field, message: "Valor inválido para " + field});
+				}
+
+				// Validate password
+				if (field == 'password') {
+					if (!UserHelper.isBetweenLength(data_[field], 5, 20))
+						errors.push({field: field, message: "A senha deve ter entre 5 e 20 caracteres"});
+				}
+
+				// Set field in the object
+				this.userObject[field] = data_[field].trim();
+			} else { // It's a required field, must be received
+				errors.push({field: field, message: "É obrigatório preencher " + field});
+			}
+		});
+
 		var system = new System();
 
-		return new Promise((resolve, reject)=> {
-			// TODO All fields must be validate before saved
-			var errors = []; // Array of errors
-			system.getRegisterFieldRequests()
-			.then((fieldRequests)=>{
-				fieldRequests.forEach((fieldReq)=>{
-					if (data[fieldReq.name]) { // The body.field with that name exists
-						// Validate email
-						if (fieldReq.name == "email") {
-							if (!UserHelper.isEmail(data[fieldReq.name])) {
-								errors.push({field: fieldReq.name, message: fieldReq.readableName.toLowerCase() + " inserido não é válido"});
-							}
-						}
-
-						// Validate password
-						if (fieldReq.name == "password") {
-							// TODO if the field is a password it must be encrypted
-							if (!UserHelper.isPassword(data[fieldReq.name])) {
-								errors.push({field: fieldReq.name, message: fieldReq.readableName.toLowerCase() + " não foi preenchida corretamente"});
-							}
-						}
-						// Create a Field that represents a user field
-						let field = UserHelper.createField(data[fieldReq.name], fieldReq._id);
-						this.userObject.ofFields.push(field);
-					} else { // The body.field dont exists
-						if (fieldReq.required) // It's is required to make a register
-							errors.push({field: fieldReq.name, message: "É obrigatório preencher " + fieldReq.readableName.toLowerCase()});
-					}
-				});
-				// The user have type common
-				this.userObject.ofTypes.push("common");
-
-				if (errors.length != 0) {
-					reject(errors); // Reject request throwing a set of errors
+		return new Promise((resolve, reject)=>{
+			// Validate user email existence
+			UserHelper.emailAlreadyExists(this.userObject.email)
+			.then((exists)=>{
+				if (exists) {
+					errors.push({field: 'email', message: "Já existe uma conta com este endereço de email"});
+					reject(errors);
 				} else {
-					resolve();
-					//let parsedUser =  UserHelper.formatUserFields(this.userObject, ['name', 'email']);
-					//resolve(parsedUser);
+					// Validate de configurable fields
+					system.getRegisterFieldRequests()
+					.then((fieldRequests)=>{
+						fieldRequests.forEach((fieldReq)=>{
+							if (data_[fieldReq.name]) { // The body.field with that name exists
+								// Create a Field and append it in ofFields
+								let field = UserHelper.createField(data_[fieldReq.name], fieldReq._id);
+								this.userObject.ofFields.push(field);
+							} else { // The body.field doesn't exists
+								if (fieldReq.required)
+									errors.push({field: fieldReq.name, message: "O campo " + fieldReq.readableName.toLowerCase() + " é obrigatório"});
+							}
+						});
+
+						// Set the common type to the user
+						this.userObject.ofTypes.push("common");
+						// Final validation
+						if (errors.length != 0) {
+							reject(errors); // Reject request throwing a set of errors
+						} else {
+							resolve();
+							/*let parsedOfFields = UserHelper.formatUserOfFields(this.userObject);
+							resolve(UserHelper.formatUser(this.userObject, parsedOfFields)); // Everything is ok, can return the user */
+						}
+					});
 				}
-			}).catch(reject);
+			}).catch("Ocorreu um erro");
 		});
 	}
 
@@ -76,33 +102,32 @@ export default class {
 		// Loads the .userObject with a User Database Object searched by passed ID
 	}
 
+
 	/**
-	 * Search for a User by email
+	 * Load user by email
 	 * @param email_ email to search for 
+	 * @return true if the
 	 */
-	searchUserByEmail(email_) {
-		/* {name: "asds", email: "sads"}
-		 */
-		var query = userModel.findOne({'ofFields.value': email_});
-		query.populate({ 
-			path: 'ofFields.request',
+	loadByEmail(email_) {
+		var query = userModel.findOne({email: email_});
+		query.populate({
+			path: 'ofField.request',
 			model: fieldRequestModel
 		});
 
 		return new Promise((resolve, reject) => {
 			this.DAO.executeQuery(query).then((doc)=>{
 				if (doc) {
-					doc.ofFields.forEach((field)=> {
-						if (field.value == email_ && field.request.name == 'email') {
-							resolve(doc);
-						}
-					});
+					// Set this user as the required
+					this.userObject = doc;
+					resolve();
+				} else {
+					// This user doesn't exists
+					reject();
 				}
-				resolve(false);
 			}).catch(reject);
 		});
 	}
-
 
 	setFields(fields_) {
 		// Recieves a Array of fixed fields, with values to: 'name', 'email', 'password'
@@ -117,9 +142,10 @@ export default class {
 		return new Promise((resolve, reject)=>{
 			this.DAO.insertUser(this.userObject)
 			.then((userDoc)=>{
-				let parsedUser =  UserHelper.formatUserFields(userDoc, ['name', 'email']);
-				parsedUser.then(resolve)
-				.catch(reject);
+				UserHelper.formatUserOfFields(userDoc).
+				then((parsedOfFields)=>{
+					resolve(UserHelper.formatUser(userDoc, parsedOfFields)); // Everything is ok, can return the user 
+				});
 			}).catch(reject);
 		}); 	
 	}

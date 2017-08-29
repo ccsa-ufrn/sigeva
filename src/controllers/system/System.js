@@ -48,7 +48,7 @@ export default class {
     /**
      * Gets registerFieldRequests
      */
-    getRegisterFieldRequests() {
+	getRegisterFieldRequests() {
         var query = systemModel.findOne({name: "register_fields"});
         query.select('data');
         query.populate('data', 'name readableName HTMLtype required editable', fieldRequestModel);

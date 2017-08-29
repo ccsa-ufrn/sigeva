@@ -18,9 +18,22 @@ import mongoose, {Schema} from 'mongoose';
  */
 
 const userSchema = new Schema({
+	name: { // Name of the user
+		type: String,
+		required: true
+	},
+	email: { // Email of the user
+		type: String,
+		required: true,
+		unique: true // Email is also a key
+	},
 	emailConfirmation: { // tells if the user's mail was confirmed
 		type: Boolean,
 		default: false
+	},
+	password: { // Encrypted password
+		type: String,
+		required: true
 	},
 	photo: String, // path to user's profile photograph
 	ofTypes: [String], // types of user: Administrator, Common or both.
