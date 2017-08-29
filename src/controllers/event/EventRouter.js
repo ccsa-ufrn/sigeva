@@ -11,11 +11,21 @@ eventRouter.get('/', (req, res)=> {
 	res.json({router: "event"});
 })
 
-eventRouter.get('/disable', (req, res)=> {
-    res.json({router: "event disable"});
+//TODO: List only Events with active ON
+eventRouter.get('/list_all', (req, res)=> {
+   var event = new Event();
+   event.listData(req, res);
 })
 
+//TODO:
+eventRouter.get('/find_one', (req, res)=> {
+   var event = new Event();
+   var id = "59a43715934c45614b424f76"
+   event.eventById(id, req, res);
 
+})
+
+//TODO
 eventRouter.post('/create', (req, res)=> {
 	var event = new Event();
     var data = req;

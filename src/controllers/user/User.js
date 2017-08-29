@@ -78,13 +78,13 @@ export default class {
 
 	/**
 	 * Search for a User by email
-	 * @param email_ email to search for 
+	 * @param email_ email to search for
 	 */
 	searchUserByEmail(email_) {
 		/* {name: "asds", email: "sads"}
 		 */
 		var query = userModel.findOne({'ofFields.value': email_});
-		query.populate({ 
+		query.populate({
 			path: 'ofFields.request',
 			model: fieldRequestModel
 		});
@@ -121,7 +121,7 @@ export default class {
 				parsedUser.then(resolve)
 				.catch(reject);
 			}).catch(reject);
-		}); 	
+		});
 	}
 
 }
