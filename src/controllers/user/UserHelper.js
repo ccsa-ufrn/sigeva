@@ -1,4 +1,6 @@
 import fieldModel from '../../models/field.model';
+import fieldRequestModel from '../../models/fieldRequest.model';
+
 import FieldRequest from '../fieldRequest/FieldRequest';
 import async from 'async';
 
@@ -19,7 +21,7 @@ const parseFields = (fields) => {
 };
 
 /**
- * Formats a User, getting the fieldRequest info and
+ * Formats the user fields, getting the fieldRequest info and
  * extracting only required fields
  */
 const formatUserFields = (userObject_, fields_) => {
@@ -67,5 +69,7 @@ const isPassword = (password) => {
 const createField = (fieldValue_, fieldRequestId_)=> {
 	return new fieldModel({value: fieldValue_, request: fieldRequestId_});
 };
+
+
 
 export {parseFields, formatUserFields, isEmail, isPassword, createField};

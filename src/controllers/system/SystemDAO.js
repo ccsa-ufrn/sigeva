@@ -28,6 +28,7 @@ export default class {
 
     /**
      * Executes a query
+	 * @param query_ query that will be executed
      */
     executeQuery(query_) {
         return new Promise((resolve, reject)=>{

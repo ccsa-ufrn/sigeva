@@ -22,9 +22,21 @@ export default class {
 	 * @param user User Database Object
 	 */
 	insertUser(user_) {
-		user_.save((err)=>{
-			if(err)
-				console.log(err);
+		return new Promise((resolve, reject)=> {
+			user_.save()
+			.then(resolve).catch(reject);
+		});
+	}
+
+	/**
+	 * Executes a query on database
+	 * @param query_ query that will be executed
+	 */
+	executeQuery(query_) {
+		return new Promise((resolve, reject)=>{
+			query_.exec().then((doc)=>{
+				resolve(doc);
+			}).catch(reject);
 		});
 	}
 

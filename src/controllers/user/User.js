@@ -2,6 +2,11 @@ import userDAO from './UserDAO'
 import System from '../system/System';
 import * as UserHelper from './UserHelper';
 
+import async from 'async';
+
+import userModel from '../../models/user.model';
+import fieldRequestModel from '../../models/fieldRequest.model';
+
 /**
  * User
  * Stores and manipulates User Database Object
@@ -58,9 +63,9 @@ export default class {
 				if (errors.length != 0) {
 					reject(errors); // Reject request throwing a set of errors
 				} else {
-					// TODO save here
-					let parsedUser =  UserHelper.formatUserFields(this.userObject, ['name', 'email']);
-					resolve(parsedUser);
+					resolve();
+					//let parsedUser =  UserHelper.formatUserFields(this.userObject, ['name', 'email']);
+					//resolve(parsedUser);
 				}
 			}).catch(reject);
 		});
@@ -70,6 +75,34 @@ export default class {
 	loadById(objectId_) {
 		// Loads the .userObject with a User Database Object searched by passed ID
 	}
+
+	/**
+	 * Search for a User by email
+	 * @param email_ email to search for 
+	 */
+	searchUserByEmail(email_) {
+		/* {name: "asds", email: "sads"}
+		 */
+		var query = userModel.findOne({'ofFields.value': email_});
+		query.populate({ 
+			path: 'ofFields.request',
+			model: fieldRequestModel
+		});
+
+		return new Promise((resolve, reject) => {
+			this.DAO.executeQuery(query).then((doc)=>{
+				if (doc) {
+					doc.ofFields.forEach((field)=> {
+						if (field.value == email_ && field.request.name == 'email') {
+							resolve(doc);
+						}
+					});
+				}
+				resolve(false);
+			}).catch(reject);
+		});
+	}
+
 
 	setFields(fields_) {
 		// Recieves a Array of fixed fields, with values to: 'name', 'email', 'password'
@@ -81,9 +114,14 @@ export default class {
 	}
 
 	store() {
-		this.DAO.insertUser(this.userObject);
-		// If is a new user 'store()' must call .insertUser from DAO
-		// If is a old user 'store()' must call .updateUser from DAO
+		return new Promise((resolve, reject)=>{
+			this.DAO.insertUser(this.userObject)
+			.then((userDoc)=>{
+				let parsedUser =  UserHelper.formatUserFields(userDoc, ['name', 'email']);
+				parsedUser.then(resolve)
+				.catch(reject);
+			}).catch(reject);
+		}); 	
 	}
 
 }

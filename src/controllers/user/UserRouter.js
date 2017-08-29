@@ -19,9 +19,13 @@ var userRouter = Router();
 userRouter.post('/', (req, res)=> {
 	var user = new User();
 	user.setData(req.body)
-	.then((data)=>{
-		//user.store(); // TODO Promisefy .store()
-		res.json(Response(false, data));
+	.then(()=>{
+		user.store()
+		.then((data)=>{
+			res.json(Response(false, data));
+		}).catch((err)=>{
+			res.json(Response(true, {}, err));
+		});
 	}).catch((data)=>{
 		res.json(Response(true, data, "Erro ao fazer cadastro"));
 	});
