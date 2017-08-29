@@ -147,7 +147,7 @@ export default class {
 					resolve(UserHelper.formatUser(userDoc, parsedOfFields)); // Everything is ok, can return the user 
 				});
 			}).catch(reject);
-		}); 	
+		});
 	}
 
 }

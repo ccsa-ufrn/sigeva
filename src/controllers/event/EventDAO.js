@@ -28,7 +28,6 @@ export default class {
     }
 
 
-
 	/**
 	 * Prints on console logger the crude Event Database Object
 	 */
