@@ -32,6 +32,17 @@ export default class {
 	}
 
 	/**
+	 * Execute a query to database
+	 */
+	executeQuery(query_) {
+		return new Promise((resolve, reject)=>{
+			query_.exec().then((doc) => {
+				resolve(doc);
+			}).catch(reject);
+		});
+	}
+
+	/**
 	 * Prints on console logger the crude D.O.
 	 */
 	printObject(fieldRequest_) {

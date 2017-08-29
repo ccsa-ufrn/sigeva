@@ -1,6 +1,7 @@
 import userModel from '../../models/user.model'
 
-/** User DAO (Data Access Object)
+/**
+ * User DAO (Data Access Object)
  * Interacts with the collection of users in the database
  *
  * Maradona Morais '2017-09-22 16:01': Define interations with User Model

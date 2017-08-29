@@ -1,5 +1,6 @@
 import FieldRequestDAO from './FieldRequestDAO';
-import fieldRequestSchema from '../../models/fieldRequest.model'
+import fieldRequestSchema from '../../models/fieldRequest.model';
+import fieldRequestModel from '../../models/fieldRequest.model';
 
 /**
  * FieldRequest
@@ -40,6 +41,35 @@ export default class {
 		fieldRequestSchema.schema.eachPath((path)=>{
 			if (data_[path])
 				this.fieldRequestObject[path] = data_[path];
+		});
+	}
+
+	/**
+	 * Return a object with "public" informations about the FieldRequest
+	 * @return FieldRequest informations
+	 */
+	getData() {
+		return {
+			name: this.fieldRequestObject.name,
+			readableName: this.fieldRequestObject.readableName,
+			HTMLtype: this.fieldRequestObject.HTMLtype,
+			editable: this.fieldRequestObject.editable,
+			required: this.fieldRequestObject.required
+		};
+	}
+
+	/**
+	 * Load request by ID
+	 * @return true if there is not any database error, false otherwise
+	 */
+	loadById(objectId_) {
+		var query = fieldRequestModel.findOne({_id: objectId_});
+		return new Promise((resolve, reject)=>{
+			this.DAO.executeQuery(query)
+			.then((doc, err) => {
+				this.fieldRequestObject = doc;
+				resolve();
+			}).catch(reject);
 		});
 	}
 

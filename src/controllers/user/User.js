@@ -1,8 +1,9 @@
 import userDAO from './UserDAO'
 import System from '../system/System';
-import * as UserHelper from './UserHelper'
+import * as UserHelper from './UserHelper';
 
-/** User
+/**
+ * User
  * Stores and manipulates User Database Object
  */
 export default class {
@@ -24,22 +25,43 @@ export default class {
 
 		return new Promise((resolve, reject)=> {
 			// TODO All fields must be validate before saved
+			var errors = []; // Array of errors
 			system.getRegisterFieldRequests()
 			.then((fieldRequests)=>{
 				fieldRequests.forEach((fieldReq)=>{
 					if (data[fieldReq.name]) { // The body.field with that name exists
-						console.log(fieldReq.readableName + " = " + data[fieldReq.name]);
-						// TODO if the field is a password it must be encrypted
-						// TODO Create a field in ofFields with ref to fieldReq._id
+						// Validate email
+						if (fieldReq.name == "email") {
+							if (!UserHelper.isEmail(data[fieldReq.name])) {
+								errors.push({field: fieldReq.name, message: fieldReq.readableName.toLowerCase() + " inserido não é válido"});
+							}
+						}
+
+						// Validate password
+						if (fieldReq.name == "password") {
+							// TODO if the field is a password it must be encrypted
+							if (!UserHelper.isPassword(data[fieldReq.name])) {
+								errors.push({field: fieldReq.name, message: fieldReq.readableName.toLowerCase() + " não foi preenchida corretamente"});
+							}
+						}
+						// Create a Field that represents a user field
+						let field = UserHelper.createField(data[fieldReq.name], fieldReq._id);
+						this.userObject.ofFields.push(field);
 					} else { // The body.field dont exists
 						if (fieldReq.required) // It's is required to make a register
-							reject({error: "Campos obrigatórios não preenchidos"});
-							// TODO Adds in a array of errors to reject
+							errors.push({field: fieldReq.name, message: "É obrigatório preencher " + fieldReq.readableName.toLowerCase()});
 					}
 				});
-				resolve({stub: true});
-				// TODO Use the UserHelper to format the user after return it
-				//UserHelper.formatUser(this.userObject, fields)
+				// The user have type common
+				this.userObject.ofTypes.push("common");
+
+				if (errors.length != 0) {
+					reject(errors); // Reject request throwing a set of errors
+				} else {
+					// TODO save here
+					let parsedUser =  UserHelper.formatUserFields(this.userObject, ['name', 'email']);
+					resolve(parsedUser);
+				}
 			}).catch(reject);
 		});
 	}
