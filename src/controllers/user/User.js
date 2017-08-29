@@ -39,25 +39,29 @@ export default class {
 
 						// Validate password
 						if (fieldReq.name == "password") {
+							// TODO if the field is a password it must be encrypted
 							if (!UserHelper.isPassword(data[fieldReq.name])) {
 								errors.push({field: fieldReq.name, message: fieldReq.readableName.toLowerCase() + " não foi preenchida corretamente"});
 							}
 						}
-						// TODO if the field is a password it must be encrypted
-						// TODO Create a field in ofFields with ref to fieldReq._id
+						// Create a Field that represents a user field
+						let field = UserHelper.createField(data[fieldReq.name], fieldReq._id);
+						this.userObject.ofFields.push(field);
 					} else { // The body.field dont exists
 						if (fieldReq.required) // It's is required to make a register
 							errors.push({field: fieldReq.name, message: "É obrigatório preencher " + fieldReq.readableName.toLowerCase()});
 					}
 				});
+				// The user have type common
+				this.userObject.ofTypes.push("common");
+
 				if (errors.length != 0) {
 					reject(errors); // Reject request throwing a set of errors
 				} else {
 					// TODO save here
-					resolve(this.userObject);
+					let parsedUser =  UserHelper.formatUserFields(this.userObject, ['name', 'email']);
+					resolve(parsedUser);
 				}
-				// TODO Use the UserHelper to format the user after return it
-				// UserHelper.formatUser(this.userObject, fields)
 			}).catch(reject);
 		});
 	}
