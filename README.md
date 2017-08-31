@@ -1,5 +1,6 @@
-# SIGEVA
-### Sistema de Gestão de Eventos Acadêmicos
+<img src="https://i.imgur.com/S5JRd5g.png" width="200" alt="Sigeva"/>
+
+### Sistema de Gestão de Eventos Acadêmicos (Sigeva)
 ![GPL](https://img.shields.io/badge/license-GPL-blue.svg)
 
 Sistema que suporta o evento Seminário de Pesquisa do Centro de Ciências Sociais Aplicadas
