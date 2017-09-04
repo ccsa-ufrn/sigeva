@@ -48,8 +48,4 @@ userRouter.get('/:id', (req, res)=> {
 	res.json(Response(true, {}, "There's a error"))
 })
 
-userRouter.get('/', (req, res)=> {
-	res.json({router: "user"});
-})
-
 export default userRouter;

@@ -2,9 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import connector from './MongoConnector';
 
-// IMPORT ROUTERS
-import userRouter from './user/UserRouter';
-import eventRouter from './event/EventRouter';
+import APIrouter from './API';
 
 const app = express();
 
@@ -17,12 +15,7 @@ app.use(bodyParser.json());
 // Execute connection to database
 connector();
 
-// ROUTINGS
-app.get('/', (req, res) => {
-	res.json({foo: "bar"});
-})
-
-app.use('/user', userRouter);
-app.use('/event', eventRouter)
+// Prepare app with routings
+app.use('/api', APIrouter);
 
 export default app;
