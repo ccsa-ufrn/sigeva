@@ -1,4 +1,4 @@
-import userModel from '../../models/user.model'
+import UserModel from '../../models/user.model';
 
 /**
  * User DAO (Data Access Object)
@@ -9,42 +9,41 @@ import userModel from '../../models/user.model'
 
 // TODO: Support promises
 export default class {
-	/**
-	 * Returns a new instance (Object) of a User Model defined in /models/user.model
-	 * @return User Database Object
-	 */
-	createObject() {
-		return new userModel();
-	}
+  /**
+   * Returns a new instance (Object) of a User Model defined in /models/user.model
+   * @return User Database Object
+   */
+  static createObject() {
+    return new UserModel();
+  }
 
-	/**
-	 * Saves on the database a User Database Object
-	 * @param user User Database Object
-	 */
-	insertUser(user_) {
-		return new Promise((resolve, reject)=> {
-			user_.save()
-			.then(resolve).catch(reject);
-		});
-	}
+  /**
+   * Saves on the database a User Database Object
+   * @param user User Database Object
+   */
+  static insertUser(user_) {
+    return new Promise((resolve, reject) => {
+      user_.save()
+        .then(resolve).catch(reject);
+    });
+  }
 
-	/**
-	 * Executes a query on database
-	 * @param query_ query that will be executed
-	 */
-	executeQuery(query_) {
-		return new Promise((resolve, reject)=>{
-			query_.exec().then((doc)=>{
-				resolve(doc);
-			}).catch(reject);
-		});
-	}
+  /**
+   * Executes a query on database
+   * @param query_ query that will be executed
+   */
+  static executeQuery(query_) {
+    return new Promise((resolve, reject) => {
+      query_.exec().then((doc) => {
+        resolve(doc);
+      }).catch(reject);
+    });
+  }
 
-	/**
-	 * Prints on console logger the crude User Database Object
-	 */
-	printObject(user_) {
-		console.log(user_);
-	}
-
+  /**
+   * Prints on console logger the crude User Database Object
+   */
+  static printObject(user_) {
+    console.log(user_);
+  }
 }

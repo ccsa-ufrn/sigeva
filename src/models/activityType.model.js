@@ -1,5 +1,5 @@
-import mongoose, {Schema} from 'mongoose';
-import {dateRangeSchema} from './dateRange.model';
+import mongoose, { Schema } from 'mongoose';
+import { dateRangeSchema } from './dateRange.model';
 
 /* @@ Activity Type Model
  *
@@ -14,31 +14,31 @@ import {dateRangeSchema} from './dateRange.model';
  */
 
 const activityTypeSchema = new Schema({
-	name: { // Activity Type name (e.g.: "Minicurso")
-		type: String,
-		required: true
-	},
-	slugName: { // Activity Type "URL slug" (e.g.: "mesa-redonda")
-		type: String,
-		required: true
-	},
-	description: String, // Activity Type brief description
-	ofProposalRequiredFiles: [Schema.Types.Mixed], // Required files to make a proposal TODO: Create FileRequirement schema
-	ofProposalRequiredFields: [Schema.Types.ObjectId], // Required fields to make a proposal 
-	proposalPeriod: dateRangeSchema, // Date range to make a proposal
-	enrollmentPeriod: dateRangeSchema, // Date range to enroll a activity of this type
-	ofProposeRules: Schema.Types.Mixed, // Rules to make a proposal TODO: Create Rule schema
-	ofEnrollmentRules: Schema.Types.Mixed, // Rules to enroll a activity TODO: Create Rule schema
-	active: { // Tells if the instance is active
-		type: Boolean,
-		default: true
-	},
-	createdAt: { // Date of creation of the instance
-		type: Date,
-		default: Date.now
-	}
+  name: { // Activity Type name (e.g.: "Minicurso")
+    type: String,
+    required: true,
+  },
+  slugName: { // Activity Type "URL slug" (e.g.: "mesa-redonda")
+    type: String,
+    required: true,
+  },
+  description: String, // Activity Type brief description
+  ofProposalRequiredFiles: [Schema.Types.Mixed], // Required files to make a proposal TODO: Create FileRequirement schema
+  ofProposalRequiredFields: [Schema.Types.ObjectId], // Required fields to make a proposal
+  proposalPeriod: dateRangeSchema, // Date range to make a proposal
+  enrollmentPeriod: dateRangeSchema, // Date range to enroll a activity of this type
+  ofProposeRules: Schema.Types.Mixed, // Rules to make a proposal TODO: Create Rule schema
+  ofEnrollmentRules: Schema.Types.Mixed, // Rules to enroll a activity TODO: Create Rule schema
+  active: { // Tells if the instance is active
+    type: Boolean,
+    default: true,
+  },
+  createdAt: { // Date of creation of the instance
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const activityTypeModel = mongoose.model('ActivityType', activityTypeSchema);
-export {activityTypeSchema};
+export { activityTypeSchema };
 export default activityTypeModel;

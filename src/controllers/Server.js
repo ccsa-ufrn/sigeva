@@ -1,7 +1,7 @@
-import app from './App';
 import express from 'express';
-import APIrouter from './API';
-import {application} from '../../config';
+
+import app from './App';
+import { application } from '../../config';
 
 console.log(`Application enviroment is ${process.env.NODE_ENV}`);
 
@@ -15,5 +15,5 @@ app.use('*', express.static('/home/ccsa/sigeva/public'));
 
 // STARTS THE SERVER
 app.listen(application.port, () => {
-	console.log(`Starting Express ${application.name} ${application.version} at ::${application.port}`);
-})
+  console.log(`Starting Express ${application.name} ${application.version} at ::${application.port}`);
+});

@@ -7,7 +7,8 @@
     "start": "NODE_ENV=dev nodemon src/controllers/Server.js --exec babel-node --presets es2015",
     "test": "npm run build_server && NODE_ENV=test mocha dist/tests --timeout 10000",
     "build_server": "babel src -d dist",
-    "build_react": "webpack --config webpack.config.js"
+    "build_react": "webpack --config webpack.config.js",
+	"lint": "eslint ."
   },
   "directories": {
     "doc": "docs"
@@ -38,6 +39,14 @@
     "babel-preset-react": "^6.24.1",
     "chai": "^4.1.1",
     "chai-http": "^3.0.0",
+    "eslint": "^4.6.1",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-react": "^7.3.0",
+    "eslint-plugin-standard": "^3.0.1",
     "mocha": "^3.5.0",
     "nodemon": "^1.11.0",
     "webpack": "^3.5.4"

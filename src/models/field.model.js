@@ -1,4 +1,4 @@
-import mongoose, {Schema} from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 /**
  * Field Model
@@ -10,17 +10,17 @@ import mongoose, {Schema} from 'mongoose';
  */
 
 const fieldSchema = new Schema({
-    value: { // The stored value for a field request
-        type: Schema.Types.Mixed,
-        required: true
-    },
-    request: { // The request that originated the field filling
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: 'FieldRequest'
-    }
+  value: { // The stored value for a field request
+    type: Schema.Types.Mixed,
+    required: true,
+  },
+  request: { // The request that originated the field filling
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: 'FieldRequest',
+  },
 });
 
 const fieldModel = mongoose.model('Field', fieldSchema);
-export {fieldSchema};
+export { fieldSchema };
 export default fieldModel;

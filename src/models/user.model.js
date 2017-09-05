@@ -1,4 +1,4 @@
-import mongoose, {Schema} from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 /* @@ User Model
  *
@@ -12,44 +12,47 @@ import mongoose, {Schema} from 'mongoose';
  *
  * @ Log
  * Maradona Morais '2017-08-13 17:06': First definition
- * Maradona Morais '2017-08-20 00:23': Create multiples exports (both, schema and model) + Field subdocument support
- * Maradona Morais '2017-08-20 14:15': Remove field with current definition, it is a definition for Field Request
- * Maradona Morais '2017-08-27 16:06': Removes name, email and password fields. It will be included in ofFields
+ * Maradona Morais '2017-08-20 00:23': Create multiples exports (both, schema and model)
+ *                                     + Field subdocument support
+ * Maradona Morais '2017-08-20 14:15': Remove field with current definition, it is a definition for
+ *                                     Field Request
+ * Maradona Morais '2017-08-27 16:06': Removes name, email and password fields. It will be included
+ *                                     in ofFields
  */
 
 const userSchema = new Schema({
-	name: { // Name of the user
-		type: String,
-		required: true
-	},
-	email: { // Email of the user
-		type: String,
-		required: true,
-		unique: true // Email is also a key
-	},
-	emailConfirmation: { // tells if the user's mail was confirmed
-		type: Boolean,
-		default: false
-	},
-	password: { // Encrypted password
-		type: String,
-		required: true
-	},
-	photo: String, // path to user's profile photograph
-	ofTypes: [String], // types of user: Administrator, Common or both.
-	// ofFields uses subdocs Mongoose's feature: http://mongoosejs.com/docs/subdocs.html
-	ofFields: [], // Array of fields that can be defined by a administrator TODO: Link with field
-	ofEvents: [Schema.Types.ObjectId], // Array of references to events that the user is enrolled in
-	active: { // tells if the account was desactivated
-		type: Boolean,
-		default: true
-	},
-	createdAt: { // Date of creation of the instance
-		type: Date,
-		default: Date.now
-	}
+  name: { // Name of the user
+    type: String,
+    required: true,
+  },
+  email: { // Email of the user
+    type: String,
+    required: true,
+    unique: true, // Email is also a key
+  },
+  emailConfirmation: { // tells if the user's mail was confirmed
+    type: Boolean,
+    default: false,
+  },
+  password: { // Encrypted password
+    type: String,
+    required: true,
+  },
+  photo: String, // path to user's profile photograph
+  ofTypes: [String], // types of user: Administrator, Common or both.
+  // ofFields uses subdocs Mongoose's feature: http://mongoosejs.com/docs/subdocs.html
+  ofFields: [], // Array of fields that can be defined by a administrator TODO: Link with field
+  ofEvents: [Schema.Types.ObjectId], // Array of references to events that the user is enrolled in
+  active: { // tells if the account was desactivated
+    type: Boolean,
+    default: true,
+  },
+  createdAt: { // Date of creation of the instance
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const userModel = mongoose.model('User', userSchema);
-export {userSchema};
+export { userSchema };
 export default userModel;
