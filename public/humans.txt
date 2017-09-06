@@ -1,0 +1,16 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Maradona Morais - Developer - @MoraisMaradona
+    Thayrone Daivid - Developer
+
+# THANKS
+
+    Marconi Macedo
+
+# TECHNOLOGY COLOPHON
+
+    CSS3, HTML5
+    Node, React, Babel, jQuery, Bootstrap, Modernizr, Normalize.css
