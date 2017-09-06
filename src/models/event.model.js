@@ -1,6 +1,6 @@
-import mongoose, {Schema} from 'mongoose';
-import {dateRangeSchema} from './dateRange.model';
-import {userSchema} from './user.model';
+import mongoose, { Schema } from 'mongoose';
+import { dateRangeSchema } from './dateRange.model';
+import { userSchema } from './user.model';
 
 /* @@ Event Model
  *

@@ -1,5 +1,5 @@
-import eventDAO from './EventDAO'
-import eventModel from '../../models/event.model'
+import eventDAO from './EventDAO';
+import eventModel from '../../models/event.model';
 import * as EventHelper from './EventHelper';
 
 export default class {
@@ -16,7 +16,7 @@ export default class {
   // [MR] Tipos de parametros e retornos. Utilizar modelo de documentação Javadoc
     // set data
 	setData(data_, res) { // [MR] res está definido mas não está sendo utilizado (???)
-        // [MR] Lembre-se que active deve ser um parametro!!!
+
         let fixed_fields = ['name', 'subtitle', 'active', 'eventPeriod', 'registerPeriod'];
         var errors = []; // Array of errors
 
@@ -27,6 +27,12 @@ export default class {
                 if (field == 'name') {
                     if (!EventHelper.isBetweenLength(data_[field], 3))
                         errors.push({field: field, message: "Valor inválido para " + field});
+                }
+                if (field == 'eventPeriod')
+                {
+                  if (!EventHelper.validaData(data_[field])) {
+                    errors.push({field: field, message: "esse formato de data não é compativel" + field});
+                  }
                 }
                 // [MR] Precisa validar todos os campos. Se eventPeriod ou registerPeriod não estiver
                 // [MR] no formato de data? não pode deixar essa validação para o DB.
@@ -43,7 +49,7 @@ export default class {
 
         // [MR] Identação incorreta
         return new Promise((resolve, reject)=>{
-            // Validate user email existence
+
             // [MR] Comentário acima fora do contexto
 
                         if (errors.length != 0) {
@@ -72,7 +78,7 @@ export default class {
     // [MR] Uma listagem de objetos não deve retornar todos os eventos. Devem haver filtros e paginações
     // [MR] exemplo de como uma listagem deve funcionar: http://jsonapi.org/examples/#pagination
     // show all event in collection
-    listData(req, res) {
+    listData(req,res) {
         eventModel.find(function (err, event) {
             if (err) {
                 res.status(500).send(err)
@@ -107,7 +113,7 @@ export default class {
 	store() {
 		return new Promise((resolve, reject)=>{
             this.DAO.insertEvent(this.eventObject)
-            .then((userDoc)=>{
+            .then((eventDoc)=>{
               // [MR] Isso aqui vai dar um erro, eventDoc não é definido.
               // [MR] userDoc => eventDoc (?)
                     resolve(EventHelper.formatEvent(eventDoc));

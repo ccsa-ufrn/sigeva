@@ -1,9 +1,9 @@
-import {Router} from 'express'
-import Event from './Event'
+import { Router } from 'express';
+import Event from './Event';
 import Response from '../Response';
 import * as EventHelper from './EventHelper';
 
-var eventRouter = Router();
+const eventRouter = Router();
 
 // [MR] essa rota não deve existir
 eventRouter.get('/', (req, res)=> {
@@ -44,30 +44,5 @@ eventRouter.post('/', (req, res)=> {
         res.json(Response(true, data, "Erro ao fazer cadastro"));
     });
 });
-
-
-// [MR] Evite deixar o código poluído. Código comentado é lixo!
-/*
-//TODO
-eventRouter.post('/create', (req, res)=> {
-    var event = new Event();
-    var data = req;
-    event.setData(data);
-    event.store();
-    res.json({sucess: true});
-})
-eventRouter.get('/create_new', (req, res)=> {
-    var event = new Event();
-    var data = {name:"CIENTEC"};
-    event.setData(data);
-    event.store();
-    res.json({sucess: true});
-})
- subtitle: req.body.subtitle,
-                active: req.body.active,
-                eventPeriod: req.body.eventPeriod,
-                registerPeriod: req.body.registerPeriod,
-                createdAt: new Date()
-*/
 
 export default eventRouter;
