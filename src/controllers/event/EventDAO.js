@@ -8,6 +8,7 @@ import eventModel from '../../models/event.model'
 
 // TODO: Support promises
 export default class {
+  // [MR] Transformar todas os métodos em estático
 	/**
 	 * Returns a new instance (Object) of a Event Model defined in /models/event.model
 	 * @return Event Database Object
@@ -20,7 +21,7 @@ export default class {
 	 * Saves on the database a Event Database Object
 	 * @param event Event Database Object
 	 */
-	insertEvent(event_) {
+	insertEvent(event_) { // [MR] essa operação não requer uso de promise?
         event_.save((err)=>{
             if(err)
                 console.log(err);
