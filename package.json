@@ -8,7 +8,7 @@
     "test": "npm run build_server && NODE_ENV=test mocha dist/tests --timeout 10000",
     "build_server": "babel src -d dist",
     "build_react": "webpack --config webpack.config.js",
-	"lint": "eslint ."
+    "lint": "eslint ."
   },
   "directories": {
     "doc": "docs"
@@ -26,10 +26,12 @@
   "dependencies": {
     "async": "^2.5.0",
     "body-parser": "^1.17.2",
+    "ejs": "^2.5.7",
     "express": "^4.15.4",
     "mongoose": "^4.11.6",
     "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
