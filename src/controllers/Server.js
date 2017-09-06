@@ -5,7 +5,7 @@ import path from 'path';
 import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 
-import BasicExample from '../components/BasicExample';
+import ReactRouter from '../components/Router';
 import app from './App';
 import { application } from '../../config';
 
@@ -23,7 +23,7 @@ app.get('*', (req, res) => {
   let status = 200;
   const markup = ReactDOMServer.renderToString(
     <StaticRouter context={context} location={req.url}>
-      <BasicExample/>
+      <ReactRouter />
     </StaticRouter>
   );
 
