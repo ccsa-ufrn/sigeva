@@ -1,0 +1,107 @@
+/*
+  Primary Sigeva color: #FF404E
+  Secundaty Sigeva color: #343a40
+  Color: https://color.adobe.com/pt/ZikColor-color-theme-9923819/
+*/
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+body {
+  /* background: #f8f9f1; */
+  font-family: 'Roboto', sans-serif;
+  position: relative;
+  margin: 0;
+  padding-bottom: 120px;
+  min-height: 100%;
+}
+
+/* BEGIN #nav-header */
+#nav-header #logo-sigeva {
+  background: url(../img/logo.png) no-repeat;
+  background-size: 130px;
+  width: 180px;
+  height: 43px;
+}
+
+#nav-header {
+  /* background: #f2717a !important; */
+  background: #FF404E !important;
+}
+
+#nav-header .nav-link {
+  color: white;
+}
+
+/* END #nav-header */
+
+/* BEGIN .btn */
+.btn {
+  border-radius: 0px !important;
+}
+
+.btn-success {
+  background: #1CA5B8;
+  border: none;
+}
+
+.btn-success:hover {
+  background: #1CA5B8;
+  text-decoration: underline !important;
+  border: none;
+}
+
+.btn-success:focus {
+  box-shadow: 0 0 0 3px #124F5A;
+}
+/* END .btn */
+
+a:hover {
+  text-decoration: underline !important;
+}
+
+/* BEGIN .board */
+.board {
+  border-radius: 0px;
+  margin-top: 20px;
+  border-color: #282828 !important;
+}
+
+.board.card .card-header {
+  background-color: #282828 !important;
+  border-radius: 0px;
+  color: white;
+}
+
+/* END .board */
+
+.event-card {
+  margin-bottom: 10px;
+}
+
+/* BEGIN #events-board */
+#events-board .event-board-body {
+  padding: 10px !important;
+}
+/* END #events-board */
+
+footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100px;
+  padding: 20px;
+  background-color: #282828;
+  color: grey;
+  font-size: 11pt;
+}
+
+footer a {
+  color: grey;
+}
+
+footer a:hover {
+  color: grey;
+}

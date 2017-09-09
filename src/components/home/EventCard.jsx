@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 
 class EventCard extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
-      <div className="card">
+      <div className="card event-card">
         <div className="card-body">
-          <h4 class="card-title">Nome do evento</h4>
-          <h6 class="card-subtitle mb-2 text-muted">Horários | Local</h6>
-          <p class="card-text">Descrição do evento.</p>
-          <a href="#" class="card-link">Inscrever-se</a>
+          <h4 className="card-title">{this.props.name}</h4>
+          <h6 className="card-subtitle mb-2 text-muted">
+            <i className="fa fa-calendar"></i> {this.props.period} <i className="fa fa-map-marker"></i> {this.props.location}
+          </h6>
+          <p className="card-text">{this.props.description} [ <a href="#">ler mais</a> ]</p>
+          <a href="#" className="btn btn-success">Acessar</a> <a href="#" className="btn btn-success">Inscrever-se</a>
         </div>
       </div>
     );
