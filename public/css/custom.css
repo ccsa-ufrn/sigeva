@@ -65,13 +65,14 @@ a:hover {
 .board {
   border-radius: 0px;
   margin-top: 20px;
-  border-color: #282828 !important;
+  border-color: grey !important;
 }
 
 .board.card .card-header {
-  background-color: #282828 !important;
+  /* background-color: #282828 !important; */
+  background: #e9ecef !important;
   border-radius: 0px;
-  color: white;
+  /* color: white; */
 }
 
 /* END .board */
@@ -93,15 +94,15 @@ footer {
   left: 0;
   height: 100px;
   padding: 20px;
-  background-color: #282828;
-  color: grey;
+  background-color: #4F4F4F;
+  color: white;
   font-size: 11pt;
 }
 
 footer a {
-  color: grey;
+  color: white;
 }
 
 footer a:hover {
-  color: grey;
+  color: white;
 }
