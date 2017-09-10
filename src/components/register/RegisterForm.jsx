@@ -1,33 +1,170 @@
 import React, { Component } from 'react';
 
+import InputForm from './InputForm';
+
 class RegisterForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      fields_requests: [],
+      validation_errors: [],
+      fields_loading: true,
+      fields_load_error: true,
+      values : {
+        name: "",
+        email: "",
+        password: "",
+        repeat_password: ""
+      }
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.submit = this.submit.bind(this);
+  }
+
+  handleChange(event) {
+    const target = event.nativeEvent.target;
+    this.setState((prevState, props) => {
+      let newValues = prevState.values;
+      newValues[target.name] = target.value;
+      return { values: newValues };
+    });
+    this.validadePassword(target);
+  }
+
+  componentDidMount() {
+    const config = { method: 'GET', mode: 'cors', timeout: 3000 };
+    fetch('/api/system/register_fields_requests', config)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new TypeError("We haven't got JSON");
+      })
+      .then(json => {
+        json.data.forEach((f_request) => {
+          this.setState((prevState, props) => {
+            let newValues = prevState.values;
+            newValues[f_request.name] = "";
+            return { values: newValues };
+          });
+        });
+        this.setState({ fields_requests: json.data, fields_loading: false, fields_load_error: false });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({ fields_load_error: true, fields_loading: false });
+      });
+  }
+
+  getErrorByField(field) {
+    let error = null;
+    this.state.validation_errors.forEach((err) => {
+      if (err.field === field) {
+        error = err;
+      }
+    });
+    return error;
+  }
+
+  addError(field, message) {
+    this.setState((prevState, props) => {
+      prevState.validation_errors.push({
+        field,
+        message
+      });
+      return { validation_errors: prevState.validation_errors }
+    });
+  }
+
+  clearErrors(field) {
+    this.setState((prevState) => {
+      const new_validation_errors = prevState.validation_errors.filter((el) => {
+        return (el.field !== field);
+      });
+      return { validation_errors: new_validation_errors };
+    });
+  }
+
+  validadePassword(target) {
+    if (target.name == 'password') {
+      if (target.value.length < 5 || target.value.length > 20) {
+        this.addError('password', 'A senha deve possuir entre 5 e 20 caracteres');
+      } else {
+        this.clearErrors('password');
+      }
+    }
+
+    if (target.name == "repeat_password" || (target.name == 'password' && this.state.values.repeat_password !== '')) {
+      if (this.state.values.password !== target.value) {
+        this.addError('repeat_password', 'A repetição não combina com a senha inserida');
+      } else {
+        this.clearErrors('repeat_password');
+      }
+    }
+  }
+
   render() {
-    return(
-      <div className="row">
-        <div className="col-md-8">
-          <form className="form">
-            <div className="form-group">
-              <label>Nome completo</label>
-              <input className="form-control" type="text" name="name" />
-            </div>
-            <div className="form-group">
-              <label>Email</label>
-              <input className="form-control" type="email" name="email" />
-            </div>
-            <div className="form-row">
-              <div className="form-group col-md-6">
-                <label>Senha</label>
-                <input className="form-control" type="password" name="password" />
+    if (this.state.fields_loading) {
+      return(<span>Loading...</span>);
+    } else if (this.state.fields_load_error) {
+      return(<span>Não será possível fazer registro nesse momento. Tente novamente mais tarde.</span>);
+    } else {
+      return(
+        <div className="row">
+          <div className="col-md-8">
+            <form className="form" onSubmit={this.submit}>
+              <InputForm request={{
+                _id: "fixed1",
+                name: "name",
+                readableName: "Nome completo",
+                HTMLtype: "text"
+              }} handleChange={this.handleChange} error={this.getErrorByField('name')} />
+
+              <InputForm request={{
+                _id: "fixed2",
+                name: "email",
+                readableName: "Email",
+                HTMLtype: "email"
+              }} handleChange={this.handleChange} error={this.getErrorByField('email')} />
+
+              <div className="form-row">
+                <div className="col-md-6">
+                  <InputForm request={{
+                    _id: "fixed3",
+                    name: "password",
+                    readableName: "Senha",
+                    HTMLtype: "password"
+                  }} handleChange={this.handleChange} error={this.getErrorByField('password')} />
+                </div>
+                <div className="col-md-6">
+                  <InputForm request={{
+                    _id: "fixed4",
+                    name: "repeat_password",
+                    readableName: "Repetir senha",
+                    HTMLtype: "password"
+                  }} handleChange={this.handleChange} error={this.getErrorByField('repeat_password')} />
+                </div>
               </div>
-              <div className="form-group col-md-6">
-                <label>Repetir senha</label>
-                <input className="form-control" type="password" name="password-repeat" />
-              </div>
-            </div>
-          </form>
+              {this.state.fields_requests.map( request => (
+                <InputForm
+                  request={request}
+                  key={request._id}
+                  handleChange={this.handleChange}
+                  error={this.getErrorByField(request.name)} />
+              ))}
+              <input value="Criar conta" className="btn btn-success" type="submit" />
+            </form>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
+  }
+
+  submit(ev) {
+    ev.preventDefault();
+    console.log(this.state.values);
   }
 }
 

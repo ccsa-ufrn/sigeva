@@ -4,6 +4,7 @@ import Response from './Response';
 // IMPORT ROUTERS
 import userRouter from './user/UserRouter';
 import eventRouter from './event/EventRouter';
+import systemRouter from './system/SystemRouter';
 
 /**
  * API
@@ -20,6 +21,7 @@ APIrouter.get('/', (req, res) => {
 
 APIrouter.use('/user', userRouter); // Set userRouter to /api/user
 APIrouter.use('/event', eventRouter); // Set eventRouter to /api/router
+APIrouter.use('/system', systemRouter); // Set systemRouter to /api/system
 
 // Throw 404 error for API's requests when got the end of API
 APIrouter.all('*', (req, res) => {

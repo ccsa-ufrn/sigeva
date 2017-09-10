@@ -10,13 +10,13 @@ class LoginBoard extends Component {
         <div className="card-body">
           <form id="login-form">
             <div className="form-group row">
-              <label for="email-login-sgv" className="col-sm-3 col-form-label">Email</label>
+              <label htmlFor="email-login-sgv" className="col-sm-3 col-form-label">Email</label>
               <div className="col-sm-9">
                 <input id="email-login-sgv" type="email" className="form-control form-control-sm" aria-describedby="emailHelp"/>
               </div>
             </div>
             <div className="form-group row">
-              <label for="password-login-sgv" className="col-sm-3 col-form-label">Senha</label>
+              <label htmlFor="password-login-sgv" className="col-sm-3 col-form-label">Senha</label>
               <div className="col-sm-9">
                 <input id="password-login-sgv" type="password" className="form-control form-control-sm"/>
                 <a href="" className="small">Esqueceu a senha?</a>

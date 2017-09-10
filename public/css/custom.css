@@ -87,6 +87,7 @@ a:hover {
 }
 /* END #events-board */
 
+/* BEGIN footer */
 footer {
   position: absolute;
   right: 0;
@@ -106,3 +107,12 @@ footer a {
 footer a:hover {
   color: white;
 }
+
+/* END footer */
+
+/* BEGIN form */
+form .form-error-message {
+  font-size: 10pt;
+  color: red;
+}
+/* END form */
