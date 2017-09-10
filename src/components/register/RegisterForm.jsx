@@ -11,6 +11,7 @@ class RegisterForm extends Component {
       validation_errors: [],
       fields_loading: true,
       fields_load_error: true,
+      register_success: false,
       values : {
         name: "",
         email: "",
@@ -37,9 +38,8 @@ class RegisterForm extends Component {
     const config = { method: 'GET', mode: 'cors', timeout: 3000 };
     fetch('/api/system/register_fields_requests', config)
       .then(response => {
-        if (response.ok) {
+        if (response.ok)
           return response.json();
-        }
         throw new TypeError("We haven't got JSON");
       })
       .then(json => {
@@ -53,7 +53,6 @@ class RegisterForm extends Component {
         this.setState({ fields_requests: json.data, fields_loading: false, fields_load_error: false });
       })
       .catch(err => {
-        console.log(err);
         this.setState({ fields_load_error: true, fields_loading: false });
       });
   }
@@ -107,14 +106,16 @@ class RegisterForm extends Component {
 
   render() {
     if (this.state.fields_loading) {
-      return(<span>Loading...</span>);
+      return(<span>Carregando campos para registro...</span>);
     } else if (this.state.fields_load_error) {
       return(<span>Não será possível fazer registro nesse momento. Tente novamente mais tarde.</span>);
+    } else if (this.state.register_success) {
+      return(<span>Nova conta registrada com sucesso.</span>);
     } else {
       return(
         <div className="row">
           <div className="col-md-8">
-            <form className="form" onSubmit={this.submit}>
+            <form method="post" action="#" className="form" onSubmit={this.submit}>
               <InputForm request={{
                 _id: "fixed1",
                 name: "name",
@@ -164,7 +165,32 @@ class RegisterForm extends Component {
 
   submit(ev) {
     ev.preventDefault();
-    console.log(this.state.values);
+    this.setState({validation_errors: []});
+
+    const config = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      mode: 'cors',
+      timeout: 3000,
+      body: JSON.stringify(this.state.values)
+    };
+    fetch('/api/user', config)
+      .then(response => {
+        if (response.ok)
+          return response.json();
+        throw new TypeError("We haven't got JSON");
+      })
+      .then((json) => {
+        console.log(json);
+        if (json.error) {
+          this.setState({validation_errors: json.data});
+        } else {
+          this.setState({register_success: true});
+        }
+      });
   }
 }
 
