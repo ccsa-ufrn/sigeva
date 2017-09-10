@@ -36,7 +36,7 @@ export default class {
             // TODO: A name of user must have at least 1 space
             errors.push({
               field,
-              message: `Valor inválido para  ${field}`,
+              message: 'Valor inválido para nome',
             });
           }
         }
@@ -48,7 +48,7 @@ export default class {
             // Throw invalid email error
             errors.push({
               field,
-              message: `Valor inválido para ${field}`,
+              message: 'Valor inválido para email',
             });
           }
         }
@@ -70,7 +70,7 @@ export default class {
         // It's a required field, must be received
         errors.push({
           field,
-          message: `É obrigatório preencher ${field}`,
+          message: 'É obrigatório preencher este campo',
         });
       }
     });
@@ -102,16 +102,14 @@ export default class {
                     });
                   }
                 });
+                if (errors.length !== 0) {
+                  reject(errors);
+                } else {
+                  // Set the common type to the user
+                  this.userObject.ofTypes.push('common');
+                  resolve();
+                }
               });
-
-            // Set the common type to the user
-            this.userObject.ofTypes.push('common');
-            // Final validation
-            if (errors.length !== 0) {
-              reject(errors); // Reject request throwing a set of errors
-            } else {
-              resolve();
-            }
           }
         });
     });
