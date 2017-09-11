@@ -3,21 +3,22 @@ import Event from './Event'; //
 // [MR] Documentação incompleta
 
 
-const isBetweenLength = (field, min, max=255) => {
-    // [MR] não se deve reassinar um parametro
-    field = field.trim(); // Removes spaces bars from the borders
-    if (field.length < min || field.length > max) return false;
-    return true;
+const isBetweenLength = (field_, min_, max_ = 255) => {
+  // [MR] não se deve reassinar um parametro
+  const field = field_.trim(); // Removes spaces bars from the borders
+  if (field.length < min_ || field.length > max_) return false;
+  return true;
 };
 
 // [MR] Documentação é necessária
 const formatEvent = (eventObject_) => {
-    return {
-        name: eventObject_.name,
-        subtitle: eventObject_.subtitle,
-        active: eventObject_.active,
-        eventPeriod: eventObject_.eventPeriod,
-        registerPeriod: eventObject_.registerPeriod};
+  return {
+    name: eventObject_.name,
+    subtitle: eventObject_.subtitle,
+    active: eventObject_.active,
+    eventPeriod: eventObject_.eventPeriod,
+    registerPeriod: eventObject_.registerPeriod,
+  };
 };
 
  const validaData = (data) => {

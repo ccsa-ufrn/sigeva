@@ -133,7 +133,7 @@ export default class {
       model: fieldRequestModel,
     });
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolvze, reject) => {
       UserDAO.executeQuery(query).then((doc) => {
         if (doc) {
           // Set this user as the required
