@@ -127,16 +127,33 @@ export default class {
     });
   }
 
-  // TODO: Maybe it is not this way
-  static loadById(objectId_) {
-    // Loads the .userObject with a User Database Object searched by passed ID
+  /**
+   * Loads user informations by ID
+   * @param id_ user identification
+   * @return Promise. Resolves if user exists, Rejects otherwise.
+   */
+  loadById(id_) {
+    const query = userModel.findOne({ _id : id_ });
+    return new Promise((resolve, reject) => {
+      UserDAO.executeQuery(query)
+        .then((user) => {
+          if (user) {
+            // Set this current user with the returned
+            this.userObject = user;
+            resolve();
+          } else {
+            // the user doesn't exists
+            reject();
+          }
+        })
+        .catch(reject);
+    });
   }
-
 
   /**
    * Load user by email
    * @param email_ email to search for
-   * @return true if the
+   * @return Promise. Resolves if user exists, Rejects otherwise.
    */
   loadByEmail(email_) {
     const query = userModel.findOne({ email: email_ });
@@ -166,6 +183,17 @@ export default class {
   // TODO: Maybe it is not this way
   static authorize(email_, password_) {
     // Checks if the user authentication credentials are valids, must return a boolean (maybe)
+  }
+
+  // BUG HERE
+  toFormatedUser() {
+    let formatedUser = null;
+    UserHelper.formatUserOfFields(this.userObject)
+      .then((parsedOfFields) => {
+        formatedUser = UserHelper.formatUser(this.userObject, parsedOfFields);
+        console.log(formatedUser);
+      });
+    return formatedUser;
   }
 
   store() {
