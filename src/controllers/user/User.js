@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt';
+
 import UserDAO from './UserDAO';
 import System from '../system/System';
 import * as UserHelper from './UserHelper';
@@ -62,10 +64,20 @@ export default class {
               message: 'A senha deve ter entre 5 e 20 caracteres',
             });
           }
+          // Hash password with bcrypt (https://www.npmjs.com/package/bcrypt)
+          const saltRounds = 10;
+          const hashPassword = bcrypt.hashSync(data_[field], saltRounds);
+          if (hashPassword) {
+            this.userObject.password = hashPassword;
+          } else {
+            errors.push({ field: 'password', message: 'A senha não pôde ser criptografada. O webmaster deve conferir se o sistema atende os requisitos do pacote bcrypt' });
+          }
         }
 
         // Set field in the object
-        this.userObject[field] = data_[field].trim();
+        if (field !== 'password') {
+          this.userObject[field] = data_[field].trim();
+        }
       } else {
         // It's a required field, must be received
         errors.push({
@@ -133,7 +145,7 @@ export default class {
       model: fieldRequestModel,
     });
 
-    return new Promise((resolvze, reject) => {
+    return new Promise((resolve, reject) => {
       UserDAO.executeQuery(query).then((doc) => {
         if (doc) {
           // Set this user as the required

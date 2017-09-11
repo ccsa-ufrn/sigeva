@@ -13,8 +13,7 @@ export default class {
    * Initialize a FieldRequest creating a userDAO and requiring a Object
    */
   constructor() {
-    this.DAO = new FieldRequestDAO();
-    this.fieldRequestObject = this.DAO.createObject();
+    this.fieldRequestObject = FieldRequestDAO.createObject();
   }
 
   /**
@@ -64,7 +63,7 @@ export default class {
   loadById(objectId_) {
     const query = fieldRequestModel.findOne({ _id: objectId_ });
     return new Promise((resolve, reject) => {
-      this.DAO.executeQuery(query)
+      FieldRequestDAO.executeQuery(query)
         .then((doc, err) => {
           this.fieldRequestObject = doc;
           resolve();
@@ -77,7 +76,7 @@ export default class {
    */
   store() {
     return new Promise((resolve, reject) => {
-      this.DAO.insertFieldRequest(this.fieldRequestObject)
+      FieldRequestDAO.insertFieldRequest(this.fieldRequestObject)
         .then(resolve, reject);
     });
   }

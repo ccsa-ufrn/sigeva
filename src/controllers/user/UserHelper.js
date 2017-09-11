@@ -1,4 +1,5 @@
 import async from 'async';
+import bcrypt from 'bcrypt';
 
 import User from './User';
 
