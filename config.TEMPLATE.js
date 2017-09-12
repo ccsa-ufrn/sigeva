@@ -10,4 +10,5 @@ module.exports = {
     test: 'mongodb://localhost/sigeva_test',
     production: 'mongodb://localhost/sigeva',
   },
+  secret: 'your_secret_here',
 };

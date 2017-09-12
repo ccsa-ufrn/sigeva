@@ -176,13 +176,16 @@ export default class {
     });
   }
 
-  static setFields(fields_) {
-    // Recieves a Array of fixed fields, with values to: 'name', 'email', 'password'
-  }
-
   // TODO: Maybe it is not this way
-  static authorize(email_, password_) {
-    // Checks if the user authentication credentials are valids, must return a boolean (maybe)
+  authorize(email_, password_) {
+    // Uses bcrypt to match the hashes
+    return new Promise((resolve, reject) => {
+      this.loadByEmail(email_) // Loads the user by inserted email
+        .then(() => {
+          resolve(bcrypt.compareSync(password_, this.userObject.password));
+        })
+        .catch(reject);
+    });
   }
 
   /**

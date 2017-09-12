@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import * as UserHelper from './UserHelper';
+import JWT from 'jsonwebtoken';
 import Response from '../Response';
+import { secret } from '../../../config';
 
 import User from './User';
 
@@ -28,6 +29,40 @@ userRouter.post('/', (req, res) => {
         });
     }).catch((data) => {
       res.json(Response(true, data, 'Erro ao fazer cadastro'));
+    });
+});
+
+/**
+ * Authorizes a user generating a access token
+ * @param email user email passed by post body
+ * @param password user password passed by post body
+ */
+userRouter.post('/authorize', (req, res) => {
+  const email = req.body.email; // user passed email
+  const password = req.body.password; // user passed password
+
+  const user = new User();
+  user.authorize(email, password)
+    .then((authorized) => {
+      if (authorized) {
+        // User was authorized
+        const tokenData = {
+          _id: user.userObject._id,
+          ofTypes: user.userObject.ofTypes,
+        };
+        // Creates a JWT to grant user access
+        const token = JWT.sign(tokenData, secret, {
+          expiresIn: '24h', // The token expires in 24 hours
+        });
+        res.json(Response(false, { authorized, token }));
+      } else {
+        // Passed password is incorrect
+        res.json(Response(false, { authorized }));
+      }
+    })
+    .catch(() => {
+      // The user with passed email doesn't exists
+      res.json(Response(true, {}, 'Não existe usuário com este email'));
     });
 });
 
