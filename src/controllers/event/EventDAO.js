@@ -13,7 +13,7 @@ export default class {
   * Returns a new instance (Object) of a Event Model defined in /models/event.model
   * @return Event Database Object
   */
-  createObject() {
+   createObject() {
     return new EventModel();
   }
 
@@ -30,11 +30,10 @@ export default class {
   }
 
 
-	/**
-	 * Prints on console logger the crude Event Database Object
-	 */
-	printObject(event_) {
-		console.log(event_);
-	}
-
+  /**
+  * Prints on console logger the crude Event Database Object
+  */
+   printObject(event_) {
+    console.log(event_);
+  }
 }

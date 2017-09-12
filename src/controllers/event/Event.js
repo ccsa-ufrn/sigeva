@@ -44,12 +44,12 @@ export default class {
         }
 
         // Validate email
-        if (field === 'eventPeriod') {
+        if (field === 'eventPeriod' || field === 'registerPeriod') {
           if (!EventHelper.validaData(data_[field])) {
             // Throw invalid email error
             errors.push({
               field,
-              message: 'Valor inválido para EventPeriod',
+              message: 'Valor inválido para a data',
             });
           }
         }
@@ -89,6 +89,14 @@ export default class {
       if (err) {
         res.status(500).send(err);
       } else {
+        const count = Object.keys(event).length;
+        for (let i = 0; i < count; i++) {
+          console.log('Evento:');
+          console.log(JSON.stringify(event[i].name));
+          console.log(JSON.stringify(event[i].subtitle));
+          console.log(JSON.stringify(event[i].eventPeriod));
+          console.log(JSON.stringify(event[i].registerPeriod));
+    }
         res.send(event);
       }
     });
@@ -105,8 +113,8 @@ export default class {
    * @param id event
    * @error
    */
-  loadbyId(data, req, res){
-    eventModel.findById(data, function (err, event) {
+  loadById(data_, req, res){
+    eventModel.findById(data_, function (err, event) {
       if (err) {
         res.send(err);
       }
