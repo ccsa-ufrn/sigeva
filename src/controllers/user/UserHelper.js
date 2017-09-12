@@ -20,6 +20,9 @@ const parseFields = (fields) => {
   return fieldsStr;
 };
 
+/**
+ * Parses a field request to a Array, spliting by blank space
+ */
 const parseFieldsToArray = (fields) => {
   return fields.split(' ');
 };
@@ -54,6 +57,9 @@ const formatUserOfFields = (userObject_) => {
   });
 };
 
+/**
+ * Merges a userObject with parsed ofFields creating a object ready to return by API
+ */
 const formatUser = (userObject_, userOfFieldsParsed_) => {
   const formated = {
     id: userObject_._id,

@@ -176,7 +176,11 @@ export default class {
     });
   }
 
-  // TODO: Maybe it is not this way
+  /**
+   * Authorizes a user based on a email and password credential
+   * @param email_ user email
+   * @param password_ user password
+   */
   authorize(email_, password_) {
     // Uses bcrypt to match the hashes
     return new Promise((resolve, reject) => {
