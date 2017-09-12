@@ -185,15 +185,28 @@ export default class {
     // Checks if the user authentication credentials are valids, must return a boolean (maybe)
   }
 
-  // BUG HERE
-  toFormatedUser() {
-    let formatedUser = null;
-    UserHelper.formatUserOfFields(this.userObject)
-      .then((parsedOfFields) => {
-        formatedUser = UserHelper.formatUser(this.userObject, parsedOfFields);
-        console.log(formatedUser);
-      });
-    return formatedUser;
+  /**
+   * Returns a formated user with filtered and populated fields
+   * @param fields Fields to filter the user by
+   */
+  toFormatedUser(fields) {
+    // Parse fields to array ("cpf, institution" => ["cpf", "institution"])
+    const parsedFields = UserHelper.parseFieldsToArray(fields);
+
+    return new Promise((resolve, reject) => {
+      // Format user fields (populating the requirements)
+      UserHelper.formatUserOfFields(this.userObject)
+        .then((parsedOfFields) => {
+          // Format user to export (merging user infos + user fields)
+          const formatedUser = UserHelper.formatUser(this.userObject, parsedOfFields);
+          // Removes from fields values that are no included in parsedFields
+          formatedUser.fields = formatedUser.fields.filter((field) => {
+            return parsedFields.includes(field.name);
+          });
+          resolve(formatedUser);
+        })
+        .catch(reject);
+    });
   }
 
   store() {

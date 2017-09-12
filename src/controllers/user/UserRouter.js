@@ -38,19 +38,22 @@ userRouter.post('/', (req, res) => {
  */
 userRouter.get('/:id', (req, res) => {
   const id = req.params.id;
-  // const fields = (req.query.fields) ? req.query.fields : '_id'; /* returns ID by default */
-  // const fieldsStr = UserHelper.parse(fields);
+  const fields = (req.query.f) ? req.query.f : '_id'; /* return id by default */
 
-  /* let user = new User(id);
-let data = user.getFields(fieldsStr);
-res.json(Response(true, data)); */
-  const user = new User();
-  user.loadById(id)
+  const user = new User(); // Create a user instance
+  user.loadById(id) // Load the user by the passed ID
     .then(() => {
-      const formatedUser = user.toFormatedUser();
-      res.json(Response(false, formatedUser));
+      // there is a user with that ID
+      user.toFormatedUser(fields) // Format it
+        .then((formatedUser) => {
+          res.json(Response(false, formatedUser));
+        })
+        .catch(() => {
+          res.json(Response(true, {}, 'Erro ao formatar usuário'));
+        });
     })
     .catch(() => {
+      // there is not a user with that ID, display error message
       res.json(Response(true, {}, 'Usuário não encontrado'));
     });
 });

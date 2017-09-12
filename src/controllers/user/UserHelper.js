@@ -1,5 +1,4 @@
 import async from 'async';
-import bcrypt from 'bcrypt';
 
 import User from './User';
 
@@ -19,6 +18,10 @@ const parseFields = (fields) => {
     }
   });
   return fieldsStr;
+};
+
+const parseFieldsToArray = (fields) => {
+  return fields.split(' ');
 };
 
 /**
@@ -53,6 +56,7 @@ const formatUserOfFields = (userObject_) => {
 
 const formatUser = (userObject_, userOfFieldsParsed_) => {
   const formated = {
+    id: userObject_._id,
     name: userObject_.name,
     email: userObject_.email,
     fields: userOfFieldsParsed_,
@@ -97,7 +101,7 @@ const createField = (fieldValue_, fieldRequestId_) => {
  */
 const emailAlreadyExists = (email_) => {
   const user = new User();
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     user.loadByEmail(email_)
       .then(() => { resolve(true); })
       .catch(() => { resolve(false); });
@@ -106,6 +110,7 @@ const emailAlreadyExists = (email_) => {
 
 export {
   parseFields,
+  parseFieldsToArray,
   formatUserOfFields,
   formatUser,
   isEmail,
