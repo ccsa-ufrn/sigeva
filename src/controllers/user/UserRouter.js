@@ -57,7 +57,7 @@ userRouter.post('/authorize', (req, res) => {
         res.json(Response(false, { authorized, token }));
       } else {
         // Passed password is incorrect
-        res.json(Response(false, { authorized }));
+        res.json(Response(true, {}, 'Senha incorreta'));
       }
     })
     .catch(() => {
