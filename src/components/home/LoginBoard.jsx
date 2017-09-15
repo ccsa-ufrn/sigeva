@@ -66,6 +66,11 @@ class LoginBoard extends Component {
 
   submit(event) {
     event.preventDefault();
+
+    if(this.state.email === '' || this.state.password === '') {
+      this.setState({error: 'Insira email e senha para logar'});
+      return;
+    }
     this.setState({logging: true});
 
     const config = {

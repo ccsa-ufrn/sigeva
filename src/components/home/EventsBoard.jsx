@@ -9,6 +9,7 @@ class EventsBoard extends Component {
         <div className="card-body event-board-body">
           <EventCard name="XXII Seminário de Pesquisa" period="2 a 4 de maio" location="Setor V - UFRN" description="Descrição do evento" />
           <EventCard name="XXII Seminário de Pesquisa" period="2 a 4 de maio" location="Setor V - UFRN" description="Descrição do evento" />
+          <EventCard name="XXII Seminário de Pesquisa" period="2 a 4 de maio" location="Setor V - UFRN" description="Descrição do evento" />
         </div>
       </div>
     );
