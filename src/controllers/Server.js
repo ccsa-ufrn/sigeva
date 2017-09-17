@@ -29,13 +29,13 @@ app.get('*', (req, res) => {
 
   // context.url will contain the URL to redirect to if a <Redirect> was used
   if (context.url) {
-    return res.redirect(302, context.url);
+    res.redirect(302, context.url);
   }
 
   if (context.is404) {
     status = 404;
   }
-  res.status(status).render('layout', { root: markup });
+  res.status(status).render('layout', { root: markup, state });
 });
 
 // STARTS THE SERVER
