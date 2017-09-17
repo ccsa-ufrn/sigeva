@@ -24,10 +24,8 @@ export default class {
    * Set data to a System configuration
    */
   setData(data_) {
-    console.log(systemSchema);
-    systemSchema.schema.eachPath((path) => {
-      if (data_[path]) this.systemObject[path] = data_[path];
-    });
+    this.systemObject.name = data_.name;
+    this.systemObject.data = data_.data;
   }
 
   /**
@@ -50,7 +48,11 @@ export default class {
     return new Promise((resolve, reject) => {
       SystemDAO.executeQuery(query)
         .then((result) => {
-          resolve(result.data);
+          if (result) {
+            resolve(result.data);
+          } else {
+            reject();
+          }
         }).catch(reject);
     });
   }

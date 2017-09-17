@@ -96,7 +96,7 @@ export default class {
               field: 'email',
               message: 'Já existe uma conta com este endereço de email',
             });
-            reject(errors); // Finish the registration with error
+            reject({ error_type: 'form', errors }); // Finish the registration with error
           } else {
             // Validate de configurable fields
             System.getRegisterFieldRequests()
@@ -115,12 +115,18 @@ export default class {
                   }
                 });
                 if (errors.length !== 0) {
-                  reject(errors);
+                  reject({ error_type: 'form', errors });
                 } else {
                   // Set the common type to the user
                   this.userObject.ofTypes.push('common');
                   resolve();
                 }
+              })
+              .catch(() => {
+                reject({
+                  error_type: 'system',
+                  message: 'Erro de sistema. Código do erro: 0x1',
+                });
               });
           }
         });

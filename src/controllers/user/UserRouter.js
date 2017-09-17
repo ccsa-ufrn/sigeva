@@ -28,7 +28,11 @@ userRouter.post('/', (req, res) => {
           res.json(Response(true, {}, err));
         });
     }).catch((data) => {
-      res.json(Response(true, data, 'Erro ao fazer cadastro'));
+      if (data.error_type === 'system') {
+        res.status(500).json(Response(true, {}, data.message));
+      } else {
+        res.status(400).json(Response(true, data.errors, 'Erro ao fazer cadastro'));
+      }
     });
 });
 
