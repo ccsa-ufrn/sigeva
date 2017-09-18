@@ -1,26 +1,42 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import HeaderBar from '../HeaderBar';
-import FooterBar from '../FooterBar';
+import MainLayout from '../layout/MainLayout';
 import RegisterForm from './RegisterForm';
 
 class RegisterPage extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    this.props.fetchRegisterFields();
+  }
+
   render() {
+    const registerPath = [
+      {
+        active: false,
+        name: 'Início',
+        address: '/',
+      },
+      {
+        active: true,
+        name: 'Registro',
+        address: '/register',
+      },
+    ];
     return(
-      <div>
-        <HeaderBar />
-        <nav className="breadcrumb">
-          <Link to="/" className="breadcrumb-item">Início</Link>
-          <span className="breadcrumb-item active">Registro</span>
-        </nav>
-        <div className="container-fluid">
-          <RegisterForm />
-        </div>
-        <FooterBar />
-      </div>
+      <MainLayout children={<RegisterForm />} path={registerPath} />
     );
   }
+}
+
+RegisterPage.propTypes = {
+  fields: PropTypes.array,
+  createField: PropTypes.func.isRequired,
+  fetchRegisterFields: PropTypes.func.isRequired,
 }
 
 export default RegisterPage;

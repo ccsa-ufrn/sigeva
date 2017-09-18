@@ -28,6 +28,7 @@ const initialRegisterState = {
 };
 
 const register = (state = initialRegisterState, action) => {
+  console.log(action);
   switch (action.type) {
     case Action.CHANGE_VALUE:
       return Object.assign({}, state, { fields: fields(state.fields, action) });

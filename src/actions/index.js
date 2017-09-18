@@ -15,3 +15,9 @@ export function createField(fieldName, value = '') {
     value,
   });
 }
+
+export function fetchRegisterFields() {
+  return ({
+    type: Action.FETCH_REGISTER_FIELDS,
+  });
+}
