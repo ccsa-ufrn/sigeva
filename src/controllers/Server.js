@@ -35,7 +35,7 @@ app.get('*', (req, res) => {
   if (context.is404) {
     status = 404;
   }
-  res.status(status).render('layout', { root: markup, state });
+  res.status(status).render('layout', { root: markup });
 });
 
 // STARTS THE SERVER

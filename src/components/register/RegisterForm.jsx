@@ -179,9 +179,8 @@ class RegisterForm extends Component {
     };
     fetch('/api/user', config)
       .then(response => {
-        if (response.ok)
-          return response.json();
-        throw new TypeError("We haven't got JSON");
+        return response.json();
+        //throw new TypeError("We haven't got JSON");
       })
       .then((json) => {
         console.log(json);

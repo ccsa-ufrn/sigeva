@@ -74,7 +74,7 @@ class LoginBoard extends Component {
     this.setState({logging: true});
 
     const config = {
-      method: 'POSt',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -83,13 +83,11 @@ class LoginBoard extends Component {
       body: JSON.stringify(this.state)
     };
 
+    this.setState({ error: '' });
     fetch('/api/user/authorize', config)
       .then(response => {
         this.setState({logging: false});
-        if (response.ok)
-          return response.json();
-        this.setState({error:'Erro não esperado'});
-        throw new TypeError("We haven't got JSON");
+        return response.json();
       })
       .then(json => {
         if (json.error) {
