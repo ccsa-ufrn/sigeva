@@ -1,6 +1,7 @@
 import EventDAO from './EventDAO';
-import eventModel from '../../models/event.model';
+import EventModel from '../../models/event.model';
 import * as EventHelper from './EventHelper';
+import Response from '../Response';
 
 /**
  * User
@@ -96,10 +97,52 @@ export default class {
           console.log(JSON.stringify(event[i].subtitle));
           console.log(JSON.stringify(event[i].eventPeriod));
           console.log(JSON.stringify(event[i].registerPeriod));
-    }
+        }
         res.send(event);
       }
     });
+  }
+
+  loadEvents(req_, res_, page_, count_, query_, fields_, sort_){
+    const fieldsStr = EventHelper.eventFieldsParse(fields_);
+    const errors = [];
+    console.log('page ', page_);
+    console.log('coutn ', count_);
+    console.log('query ', query_);
+    console.log('fields', fields_);
+    console.log('sort', sort_);
+    console.log('fieldsStr ', fieldsStr);
+
+    const queryStr = `${query_}.*`;
+    const query = query_ !== '' ? { name: { $regex: queryStr } } : {};
+
+    let sortObj;
+    try {
+      sortObj = JSON.parse(sort_);
+    } catch (e) {
+      res_.status(400).json({
+        error: e.message,
+      });
+      return;
+    }
+
+    let skipNum = 0;
+    if (page_ > 1) {
+      skipNum = (page_ - 1) * count_;
+    }
+    // console.log(queryObj);
+    return new Promise((resolve, reject) => {
+      EventModel
+        .find(query, fieldsStr, { skip: skipNum })
+        .sort(sortObj)
+        .limit(count_)
+        .then((docs) => {
+          resolve(docs);
+            //res.json(docs);// será necessário filtrar somentes os eventos que possuem active = true
+            //res_.json(Response(false, docs));
+        });
+    });
+
   }
 
 

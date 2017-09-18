@@ -2,6 +2,15 @@ import Event from './Event'; //
 
 // [MR] Documentação incompleta
 
+const eventFieldsParse = (fields) => {
+  let fieldsStr = '';
+  const fieldsArray = fields.split(',');
+  fieldsArray.forEach((f) => {
+    fieldsStr = fieldsStr.concat(f);
+    fieldsStr = fieldsStr.concat(' ');
+  });
+  return fieldsStr;
+};
 
 const isBetweenLength = (field_, min_, max_ = 255) => {
   // [MR] não se deve reassinar um parametro
@@ -20,6 +29,10 @@ const formatEvent = (eventObject_) => {
     registerPeriod: eventObject_.registerPeriod,
   };
 };
+
+
+
+
 
  const validaData = (data) => {
       var reg = /[^\d\/\.]/gi;                  // Mascara = dd/mm/aaaa | dd.mm.aaaa
@@ -43,4 +56,4 @@ const formatEvent = (eventObject_) => {
       return false                           // se inválida :(
     }
 
-export {isBetweenLength, formatEvent, validaData};
+export { eventFieldsParse, isBetweenLength, formatEvent, validaData };

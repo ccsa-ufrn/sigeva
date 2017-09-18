@@ -19,58 +19,20 @@ const eventFieldsParse = (fields) => {
 /*
  * Retorna eventos
 */
+
+
 eventRouter.get('/', (req, res) => {
   const page = (req.query.p) ? parseInt(req.query.p, 10) : 1;
-  const count = (req.query.c) ? parseInt(req.query.c, 10) : 10;
-  const query = (req.query.q) ? req.query.q : '{}';
-  const fields = (req.query.f) ? req.query.f : 'name, subtitle, active, eventPeriod, registerPeriod'; /* retorna ID por padrão */
+  const count = (req.query.c) ? parseInt(req.query.c, 10) : 5;
+  const query = (req.query.q) ? req.query.q : '';
+  const fields = (req.query.f) ? req.query.f : 'name,subtitle,active,eventPeriod,registerPeriod'; /* retorna ID por padrão */
   const sort = (req.query.o) ? req.query.o : '{}';
-
-  /* Converte entrada (field1,field2)->(field1 field2) */
-  const fieldsStr = eventFieldsParse(fields);
-
-  console.log('page ', page);
-  console.log('coutn ', count);
-  console.log('query ', query);
-  console.log('fields', fields);
-  console.log('sort', sort);
-  console.log('fieldsStr ', fieldsStr);
-
-
-  let queryObj;
-  try {
-    queryObj = JSON.parse(query);
-  } catch (e) {
-    res.status(400).json({
-      error: e.message,
-    });
-    return;
-  }
-  let sortObj;
-  try {
-    sortObj = JSON.parse(sort);
-  } catch (e) {
-    res.status(400).json({
-      error: e.message,
-    });
-    return;
-  }
-  let skipNum = 0;
-  if (page > 1) {
-    skipNum = (page - 1) * count;
-  }
-
-  console.log('queryObj', queryObj);
-  console.log('sortObj ', sortObj);
-  console.log('skipNum ', skipNum);
-
-  EventModel
-    .find(queryObj, fieldsStr, { skip: skipNum })
-    .sort(sortObj)
-    .limit(count)
-    .then((docs) => {
-      res.json(docs);
-    });
+  //const search = (req.query.s) ? req.query.s : '{}';
+  const event = new Event();
+  event.loadEvents(req, res, page, count, query, fields, sort)
+  .then((event) => {
+    res.json(Response(false, event));
+  });
 });
 
 /*
@@ -82,7 +44,7 @@ eventRouter.get('/:id', (req, res) => {
   EventModel
     .findById(req.params.id, fieldsStr)
     .then((usr) => {
-      res.json(usr);
+      res.json(Response(false, usr));
     });
 });
 

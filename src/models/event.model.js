@@ -15,43 +15,43 @@ import { userSchema } from './user.model';
  * Thayrone Dayvid Dos Santos '2017-08-25 14:12': First definition
  */
 
-const eventSchema = new Schema ({
-	name: { // Event name
-        type: String,
-        required: true,
-        unique: true
-    },
-	subtitle: { // Event theme
-        type: String,
-        required: true
-    },
-	eventPeriod: {  // Event Period
-        type: dateRangeSchema,
-        required: true
-    },
-	registerPeriod: { // Event register period
-        type: dateRangeSchema,
-        required: true
-    },
-    createdAt: { // Criation date
-        type: Date,
-        default: Date.now
-    },
-    userCreator: { // User creattor
-        type: userSchema,
-        required: true
-    },
-    active: { // Instance ON
-        type: Boolean,
-        default: true
-    }
-	//ofUserRelationships[]: UserRelationship,,
-	//ofRoles[]: roles,
-	//ofSubevents[]:Subevent,
-    //ofMoludes[]:Modules
+const eventSchema = new Schema({
+  name: { // Event name
+    type: String,
+    required: true,
+    unique: true,
+  },
+  subtitle: { // Event theme
+    type: String,
+    required: true,
+  },
+  eventPeriod: { // Event Period
+    type: dateRangeSchema,
+    required: true,
+  },
+  registerPeriod: { // Event register period
+    type: dateRangeSchema,
+    required: true,
+  },
+  createdAt: { // Criation date
+    type: Date,
+    default: Date.now,
+  },
+  userCreator: { // User creattor
+    type: userSchema,
+    required: true,
+  },
+  active: { // Instance ON
+    type: Boolean,
+    default: true,
+  },
+  // ofUserRelationships[]: UserRelationship,,
+  // ofRoles[]: roles,
+  // ofSubevents[]:Subevent,
+  // ofMoludes[]:Modules
 
 });
 
 const eventModel = mongoose.model('Event', eventSchema);
-export {eventSchema};
+export { eventSchema };
 export default eventModel;
