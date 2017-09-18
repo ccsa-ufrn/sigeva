@@ -32,10 +32,15 @@ const register = (state = initialRegisterState, action) => {
   switch (action.type) {
     case Action.CHANGE_VALUE:
       return Object.assign({}, state, { fields: fields(state.fields, action) });
+    case Action.FETCH_REGISTER_FIELDS:
+      return Object.assign({}, state, { fields_loading: true, fields_load_error: false });
+    case Action.RECIEVE_REGISTER_FIELDS:
+      console.log(action.fields);
+      return Object.assign({}, state,
+        { fields_loading: false, fields: [...state.fields, action.fields] });
     default:
-      break;
+      return state;
   }
-  return state;
 };
 
 export default register;

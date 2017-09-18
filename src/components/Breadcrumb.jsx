@@ -12,9 +12,9 @@ export default class Breadcrumb extends Component {
         {
           this.props.path.map(path => {
             if (path.active) {
-              return <span className="breadcrumb-item active">{path.name}</span>;
+              return <span key={path.address} className="breadcrumb-item active">{path.name}</span>;
             } else {
-              return <a href={path.address} className="breadcrumb-item">{path.name}</a>;
+              return <a key={path.address} href={path.address} className="breadcrumb-item">{path.name}</a>;
             }
           })
         }
