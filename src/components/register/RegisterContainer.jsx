@@ -5,7 +5,8 @@ import RegisterPage from './RegisterPage';
 
 const mapStateToProps = state => {
   return {
-    fields: state.fields
+    fields: state.register.fields,
+    fields_requests: state.register.fields_requests,
   }
 };
 

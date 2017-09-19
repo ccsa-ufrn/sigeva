@@ -7,6 +7,7 @@ import RegisterForm from './RegisterForm';
 
 class RegisterPage extends Component {
   constructor(props) {
+    console.log('RegisterPage: ', props);
     super(props);
   }
 
@@ -28,7 +29,7 @@ class RegisterPage extends Component {
       },
     ];
     return(
-      <MainLayout children={<RegisterForm />} path={registerPath} />
+      <MainLayout children={<RegisterForm register={this.props} />} path={registerPath} />
     );
   }
 }

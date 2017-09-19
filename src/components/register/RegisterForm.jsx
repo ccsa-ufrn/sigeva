@@ -4,6 +4,7 @@ import InputForm from './InputForm';
 
 class RegisterForm extends Component {
   constructor(props) {
+    console.log("RegisterForm: ", props);
     super(props);
 
     this.state = {
@@ -32,6 +33,10 @@ class RegisterForm extends Component {
       return { values: newValues };
     });
     this.validadePassword(target);
+  }
+
+  componentDidUpdate() {
+    console.log(this.props.register);
   }
 
   componentDidMount() {
@@ -107,8 +112,6 @@ class RegisterForm extends Component {
   render() {
     if (this.state.fields_loading) {
       return(<span>Carregando campos para registro...</span>);
-    } else if (this.state.fields_load_error) {
-      return(<span>Não será possível fazer registro nesse momento. Tente novamente mais tarde.</span>);
     } else if (this.state.register_success) {
       return(<span>Nova conta registrada com sucesso.</span>);
     } else {
@@ -148,7 +151,7 @@ class RegisterForm extends Component {
                   }} handleChange={this.handleChange} error={this.getErrorByField('repeat_password')} />
                 </div>
               </div>
-              {this.state.fields_requests.map( request => (
+              {this.props.register.fields_requests.map( request => (
                 <InputForm
                   request={request}
                   key={request._id}
@@ -183,7 +186,6 @@ class RegisterForm extends Component {
         //throw new TypeError("We haven't got JSON");
       })
       .then((json) => {
-        console.log(json);
         if (json.error) {
           this.setState({validation_errors: json.data});
         } else {

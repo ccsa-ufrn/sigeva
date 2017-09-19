@@ -2,12 +2,17 @@ import express from 'express';
 import React from 'react';
 import path from 'path';
 
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+
 import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 
 import ReactRouter from '../components/Router';
 import app from './App';
 import { application } from '../../config';
+
+import reducers from '../reducers/index';
 
 console.log(`Application enviroment is ${process.env.NODE_ENV}`);
 
@@ -21,10 +26,16 @@ app.use('/public', express.static(path.resolve('public')));
 app.get('*', (req, res) => {
   const context = {};
   let status = 200;
+  const store = createStore(
+    reducers,
+  );
+
   const markup = ReactDOMServer.renderToString(
-    <StaticRouter context={context} location={req.url}>
-      <ReactRouter />
-    </StaticRouter>
+    <Provider store={store}>
+      <StaticRouter context={context} location={req.url}>
+        <ReactRouter />
+      </StaticRouter>
+    </Provider>
   );
 
   // context.url will contain the URL to redirect to if a <Redirect> was used

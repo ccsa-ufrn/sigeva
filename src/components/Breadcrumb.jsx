@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export default class Breadcrumb extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ export default class Breadcrumb extends Component {
             if (path.active) {
               return <span key={path.address} className="breadcrumb-item active">{path.name}</span>;
             } else {
-              return <a key={path.address} href={path.address} className="breadcrumb-item">{path.name}</a>;
+              return <Link key={path.address} to={path.address} className="breadcrumb-item">{path.name}</Link>;
             }
           })
         }
