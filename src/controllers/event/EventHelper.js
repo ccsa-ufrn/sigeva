@@ -30,10 +30,6 @@ const formatEvent = (eventObject_) => {
   };
 };
 
-
-
-
-
  const validaData = (data) => {
       var reg = /[^\d\/\.]/gi;                  // Mascara = dd/mm/aaaa | dd.mm.aaaa
       var valida = data.replace(reg,'');    // aplica mascara e valida só numeros

@@ -37,19 +37,26 @@ const eventSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  userCreator: { // User creattor
-    type: userSchema,
-    required: true,
-  },
   active: { // Instance ON
     type: Boolean,
     default: true,
   },
+  /*
+  userCreator: { // User creattor
+    type: userSchema,
+    required: true,
+  },
+  EventOn: { // If the event is in the activity period
+    type: Boolean,
+    required: true,
+  },
+  local: String, // Event local
+  description: String, // Info about the event
   // ofUserRelationships[]: UserRelationship,,
   // ofRoles[]: roles,
   // ofSubevents[]:Subevent,
   // ofMoludes[]:Modules
-
+*/
 });
 
 const eventModel = mongoose.model('Event', eventSchema);

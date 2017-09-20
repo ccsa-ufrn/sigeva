@@ -22,10 +22,9 @@ export default class {
   * @param event Event Database Object
   */
   insertEvent(event_) { // [MR] essa operação não requer uso de promise?
-    event_.save((err) => {
-      if (err) {
-        console.log(err);
-      }
+    return new Promise((resolve, reject) => {
+      event_.save()
+        .then(resolve).catch(reject);
     });
   }
 

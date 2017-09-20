@@ -4,12 +4,12 @@ import * as EventHelper from './EventHelper';
 import Response from '../Response';
 
 /**
- * User
- * Stores and manipulates User Database Object
+ * Event
+ * Stores and manipulates Event Database Object
  */
 export default class {
   /**
-   * Initialize a User instance creating a userDAO and requesting a empty Object.
+   * Initialize a Event instance creating a EventDAO and requesting a empty Object.
    */
   constructor() {
     // [MR] Mudar: Os métodos do DAO podem ser estáticos, não será necessário criar um objeto
@@ -18,14 +18,12 @@ export default class {
     this.DAO = new EventDAO();
     this.eventObject = this.DAO.createObject();
   }
-  // [MR] Melhorar os comentários o que o método faz detalhadamente, inclusive informando os
-  // [MR] Tipos de parametros e retornos. Utilizar modelo de documentação Javadoc
-
   /**
    * Validate and sets event informations
    * @param data set of fields to load
    * @error message.
    */
+
   setData(data_) {
     const fixedFields = ['name', 'subtitle', 'active', 'eventPeriod', 'registerPeriod'];
     const errors = []; // Array of errors
@@ -65,7 +63,6 @@ export default class {
       }
     });
 
-    // [MR] Identação incorreta
     return new Promise((resolve, reject) => {
       if (errors.length !== 0) {
         reject(errors);
@@ -75,44 +72,15 @@ export default class {
     });
   }
 
-  // [MR] Documentação deve ser de acordo com o Javadoc.
-  // [MR] Esse método não pode receber coisas do Router como parametro (req, res)
-  // [MR] Uma listagem de objetos não deve retornar todos os eventos. Devem haver filtros e paginações
-  // [MR] exemplo de como uma listagem deve funcionar: http://jsonapi.org/examples/#pagination
-  // show all event in collection
   /**
-   * List all event information
-   * @param
-   * @error
+   * List all events
+   * @param req values
+   * @error message
+   * @return Promise. Resolve(Events), Rejects(Errors)
    */
-  listData(req, res) {
-    eventModel.find(function (err, event) {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        const count = Object.keys(event).length;
-        for (let i = 0; i < count; i++) {
-          console.log('Evento:');
-          console.log(JSON.stringify(event[i].name));
-          console.log(JSON.stringify(event[i].subtitle));
-          console.log(JSON.stringify(event[i].eventPeriod));
-          console.log(JSON.stringify(event[i].registerPeriod));
-        }
-        res.send(event);
-      }
-    });
-  }
-
   loadEvents(req_, res_, page_, count_, query_, fields_, sort_){
     const fieldsStr = EventHelper.eventFieldsParse(fields_);
     const errors = [];
-    console.log('page ', page_);
-    console.log('coutn ', count_);
-    console.log('query ', query_);
-    console.log('fields', fields_);
-    console.log('sort', sort_);
-    console.log('fieldsStr ', fieldsStr);
-
     const queryStr = `${query_}.*`;
     const query = query_ !== '' ? { name: { $regex: queryStr } } : {};
 
@@ -138,26 +106,19 @@ export default class {
         .limit(count_)
         .then((docs) => {
           resolve(docs);
-            //res.json(docs);// será necessário filtrar somentes os eventos que possuem active = true
-            //res_.json(Response(false, docs));
+
         });
     });
-
   }
 
-
-  // [MR] Não receber coisas do Router como parametro!!
-  // [MR] Uma busca no banco de dados é asíncrona, deve ter um Promise nesse método
-  // [MR] Casos de erro devem ser retornados com reject de uma Promise
-  // [MR] O nome do método não é coeso, não deve retornar um evento. A funcionalidade deve ser:
-  // carregar no atual eventObject um evento com base no ID passado como parametro.
   /**
    * List a singular event
    * @param id event
-   * @error
+   * @error message
+   * @return Promise. Resolve(Event), Reject(Error)
    */
   loadById(data_, req, res){
-    eventModel.findById(data_, function (err, event) {
+    EventModel.findById(data_, function (err, event) {
       if (err) {
         res.send(err);
       }
@@ -169,7 +130,10 @@ export default class {
     });
   }
 
-  // [MR] documentação necessária. Código mal identado
+  /**
+   * Insert a event in db
+   * @return Promise. Resolve(set event values on), Reject(Error)
+   */
   store() {
     return new Promise((resolve, reject) => {
       this.DAO.insertEvent(this.eventObject)

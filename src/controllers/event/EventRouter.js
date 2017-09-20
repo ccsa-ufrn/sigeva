@@ -6,21 +6,9 @@ import EventModel from '../../models/event.model';
 
 const eventRouter = Router();
 
-const eventFieldsParse = (fields) => {
-  let fieldsStr = '';
-  const fieldsArray = fields.split(',');
-  fieldsArray.forEach((f) => {
-    fieldsStr = fieldsStr.concat(f);
-    fieldsStr = fieldsStr.concat(' ');
-  });
-  return fieldsStr;
-};
-
 /*
- * Retorna eventos
+ * @return a list of events
 */
-
-
 eventRouter.get('/', (req, res) => {
   const page = (req.query.p) ? parseInt(req.query.p, 10) : 1;
   const count = (req.query.c) ? parseInt(req.query.c, 10) : 5;
@@ -37,6 +25,8 @@ eventRouter.get('/', (req, res) => {
 
 /*
  * Retorna um usuário com o ID
+ * @param id for seach
+ * @return event if found
 */
 eventRouter.get('/:id', (req, res) => {
   const fields = (req.query.f) ? req.query.f : 'name, subtitle, active, eventPeriod, registerPeriod'; /* retorna ID por padrão */
@@ -48,20 +38,6 @@ eventRouter.get('/:id', (req, res) => {
     });
 });
 
-// [MR] A rota deve ser /:id e não /find_one. Você vai carregar um usuário, não buscar
-// [MR] Todas as respostas devem ser encapsuladas no Response()
-
-/*
-eventRouter.get('/id', (req, res) => {
-  const event = new Event();
-  const id = '59a43715934c45614b424f76';
-  event.loadById(id, req, res);
-});*/
-
-eventRouter.get('/teste', (req, res) => {
-  const event = new Event();
-  event.teste(req, res);
-});
 /**
  * Create a new event
  * @param fields representing a event
