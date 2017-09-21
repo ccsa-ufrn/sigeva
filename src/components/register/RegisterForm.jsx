@@ -4,67 +4,24 @@ import InputForm from './InputForm';
 
 class RegisterForm extends Component {
   constructor(props) {
-    console.log("RegisterForm: ", props);
     super(props);
 
-    this.state = {
-      fields_requests: [],
-      validation_errors: [],
-      fields_loading: true,
-      fields_load_error: true,
-      register_success: false,
-      values : {
-        name: "",
-        email: "",
-        password: "",
-        repeat_password: ""
-      }
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.submit = this.submit.bind(this);
+    this.doHandleChange = this.doHandleChange.bind(this);
+    this.doSubmit = this.doSubmit.bind(this);
   }
 
-  handleChange(event) {
+  doHandleChange(event) {
     const target = event.nativeEvent.target;
-    this.setState((prevState, props) => {
-      let newValues = prevState.values;
-      newValues[target.name] = target.value;
-      return { values: newValues };
-    });
-    this.validadePassword(target);
+    this.props.register.handleChange(target.name, target.value);
   }
 
-  componentDidUpdate() {
-    console.log(this.props.register);
-  }
-
-  componentDidMount() {
-    const config = { method: 'GET', mode: 'cors', timeout: 3000 };
-    fetch('/api/system/register_fields_requests', config)
-      .then(response => {
-        if (response.ok)
-          return response.json();
-        throw new TypeError("We haven't got JSON");
-      })
-      .then(json => {
-        json.data.forEach((f_request) => {
-          this.setState((prevState, props) => {
-            let newValues = prevState.values;
-            newValues[f_request.name] = "";
-            return { values: newValues };
-          });
-        });
-        this.setState({ fields_requests: json.data, fields_loading: false, fields_load_error: false });
-      })
-      .catch(err => {
-        this.setState({ fields_load_error: true, fields_loading: false });
-      });
+  doSubmit(event) {
+    this.props.register.submit(event, this.props.register.fields);
   }
 
   getErrorByField(field) {
     let error = null;
-    this.state.validation_errors.forEach((err) => {
+    this.props.register.validation_errors.forEach((err) => {
       if (err.field === field) {
         error = err;
       }
@@ -72,66 +29,30 @@ class RegisterForm extends Component {
     return error;
   }
 
-  addError(field, message) {
-    this.setState((prevState, props) => {
-      prevState.validation_errors.push({
-        field,
-        message
-      });
-      return { validation_errors: prevState.validation_errors }
-    });
-  }
-
-  clearErrors(field) {
-    this.setState((prevState) => {
-      const new_validation_errors = prevState.validation_errors.filter((el) => {
-        return (el.field !== field);
-      });
-      return { validation_errors: new_validation_errors };
-    });
-  }
-
-  validadePassword(target) {
-    if (target.name == 'password') {
-      if (target.value.length < 5 || target.value.length > 20) {
-        this.addError('password', 'A senha deve possuir entre 5 e 20 caracteres');
-      } else {
-        this.clearErrors('password');
-      }
-    }
-
-    if (target.name == "repeat_password" || (target.name == 'password' && this.state.values.repeat_password !== '')) {
-      if (this.state.values.password !== target.value) {
-        this.addError('repeat_password', 'A repetição não combina com a senha inserida');
-      } else {
-        this.clearErrors('repeat_password');
-      }
-    }
-  }
-
   render() {
-    if (this.state.fields_loading) {
+    console.log(this.props.register.fields[0].value);
+    if (this.props.register.fields_loading) {
       return(<span>Carregando campos para registro...</span>);
-    } else if (this.state.register_success) {
+    } else if (this.props.register.register_success) {
       return(<span>Nova conta registrada com sucesso.</span>);
     } else {
       return(
         <div className="row">
           <div className="col-md-8">
-            <form method="post" action="#" className="form" onSubmit={this.submit}>
+            <form className="form" onSubmit={this.doSubmit}>
               <InputForm request={{
                 _id: "fixed1",
                 name: "name",
                 readableName: "Nome completo",
                 HTMLtype: "text"
-              }} handleChange={this.handleChange} error={this.getErrorByField('name')} />
+              }} handleChange={this.doHandleChange} error={this.getErrorByField('name')} />
 
               <InputForm request={{
                 _id: "fixed2",
                 name: "email",
                 readableName: "Email",
                 HTMLtype: "email"
-              }} handleChange={this.handleChange} error={this.getErrorByField('email')} />
+              }} handleChange={this.doHandleChange} error={this.getErrorByField('email')} />
 
               <div className="form-row">
                 <div className="col-md-6">
@@ -140,7 +61,7 @@ class RegisterForm extends Component {
                     name: "password",
                     readableName: "Senha",
                     HTMLtype: "password"
-                  }} handleChange={this.handleChange} error={this.getErrorByField('password')} />
+                  }} handleChange={this.doHandleChange} error={this.getErrorByField('password')} />
                 </div>
                 <div className="col-md-6">
                   <InputForm request={{
@@ -148,14 +69,14 @@ class RegisterForm extends Component {
                     name: "repeat_password",
                     readableName: "Repetir senha",
                     HTMLtype: "password"
-                  }} handleChange={this.handleChange} error={this.getErrorByField('repeat_password')} />
+                  }} handleChange={this.doHandleChange} error={this.getErrorByField('repeat_password')} />
                 </div>
               </div>
               {this.props.register.fields_requests.map( request => (
                 <InputForm
                   request={request}
                   key={request._id}
-                  handleChange={this.handleChange}
+                  handleChange={this.doHandleChange}
                   error={this.getErrorByField(request.name)} />
               ))}
               <input value="Criar conta" className="btn btn-success" type="submit" />

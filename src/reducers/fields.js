@@ -4,10 +4,11 @@ const initialFieldState = [
 ];
 
 const fields = (prevFields = initialFieldState, action) => {
-  switch (action) {
-    case Action.CHANGE_FIELD_VALUE:
+  console.log('here');
+  switch (action.type) {
+    case Action.HANDLE_REGISTER_FIELD_CHANGE:
       return prevFields.map((field) => {
-        if (field.name === action.field_name) {
+        if (field.name === action.fieldName) {
           return { name: field.name, value: action.value };
         }
         return field;

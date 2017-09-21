@@ -7,7 +7,6 @@ import RegisterForm from './RegisterForm';
 
 class RegisterPage extends Component {
   constructor(props) {
-    console.log('RegisterPage: ', props);
     super(props);
   }
 
