@@ -1,5 +1,6 @@
 import EventDAO from './EventDAO';
 import EventModel from '../../models/event.model';
+import DateRangeModel from '../../models/dateRange.model';
 import * as EventHelper from './EventHelper';
 import Response from '../Response';
 
@@ -25,35 +26,44 @@ export default class {
    */
 
   setData(data_) {
-    const fixedFields = ['name', 'subtitle', 'active', 'eventPeriod', 'registerPeriod'];
+    const fixedFields = ['name', 'subtitle', 'eventPeriodBegin', 'eventPeriodEnd', 'eventPeriod', 'registerPeriodBegin', 'registerPeriodEnd', 'registerPeriod'];
     const errors = []; // Array of errors
+
+    const eventPeriod = new DateRangeModel({
+      begin: data_.eventPeriodBegin,
+      end: data_.eventPeriodEnd });
+    data_.eventPeriod = eventPeriod;
+
+    const registerPeriod = new DateRangeModel({
+      begin: data_.registerPeriodBegin,
+      end: data_.registerPeriodEnd });
+    data_.registerPeriod = registerPeriod;
 
     fixedFields.forEach((field) => {
       if (data_[field]) {
         // Validade name
         if (field === 'name') {
           if (!EventHelper.isBetweenLength(data_[field], 3)) {
-            // Throw invalid name error
-            // TODO: A name of user must have at least 1 space
             errors.push({
               field,
               message: 'Valor inválido para nome',
             });
           }
         }
-
-        // Validate email
-        if (field === 'eventPeriod' || field === 'registerPeriod') {
+        if (field === 'eventPeriodBegin' || field === 'eventPeriodEnd') {
           if (!EventHelper.validaData(data_[field])) {
-            // Throw invalid email error
             errors.push({
               field,
               message: 'Valor inválido para a data',
             });
           }
         }
-        // Set field in the object
-        this.eventObject[field] = data_[field].trim();
+        if (field === 'eventPeriod' || field === 'registerPeriod') {
+          this.eventObject[field] = data_[field];
+        }
+        else {
+          this.eventObject[field] = data_[field].trim();
+        }
       } else {
         // It's a required field, must be received
         errors.push({
@@ -62,6 +72,7 @@ export default class {
         });
       }
     });
+
 
     return new Promise((resolve, reject) => {
       if (errors.length !== 0) {
