@@ -30,11 +30,12 @@ class RegisterForm extends Component {
   }
 
   render() {
-    console.log(this.props.register.fields[0].value);
     if (this.props.register.fields_loading) {
       return(<span>Carregando campos para registro...</span>);
     } else if (this.props.register.register_success) {
       return(<span>Nova conta registrada com sucesso.</span>);
+    } else if (this.props.register.system_failure) {
+      return(<span>O sistema está atualmente indisponível para esta ação.</span>);
     } else {
       return(
         <div className="row">
@@ -80,6 +81,9 @@ class RegisterForm extends Component {
                   error={this.getErrorByField(request.name)} />
               ))}
               <input value="Criar conta" className="btn btn-success" type="submit" />
+              {this.props.register.submition_loading &&
+                <span> Submetendo registro...</span>
+              }
             </form>
           </div>
         </div>

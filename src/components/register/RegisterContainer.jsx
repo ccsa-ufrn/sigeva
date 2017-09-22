@@ -26,7 +26,7 @@ const mapDispathToProps = dispatch => {
       dispatch(handleRegisterFieldChange(fieldName, value));
     },
     submit: (event, fields) => {
-      dispatch(submitRegister(event));
+      dispatch(submitRegister(event, fields));
     }
   }
 }
