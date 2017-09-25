@@ -90,34 +90,6 @@ class RegisterForm extends Component {
       );
     }
   }
-
-  submit(ev) {
-    ev.preventDefault();
-    this.setState({validation_errors: []});
-
-    const config = {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      mode: 'cors',
-      timeout: 3000,
-      body: JSON.stringify(this.state.values)
-    };
-    fetch('/api/user', config)
-      .then(response => {
-        return response.json();
-        //throw new TypeError("We haven't got JSON");
-      })
-      .then((json) => {
-        if (json.error) {
-          this.setState({validation_errors: json.data});
-        } else {
-          this.setState({register_success: true});
-        }
-      });
-  }
 }
 
 export default RegisterForm;

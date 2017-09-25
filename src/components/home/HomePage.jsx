@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import HeaderBar from '../HeaderBar';
 import EventsBoard from './EventsBoard';
-import LoginBoard from './LoginBoard';
+import LoginContainer from '../login/LoginContainer';
 import FooterBar from '../FooterBar';
 
 class HomePage extends Component {
@@ -15,7 +15,7 @@ class HomePage extends Component {
               <EventsBoard />
             </div>
             <div className="col-md-4">
-              <LoginBoard />
+              <LoginContainer />
             </div>
           </div>
         </div>

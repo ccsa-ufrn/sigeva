@@ -5,16 +5,9 @@ import RegisterPage from './RegisterPage';
 
 const mapStateToProps = state => {
   return state.register;
-  // {
-  //   fields: state.register.fields,
-  //   fields_requests: state.register.fields_requests,
-  //   fields_loading: state.register.fields_loading,
-  //   fields_load_error: state.register.fields_load_error,
-  //   register_success: state.register.register_success
-  // }
 };
 
-const mapDispathToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
   return {
     createField: (fieldName, value = '') => {
       dispatch(createField(fieldName, value));
@@ -33,7 +26,7 @@ const mapDispathToProps = dispatch => {
 
 const RegisterContainer = connect(
   mapStateToProps,
-  mapDispathToProps
+  mapDispatchToProps
 )(RegisterPage);
 
 export default RegisterContainer;
