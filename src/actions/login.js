@@ -1,4 +1,5 @@
 import * as Action from './constants';
+import { setUserSessionToken } from './userSession';
 
 export function doingLogin() {
   return ({
@@ -64,7 +65,7 @@ export function submitLogin(event, fields) {
         if (json.error) {
           dispatch(didLoginWithError(json.error_info));
         } else if (json.data.token) {
-          localStorage.setItem('sigeva_user_token', json.data.token);
+          dispatch(setUserSessionToken(json.data.token));
           dispatch(didLoginWithSuccess());
         } else {
           dispatch(didLoginWithFailure('Falha não esperada do sistema'));
