@@ -3,13 +3,15 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-import HomePage from './home/HomePage';
+import HomePageContainer from './home/HomePageContainer';
 import RegisterContainer from './register/RegisterContainer';
+import Error404 from './error/Error404';
 
 const Router = () => (
   <Switch>
-    <Route exact path="/" component={HomePage} />
+    <Route exact path="/" component={HomePageContainer} />
     <Route exact path="/register" component={RegisterContainer} />
+    <Route component={Error404} />
   </Switch>
 );
 

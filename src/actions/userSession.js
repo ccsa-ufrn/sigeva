@@ -15,7 +15,7 @@ function fetchUserMe(token) {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Basic ${token}`,
+      Authorization: token,
     },
   };
 

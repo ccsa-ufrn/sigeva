@@ -7,7 +7,6 @@ import Breadcrumb from '../Breadcrumb';
 
 export default class MainLayout extends Component {
   constructor(props) {
-    console.log(props.path);
     super(props);
   }
 
@@ -15,7 +14,9 @@ export default class MainLayout extends Component {
     return(
       <div>
         <HeaderBar />
-        <Breadcrumb path={ this.props.path } />
+        { this.props.path &&
+          <Breadcrumb path={ this.props.path } />
+        }
         <div className="container-fluid">
           { this.props.children }
         </div>
@@ -27,5 +28,5 @@ export default class MainLayout extends Component {
 
 MainLayout.propTypes = {
   children: PropTypes.any.isRequired,
-  path: PropTypes.array.isRequired
+  path: PropTypes.array,
 }
