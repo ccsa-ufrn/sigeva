@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import JWT from 'jsonwebtoken';
+
 import Response from '../Response';
+import { simpleAuthorization } from '../authorization/Authorization';
 import { secret } from '../../../config';
 
 import User from './User';
@@ -64,9 +66,26 @@ userRouter.post('/authorize', (req, res) => {
         res.json(Response(true, {}, 'Senha incorreta'));
       }
     })
-    .catch(() => {
+    .catch((err) => {
       // The user with passed email doesn't exists
+      console.log(err);
       res.json(Response(true, {}, 'Não existe usuário com este email'));
+    });
+});
+
+/**
+ * Return the formated current logged user
+ * @return User Object
+ */
+userRouter.get('/me', simpleAuthorization, (req, res) => {
+  const user = new User();
+  user.loadById(res.locals.user._id) // Load from id validated by simpleAuthorization
+    .then(() => {
+      // The user exists
+      user.toFormatedUser('')
+        .then((formatedUser) => {
+          res.json(Response(false, formatedUser));
+        });
     });
 });
 
