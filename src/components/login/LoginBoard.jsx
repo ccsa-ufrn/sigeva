@@ -43,7 +43,7 @@ class LoginBoard extends Component {
                 <a href="" className="small">Esqueceu a senha?</a>
               </div>
             </div>
-            { this.props.errorMessage !== '' && !this.props.doingLogin &&
+            { this.props.errorMessage !== '' && !this.props.doingLogin && !this.props.success &&
               <div className="form-error-message form-group row">
                 <div className="col-sm-9">
                   <span className="form-error-message">{ this.props.errorMessage }</span>
