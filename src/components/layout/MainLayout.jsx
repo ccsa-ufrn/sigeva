@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import FooterBar from '../FooterBar';
-import HeaderBar from '../HeaderBar';
+import MainHeaderBar from './MainHeaderBar';
 import Breadcrumb from '../Breadcrumb';
 
 export default class MainLayout extends Component {
@@ -13,7 +13,7 @@ export default class MainLayout extends Component {
   render() {
     return(
       <div>
-        <HeaderBar />
+        <MainHeaderBar />
         { this.props.path &&
           <Breadcrumb path={ this.props.path } />
         }
