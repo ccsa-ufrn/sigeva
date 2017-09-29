@@ -19,11 +19,6 @@ let store = createStore(
   )
 );
 
-const userToken = localStorage.getItem('sigeva_user_token');
-if (userToken) {
-  store.dispatch(setUserSessionToken(userToken));
-}
-
 const App = () => (
   <Provider store={store}>
     <BrowserRouter>

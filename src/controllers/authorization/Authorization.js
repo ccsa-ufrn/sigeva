@@ -9,7 +9,7 @@ import { secret } from '../../../config';
 export function simpleAuthorization(req, res, next) {
   if (req.cookies.sigeva_user_token) {
     // The authorization header is defined
-    const token = req.cookies.sigeva_user_token;
+    const token = req.cookies.sigeva_user_token || req.get('Authorization');
     JWT.verify(token, secret, (err, decoded) => {
       if (!err) {
         res.locals.user = decoded;

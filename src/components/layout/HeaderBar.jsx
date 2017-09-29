@@ -20,8 +20,8 @@ class HeaderBar extends Component {
             {
               this.props.links.map((link) => {
                 return (
-                  <li className='nav-item active'>
-                    <Link to={link.path} key={link.path} className='nav-link'>{link.title}</Link>
+                  <li className='nav-item active' key={link.path}>
+                    <Link to={link.path} className='nav-link'>{link.title}</Link>
                   </li>
                 );
               })
