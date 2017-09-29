@@ -116,3 +116,12 @@ form .form-error-message {
   color: red;
 }
 /* END form */
+
+/* BEGIN error 404 */
+#error404 {
+  margin-top: 20px;
+}
+#error404 #error-text {
+
+}
+/* END error 404 */
