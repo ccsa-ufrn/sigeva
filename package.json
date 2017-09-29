@@ -29,6 +29,7 @@
     "bcrypt": "^1.0.3",
     "body-parser": "^1.17.2",
     "bootstrap": "^3.3.7",
+    "cookie-parser": "^1.4.3",
     "ejs": "^2.5.7",
     "express": "^4.15.4",
     "jsonwebtoken": "^8.0.1",

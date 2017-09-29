@@ -9,7 +9,6 @@ const initialUserSessionState = {
 const userSession = (state = initialUserSessionState, action) => {
   switch (action.type) {
     case Action.SET_USER_SESSION_TOKEN:
-      localStorage.setItem('sigeva_user_token', action.token);
       return Object.assign({}, state, {
         token: action.token,
         logged: true,

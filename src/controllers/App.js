@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import connector from './MongoConnector';
 
 import APIrouter from './API';
@@ -10,6 +11,9 @@ const app = express();
 app.use(bodyParser.urlencoded({
   extended: false,
 }));
+
+// enable application to use cookies
+app.use(cookieParser());
 
 // parse application/json
 app.use(bodyParser.json());

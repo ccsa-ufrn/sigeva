@@ -60,7 +60,7 @@ userRouter.post('/authorize', (req, res) => {
         const token = JWT.sign(tokenData, secret, {
           expiresIn: '24h', // The token expires in 24 hours
         });
-        res.json(Response(false, { authorized, token }));
+        res.cookie('sigeva_user_token', token).json(Response(false, { authorized, token }));
       } else {
         // Passed password is incorrect
         res.json(Response(true, {}, 'Senha incorreta'));

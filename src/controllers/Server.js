@@ -4,6 +4,7 @@ import path from 'path';
 
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import thunkMiddleware from 'redux-thunk'
 
 import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
@@ -13,6 +14,7 @@ import app from './App';
 import { application } from '../../config';
 
 import reducers from '../reducers/index';
+import { setUserSessionToken } from '../actions/userSession';
 
 console.log(`Application enviroment is ${process.env.NODE_ENV}`);
 
@@ -28,7 +30,12 @@ app.get('*', (req, res) => {
   let status = 200;
   const store = createStore(
     reducers,
+    applyMiddleware(thunkMiddleware),
   );
+
+  if (req.cookies.sigeva_user_token) {
+    store.dispatch(setUserSessionToken(req.cookies.sigeva_user_token));
+  }
 
   const markup = ReactDOMServer.renderToString(
     <Provider store={store}>
@@ -41,12 +48,12 @@ app.get('*', (req, res) => {
   // context.url will contain the URL to redirect to if a <Redirect> was used
   if (context.url) {
     res.redirect(302, context.url);
+  } else {
+    if (context.is404) {
+      status = 404;
+    }
+    res.status(status).render('layout', { root: markup });
   }
-
-  if (context.is404) {
-    status = 404;
-  }
-  res.status(status).render('layout', { root: markup });
 });
 
 // STARTS THE SERVER

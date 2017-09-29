@@ -7,9 +7,9 @@ import { secret } from '../../../config';
  * Authorization pre-router function
  */
 export function simpleAuthorization(req, res, next) {
-  if (req.get('Authorization')) {
+  if (req.cookies.sigeva_user_token) {
     // The authorization header is defined
-    const token = req.get('Authorization');
+    const token = req.cookies.sigeva_user_token;
     JWT.verify(token, secret, (err, decoded) => {
       if (!err) {
         res.locals.user = decoded;

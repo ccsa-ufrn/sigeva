@@ -50,6 +50,7 @@ export function submitLogin(event, fields) {
       method: 'POST',
       mode: 'cors',
       timeout: 3000,
+      credentials: 'include',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
