@@ -90,6 +90,18 @@ userRouter.get('/me', simpleAuthorization, (req, res) => {
 });
 
 /**
+ * Close the user session of the current logged user
+ */
+userRouter.get('/logout', simpleAuthorization, (req, res) => {
+  try {
+    res.clearCookie('sigeva_user_token').json(Response(false, {}));
+  } catch (e) {
+    res.json(Response(true, {}, 'Erro desconhecido ao fechar sessão de usuário'));
+    console.error(e);
+  }
+});
+
+/**
  * Get user by ID
  * @param field user fields to be returned in request
  * @return User Object

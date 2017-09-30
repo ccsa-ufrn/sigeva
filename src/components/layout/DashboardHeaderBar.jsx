@@ -10,7 +10,8 @@ class DashboardHeaderBar extends Component {
     const links = [
       {
         title: 'Sair',
-        path: '/logout',
+        path: '',
+        onclick: this.props.logout,
       },
     ];
 

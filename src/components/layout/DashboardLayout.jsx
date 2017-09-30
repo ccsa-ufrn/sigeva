@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DashboardHeaderBar from './DashboardHeaderBar';
+import DashboardHeaderBarContainer from './DashboardHeaderBarContainer';
 
 class DashboardLayout extends Component {
   constructor(props) {
@@ -9,7 +9,7 @@ class DashboardLayout extends Component {
   render() {
     return (
       <div>
-        <DashboardHeaderBar />
+        <DashboardHeaderBarContainer />
       </div>
     );
   }

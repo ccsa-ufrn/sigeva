@@ -44,3 +44,34 @@ export function loadUserIfNeed() {
     }
   };
 }
+
+export function clearUserSessionData() {
+  return ({
+    type: Action.CLEAR_USER_SESSION_DATA,
+  });
+}
+
+export function logoutUserSession() {
+  return (dispatch) => {
+    const config = {
+      method: 'GET',
+      mode: 'cors',
+      timeout: 3000,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    };
+
+    return fetch('/api/user/logout', config)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        if (!json.error) {
+          dispatch(clearUserSessionData());
+        }
+      }); // TODO: Can we get a error?
+  };
+}

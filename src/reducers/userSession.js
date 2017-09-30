@@ -18,6 +18,8 @@ const userSession = (state = initialUserSessionState, action) => {
         logged_user: action.data,
         logged: true,
       });
+    case Action.CLEAR_USER_SESSION_DATA:
+      return initialUserSessionState;
     default:
       return state;
   }
