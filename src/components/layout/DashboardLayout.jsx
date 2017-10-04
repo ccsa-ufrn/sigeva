@@ -10,6 +10,9 @@ class DashboardLayout extends Component {
     return (
       <div>
         <DashboardHeaderBarContainer />
+        <div className="container-fluid">
+          { this.props.children }
+        </div>
       </div>
     );
   }

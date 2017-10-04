@@ -12,17 +12,18 @@ class HomePage extends Component {
     if (this.props.logged) {
       return(<Redirect to='/dashboard' />);
     } else {
-      const children = (
-        <div className='row'>
-          <div className='col-md-8'>
-            <EventsBoard />
+      return(
+        <MainLayout>
+          <div className='row'>
+            <div className='col-md-8'>
+              <EventsBoard />
+            </div>
+            <div className='col-md-4'>
+              <LoginContainer />
+            </div>
           </div>
-          <div className='col-md-4'>
-            <LoginContainer />
-          </div>
-        </div>
+        </MainLayout>
       );
-      return (<MainLayout children={children} />);
     }
   }
 }

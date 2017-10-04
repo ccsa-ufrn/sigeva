@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import DashboardLayout from '../layout/DashboardLayout';
+import MainMenu from './MainMenu';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -17,9 +18,13 @@ class Dashboard extends Component {
     } else {
       return (
         <div>
-          <DashboardLayout />
-          { this.props.userSession.logged_user !== null &&
-          this.props.userSession.logged_user.name }
+          <DashboardLayout>
+            <div className='row'>
+              <div className='col-md-4'>
+                <MainMenu />
+              </div>
+            </div>
+          </DashboardLayout>
         </div>
       );
     }
