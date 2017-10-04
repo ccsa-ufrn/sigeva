@@ -35,6 +35,12 @@ export function handleLoginFieldChange(fieldName, value) {
   });
 }
 
+export function clearUserLoginData() {
+  return ({
+    type: Action.CLEAR_USER_LOGIN_DATA,
+  });
+}
+
 // Thunk Redux action to submit a login form
 export function submitLogin(event, fields) {
   event.preventDefault();
@@ -66,6 +72,7 @@ export function submitLogin(event, fields) {
         if (json.error) {
           dispatch(didLoginWithError(json.error_info));
         } else if (json.data.token) {
+          dispatch(clearUserLoginData());
           dispatch(setUserSessionToken(json.data.token));
           dispatch(didLoginWithSuccess());
         } else {

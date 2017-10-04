@@ -35,6 +35,8 @@ const login = (state = initialLoginState, action) => {
         success: false,
         errorMessage: action.message,
       });
+    case Action.CLEAR_USER_LOGIN_DATA:
+      return initialLoginState;
     default:
       return state;
   }
