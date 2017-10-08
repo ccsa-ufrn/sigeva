@@ -1,3 +1,5 @@
+import fetch from 'isomorphic-fetch';
+import { application } from '../../config';
 import * as Action from './constants';
 
 export function setUserSessionToken(token) {
@@ -26,7 +28,7 @@ function fetchUserMe() {
     credentials: 'include',
   };
 
-  return fetch('/api/user/me', config)
+  return fetch(`${application.url}/api/user/me`, config)
     .then((response) => {
       return response.json();
     });
@@ -64,7 +66,7 @@ export function logoutUserSession() {
       credentials: 'include',
     };
 
-    return fetch('/api/user/logout', config)
+    return fetch(`${application.url}/api/user/logout`, config)
       .then((response) => {
         return response.json();
       })

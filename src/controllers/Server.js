@@ -52,7 +52,8 @@ app.get('*', (req, res) => {
     if (context.is404) {
       status = 404;
     }
-    res.status(status).render('layout', { root: markup });
+    const initialState = JSON.stringify(store.getState());
+    res.status(status).render('layout', { root: markup, initialState });
   }
 });
 

@@ -8,7 +8,7 @@ class Dashboard extends Component {
     super(props);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.loadUserIfNeed();
   }
 

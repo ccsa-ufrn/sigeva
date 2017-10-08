@@ -1,3 +1,5 @@
+import fetch from 'isomorphic-fetch';
+import { application } from '../../config';
 import * as Action from './constants';
 import { setUserSessionToken } from './userSession';
 
@@ -64,7 +66,7 @@ export function submitLogin(event, fields) {
       body: JSON.stringify(fields),
     };
 
-    fetch('/api/user/authorize', config)
+    fetch(`${application.url}/api/user/authorize`, config)
       .then((response) => {
         return response.json();
       })

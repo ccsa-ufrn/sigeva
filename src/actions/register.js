@@ -1,3 +1,5 @@
+import fetch from 'isomorphic-fetch';
+import { application } from '../../config';
 import * as Action from './constants';
 
 export function requestRegisterFields() {
@@ -58,7 +60,7 @@ export function fetchRegisterFields() {
   return (dispatch) => {
     dispatch(requestRegisterFields());
     const config = { method: 'GET', mode: 'cors', timeout: 3000 };
-    return fetch('/api/system/register_fields_requests', config)
+    return fetch(`${application.url}/api/system/register_fields_requests`, config)
       .then(
         response => response.json(),
         error => console.log('An error ocurred', error),
@@ -92,7 +94,7 @@ export function submitRegister(event, fields) {
         },
         body: JSON.stringify(parsedFields),
       };
-      return fetch('/api/user', config)
+      return fetch(`${application.url}/api/user`, config)
         .then((response) => {
           return (response.json());
         })

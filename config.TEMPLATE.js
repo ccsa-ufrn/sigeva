@@ -3,6 +3,7 @@ module.exports = {
   {
     name: 'AppName',
     version: '0.0.1',
+    url: 'http://localhost:3000',
     port: 3000,
   },
   mongo_connection: {
