@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import MainLayout from '../layout/MainLayout';
-import InscriptionBoard from './InscriptionBoard';
+import InscriptionBoardContainer from './InscriptionBoardContainer';
 
 class EventPage extends Component {
   render() {
@@ -12,7 +12,7 @@ class EventPage extends Component {
             {/* Event datails go here */}
           </div>
           <div className='col-md-4'>
-            <InscriptionBoard />
+            <InscriptionBoardContainer />
           </div>
         </div>
       </MainLayout>
