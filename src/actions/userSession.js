@@ -37,7 +37,8 @@ function fetchUserMe() {
 // Thunk redux action that loads user from database if needed
 export function loadUserIfNeed() {
   return (dispatch, getState) => {
-    if (getState().userSession.logged_user === null) {
+    if (getState().userSession.logged_user === null &&
+        getState().userSession.token !== null) {
       // User not logged yet
       fetchUserMe()
         .then((json) => {
@@ -65,7 +66,7 @@ export function logoutUserSession() {
       },
       credentials: 'include',
     };
-
+    dispatch(clearUserSessionData());
     return fetch(`${application.url}/api/user/logout`, config)
       .then((response) => {
         return response.json();

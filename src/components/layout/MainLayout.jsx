@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import FooterBar from '../FooterBar';
-import MainHeaderBar from './MainHeaderBar';
 import Breadcrumb from '../Breadcrumb';
+import MainHeaderBar from './MainHeaderBar';
 
-export default class MainLayout extends Component {
+class MainLayout extends Component {
   constructor(props) {
     super(props);
   }
@@ -17,16 +16,18 @@ export default class MainLayout extends Component {
         { this.props.path &&
           <Breadcrumb path={ this.props.path } />
         }
-        <div className="container-fluid">
+        <div className='container-fluid'>
           { this.props.children }
         </div>
-        <FooterBar />
+        {/* Footer bar */}
       </div>
     );
-  };
+  }
 }
 
 MainLayout.propTypes = {
   children: PropTypes.any.isRequired,
   path: PropTypes.array,
 }
+
+export default MainLayout;

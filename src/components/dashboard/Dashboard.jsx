@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import DashboardLayout from '../layout/DashboardLayout';
+import MainLayout from '../layout/MainLayout';
 import MainMenu from './MainMenu';
 
 class Dashboard extends Component {
@@ -18,13 +18,13 @@ class Dashboard extends Component {
     } else {
       return (
         <div>
-          <DashboardLayout>
+          <MainLayout>
             <div className='row'>
               <div className='col-md-4'>
                 <MainMenu />
               </div>
             </div>
-          </DashboardLayout>
+          </MainLayout>
         </div>
       );
     }
