@@ -15,7 +15,7 @@ class EventCard extends Component {
             <i className="fa fa-calendar"></i> {this.props.period} <i className="fa fa-map-marker"></i> {this.props.location}
           </h6>
           <p className="card-text">{this.props.description} [ <a href="#">ler mais</a> ]</p>
-          <a href="#" className="btn btn-success">Acessar</a> <a href="#" className="btn btn-success">Inscrever-se</a>
+          <a href="/event" className="btn btn-success">Acessar</a> <a href="#" className="btn btn-success">Inscrever-se</a>
         </div>
       </div>
     );

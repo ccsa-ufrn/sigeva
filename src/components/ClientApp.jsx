@@ -12,8 +12,10 @@ import reducers from '../reducers/index';
 
 import Router from './Router';
 
+const initialState = window.__INITIAL_STATE__;
 let store = createStore(
   reducers,
+  initialState,
   applyMiddleware(
     thunkMiddleware
   )
