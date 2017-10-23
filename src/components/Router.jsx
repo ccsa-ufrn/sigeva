@@ -6,6 +6,7 @@ import {
 import HomePageContainer from './home/HomePageContainer';
 import RegisterContainer from './register/RegisterContainer';
 import DashboardContainer from './dashboard/DashboardContainer';
+import EventPage from './event/EventPage';
 import Error404 from './error/Error404';
 
 const Router = () => (
@@ -13,6 +14,7 @@ const Router = () => (
     <Route exact path='/' component={HomePageContainer} />
     <Route exact path='/register' component={RegisterContainer} />
     <Route exact path='/dashboard' component={DashboardContainer} />
+    <Route exact path='/event' component={EventPage} />
     <Route component={Error404} />
   </Switch>
 );
