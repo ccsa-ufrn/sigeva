@@ -3,19 +3,20 @@
 O **papel** indica que tipo de função um [**usuário**][usuario] exerce dentro de um [**evento**][evento].
 Eles podem ser de dois tipos: **papéis públicos** ou **papéis privados**.
 
-Para cada [**evento**][evento].
+A maioria dos papéis existentes em um evento, como por exemplo "Avaliador", "Discente" e "Professor" são papéis criados no momento de criação de um [evento][evento] (ou na configuração do mesmo). No momento em que módulos forem ativados, cada módulo possui uma série da permissões atreladas, e as permissões serão concedidas à um grupo de usuários (por meio dos papéis).
 
 Campo | Descrição | Exemplo
 ------| --------- | --------
 Nome | O nome caracterizador do papel | 'Avaliador'
 Descrição | A descrição do papel em questão | 'Realiza a avaliação dos trabalhos...'
 Tipo | Indica se é um **papel público** ou **papel privado** | 'publico' ou 'privado'
+Editavel | Indica se o papel pode ser alterado ou removido. | 'true' ou 'false'
 
 O sistema já inicia com alguns **papéis** *pré-definidos*. Esses papéis não podem ser alterados e nem removidos do [**evento**][evento]. Para os **papéis privados**:
 
 Papel | Função |
 ------| -------|
-Administrador do Evento | Papel com todas as capacidades para o escopo do evento
+Coordenador do Evento | Papel com todas as capacidades para o escopo do evento
 
 ## Papel público
 
@@ -23,9 +24,11 @@ São **papéis** auto-declarados, pois os próprios [**usuários**][usuario] def
 
 ## Papel privado
 
-São **papéis** que s
+São **papéis** que podem ser atribuídos a um usuário por um coordenador de evento. O coordenador do evento pode atribuir o papel de coordenador do evento para outros usuários também.
 
-### Administrador do evento
+Um usuário pode possuir mais de um papel em relação a um evento.
+
+### Coordenador do evento
 
 Tem todo o controle do [**evento**][evento].
 
