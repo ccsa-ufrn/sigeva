@@ -18,6 +18,7 @@ import mongoose, { Schema } from 'mongoose';
  *                                     Field Request
  * Maradona Morais '2017-08-27 16:06': Removes name, email and password fields. It will be included
  *                                     in ofFields
+ * Maradona Morais '2017-10-25 12:16': Removes photo, it is unusefull
  */
 
 const userSchema = new Schema({
@@ -38,7 +39,6 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  photo: String, // path to user's profile photograph
   ofTypes: [String], // types of user: Administrator, Common or both.
   // ofFields uses subdocs Mongoose's feature: http://mongoosejs.com/docs/subdocs.html
   ofFields: [], // Array of fields that can be defined by a administrator TODO: Link with field
