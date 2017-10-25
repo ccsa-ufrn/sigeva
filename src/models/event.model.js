@@ -1,5 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { dateRangeSchema } from './dateRange.model';
+import { roleSchema } from './role.model';
+import { relationshipSchema } from './relationship.model';
 import { userSchema } from './user.model';
 
 /* @@ Event Model
@@ -42,7 +44,8 @@ const eventSchema = new Schema({
     default: true,
   },
   // ofRoles uses subdocs Mongoose's feature: http://mongoosejs.com/docs/subdocs.html
-  ofRoles: [],
+  ofRoles: [roleSchema], // Array of event's roles
+  ofRelationships: [relationshipSchema], // Relationships with users
   /*
   userCreator: { // User creattor
     type: userSchema,
