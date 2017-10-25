@@ -41,6 +41,8 @@ const eventSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  // ofRoles uses subdocs Mongoose's feature: http://mongoosejs.com/docs/subdocs.html
+  ofRoles: [],
   /*
   userCreator: { // User creattor
     type: userSchema,
