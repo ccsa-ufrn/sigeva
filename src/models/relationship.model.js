@@ -20,6 +20,6 @@ const relationshipSchema = new Schema({
   },
 });
 
-const relationshipModel = mongoose.model(relationshipSchema);
+const relationshipModel = mongoose.model('Relationship', relationshipSchema);
 export { relationshipSchema };
 export default relationshipModel;

@@ -38,6 +38,6 @@ const roleSchema = new Schema({
   },
 });
 
-const roleModel = mongoose.model(roleSchema);
+const roleModel = mongoose.model('Role', roleSchema);
 export { roleSchema };
 export default roleModel;
