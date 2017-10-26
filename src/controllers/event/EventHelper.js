@@ -4,7 +4,59 @@ import DateRangeModel from '../../models/event.model';
 
 // [MR] Documentação incompleta
 
+const compareDates = (dateBegin_, dateEnd_) => {
+  const str = dateBegin_;
+  const date = new Date(str.split('/').reverse().join('/'));
+  const str2 = dateEnd_;
+  const date2 = new Date(str2.split('/').reverse().join('/'));
 
+  if (date > date2) {
+    return false;
+  }
+  else {
+    return true;
+  }
+};
+
+const periodFormat = (dateBegin_, dateEnd_, local_) => {
+  const arrDateBegin = dateBegin_.split('/');
+  const stringFormated = arrDateBegin[1] + '-' + arrDateBegin[0] + '-' + arrDateBegin[2];
+
+  const arrDateEnd = dateEnd_.split('/');
+  const stringFormated2 = arrDateEnd[1] + '-' + arrDateEnd[0] + '-' + arrDateEnd[2];
+
+  const dateBeginFormated = new Date(stringFormated);
+  console.log('Data formatada 1: ' + dateBeginFormated);
+
+  const dateEndFormated = new Date(stringFormated2);
+  console.log('Data formatada 2: ' + dateEndFormated);
+
+  const month = new Array(12);
+  month[0] = "Janeiro";
+  month[1] = "Fevereiro";
+  month[2] = "Março";
+  month[3] = "Abril";
+  month[4] = "Maio";
+  month[5] = "Junho";
+  month[6] = "Julho";
+  month[7] = "Agosto";
+  month[8] = "Setembro";
+  month[9] = "Outubro";
+  month[10] = "Novembro";
+  month[11] = "Dezembro";
+
+  console.log(month[dateBeginFormated.getMonth()]);
+  console.log(arrDateBegin[0]);
+
+  console.log(month[dateEndFormated.getMonth()]);
+  console.log(arrDateEnd[0]);
+
+  const period = arrDateBegin[0] + ' a ' + arrDateEnd[0] + ' de ' + month[dateEndFormated.getMonth()] + ' ' + local_;
+  console.log("periodo :" + period);
+
+  return period;
+
+};
 
 const eventFieldsParse = (fields) => {
   let fieldsStr = '';
@@ -15,6 +67,10 @@ const eventFieldsParse = (fields) => {
   });
   return fieldsStr;
 };
+
+const eventMessage = (eventObject_) =>{
+  const dateInicio = eventO
+}
 
 const isBetweenLength = (field_, min_, max_ = 255) => {
   // [MR] não se deve reassinar um parametro
@@ -32,6 +88,7 @@ const formatEvent = (eventObject_) => {
     active: eventObject_.active,
     eventPeriod: eventObject_.eventPeriod,
     registerPeriod: eventObject_.registerPeriod,
+    local: eventObject_.local,
   };
 };
 
@@ -57,4 +114,4 @@ const validaData = (data) => {
   return false                           // se inválida :(
 }
 
-export { eventFieldsParse, isBetweenLength, formatEvent, validaData };
+export { eventFieldsParse, isBetweenLength, formatEvent, validaData, compareDates, periodFormat };

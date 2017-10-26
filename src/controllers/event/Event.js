@@ -26,7 +26,7 @@ export default class {
    */
 
   setData(data_) {
-    const fixedFields = ['name', 'subtitle', 'eventPeriodBegin', 'eventPeriodEnd', 'eventPeriod', 'registerPeriodBegin', 'registerPeriodEnd', 'registerPeriod'];
+    const fixedFields = ['name', 'subtitle', 'eventPeriodBegin', 'eventPeriodEnd', 'eventPeriod', 'registerPeriodBegin', 'registerPeriodEnd', 'registerPeriod', 'local'];
     const errors = []; // Array of errors
 
     const eventPeriod = new DateRangeModel({
@@ -38,6 +38,34 @@ export default class {
       begin: data_.registerPeriodBegin,
       end: data_.registerPeriodEnd });
     data_.registerPeriod = registerPeriod;
+
+
+    console.log(data_.eventPeriodBegin);
+    console.log(data_.eventPeriodEnd);
+
+    const period = 'eventPeriod';
+    const register = 'registerPeriod';
+
+
+
+    if(data_.eventPeriodBegin  && data_.eventPeriodEnd){
+    if(!EventHelper.compareDates(data_.eventPeriodBegin, data_.eventPeriodEnd)){
+       errors.push({
+              period,
+              message: 'Periodo inválido',
+            });
+     }
+    }
+
+    if(data_.registerPeriodBegin && data_.registerPeriodEnd){
+    if(!EventHelper.compareDates(data_.registerPeriodBegin, data_.registerPeriodEnd)){
+       errors.push({
+              register,
+              message: 'Periodo inválido',
+            });
+     }
+    }
+
 
     fixedFields.forEach((field) => {
       if (data_[field]) {
