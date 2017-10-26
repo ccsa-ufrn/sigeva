@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
-import config from '../../config';
 
+if (process.env.NODE_ENV !== 'test') {
+  import config from '../../config';
+} else {
+  import config from '../../config.TEMPLATE';
+}
 
 /**
  * MongoConnector: connects application to mongo database.
