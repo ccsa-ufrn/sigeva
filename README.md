@@ -2,6 +2,7 @@
 
 ### Sistema de Gestão de Eventos Acadêmicos (Sigeva)
 ![GPL](https://img.shields.io/badge/license-GPL-blue.svg)
+[![CircleCI](https://circleci.com/gh/ccsa-ufrn/sigeva/tree/master.svg?style=svg)](https://circleci.com/gh/ccsa-ufrn/sigeva/tree/master)
 
 Sistema que suporta o evento Seminário de Pesquisa do Centro de Ciências Sociais Aplicadas
 ([CCSA](https://ccsa.ufrn.br)) da UFRN.
