@@ -8,14 +8,16 @@ Campo |  Descrição | Exemplo
 ------|-----|------
 name:String | Título do evento | "XXI Seminário CCSA"
 subtitle:String | Tema/Subtítulo do evento (se houver) | "Cidadania em tempos de intolerância"
-period:DateRange | Período em que o evento ocorrerá | DateRange('2018-03-07', '2018-03-12')
-ofUserRelationships[]: UserRelationship | Relações entre usuários e o evento | [UserRelationship(ObjectId('3rg235gjfjs62'), ObjectId('353gvf4gf2h1g'))]
+eventPeriod:DateRange | Período em que o evento ocorrerá | DateRange('2018-03-07', '2018-03-12')
+enrollmentPeriod:DateRange | Período em que as inscrições estarão abertas | DateRange('2018-03-07', '2018-03-12')
+ofRelationships[]: UserRelationship | Relações entre usuários e o evento | [UserRelationship(ObjectId('3rg235gjfjs62'), ObjectId('353gvf4gf2h1g'))]
 creator:User | Administrador criador do evento | ObjectId('2383j3jk2jl3f3')
 ofRoles[]:Role | Papéis criados e definidos para o evento | [ObjectId('5dd526hfj4k6kh6j')]
 ofModules[]:Module | Módulos plugados ao evento | [Module()]
 ofSubevents[]:Subevent | Subeventos agregados | [Subevent(), Subevent()]
+available: Boolean | Informa se o evento deve aparecer na aba de "Eventos ativos" | true 
 active: Boolean | Informa se a instância está ativa | true
-createdAt: Date | Data de criação do objeto | '2018-08-20 12:20'
+createdAt: Date | Data de criação do objeto | '2017-10-28T15:44:52.775Z'
 
 ### Formas de Relacionamento
 O relacionamento entre um [**Usuário**][usuario] e um **Evento** é firmado através da existência de um [**Papel**][papel], que aponta quais os privilégios o usuário possuirá na participação daquele evento. Todo evento necessita ter no mínimo um relacionamento: um **coordenador de evento**.

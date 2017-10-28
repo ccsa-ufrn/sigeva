@@ -1,8 +1,7 @@
 import EventDAO from './EventDAO';
 import EventModel from '../../models/event.model';
-import DateRangeModel from '../../models/dateRange.model';
+import FieldError from '../FieldError';
 import * as EventHelper from './EventHelper';
-import Response from '../Response';
 
 /**
  * Event
@@ -13,94 +12,45 @@ export default class {
    * Initialize a Event instance creating a EventDAO and requesting a empty Object.
    */
   constructor() {
-    // [MR] Mudar: Os métodos do DAO podem ser estáticos, não será necessário criar um objeto
-    // [MR] com o DAO.
-    // Com o DAO estático ficaria = eventDAO.createObject();
-    this.DAO = new EventDAO();
-    this.eventObject = this.DAO.createObject();
+    this.eventObject = EventDAO.createObject();
   }
   /**
    * Validate and sets event informations
    * @param data set of fields to load
-   * @error message.
+   * @return error message.
    */
-
   setData(data_) {
-    const fixedFields = ['name', 'subtitle', 'eventPeriodBegin', 'eventPeriodEnd', 'eventPeriod', 'registerPeriodBegin', 'registerPeriodEnd', 'registerPeriod', 'local'];
+    const fixedFields = ['name', 'subtitle', 'location'];
     const errors = []; // Array of errors
 
-    const eventPeriod = new DateRangeModel({
-      begin: data_.eventPeriodBegin,
-      end: data_.eventPeriodEnd });
-    data_.eventPeriod = eventPeriod;
+    const eventPeriodBegin = EventHelper.parseDate(data_.eventPeriodBegin);
+    const eventPeriodEnd = EventHelper.parseDate(data_.eventPeriodEnd);
 
-    const registerPeriod = new DateRangeModel({
-      begin: data_.registerPeriodBegin,
-      end: data_.registerPeriodEnd });
-    data_.registerPeriod = registerPeriod;
-
-
-    console.log(data_.eventPeriodBegin);
-    console.log(data_.eventPeriodEnd);
-
-    const period = 'eventPeriod';
-    const register = 'registerPeriod';
-
-
-
-    if(data_.eventPeriodBegin  && data_.eventPeriodEnd){
-    if(!EventHelper.compareDates(data_.eventPeriodBegin, data_.eventPeriodEnd)){
-       errors.push({
-              period,
-              message: 'Periodo inválido',
-            });
-     }
+    const eventPeriod = EventHelper.mountDateRange(eventPeriodBegin, eventPeriodEnd, errors, 'eventPeriod');
+    if (eventPeriod) {
+      this.eventObject.eventPeriod = eventPeriod;
     }
 
-    if(data_.registerPeriodBegin && data_.registerPeriodEnd){
-    if(!EventHelper.compareDates(data_.registerPeriodBegin, data_.registerPeriodEnd)){
-       errors.push({
-              register,
-              message: 'Periodo inválido',
-            });
-     }
-    }
+    const enrollmentPeriodBegin = EventHelper.parseDate(data_.enrollmentPeriodBegin);
+    const enrollmentPeriodEnd = EventHelper.parseDate(data_.enrollmentPeriodEnd);
 
+    const enrollmentPeriod = EventHelper.mountDateRange(enrollmentPeriodBegin, enrollmentPeriodEnd, errors, 'enrollmentPeriod');
+    if (enrollmentPeriod) {
+      this.eventObject.enrollmentPeriod = enrollmentPeriod;
+    }
 
     fixedFields.forEach((field) => {
       if (data_[field]) {
-        // Validade name
-        if (field === 'name') {
-          if (!EventHelper.isBetweenLength(data_[field], 3)) {
-            errors.push({
-              field,
-              message: 'Valor inválido para nome',
-            });
-          }
-        }
-        if (field === 'eventPeriodBegin' || field === 'eventPeriodEnd') {
-          if (!EventHelper.validaData(data_[field])) {
-            errors.push({
-              field,
-              message: 'Valor inválido para a data',
-            });
-          }
-        }
-        if (field === 'eventPeriod' || field === 'registerPeriod') {
+        if (!EventHelper.isBetweenLength(data_[field], 3)) {
+          errors.push(FieldError(field, `Valor inválido para ${field}`));
+        } else {
           this.eventObject[field] = data_[field];
-        }
-        else {
-          this.eventObject[field] = data_[field].trim();
         }
       } else {
         // It's a required field, must be received
-        errors.push({
-          field,
-          message: 'É obrigatório preencher este campo',
-        });
+        errors.push(FieldError(field, 'É obrigatório preencher este campo'));
       }
     });
-
 
     return new Promise((resolve, reject) => {
       if (errors.length !== 0) {
@@ -175,7 +125,7 @@ export default class {
    */
   store() {
     return new Promise((resolve, reject) => {
-      this.DAO.insertEvent(this.eventObject)
+      EventDAO.insertEvent(this.eventObject)
         .then((eventDoc) => {
           resolve(EventHelper.formatEvent(eventDoc));
         }).catch(reject);

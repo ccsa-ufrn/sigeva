@@ -45,7 +45,7 @@ eventRouter.get('/:id', (req, res) => {
  */
 eventRouter.post('/', (req, res) => {
   const event = new Event();
-  event.setData(req.body, res) // [MR] não pode passar parametro do router para classe
+  event.setData(req.body)
     .then(() => {
       event.store()
         .then((data) => {
@@ -57,9 +57,5 @@ eventRouter.post('/', (req, res) => {
       res.json(Response(true, data, 'Erro ao fazer cadastro'));
     });
 });
-
-
-
-
 
 export default eventRouter;

@@ -1,8 +1,5 @@
-import Event from './Event'; //
-import DateRangeModel from '../../models/event.model';
-
-
-// [MR] Documentação incompleta
+import FieldError from '../FieldError';
+import DateRangeModel from '../../models/dateRange.model';
 
 const compareDates = (dateBegin_, dateEnd_) => {
   const str = dateBegin_;
@@ -79,39 +76,65 @@ const isBetweenLength = (field_, min_, max_ = 255) => {
   return true;
 };
 
-// [MR] Documentação é necessária
+/**
+ * Formats a event to return through the API
+ * @param eventObject_ event to be formated
+ */
 const formatEvent = (eventObject_) => {
-  //const date = new DateRangeModel({ begin: eventObject_.eventPeriodBegin, end: eventObject_.eventPeriodEnd});
   return {
+    _id: eventObject_._id,
     name: eventObject_.name,
     subtitle: eventObject_.subtitle,
     active: eventObject_.active,
     eventPeriod: eventObject_.eventPeriod,
-    registerPeriod: eventObject_.registerPeriod,
-    local: eventObject_.local,
+    enrollmentPeriod: eventObject_.enrollmentPeriod,
+    location: eventObject_.location,
   };
 };
 
-const validaData = (data) => {
-  var reg = /[^\d\/\.]/gi;              // Mascara = dd/mm/aaaa | dd.mm.aaaa
-  var valida = data.replace(reg,'');    // aplica mascara e valida só numeros
-  if (valida && valida.length == 10) {  // é válida, então ;)
-    var ano = data.substr(6),
-      mes = data.substr(3,2),
-      dia = data.substr(0,2),
-      M30 = ['04','06','09','11'],
-      v_mes = /(0[1-9])|(1[0-2])/.test(mes),
-      v_ano = /(19[1-9]\d)|(20\d\d)|2100/.test(ano),
-      rexpr = new RegExp(mes),
-      fev29 = ano % 4? 28: 29;
-
-    if (v_mes && v_ano) {
-      if (mes == '02') return (dia >= 1 && dia <= fev29);
-      else if (rexpr.test(M30)) return /((0[1-9])|([1-2]\d)|30)/.test(dia);
-      else return /((0[1-9])|([1-2]\d)|3[0-1])/.test(dia);
-    }
+/**
+ * Parse a String date into Date format
+ * @param date String date to be parsed
+ * @return parsed date | false if it is invalid
+ */
+const parseDate = (date) => {
+  const parsedDate = Date.parse(date);
+  if (isNaN(parsedDate) || parsedDate < 0) {
+    return false;
   }
-  return false                           // se inválida :(
-}
+  return parsedDate;
+};
 
-export { eventFieldsParse, isBetweenLength, formatEvent, validaData, compareDates, periodFormat };
+/**
+ * Mount a DateRange object model
+ * @param dateBegin initial date to mount
+ * @param dateEnd final date to mount
+ * @param errors errors buffer
+ * @param errorFieldName field name to error display
+ * @return false if handle a error, a DateRangeModel otherwise
+ */
+const mountDateRange = (dateBegin, dateEnd, errors, errorFieldName) => {
+  if (!dateBegin || !dateEnd) {
+    errors.push(FieldError(errorFieldName, 'Alguma data é inválida ou não foi preenchida'));
+    return false;
+  }
+  // Compare dates
+  if (dateEnd < dateBegin) {
+    errors.push(FieldError(errorFieldName, 'A data inicial não pode ser posterior à data final'));
+    return false;
+  }
+  // The dates are valid
+  return DateRangeModel({
+    begin: dateBegin,
+    end: dateEnd,
+  });
+};
+
+export { eventFieldsParse,
+  isBetweenLength,
+  formatEvent,
+  parseDate,
+  compareDates,
+  periodFormat,
+  mountDateRange,
+};

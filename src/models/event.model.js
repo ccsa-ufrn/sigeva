@@ -2,7 +2,6 @@ import mongoose, { Schema } from 'mongoose';
 import { dateRangeSchema } from './dateRange.model';
 import { roleSchema } from './role.model';
 import { relationshipSchema } from './relationship.model';
-import { userSchema } from './user.model';
 
 /* @@ Event Model
  *
@@ -15,13 +14,13 @@ import { userSchema } from './user.model';
  *
  * @ Log
  * Thayrone Dayvid Dos Santos '2017-08-25 14:12': First definition
+ * Maradona Morais '2017-10-28 12:29': Create role, relationships and available fields.
  */
 
 const eventSchema = new Schema({
   name: { // Event name
     type: String,
     required: true,
-    unique: true,
   },
   subtitle: { // Event theme
     type: String,
@@ -31,37 +30,25 @@ const eventSchema = new Schema({
     type: dateRangeSchema,
     required: true,
   },
-  registerPeriod: { // Event register period
+  enrollmentPeriod: { // Event register period
     type: dateRangeSchema,
     required: true,
-  },
-  createdAt: { // Criation date
-    type: Date,
-    default: Date.now,
-  },
-  active: { // Instance ON
-    type: Boolean,
-    default: true,
   },
   // ofRoles uses subdocs Mongoose's feature: http://mongoosejs.com/docs/subdocs.html
   ofRoles: [roleSchema], // Array of event's roles
   ofRelationships: [relationshipSchema], // Relationships with users
-  /*
-  userCreator: { // User creattor
-    type: userSchema,
-    required: true,
-  },
-  EventOn: { // If the event is in the activity period
+  available: { // event availability, it tells if the event must be showed as "active"
     type: Boolean,
-    required: true,
+    default: false,
   },
-  local: String, // Event local
-  description: String, // Info about the event
-  // ofUserRelationships[]: UserRelationship,,
-  // ofRoles[]: roles,
-  // ofSubevents[]:Subevent,
-  // ofMoludes[]:Modules
-*/
+  createdAt: { // Creation date
+    type: Date,
+    default: Date.now,
+  },
+  active: { // Instance active
+    type: Boolean,
+    default: true,
+  },
 });
 
 const eventModel = mongoose.model('Event', eventSchema);
