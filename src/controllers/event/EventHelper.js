@@ -55,41 +55,43 @@ const periodFormat = (dateBegin_, dateEnd_, local_) => {
 
 };
 
+/**
+ * Parse fields to Mongoose format and restrict access to requestable fields
+ * @param fields requested fieldds
+ * @return parsed array in Mongoose request format
+ */
 const eventFieldsParse = (fields) => {
+  const requestableFields = ['name', 'subtitle', 'location', 'eventPeriod', 'enrollmentPeriod', 'published'];
   let fieldsStr = '';
   const fieldsArray = fields.split(',');
   fieldsArray.forEach((f) => {
-    fieldsStr = fieldsStr.concat(f);
-    fieldsStr = fieldsStr.concat(' ');
+    if (requestableFields.includes(f)) {
+      fieldsStr = fieldsStr.concat(f);
+      fieldsStr = fieldsStr.concat(' ');
+    }
   });
   return fieldsStr;
 };
 
-const eventMessage = (eventObject_) =>{
-  const dateInicio = eventO
-}
+/**
+ * Format event to a javascript object filtering his fields
+ * @param eventObject event Mongo object
+ * @param fields Parsed string of fields in Mongoose request format (see eventFieldsParse)
+ */
+const formatEvent = (eventObject, fields) => {
+  const arrFields = fields.split(' '); // These fields are already restricted and parsed
+  const formatedEvent = {};
+  arrFields.forEach((field) => {
+    formatedEvent[field] = eventObject[field];
+  });
+  return formatedEvent;
+};
 
 const isBetweenLength = (field_, min_, max_ = 255) => {
   // [MR] não se deve reassinar um parametro
   const field = field_.trim(); // Removes spaces bars from the borders
   if (field.length < min_ || field.length > max_) return false;
   return true;
-};
-
-/**
- * Formats a event to return through the API
- * @param eventObject_ event to be formated
- */
-const formatEvent = (eventObject_) => {
-  return {
-    _id: eventObject_._id,
-    name: eventObject_.name,
-    subtitle: eventObject_.subtitle,
-    active: eventObject_.active,
-    eventPeriod: eventObject_.eventPeriod,
-    enrollmentPeriod: eventObject_.enrollmentPeriod,
-    location: eventObject_.location,
-  };
 };
 
 /**
@@ -130,9 +132,10 @@ const mountDateRange = (dateBegin, dateEnd, errors, errorFieldName) => {
   });
 };
 
-export { eventFieldsParse,
-  isBetweenLength,
+export {
+  eventFieldsParse,
   formatEvent,
+  isBetweenLength,
   parseDate,
   compareDates,
   periodFormat,

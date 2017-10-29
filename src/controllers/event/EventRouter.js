@@ -1,10 +1,30 @@
 import { Router } from 'express';
 import Event from './Event';
 import Response from '../Response';
-import * as EventHelper from './EventHelper';
-import EventModel from '../../models/event.model';
 
 const eventRouter = Router();
+
+/**
+ * Create a new event
+ * @param fields representing a event
+ * @return Created event object
+ */
+eventRouter.post('/', (req, res) => {
+  const event = new Event();
+  event.setData(req.body)
+    .then(() => {
+      event.store()
+        .then(() => {
+          const formatedEvent = event.toFormatedEvent('name,subtitle,eventPeriod,enrollmentPeriod,location,published');
+          res.json(Response(false, formatedEvent));
+        }).catch((err) => {
+          console.log(err);
+          res.json(Response(true, {}, err));
+        });
+    }).catch((data) => {
+      res.json(Response(true, data, 'Erro ao fazer cadastro'));
+    });
+});
 
 /*
  * @return a list of events
@@ -23,38 +43,21 @@ eventRouter.get('/', (req, res) => {
   });
 });
 
-/*
- * Retorna um usuário com o ID
- * @param id for seach
+/**
+ * Returns a event by ID
+ * @param id event id to search for
  * @return event if found
 */
 eventRouter.get('/:id', (req, res) => {
-  const fields = (req.query.f) ? req.query.f : 'name, subtitle, active, eventPeriod, registerPeriod'; /* retorna ID por padrão */
-  const fieldsStr = eventFieldsParse(fields);
-  EventModel
-    .findById(req.params.id, fieldsStr)
-    .then((usr) => {
-      res.json(Response(false, usr));
-    });
-});
+  const fields = (req.query.fields) ? req.query.fields : 'name,subtitle,eventPeriod,enrollmentPeriod,location,published';
 
-/**
- * Create a new event
- * @param fields representing a event
- * @return Created event object
- */
-eventRouter.post('/', (req, res) => {
   const event = new Event();
-  event.setData(req.body)
+  event.loadById(req.params.id)
     .then(() => {
-      event.store()
-        .then((data) => {
-          res.json(Response(false, data));
-        }).catch((err) => {
-          res.json(Response(true, {}, err));
-        });
-    }).catch((data) => {
-      res.json(Response(true, data, 'Erro ao fazer cadastro'));
+      res.json(Response(false, event.toFormatedEvent(fields)));
+    })
+    .catch(() => {
+      res.json(Response(true, {}, 'Não existe evento com este ID'));
     });
 });
 

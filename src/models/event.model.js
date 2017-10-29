@@ -37,7 +37,7 @@ const eventSchema = new Schema({
   // ofRoles uses subdocs Mongoose's feature: http://mongoosejs.com/docs/subdocs.html
   ofRoles: [roleSchema], // Array of event's roles
   ofRelationships: [relationshipSchema], // Relationships with users
-  available: { // event availability, it tells if the event must be showed as "active"
+  published: { // event availability, it tells if the event must be showed as "active"
     type: Boolean,
     default: false,
   },

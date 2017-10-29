@@ -14,6 +14,7 @@ export default class {
   constructor() {
     this.eventObject = EventDAO.createObject();
   }
+
   /**
    * Validate and sets event informations
    * @param data set of fields to load
@@ -62,6 +63,40 @@ export default class {
   }
 
   /**
+   * Load event by ID
+   * @param id_ event identification
+   * @return Promise. Resolves if event exists, rejects otherwise.
+   */
+  loadById(id_) {
+    const query = EventModel.findOne({ _id: id_ });
+    return new Promise((resolve, reject) => {
+      EventDAO.executeQuery(query)
+        .then((event) => {
+          if (event) {
+            // Set this current event with the returned
+            this.eventObject = event;
+            resolve();
+          } else {
+            // Event not found
+            reject();
+          }
+        }).catch(reject);
+    });
+  }
+
+  /**
+   * Returns a formated Event filtered by fields
+   * @param fields_ Fields to extract from the event
+   * @return a formated event
+   */
+  toFormatedEvent(fields_) {
+    // The passed fields_ is in the format 'name,subtitle,location'. We must parse it to Mongoose
+    // format and restrict with fields are requestable
+    const formatedFields = EventHelper.eventFieldsParse(fields_);
+    return EventHelper.formatEvent(this.eventObject, formatedFields); // stub
+  }
+
+  /**
    * List all events
    * @param req values
    * @error message
@@ -101,25 +136,6 @@ export default class {
   }
 
   /**
-   * List a singular event
-   * @param id event
-   * @error message
-   * @return Promise. Resolve(Event), Reject(Error)
-   */
-  loadById(data_, req, res){
-    EventModel.findById(data_, function (err, event) {
-      if (err) {
-        res.send(err);
-      }
-      if (event) {
-        res.send(event);
-      } else {
-        res.send("No event found with that ID");
-      }
-    });
-  }
-
-  /**
    * Insert a event in db
    * @return Promise. Resolve(set event values on), Reject(Error)
    */
@@ -127,7 +143,7 @@ export default class {
     return new Promise((resolve, reject) => {
       EventDAO.insertEvent(this.eventObject)
         .then((eventDoc) => {
-          resolve(EventHelper.formatEvent(eventDoc));
+          resolve(eventDoc);
         }).catch(reject);
     });
   }

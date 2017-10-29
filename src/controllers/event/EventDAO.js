@@ -27,4 +27,16 @@ export default class {
         .then(resolve).catch(reject);
     });
   }
+
+  /**
+   * Executes a query on database
+   * @param query_ query that will be executed
+   */
+  static executeQuery(query_) {
+    return new Promise((resolve, reject) => {
+      query_.exec().then((doc) => {
+        resolve(doc);
+      }).catch(reject);
+    });
+  }
 }
