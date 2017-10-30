@@ -1,44 +1,48 @@
+import Moment from 'moment';
+
 import FieldError from '../FieldError';
 import DateRangeModel from '../../models/dateRange.model';
 
-const periodFormat = (dateBegin_, dateEnd_, local_) => {
-  const arrDateBegin = dateBegin_.split('/');
-  const stringFormated = arrDateBegin[1] + '-' + arrDateBegin[0] + '-' + arrDateBegin[2];
+/**
+ * Converts a two-dates range into a human readable string
+ * @param dateBegin_ initial date
+ * @param dateEnd_ final date
+ */
+const humanReadablePeriod = (dateBegin_, dateEnd_) => {
+  const beginMoment = Moment(dateBegin_).locale('pt-br');
+  const endMoment = Moment(dateEnd_).locale('pt-br');
 
-  const arrDateEnd = dateEnd_.split('/');
-  const stringFormated2 = arrDateEnd[1] + '-' + arrDateEnd[0] + '-' + arrDateEnd[2];
+  const halfDate = (moment) => {
+    return `${moment.format('DD')} de ${moment.format('MMMM')}`;
+  };
 
-  const dateBeginFormated = new Date(stringFormated);
-  console.log('Data formatada 1: ' + dateBeginFormated);
+  // Default format
+  let readablePeriod = `${beginMoment.format('DD/MM/YYYY')} a ${endMoment.format('DD/MM/YYYY')}`;
 
-  const dateEndFormated = new Date(stringFormated2);
-  console.log('Data formatada 2: ' + dateEndFormated);
+  if (beginMoment.format('Y') === endMoment.format('Y')) {
+    // Same year
+    if (beginMoment.format('MM') === endMoment.format('MM')) {
+      // Same month
+      if (beginMoment.format('DD') === endMoment.format('DD')) {
+        // Same day
+        if (beginMoment.format('LT') === endMoment.format('LT')) {
+          // Same time means that the event occours belong all day
+          readablePeriod = beginMoment.format('LL');
+        } else {
+          // Diferent times
+          readablePeriod = `${beginMoment.format('LL')} das ${beginMoment.format('LT')} às ${endMoment.format('LT')}`;
+        }
+      } else {
+        // Diferents days
+        readablePeriod = `${beginMoment.format('DD')} a ${endMoment.format('LL')}`;
+      }
+    } else {
+      // Diferents months
+      readablePeriod = `${halfDate(beginMoment)} a ${endMoment.format('LL')}`;
+    }
+  }
 
-  const month = new Array(12);
-  month[0] = "Janeiro";
-  month[1] = "Fevereiro";
-  month[2] = "Março";
-  month[3] = "Abril";
-  month[4] = "Maio";
-  month[5] = "Junho";
-  month[6] = "Julho";
-  month[7] = "Agosto";
-  month[8] = "Setembro";
-  month[9] = "Outubro";
-  month[10] = "Novembro";
-  month[11] = "Dezembro";
-
-  console.log(month[dateBeginFormated.getMonth()]);
-  console.log(arrDateBegin[0]);
-
-  console.log(month[dateEndFormated.getMonth()]);
-  console.log(arrDateEnd[0]);
-
-  const period = arrDateBegin[0] + ' a ' + arrDateEnd[0] + ' de ' + month[dateEndFormated.getMonth()] + ' ' + local_;
-  console.log("periodo :" + period);
-
-  return period;
-
+  return readablePeriod;
 };
 
 /**
@@ -71,6 +75,12 @@ const formatEvent = (eventObject, fields) => {
   arrFields.forEach((field) => {
     formatedEvent[field] = eventObject[field];
   });
+  formatedEvent.readableEventPeriod = humanReadablePeriod(
+    eventObject.eventPeriod.begin,
+    eventObject.eventPeriod.end);
+  formatedEvent.readableEnrollmentPeriod = humanReadablePeriod(
+    eventObject.enrollmentPeriod.begin,
+    eventObject.enrollmentPeriod.end);
   return formatedEvent;
 };
 
@@ -86,7 +96,7 @@ const isBetweenLength = (field_, min_, max_ = 255) => {
  * @return parsed date | false if it is invalid
  */
 const parseDate = (date) => {
-  const parsedDate = Date.parse(date);
+  const parsedDate = new Date(date);
   if (isNaN(parsedDate) || parsedDate < 0) {
     return false;
   }
@@ -123,6 +133,6 @@ export {
   formatEvent,
   isBetweenLength,
   parseDate,
-  periodFormat,
   mountDateRange,
+  humanReadablePeriod,
 };
