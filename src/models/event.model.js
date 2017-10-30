@@ -34,6 +34,10 @@ const eventSchema = new Schema({
     type: dateRangeSchema,
     required: true,
   },
+  location: { // Event location
+    type: String,
+    required: false,
+  },
   // ofRoles uses subdocs Mongoose's feature: http://mongoosejs.com/docs/subdocs.html
   ofRoles: [roleSchema], // Array of event's roles
   ofRelationships: [relationshipSchema], // Relationships with users

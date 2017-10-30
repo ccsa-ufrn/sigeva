@@ -102,35 +102,24 @@ export default class {
    * @error message
    * @return Promise. Resolve(Events), Rejects(Errors)
    */
-  loadEvents(req_, res_, page_, count_, query_, fields_, sort_){
+  static loadEvents(page_, count_, query_, fields_, sort_, published_) {
     const fieldsStr = EventHelper.eventFieldsParse(fields_);
-    const errors = [];
     const queryStr = `${query_}.*`;
-    const query = query_ !== '' ? { name: { $regex: queryStr } } : {};
-
-    let sortObj;
-    try {
-      sortObj = JSON.parse(sort_);
-    } catch (e) {
-      res_.status(400).json({
-        error: e.message,
-      });
-      return;
-    }
+    const query = query_ !== '' ? { name: { $regex: queryStr, $options: 'i' } } : {};
+    query.published = published_;
 
     let skipNum = 0;
     if (page_ > 1) {
       skipNum = (page_ - 1) * count_;
     }
     // console.log(queryObj);
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       EventModel
         .find(query, fieldsStr, { skip: skipNum })
-        .sort(sortObj)
+        .sort(sort_)
         .limit(count_)
         .then((docs) => {
           resolve(docs);
-
         });
     });
   }

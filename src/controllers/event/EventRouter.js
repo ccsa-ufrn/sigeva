@@ -18,7 +18,6 @@ eventRouter.post('/', (req, res) => {
           const formatedEvent = event.toFormatedEvent('name,subtitle,eventPeriod,enrollmentPeriod,location,published');
           res.json(Response(false, formatedEvent));
         }).catch((err) => {
-          console.log(err);
           res.json(Response(true, {}, err));
         });
     }).catch((data) => {
@@ -30,17 +29,19 @@ eventRouter.post('/', (req, res) => {
  * @return a list of events
 */
 eventRouter.get('/', (req, res) => {
-  const page = (req.query.p) ? parseInt(req.query.p, 10) : 1;
-  const count = (req.query.c) ? parseInt(req.query.c, 10) : 5;
-  const query = (req.query.q) ? req.query.q : '';
-  const fields = (req.query.f) ? req.query.f : 'name,subtitle,active,eventPeriod,registerPeriod'; /* retorna ID por padrão */
-  const sort = (req.query.o) ? req.query.o : '{}';
-  //const search = (req.query.s) ? req.query.s : '{}';
-  const event = new Event();
-  event.loadEvents(req, res, page, count, query, fields, sort)
-  .then((event) => {
-    res.json(Response(false, event));
-  });
+  const page = (req.query.page) ? parseInt(req.query.page, 10) : 1;
+  const count = (req.query.count) ? parseInt(req.query.count, 10) : 5;
+  const query = (req.query.query) ? req.query.query : '';
+  const fields = (req.query.fields) ? req.query.fields : 'name,subtitle,location,eventPeriod,enrollmentPeriod,published';
+  const order = (req.query.order) ? req.query.order : '-createdAt'; // News events first
+  const published = (req.query.published) ? req.query.published : true;
+  // By default returns publisheds events
+
+  // const event = new Event();
+  Event.loadEvents(page, count, query, fields, order, published)
+    .then((eventSet) => {
+      res.json(Response(false, eventSet));
+    });
 });
 
 /**

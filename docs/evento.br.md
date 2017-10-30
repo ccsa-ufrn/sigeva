@@ -45,13 +45,15 @@ Rota para criação de um novo evento
 {
   "name": "Nome do Evento",
   "subtitle": "Descrição do Evento",
-  "eventPeriodBegin": "2017-10-29T15:44:52.775Z", // Datas devem possuir o formato ISO-8601
+  "eventPeriodBegin": "2017-10-29T15:44:52.775Z",
   "eventPeriodEnd": "2017-10-29T15:44:52.775Z",
   "enrollmentPeriodBegin": "2017-10-29T15:44:52.775Z",
   "enrollmentPeriodEnd": "2017-10-29T15:44:52.775Z",
   "location": "Local do Evento"
 }
 ```
+
+Datas devem possuir o formato ISO-8601
 
 **JSON Response**:
 
@@ -79,7 +81,45 @@ Rota para criação de um novo evento
 }
 ```
 
+### GET /api/event
+Retorna uma lista de eventos
+
+Parâmetro | Descrição | Default
+----------|-----------|--------
+fields | Campos a serem extraídos separados por virgula | id,name,subtitle,location,enrollmentPeriod,eventPeriod,published
+query | Query de busca pelo nome do evento | null
+cout | Quantidade de eventos retornados por página | 5
+page | Página a ser retornada | 1
+order | Campo a ser utilizado para ordenação | -createdAt (mais recentes primeiro)
+published | Indica se deve retornar eventos ativos ou arquivados | true
+
+**URL Request**:
+```
+http://localhost:3000/api/event/?fields=name,subtitle&order=name&query=evento&published=false
+```
+
+**JSON Response**:
+```json
+{
+    "error": false,
+    "error_info": "Sem mensagem de erro",
+    "data": [
+        {
+            "_id": "59f74eb6f8285928f4264d13",
+            "subtitle": "Descrição do evento",
+            "name": "A Evento"
+        },
+        {
+            "_id": "59f74a872e6a4518ec8f34d9",
+            "subtitle": "Descrição do evento",
+            "name": "Evento"
+        }
+    ]
+}
+```
+
 ### GET /api/event/:id
+Retorna dados de um evento específico selecionado pelo ID
 
 **URL Request**:
 ```
