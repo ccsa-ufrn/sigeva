@@ -1,20 +1,6 @@
 import FieldError from '../FieldError';
 import DateRangeModel from '../../models/dateRange.model';
 
-const compareDates = (dateBegin_, dateEnd_) => {
-  const str = dateBegin_;
-  const date = new Date(str.split('/').reverse().join('/'));
-  const str2 = dateEnd_;
-  const date2 = new Date(str2.split('/').reverse().join('/'));
-
-  if (date > date2) {
-    return false;
-  }
-  else {
-    return true;
-  }
-};
-
 const periodFormat = (dateBegin_, dateEnd_, local_) => {
   const arrDateBegin = dateBegin_.split('/');
   const stringFormated = arrDateBegin[1] + '-' + arrDateBegin[0] + '-' + arrDateBegin[2];
@@ -89,7 +75,6 @@ const formatEvent = (eventObject, fields) => {
 };
 
 const isBetweenLength = (field_, min_, max_ = 255) => {
-  // [MR] não se deve reassinar um parametro
   const field = field_.trim(); // Removes spaces bars from the borders
   if (field.length < min_ || field.length > max_) return false;
   return true;
@@ -138,7 +123,6 @@ export {
   formatEvent,
   isBetweenLength,
   parseDate,
-  compareDates,
   periodFormat,
   mountDateRange,
 };
