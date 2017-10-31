@@ -43,17 +43,17 @@ Nesse ambiente é necessário instalar todas as dependencias de Sigeva. Para iss
 npm install
 ```
 
-Antes de desenvolver, note que Sigeva utiliza `EditorConfig` e `ESLint`, certifique-se de encontrar plugins dessas ferramentas para seu editor preferido.
+Antes de desenvolver, note que Sigeva utiliza [`EditorConfig`](http://editorconfig.org/) e [`ESLint`](https://eslint.org), certifique-se de encontrar plugins dessas ferramentas para seu editor preferido.
 
 Com as dependencias resolvidas inicie a aplicação com o comando `npm start`. A aplicação é reiniciada para cada alteração em algum código, graças ao pacote `nodemon`.
 
-Você pode buildar algo para produção com os comandos `npm build_server` e `npm build_react` que, respectivamente, transpilam os código do servidor e do front-end em React.js.
+Você pode buildar algo para produção com os comandos `npm run build_server` e `npm run build_react` que, respectivamente, transpilam os código do servidor e do front-end em React.js.
 
 ## [sigeva/wiki](https://github.com/ccsa-ufrn/seminario/wiki) :books:
-Documentação para utilizadores do projeto.
+Documentação (em desenvolvimento) para utilizadores do projeto, contendo instruções para instalação e inicialização de uma instância de Sigeva.
 
 ## [sigeva/docs](https://github.com/ccsa-ufrn/seminario/tree/master/docs) :books:
-Documentação para desenvolvedores do projeto.
+Documentação para desenvolvedores/colaboradores do projeto.
 
 ### Como contribuir
-Leia informações sobre como contribuir em `/docs/how-to-contribute.md`
+Leia informações sobre como contribuir em [`/.github/CONTRIBUTING.md`](https://github.com/ccsa-ufrn/sigeva/blob/master/.github/CONTRIBUTING.md)
