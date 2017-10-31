@@ -5,8 +5,9 @@
   "main": "main.js",
   "scripts": {
     "start": "NODE_ENV=dev nodemon src/controllers/Server.js --exec babel-node --presets es2015",
-    "test": "npm run build_server && NODE_ENV=test mocha dist/tests --timeout 10000",
+    "test": "npm run initdb_test && npm run build_server && NODE_ENV=test mocha dist/tests --timeout 10000",
     "server": "NODE_ENV=prod node dist/controllers/Server.js",
+    "initdb_test": "NODE_ENV=test babel-node src/tools/initializing_db.js",
     "build_server": "babel src -d dist",
     "build_react": "webpack --config webpack.config.js",
     "lint": "eslint ."

@@ -19,16 +19,6 @@ describe('Event', () => {
     server.close();
   });
   describe('POST /api/event', () => {
-    it('Quando tentar acessar a rota por GET deve retornar erro', (done) => {
-      chai.request(server)
-        .get('/api/event/')
-        .end((err, res) => {
-          expect(res).to.have.status(404);
-          expect(res.body.error).to.be.true;
-          done();
-        });
-    });
-
     it('Quando tentar criar um evento sem nenhum campo deve retornar erro', (done) => {
       chai.request(server)
         .post('/api/event')
@@ -76,5 +66,10 @@ describe('Event', () => {
         });
     });
 
+  });
+
+  describe('GET /api/event', () => {
+    it ('Deve retornar um evento criado');
+    it ('Não deve retornar um evento desativado');
   });
 });

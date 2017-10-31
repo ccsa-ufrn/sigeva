@@ -24,4 +24,7 @@ sys.store()
   })
   .catch((err) => {
     console.log('It cannot save register fields. ', err);
+  })
+  .finally(() => {
+    process.exit();
   });

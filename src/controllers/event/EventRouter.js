@@ -21,7 +21,7 @@ eventRouter.post('/', (req, res) => {
           res.json(Response(true, {}, err));
         });
     }).catch((data) => {
-      res.json(Response(true, data, 'Erro ao fazer cadastro'));
+      res.status(400).json(Response(true, data, 'Erro ao fazer cadastro'));
     });
 });
 

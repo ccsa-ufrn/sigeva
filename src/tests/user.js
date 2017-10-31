@@ -81,7 +81,7 @@ describe('User', () => {
 
   describe('POST /api/user/authorize',() => {
     describe('Authenticating Users', () => {
-      it('Deve autenticar um usuário', () => {
+      it('Deve autenticar um usuário', (done) => {
         chai.request(server)
         .post('/api/user/authorize')
         .set('Content-Type', 'application/json')
