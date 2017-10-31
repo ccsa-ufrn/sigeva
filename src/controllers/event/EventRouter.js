@@ -25,9 +25,10 @@ eventRouter.post('/', (req, res) => {
     });
 });
 
-/*
- * @return a list of events
-*/
+/**
+ * Returns a set of events
+ * See a rich documentation in '/docs/evento.br.md'
+ */
 eventRouter.get('/', (req, res) => {
   const page = (req.query.page) ? parseInt(req.query.page, 10) : 1;
   const count = (req.query.count) ? parseInt(req.query.count, 10) : 5;
@@ -37,7 +38,6 @@ eventRouter.get('/', (req, res) => {
   const published = (req.query.published) ? req.query.published : true;
   // By default returns publisheds events
 
-  // const event = new Event();
   Event.loadEvents(page, count, query, fields, order, published)
     .then((eventSet) => {
       res.json(Response(false, eventSet));

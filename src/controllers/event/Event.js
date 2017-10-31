@@ -112,14 +112,17 @@ export default class {
     if (page_ > 1) {
       skipNum = (page_ - 1) * count_;
     }
-    // console.log(queryObj);
+
     return new Promise((resolve) => {
       EventModel
         .find(query, fieldsStr, { skip: skipNum })
         .sort(sort_)
         .limit(count_)
         .then((docs) => {
-          resolve(docs);
+          const parsedSet = docs.map((event) => {
+            return EventHelper.formatEvent(event, fieldsStr);
+          });
+          resolve(parsedSet);
         });
     });
   }
