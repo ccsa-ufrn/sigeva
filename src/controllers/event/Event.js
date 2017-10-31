@@ -1,6 +1,7 @@
 import EventDAO from './EventDAO';
 import EventModel from '../../models/event.model';
 import FieldError from '../FieldError';
+import RoleModel from '../../models/role.model';
 import * as EventHelper from './EventHelper';
 
 /**
@@ -24,6 +25,7 @@ export default class {
     const fixedFields = ['name', 'subtitle', 'location'];
     const errors = []; // Array of errors
 
+    // Defining event period
     const eventPeriodBegin = EventHelper.parseDate(data_.eventPeriodBegin);
     const eventPeriodEnd = EventHelper.parseDate(data_.eventPeriodEnd);
 
@@ -32,6 +34,7 @@ export default class {
       this.eventObject.eventPeriod = eventPeriod;
     }
 
+    // Defining enrollment period
     const enrollmentPeriodBegin = EventHelper.parseDate(data_.enrollmentPeriodBegin);
     const enrollmentPeriodEnd = EventHelper.parseDate(data_.enrollmentPeriodEnd);
 
@@ -39,6 +42,16 @@ export default class {
     if (enrollmentPeriod) {
       this.eventObject.enrollmentPeriod = enrollmentPeriod;
     }
+
+    // A event aways have the role "Coordenador" by default and not editable
+    const coordinatorRole = new RoleModel({
+      name: 'Coordenador',
+      description: 'Usuário coordenador do evento',
+      type: 'private',
+      editable: false,
+    });
+
+    this.eventObject.ofRoles.push(coordinatorRole);
 
     fixedFields.forEach((field) => {
       if (data_[field]) {
