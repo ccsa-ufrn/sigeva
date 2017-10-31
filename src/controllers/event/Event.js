@@ -1,12 +1,19 @@
 import EventDAO from './EventDAO';
 import EventModel from '../../models/event.model';
 import FieldError from '../FieldError';
+
 import RoleModel from '../../models/role.model';
+import RelationshipModel from '../../models/relationship.model';
+
 import * as EventHelper from './EventHelper';
 
 /**
- * Event
+ * @@ Event
  * Stores and manipulates Event Database Object
+ *
+ * @ Log:
+ * Maradona Morais '2017-10-31 15:55' >> Defines the methods enroll() and createRelationship()
+ *                                       with pendences, please see the issue #44
  */
 export default class {
   /**
@@ -138,6 +145,58 @@ export default class {
           resolve(parsedSet);
         });
     });
+  }
+
+  /**
+   * Enrolls a user in the event based on a role id
+   * @param user user to be enrolled
+   * @param roleId event's role id that the user will have
+   */
+  enroll(user, roleId) {
+    return new Promise((resolve, reject) => {
+      // find the role in event object
+      const role = this.eventObject.ofRoles.id(roleId);
+
+      if (role === undefined || role.type === 'private') {
+        // The role doesn't exists or it is invalid to enroll on
+        reject('Papel não encontrado');
+      } else {
+        // The role exists, then create a relationship
+        this.createRelationship(user, role);
+        this.store()
+          .then(() => {
+            resolve();
+          });
+      }
+    });
+  }
+
+  /**
+   * Creates a relationship between a user and the event by atributting a event's role to
+   * the passed user
+   * @param user user to be related to
+   * @param role event's role to relate the user with
+   */
+  createRelationship(user, role) {
+    const relationshipIdx = this.eventObject.ofRelationships.findIndex((currRelationship) => {
+      return currRelationship.user === user.userObject._id;
+    });
+
+    if (relationshipIdx === -1) { // Not found relationship
+      // Create a new one
+      const newRelationship = new RelationshipModel({
+        user: user.userObject._id,
+        ofRoles: [role._id],
+      });
+      this.eventObject.ofRelationships.push(newRelationship);
+    } else {
+      // Already has a role set, just append a new role into it
+      this.eventObject.ofRelationships[relationshipIdx].ofRoles.push(role._id);
+      // TODO: The user class must have a method called addEventToList (or similar)
+      //       to add the reference to the current event in the user's Array ofEvents
+      // TODO: What if the user already have a public relationship with this event?
+      //       Whats the best way to figure this out?
+    }
   }
 
   /**
