@@ -1,22 +1,47 @@
 import React, { Component } from 'react';
 
 import MainLayout from '../layout/MainLayout';
+import Error404 from '../error/Error404';
 import InscriptionBoardContainer from './InscriptionBoardContainer';
 
 class EventPage extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillMount() {
+    this.props.loadEventIfNeed(this.props.match.params.id);
+  }
+
   render() {
-    return(
-      <MainLayout>
-        <div className='row'>
-          <div className='col-md-8'>
-            {/* Event datails go here */}
+    if (this.props.event.not_found) {
+      return (<Error404/>);
+    } else {
+      const path = [
+        {
+          active: false,
+          name: 'Início',
+          address: '/',
+        },
+        {
+          active: true,
+          name: this.props.event.name,
+          address: `/event/${this.props.event.id}`,
+        },
+      ];
+      return(
+        <MainLayout path={path}>
+          <div className='row'>
+            <div className='col-md-8'>
+              {/* event details goes here */}
+            </div>
+            <div className='col-md-4'>
+              <InscriptionBoardContainer />
+            </div>
           </div>
-          <div className='col-md-4'>
-            <InscriptionBoardContainer />
-          </div>
-        </div>
-      </MainLayout>
-    );
+        </MainLayout>
+      );
+    }
   }
 }
 

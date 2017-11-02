@@ -7,7 +7,7 @@ import HomePageContainer from './home/HomePageContainer';
 import RegisterContainer from './register/RegisterContainer';
 import LoginPageContainer from './login/LoginPageContainer';
 import DashboardContainer from './dashboard/DashboardContainer';
-import EventPage from './event/EventPage';
+import EventPageContainer from './event/EventPageContainer';
 import Error404 from './error/Error404';
 
 const Router = () => (
@@ -16,7 +16,7 @@ const Router = () => (
     <Route exact path='/register' component={RegisterContainer} />
     <Route exact path='/login' component={LoginPageContainer} />
     <Route exact path='/dashboard' component={DashboardContainer} />
-    <Route exact path='/event' component={EventPage} />
+    <Route exact path='/event/:id' component={EventPageContainer} />
     <Route component={Error404} />
   </Switch>
 );
