@@ -95,7 +95,7 @@ published | Indica se deve retornar eventos ativos ou arquivados | true
 
 **URL Request**:
 ```
-http://localhost:3000/api/event/?fields=name,subtitle&order=name&query=evento&published=false
+GET http://localhost:3000/api/event/?fields=name,subtitle&order=name&query=evento&published=false
 ```
 
 **JSON Response**:
@@ -123,7 +123,7 @@ Retorna dados de um evento específico selecionado pelo ID
 
 **URL Request**:
 ```
-http://localhost:3000/api/event/59f661366c67bf4916a89532?fields=name,subtitle
+GET http://localhost:3000/api/event/59f661366c67bf4916a89532?fields=name,subtitle
 ```
 
 O parâmetro `fields` indica quais campos devem ser extraídos do evento buscado
@@ -145,7 +145,7 @@ Rota para inscrição em evento através de papel público. É necessário haver
 
 **URL Request**:
 ```
-http://localhost:3000/api/event/59f661366c67bf4916a89532/enroll
+POST http://localhost:3000/api/event/59f661366c67bf4916a89532/enroll
 ```
 
 **Body Request**:
@@ -164,6 +164,27 @@ O campo `role` deve conter o ID do papel público com o qual o usuário deseja s
   "error_info": "Sem mensagem de erro",
   "data": { }
 }
+```
+
+### POST /api/event/:id/role
+Cria um novo papel no evento
+
+**Body Request**:
+```json
+{
+  "name": "Discente",
+  "description": "Discente da instituicao",
+  "type": "public"
+}
+```
+Somente o campo `name` é obrigatório. A descrição default é "Sem descrição" e o tipo default é `public`.
+
+### GET /api/event/:id/role
+Retorna papéis de um evento. Por padrão retorna papéis públicos.
+
+**URL Request**:
+```
+GET http://localhost:3000/api/event/59f661366c67bf4916a89532/role
 ```
 
 
