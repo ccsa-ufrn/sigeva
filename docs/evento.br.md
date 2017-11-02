@@ -140,6 +140,31 @@ O parâmetro `fields` indica quais campos devem ser extraídos do evento buscado
 }
 ```
 
+### POST /api/event/:id/enroll
+Rota para inscrição em evento através de papel público. É necessário haver um usuário logado
+
+**URL Request**:
+```
+http://localhost:3000/api/event/59f661366c67bf4916a89532/enroll
+```
+
+**Body Request**:
+```json
+{
+  "role": "59f6613f6c67bf4916a25174"
+}
+```
+
+O campo `role` deve conter o ID do papel público com o qual o usuário deseja se inscrever
+
+**JSON Response**:
+```json
+{
+  "error": false,
+  "error_info": "Sem mensagem de erro",
+  "data": { }
+}
+```
 
 
 [usuario]:<https://github.com/ccsa-ufrn/seminario/blob/master/docs/user.br.md>

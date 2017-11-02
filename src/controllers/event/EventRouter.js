@@ -53,6 +53,43 @@ eventRouter.get('/', (req, res) => {
   Event.loadEvents(page, count, query, fields, order, published)
     .then((eventSet) => {
       res.json(Response(false, eventSet));
+    }).catch(() => {
+      res.json(Response(true, {}));
+    });
+});
+
+/**
+ * Creates a role in event's roles
+ * @param name role's name
+ * @param description role's description
+ * @param type role's type
+ */
+eventRouter.post('/:id/role', (req, res) => {
+  const roleName = req.body.name ? req.body.name : null;
+  const roleDescription = req.body.description ? req.body.description : 'Sem descrição';
+  const roleType = req.body.type ? req.body.type : 'public';
+
+  const event = new Event();
+  event.loadById(req.params.id)
+    .then(() => {
+      return event.createRole(roleName, roleDescription, roleType);
+    })
+    .then(() => {
+      res.json(Response(false, {}));
+    })
+    .catch(() => {
+      res.status(500).json(Response(true, {}, Constants.EVENT_NEW_ROLE_ERROR_MSG));
+    });
+});
+
+eventRouter.get('/:id/role', (req, res) => {
+  const event = new Event();
+  event.loadById(req.params.id)
+    .then(() => {
+      res.json(Response(false, event.getRoles()));
+    })
+    .catch(() => {
+      res.status(404).json(Response(true, {}, Constants.EVENT_NOT_FOUND_MSG));
     });
 });
 
@@ -74,7 +111,10 @@ eventRouter.post('/:id/enroll', simpleAuthorization, (req, res) => {
   const event = new Event();
   event.loadById(req.params.id)
     .then(() => {
-      event.enroll(user, roleId);
+      return event.enroll(user, roleId);
+    })
+    .then(() => {
+      res.json(Response(false, {}));
     })
     .catch(() => {
       res.status(404).json(Response(true, {}, Constants.EVENT_NOT_FOUND_MSG));

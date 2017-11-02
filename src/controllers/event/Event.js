@@ -148,6 +148,53 @@ export default class {
   }
 
   /**
+   * Creates a new role in the event
+   * @param name role's name
+   * @param description role's description
+   * @param type role's type
+   * @param editable if the role is editable of static
+   */
+  createRole(name, description, type, editable = true) {
+    const roleObj = {
+      name,
+      description,
+      type,
+      editable,
+    };
+
+    return new Promise((resolve, reject) => {
+      // Validate if name and description are filled
+      ['name', 'description'].forEach((field) => {
+        if (roleObj[field] == null) {
+          reject();
+        }
+      });
+
+      const newRole = new RoleModel(roleObj);
+      this.eventObject.ofRoles.push(newRole);
+
+      this.store()
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  /**
+   *
+   * @param type role's type. If type is null return all actives types.
+   */
+  getRoles(type = 'public') {
+    if (type === null) {
+      return this.eventObject.ofRoles.filter((role) => {
+        return (role.active);
+      });
+    }
+    return this.eventObject.ofRoles.filter((role) => {
+      return (role.type === type && role.active);
+    });
+  }
+
+  /**
    * Enrolls a user in the event based on a role id
    * @param user user to be enrolled
    * @param roleId event's role id that the user will have
@@ -164,9 +211,8 @@ export default class {
         // The role exists, then create a relationship
         this.createRelationship(user, role);
         this.store()
-          .then(() => {
-            resolve();
-          });
+          .then(resolve)
+          .catch(reject);
       }
     });
   }

@@ -60,7 +60,8 @@ const eventFieldsParse = (fields) => {
       fieldsStr = fieldsStr.concat(' ');
     }
   });
-  return fieldsStr !== '' ? fieldsStr : '_id'; // If at end no one at requestable are in fields
+  fieldsStr = fieldsStr.concat('_id');
+  return fieldsStr; // If at end no one at requestable are in fields
   // just return _id
 };
 
