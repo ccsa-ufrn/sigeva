@@ -21,6 +21,70 @@ export function eventLoaded() {
   });
 }
 
+export function setEventRoles(data) {
+  return ({
+    type: Action.SET_EVENT_ROLES,
+    data,
+  });
+}
+
+export function setRelationship(data) {
+  return ({
+    type: Action.SET_EVENT_RELATIONSHIP,
+    data,
+  });
+}
+
+export function loadEventRoles(id) {
+  return (dispatch) => {
+    const config = {
+      method: 'GET',
+      mode: 'cors',
+      timeout: 3000,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    fetch(`${application.url}/api/event/${id}/role`, config)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        if (json.error) {
+          return;
+        }
+        dispatch(setEventRoles(json.data));
+      });
+  };
+}
+
+export function loadRelationship(id) {
+  return (dispatch) => {
+    const config = {
+      method: 'GET',
+      mode: 'cors',
+      timeout: 3000,
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    fetch(`${application.url}/api/event/${id}/relationship`, config)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        if (!json.error) {
+          dispatch(setRelationship(json.data));
+        }
+      });
+  };
+}
+
 // Thunk Redux action to load event data
 export function loadEvent(id) {
   return (dispatch) => {
@@ -58,5 +122,38 @@ export function loadEventIfNeed(id) {
     if (getState().event.id !== id) {
       dispatch(loadEvent(id));
     }
+  };
+}
+
+export function enrollUser(role) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      timeout: 3000,
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ role }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/enroll`, config)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        if (!json.error) {
+          dispatch(loadRelationship(eventId));
+        } else {
+          dispatch(eventNotFound());
+        }
+      })
+      .catch(() => {
+        dispatch(eventNotFound());
+      });
   };
 }

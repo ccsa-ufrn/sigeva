@@ -9,8 +9,12 @@ class EventPage extends Component {
     super(props);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.loadEventIfNeed(this.props.match.params.id);
+    this.props.loadEventRoles(this.props.match.params.id);
+    if (this.props.userSession.logged) {
+      this.props.loadRelationship(this.props.match.params.id);
+    }
   }
 
   render() {

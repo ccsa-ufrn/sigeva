@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class EventCard extends Component {
 
@@ -15,7 +16,7 @@ class EventCard extends Component {
             <i className="fa fa-calendar"></i> {this.props.period} <i className="fa fa-map-marker"></i> {this.props.location}
           </h6>
           <p className="card-text">{this.props.description} [ <a href="#">ler mais</a> ]</p>
-          <a href="/event" className="btn btn-success">Acessar</a> <a href="#" className="btn btn-success">Inscrever-se</a>
+          <Link to="/event/59fb7b8eb03ec236fe920dec" className="btn btn-success">Acessar</Link> <a href="#" className="btn btn-success">Inscrever-se</a>
         </div>
       </div>
     );

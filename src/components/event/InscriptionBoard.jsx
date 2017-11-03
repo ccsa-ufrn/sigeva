@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class InscriptionBoardHeader extends Component {
   render() {
@@ -16,33 +17,102 @@ class InscriptionBoardHeader extends Component {
 }
 
 class InscriptionBoard extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      role: '-1',
+      submiting: false,
+    };
+
+    this.changeRole = this.changeRole.bind(this);
+    this.submitEnroll = this.submitEnroll.bind(this);
+  }
+
+  hasPublicRole() {
+    if (this.props.event.relationship) {
+      const publicRoles = this.props.event.relationship.filter((role) => {
+        return role.type === 'public';
+      });
+      return publicRoles.length > 0;
+    }
+    return false;
+  }
+
+  hasPrivateRole() {
+    if (this.props.event.relationship) {
+      const publicRoles = this.props.event.relationship.filter((role) => {
+        return role.type === 'private';
+      });
+      return publicRoles.length > 0;
+    }
+    return false;
+  }
+
+  changeRole(event) {
+    const value = event.target.value;
+    this.setState({ role: value });
+  }
+
+  submitEnroll(event) {
+    event.preventDefault();
+    if (this.state.role !== '-1') {
+      this.props.submitEnroll(this.state.role);
+      this.setState({ role: '-1', submiting: true });
+    }
+  }
+
   render() {
     if (this.props.userSession.logged_user) {
-      return (
-        <div>
-        <InscriptionBoardHeader>
-          <div className='form-group'>
-            <label htmlFor='enrollAs'>Inscrever-se como</label>
-            <select className='form-control' id='enrollAs'>
-              <option>Discente</option>
-              <option>Docente</option>
-              <option>Técnico Administrativo</option>
-              <option>Sem vínculo institucional</option>
-            </select>
-          </div>
-          <button className='btn btn-success form-control'>Efetuar inscrição</button>
-        </InscriptionBoardHeader>
-        <InscriptionBoardHeader>
-          <span>Você já está inscrito neste evento.</span>
-          <button className='btn btn-success form-control'>Acessar painel do evento</button>
-        </InscriptionBoardHeader>
-        </div>
-      );
+      if (!this.props.event.loading && this.props.event.roles) {
+        if (this.hasPublicRole()) {
+          return (
+            <InscriptionBoardHeader>
+              <span>Você possui inscrição neste evento.</span><br/><br/>
+              <Link to={`/dashboard/event/${this.props.event.id}`} className='btn btn-success form-control'>Acessar painel do evento</Link>
+            </InscriptionBoardHeader>
+          );
+        } else {
+          return (
+            <div>
+              <InscriptionBoardHeader>
+                <div className='form-group'>
+                  <label htmlFor='enrollAs'>Inscrever-se como</label>
+                  <select className='form-control' id='enrollAs' onChange={this.changeRole}>
+                    <option value='-1'>Selecione o tipo de inscrição</option>
+                    {
+                      this.props.event.roles.map((role, idx) => {
+                        return (
+                          <option key={idx} value={role._id}>{role.name}</option>
+                        );
+                      })
+                    }
+                  </select>
+                </div>
+                <button onClick={this.submitEnroll} className='btn btn-danger form-control' disabled={(this.state.role == '-1')}>Efetuar inscrição</button>
+                { this.state.submiting &&
+                  <span>Realizando inscrição...</span>
+                }
+              </InscriptionBoardHeader>
+              {this.hasPrivateRole() &&
+                <div className='card board'>
+                  <div className='card-body'>
+                    <span>Você possui vínculo através de papel privado com este evento.</span><br/><br/>
+                    <Link to={`/dashboard/event/${this.props.event.id}`} className='btn btn-success form-control'>Acessar controle do evento</Link>
+                  </div>
+                </div>
+              }
+            </div>
+          );
+        }
+      } else {
+        return (<div>Carregando...</div>);
+      }
     } else {
       return(
         <InscriptionBoardHeader>
           <div className='alert alert-danger'>
-            Para efetuar a inscrição é necessário estar logado. <a href='/login'>Fazer login</a>
+            Para efetuar a inscrição é necessário estar logado. <Link to='/login'>Fazer login</Link>
           </div>
         </InscriptionBoardHeader>
       );

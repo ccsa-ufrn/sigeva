@@ -7,6 +7,8 @@ const initialEventState = {
   // roles: null,
   not_found: false,
   loading: true,
+  roles: null,
+  relationship: null,
 };
 
 const mountObjectData = (data) => {
@@ -28,6 +30,14 @@ const event = (state = initialEventState, action) => {
       });
     case Action.SET_EVENT_PAGE_DATA:
       return Object.assign({}, state, mountObjectData(action.data));
+    case Action.SET_EVENT_ROLES:
+      return Object.assign({}, state, {
+        roles: action.data,
+      });
+    case Action.SET_EVENT_RELATIONSHIP:
+      return Object.assign({}, state, {
+        relationship: action.data,
+      });
     default:
       return state;
   }

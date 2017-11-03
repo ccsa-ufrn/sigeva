@@ -82,6 +82,10 @@ eventRouter.post('/:id/role', (req, res) => {
     });
 });
 
+/**
+ * Gets the event public role's list
+ * @param id event's id
+ */
 eventRouter.get('/:id/role', (req, res) => {
   const event = new Event();
   event.loadById(req.params.id)
@@ -89,6 +93,21 @@ eventRouter.get('/:id/role', (req, res) => {
       res.json(Response(false, event.getRoles()));
     })
     .catch(() => {
+      res.status(404).json(Response(true, {}, Constants.EVENT_NOT_FOUND_MSG));
+    });
+});
+
+/**
+ * Returns the user's relationships in the event
+ * @param id event's id
+ */
+eventRouter.get('/:id/relationship', simpleAuthorization, (req, res) => {
+  const event = new Event();
+  event.loadById(req.params.id)
+    .then(() => {
+      res.json(Response(false, event.getUserRelationships(res.locals.user._id)));
+    })
+    .catch((e) => {
       res.status(404).json(Response(true, {}, Constants.EVENT_NOT_FOUND_MSG));
     });
 });
@@ -102,6 +121,7 @@ eventRouter.get('/:id/role', (req, res) => {
  */
 eventRouter.post('/:id/enroll', simpleAuthorization, (req, res) => {
   const roleId = req.body.role; // The role id that the user wants to enroll with
+  console.log(roleId);
 
   // Load the logged user in a User object by the id
   const user = new User();

@@ -66,6 +66,7 @@ const formatUser = (userObject_, userOfFieldsParsed_) => {
     name: userObject_.name,
     email: userObject_.email,
     fields: userOfFieldsParsed_,
+    ofEvents: userObject_.ofEvents,
   };
   return formated;
 };

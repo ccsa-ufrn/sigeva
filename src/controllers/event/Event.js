@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import EventDAO from './EventDAO';
 import EventModel from '../../models/event.model';
 import FieldError from '../FieldError';
@@ -195,6 +196,30 @@ export default class {
   }
 
   /**
+   * Returns user's rules in a event
+   * @param userId_ user id
+   */
+  getUserRelationships(userId_) {
+    const userRelationship = this.eventObject.ofRelationships.find((relationship) => {
+      return relationship.user == userId_;
+    });
+
+    if (userRelationship === undefined) {
+      return [];
+    }
+
+    const roles = this.eventObject.ofRoles.filter((role) => {
+      let t = false;
+      userRelationship.ofRoles.forEach((uRole) => {
+        t = (String(uRole) == String(role._id));
+      });
+      return t;
+    });
+
+    return roles;
+  }
+
+  /**
    * Enrolls a user in the event based on a role id
    * @param user user to be enrolled
    * @param roleId event's role id that the user will have
@@ -209,10 +234,12 @@ export default class {
         reject('Papel não encontrado');
       } else {
         // The role exists, then create a relationship
-        this.createRelationship(user, role);
-        this.store()
-          .then(resolve)
-          .catch(reject);
+        this.createRelationship(user, role)
+          .then(() => {
+            this.store()
+              .then(resolve)
+              .catch(reject);
+          }).catch(reject);
       }
     });
   }
@@ -243,6 +270,7 @@ export default class {
       // TODO: What if the user already have a public relationship with this event?
       //       Whats the best way to figure this out?
     }
+    return user.addEvent(this);
   }
 
   /**

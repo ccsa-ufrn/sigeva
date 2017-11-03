@@ -222,6 +222,17 @@ export default class {
     });
   }
 
+  /**
+   * Push a event id to ofEvents array
+   * @param event_ event to be added
+   */
+  addEvent(event_) {
+    if (!this.userObject.ofEvents.includes(event_.eventObject._id)) {
+      this.userObject.ofEvents.push(event_.eventObject._id);
+    }
+    return this.store();
+  }
+
   store() {
     return new Promise((resolve, reject) => {
       UserDAO.insertUser(this.userObject)
