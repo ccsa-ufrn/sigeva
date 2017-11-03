@@ -252,7 +252,7 @@ export default class {
    */
   createRelationship(user, role) {
     const relationshipIdx = this.eventObject.ofRelationships.findIndex((currRelationship) => {
-      return currRelationship.user === user.userObject._id;
+      return String(currRelationship.user) == String(user.userObject._id);
     });
 
     if (relationshipIdx === -1) { // Not found relationship
