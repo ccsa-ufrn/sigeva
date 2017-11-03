@@ -42,7 +42,10 @@ const userSchema = new Schema({
   ofTypes: [String], // types of user: Administrator, Common or both.
   // ofFields uses subdocs Mongoose's feature: http://mongoosejs.com/docs/subdocs.html
   ofFields: [], // Array of fields that can be defined by a administrator TODO: Link with field
-  ofEvents: [Schema.Types.ObjectId], // Array of references to events that the user is enrolled in
+  ofEvents: [{ // Array of references to events that the user is enrolled in
+    type: Schema.Types.ObjectId,
+    ref: 'Event',
+  }],
   active: { // tells if the account was desactivated
     type: Boolean,
     default: true,

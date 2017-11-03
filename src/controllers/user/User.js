@@ -139,7 +139,7 @@ export default class {
    * @return Promise. Resolves if user exists, Rejects otherwise.
    */
   loadById(id_) {
-    const query = userModel.findOne({ _id : id_ });
+    const query = userModel.findOne({ _id : id_ }).populate('ofEvents', 'name');
     return new Promise((resolve, reject) => {
       UserDAO.executeQuery(query)
         .then((user) => {

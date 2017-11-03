@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import MainLayout from '../layout/MainLayout';
-import MainMenu from './MainMenu';
+import MainMenuContainer from './MainMenuContainer';
 import EventsBoard from '../home/EventsBoard';
 
 class Dashboard extends Component {
@@ -25,7 +25,7 @@ class Dashboard extends Component {
                 <EventsBoard />
               </div>
               <div className='col-md-4'>
-                <MainMenu />
+                <MainMenuContainer />
               </div>
             </div>
           </MainLayout>
