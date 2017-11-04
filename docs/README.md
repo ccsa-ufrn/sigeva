@@ -1,7 +1,7 @@
-### Documentação Sigeva [em curso]
+### Documentação Sigeva
 
 **Diagrama de classes**
 
 <p align="center">
-    <img src="http://i.imgur.com/7DpLLXc.jpg" >
+    <img src="https://i.imgur.com/t5NdSEU.jpg" >
 </p>
