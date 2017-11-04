@@ -31,4 +31,7 @@ config: Object | Sessão para configurações personalizadas do módulo | { defa
 
 Campo | Descrição | Exemplo
 ------| --------- | -------
-name: String | Nome da permissão em formato legível para humanos | "Submeter proposta de "
+name: String | Nome da permissão em formato legível para humanos | "Submeter proposta de atividade"
+action: String | Identificador único para a permissão | "submit_activity"
+entity: ObjectID | Entidade do módulo a qual a permissão está relacionada | ObjectID("jd1c28gcms62gc5a1")
+ofRoles: [ObjectID] | Papéis do evento que possuem a permissão | 
