@@ -9,8 +9,12 @@ class Dashboard extends Component {
     super(props);
   }
 
-  componentWillMount() {
-    this.props.loadUserIfNeed();
+  componentDidMount() {
+    if (!this.props.userSession.logged) {
+      this.props.loadUserIfNeed();
+    } else {
+      this.props.reloadUser();
+    }
   }
 
   render() {

@@ -73,8 +73,25 @@ class InscriptionBoard extends Component {
             </InscriptionBoardHeader>
           );
         } else {
-          return (
-            <div>
+          const currentDate = new Date().getTime();
+          const enrollmentPeriodBegin = new Date(this.props.event.enrollmentPeriod.begin).getTime();
+          const enrollmentPeriodEnd = new Date(this.props.event.enrollmentPeriod.end).getTime();
+
+          let component;
+          if (currentDate < enrollmentPeriodBegin) {
+            component = (
+              <InscriptionBoardHeader>
+                <span>Este evento ainda não está aberto para inscrições</span>
+              </InscriptionBoardHeader>
+            );
+          } else if (currentDate > enrollmentPeriodEnd) {
+            component = (
+              <InscriptionBoardHeader>
+                <span>Este evento já encerrou o período de inscrições</span>
+              </InscriptionBoardHeader>
+            );
+          } else {
+            component = (
               <InscriptionBoardHeader>
                 <div className='form-group'>
                   <label htmlFor='enrollAs'>Inscrever-se como</label>
@@ -94,6 +111,11 @@ class InscriptionBoard extends Component {
                   <span>Realizando inscrição...</span>
                 }
               </InscriptionBoardHeader>
+            );
+          }
+          return (
+            <div>
+              { component }
               {this.hasPrivateRole() &&
                 <div className='card board'>
                   <div className='card-body'>

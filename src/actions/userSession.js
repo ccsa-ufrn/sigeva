@@ -48,6 +48,17 @@ export function loadUserIfNeed() {
   };
 }
 
+export function reloadUser() {
+  return (dispatch, getState) => {
+    if (getState().userSession.logged_user) {
+      fetchUserMe()
+        .then((json) => {
+          dispatch(setUserData(json.data));
+        });
+    }
+  };
+}
+
 export function clearUserSessionData() {
   return ({
     type: Action.CLEAR_USER_SESSION_DATA,

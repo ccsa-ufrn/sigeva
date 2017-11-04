@@ -227,7 +227,14 @@ export default class {
    * @param event_ event to be added
    */
   addEvent(event_) {
-    if (!this.userObject.ofEvents.includes(event_.eventObject._id)) {
+    let found = false;
+
+    this.userObject.ofEvents.forEach((event) => {
+      if (!found) {
+        found = event._id.equals(event_.eventObject._id);
+      }
+    });
+    if (!found) {
       this.userObject.ofEvents.push(event_.eventObject._id);
     }
     return this.store();

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { loadUserIfNeed } from '../../actions/userSession';
+import { loadUserIfNeed, reloadUser } from '../../actions/userSession';
 
 import Dashboard from './Dashboard';
 
@@ -14,6 +14,9 @@ const mapDispatchToProps = dispatch => {
   return {
     loadUserIfNeed: () => {
       dispatch(loadUserIfNeed());
+    },
+    reloadUser: () => {
+      dispatch(reloadUser());
     }
   };
 }

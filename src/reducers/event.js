@@ -3,6 +3,7 @@ import * as Action from '../actions/constants';
 const initialEventState = {
   id: null,
   name: null,
+  enrollmentPeriod: null,
   // location: null,
   // roles: null,
   not_found: false,
@@ -15,6 +16,7 @@ const mountObjectData = (data) => {
   return ({
     id: data._id,
     name: data.name,
+    enrollmentPeriod: data.enrollmentPeriod,
   });
 };
 

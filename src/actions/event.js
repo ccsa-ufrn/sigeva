@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import { application } from '../../config';
+import { fetchUserMe } from './userSession';
 import * as Action from './constants';
 
 export function eventNotFound() {
