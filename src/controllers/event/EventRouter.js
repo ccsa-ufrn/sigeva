@@ -145,6 +145,48 @@ eventRouter.post('/:id/enroll', simpleAuthorization, (req, res) => {
 });
 
 /**
+ * Actives or reactivate a module in the event
+ * @param id event's id
+ * @param slug module identification
+ *
+ * TODO: add authorization for admin only
+ */
+eventRouter.get('/:id/module/:slug/active', (req, res) => {
+  const event = new Event();
+  event.loadById(req.params.id)
+    .then(() => {
+      return event.activeModule(req.params.slug);
+    })
+    .then(() => {
+      res.json(Response(false, {}));
+    })
+    .catch(() => {
+      res.json(Response(true, {}));
+    });
+});
+
+/**
+ * Deactivate a module from the event
+ * @param id event's id
+ * @param slug module identification
+ *
+ * TODO: add authorization for admin only
+ */
+eventRouter.get('/:id/module/:slug/deactivate', (req, res) => {
+  const event = new Event();
+  event.loadById(req.params.id)
+    .then(() => {
+      return event.deactivateModule(req.params.slug);
+    })
+    .then(() => {
+      res.json(Response(false, {}));
+    })
+    .catch(() => {
+      res.json(Response(true, {}));
+    });
+});
+
+/**
  * Returns a event by ID
  * @param id event id to search for
  * @return event if found

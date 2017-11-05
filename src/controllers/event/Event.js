@@ -1,10 +1,13 @@
-import mongoose from 'mongoose';
 import EventDAO from './EventDAO';
 import EventModel from '../../models/event.model';
 import FieldError from '../FieldError';
 
 import RoleModel from '../../models/role.model';
 import RelationshipModel from '../../models/relationship.model';
+
+import Module from '../module/Module';
+import PaymentModule from '../module/PaymentModule';
+import SubmissionModule from '../module/SubmissionModule';
 
 import * as EventHelper from './EventHelper';
 
@@ -271,6 +274,91 @@ export default class {
       //       Whats the best way to figure this out?
     }
     return user.addEvent(this);
+  }
+
+  /**
+   * Creates a module Object from a module's slug name
+   * @param moduleSlug module slug identification
+   * @return a module subclass object or null if the module type doesn't exists
+   */
+  moduleFactory(moduleSlug) {
+    let module = null;
+    switch (moduleSlug) {
+      case 'payment':
+        module = new PaymentModule(this.eventObject._id);
+        break;
+      case 'submission':
+        module = new SubmissionModule(this.eventObject._id);
+        break;
+      default:
+        // do nothing
+        break;
+    }
+
+    return module;
+  }
+
+  /**
+   * Gets a module object from the event
+   * @param moduleSlug module slug identification
+   * @return a module subclass object loaded or null if it not exists
+   */
+  getModule(moduleSlug) {
+    const module = this.moduleFactory(moduleSlug);
+    return new Promise((resolve, reject) => {
+      if (module) {
+        module.load()
+          .then((doc) => {
+            return doc ? resolve(module) : resolve(null);
+          }).catch(reject);
+      } else { resolve(null); }
+    });
+  }
+
+  /**
+   * Actives a module in the event
+   * @param moduleSlug module slug identification
+   */
+  activeModule(moduleSlug) {
+    return new Promise((resolve, reject) => {
+      this.getModule(moduleSlug)
+        .then((module) => {
+          let tempModule = null;
+
+          if (module) {
+            // already exists this module
+            tempModule = module;
+            tempModule.setActive(true);
+          } else {
+            // this module not exists yet
+            tempModule = this.moduleFactory(moduleSlug);
+          }
+
+          if (tempModule) {
+            tempModule.store()
+              .then(resolve).catch(reject);
+          } else { reject(); }
+        }).catch(reject);
+    });
+  }
+
+  /**
+   * Deactivate a module from the event
+   * @param moduleSlug module slug identification
+   */
+  deactivateModule(moduleSlug) {
+    return new Promise((resolve, reject) => {
+      this.getModule(moduleSlug)
+        .then((module) => {
+          if (module) {
+            module.setActive(false);
+            module.store()
+              .then(resolve).catch(reject);
+          } else {
+            reject();
+          }
+        }).catch(reject);
+    });
   }
 
   /**
