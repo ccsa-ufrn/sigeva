@@ -24,13 +24,6 @@ class EventsBoard extends Component {
   }
 
   render() {
-    // return(
-    //       {/* <EventCard id="28fj3282d" name="XXII Seminário de Pesquisa" period="2 a 4 de maio" location="Setor V - UFRN" description="Descrição do evento" /> */}
-    //       <EventCard name="XXII Seminário de Pesquisa" period="2 a 4 de maio" location="Setor V - UFRN" description="Descrição do evento" />
-    //       <EventCard name="XXII Seminário de Pesquisa" period="2 a 4 de maio" location="Setor V - UFRN" description="Descrição do evento" />
-
-    // );
-
     if (this.props.eventsBoard.error) {
       return (
         <EventsBoardEdge>Erro ao carregar eventos</EventsBoardEdge>
@@ -54,7 +47,9 @@ class EventsBoard extends Component {
                   id={event._id}
                   name={`${event.name}: ${event.subtitle}`}
                   period={event.readableEventPeriod}
-                  location={event.location} />);
+                  enrollment={event.readableEnrollmentPeriod}
+                  location={event.location}
+                  enrollmentPeriod={event.enrollmentPeriod} />);
               })
             }
           </EventsBoardEdge>

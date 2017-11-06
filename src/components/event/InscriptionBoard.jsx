@@ -69,7 +69,7 @@ class InscriptionBoard extends Component {
           return (
             <InscriptionBoardHeader>
               <span>Você possui inscrição neste evento.</span><br/><br/>
-              <Link to={`/dashboard/event/${this.props.event.id}`} className='btn btn-success form-control'>Acessar painel do evento</Link>
+              <Link to={`/event/${this.props.event.id}/dashboard`} className='btn btn-success form-control'>Acessar painel do evento</Link>
             </InscriptionBoardHeader>
           );
         } else {
