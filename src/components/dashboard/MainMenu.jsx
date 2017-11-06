@@ -30,7 +30,7 @@ class MainMenu extends Component {
               {
                 this.props.userSession.logged_user.ofEvents.map((event) => {
                   return (
-                    <li className='nav-item'>
+                    <li key={event._id} className='nav-item'>
                       <Link className='nav-link' to={`/event/${event._id}/dashboard`}>{event.name}</Link>
                     </li>
                   );
