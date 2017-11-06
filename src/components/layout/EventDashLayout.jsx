@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Breadcrumb from '../Breadcrumb';
-import MainHeaderBar from './MainHeaderBar';
+import EventDashHeaderBar from './EventDashHeaderBar';
 import FooterBar from './FooterBar';
 
-class MainLayout extends Component {
+class EventDashLayout extends Component {
   constructor(props) {
     super(props);
   }
@@ -13,10 +12,7 @@ class MainLayout extends Component {
   render() {
     return(
       <div>
-        <MainHeaderBar />
-        { this.props.path &&
-          <Breadcrumb path={ this.props.path } />
-        }
+        <EventDashHeaderBar />
         <div className='container-fluid'>
           { this.props.children }
         </div>
@@ -26,9 +22,9 @@ class MainLayout extends Component {
   }
 }
 
-MainLayout.propTypes = {
+EventDashLayout.propTypes = {
   children: PropTypes.any.isRequired,
   path: PropTypes.array,
 }
 
-export default MainLayout;
+export default EventDashLayout;

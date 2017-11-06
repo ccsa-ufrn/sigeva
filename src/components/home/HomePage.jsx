@@ -3,9 +3,8 @@ import { Redirect } from 'react-router-dom';
 
 import MainLayout from '../layout/MainLayout';
 import MainHeaderBar from '../layout/MainHeaderBar';
-import EventsBoard from './EventsBoard';
+import EventsBoardContainer from '../eventsBoard/EvenstBoardContainer';
 import LoginContainer from '../login/LoginContainer';
-import FooterBar from '../FooterBar';
 
 class HomePage extends Component {
   render() {
@@ -16,7 +15,7 @@ class HomePage extends Component {
         <MainLayout>
           <div className='row'>
             <div className='col-md-8'>
-              <EventsBoard />
+              <EventsBoardContainer />
             </div>
             <div className='col-md-4'>
               <LoginContainer />

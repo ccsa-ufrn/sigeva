@@ -15,8 +15,8 @@ class EventCard extends Component {
           <h6 className="card-subtitle mb-2 text-muted">
             <i className="fa fa-calendar"></i> {this.props.period} <i className="fa fa-map-marker"></i> {this.props.location}
           </h6>
-          <p className="card-text">{this.props.description} [ <a href="#">ler mais</a> ]</p>
-          <Link to="/event/59fb7b8eb03ec236fe920dec" className="btn btn-success">Acessar</Link> <a href="#" className="btn btn-success">Inscrever-se</a>
+          {/* <p className="card-text">{this.props.description} [ <a href="#">ler mais</a> ]</p> */}
+          <Link to={`/event/${this.props.id}`} className="btn btn-success">Acessar</Link> <a href="#" className="btn btn-success">Inscrever-se</a>
         </div>
       </div>
     );

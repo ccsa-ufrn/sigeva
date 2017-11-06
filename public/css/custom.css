@@ -19,7 +19,7 @@ body {
 
 /* BEGIN #nav-header */
 #nav-header #logo-sigeva {
-  background: url(../img/logo.png) no-repeat;
+  background: url(../img/sigeva-beta.svg) no-repeat;
   background-size: 130px;
   width: 180px;
   height: 43px;
@@ -93,19 +93,15 @@ footer {
   right: 0;
   bottom: 0;
   left: 0;
-  height: 100px;
+  height: 90px;
   padding: 20px;
-  background-color: #4F4F4F;
-  color: white;
-  font-size: 11pt;
+  background-color: #e9ecef;
+  color: black;
+  font-size: 12pt;
 }
 
-footer a {
-  color: white;
-}
-
-footer a:hover {
-  color: white;
+footer a, a:hover {
+  color: black;
 }
 
 /* END footer */
@@ -125,3 +121,26 @@ form .form-error-message {
 
 }
 /* END error 404 */
+
+/* BEGIN event dashboard */
+.event-dashboard-side-menu, .event-dashboard-module {
+  margin-top: 17px;
+}
+
+.event-dashboard-side-menu li {
+  background: #e9ecef;
+}
+.event-dashboard-side-menu li:hover {
+  background: #6D6E6F;
+}
+.event-dashboard-side-menu li a {
+  color: black;
+}
+.event-dashboard-side-menu li a:hover {
+  color: white;
+}
+
+.event-dashboard-module .nav-pills .nav-link.active {
+  background: #FF404E;
+}
+/* END event dashboard */
