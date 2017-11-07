@@ -4,7 +4,7 @@ import path from 'path';
 
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import thunkMiddleware from 'redux-thunk'
+import thunkMiddleware from 'redux-thunk';
 
 import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
@@ -14,7 +14,7 @@ import app from './App';
 import { application } from '../../config';
 
 import reducers from '../reducers/index';
-import { setUserSessionToken } from '../actions/userSession';
+import { setUserSessionToken, initializeUser, setUserData } from '../actions/userSession';
 
 console.log(`Application enviroment is ${process.env.NODE_ENV}`);
 
@@ -24,19 +24,9 @@ app.set('view engine', 'ejs');
 // SETINGS FOR STATIC FILES
 app.use('/public', express.static(path.resolve('public')));
 
-// HANDLE ALL OTHERS REQUESTS
-app.get('*', (req, res) => {
-  const context = {};
+function renderApplication(store, req, res) {
   let status = 200;
-  const store = createStore(
-    reducers,
-    applyMiddleware(thunkMiddleware),
-  );
-
-  if (req.cookies.sigeva_user_token) {
-    store.dispatch(setUserSessionToken(req.cookies.sigeva_user_token));
-  }
-
+  const context = {};
   const markup = ReactDOMServer.renderToString(
     <Provider store={store}>
       <StaticRouter context={context} location={req.url}>
@@ -44,7 +34,6 @@ app.get('*', (req, res) => {
       </StaticRouter>
     </Provider>
   );
-
   // context.url will contain the URL to redirect to if a <Redirect> was used
   if (context.url) {
     res.redirect(302, context.url);
@@ -54,6 +43,24 @@ app.get('*', (req, res) => {
     }
     const initialState = JSON.stringify(store.getState());
     res.status(status).render('layout', { root: markup, initialState });
+  }
+}
+
+// HANDLE ALL OTHERS REQUESTS
+app.get('*', (req, res) => {
+  const store = createStore(
+    reducers,
+    applyMiddleware(thunkMiddleware),
+  );
+
+  if (req.cookies.sigeva_user_token) {
+    store.dispatch(setUserSessionToken(req.cookies.sigeva_user_token));
+    initializeUser(req.cookies.sigeva_user_token, (userData) => {
+      store.dispatch(setUserData(userData));
+      renderApplication(store, req, res);
+    });
+  } else {
+    renderApplication(store, req, res);
   }
 });
 

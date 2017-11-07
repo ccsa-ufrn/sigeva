@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import EventDashHeaderBar from './EventDashHeaderBar';
+import EventDashHeaderBarContainer from './EventDashHeaderBarContainer';
 import FooterBar from './FooterBar';
 
 class EventDashLayout extends Component {
@@ -12,7 +12,7 @@ class EventDashLayout extends Component {
   render() {
     return(
       <div>
-        <EventDashHeaderBar />
+        <EventDashHeaderBarContainer />
         <div className='container-fluid'>
           { this.props.children }
         </div>
