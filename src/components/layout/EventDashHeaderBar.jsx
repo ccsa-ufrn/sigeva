@@ -15,7 +15,7 @@ class EventDashHeaderBar extends Component {
           </li>
         </ul>
         <span className="form-inline">
-          <a href="#" style={{color:'#fff'}}>user.name</a>
+          <a href="#" style={{color:'#fff'}}>{this.props.userSession.logged_user.name}</a>
         </span>
       </nav>
     );

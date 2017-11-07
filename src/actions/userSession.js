@@ -16,7 +16,7 @@ export function setUserData(data) {
   });
 }
 
-function fetchUserMe() {
+function fetchUserMe(token) {
   const config = {
     method: 'GET',
     mode: 'cors',
@@ -24,6 +24,7 @@ function fetchUserMe() {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: token,
     },
     credentials: 'include',
   };
@@ -40,12 +41,20 @@ export function loadUserIfNeed() {
     if (getState().userSession.logged_user === null &&
         getState().userSession.token !== null) {
       // User not logged yet
-      fetchUserMe()
+      fetchUserMe(getState().userSession.token)
         .then((json) => {
           dispatch(setUserData(json.data));
         });
     }
   };
+}
+
+// Function used by server-side rendering
+export function initializeUser(token, callback) {
+  fetchUserMe(token)
+    .then((json) => {
+      callback(json.data);
+    });
 }
 
 export function reloadUser() {
