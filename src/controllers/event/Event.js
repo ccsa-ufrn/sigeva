@@ -276,6 +276,25 @@ export default class {
     return user.addEvent(this);
   }
 
+  getUserContext(user) {
+    const userId = user.userObject._id;
+    const userRoles = this.getUserRelationships(String(userId));
+
+    return new Promise((resolve, reject) => {
+      Module.getAllModules(this.eventObject._id)
+        .then((modules) => {
+          const modulesContext = [];
+          modules.forEach((modul) => {
+            const userContext = modul.getUserContext(userRoles);
+            if (userContext !== null) {
+              modulesContext.push(userContext);
+            }
+          });
+          resolve(modulesContext);
+        }).catch(reject);
+    });
+  }
+
   /**
    * Creates a module Object from a module's slug name
    * @param moduleSlug module slug identification

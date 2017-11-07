@@ -123,8 +123,17 @@ form .form-error-message {
 /* END error 404 */
 
 /* BEGIN event dashboard */
-.event-dashboard-side-menu, .event-dashboard-module {
-  margin-top: 17px;
+.event-dashboard-top-padding {
+  padding-top: 17px;
+}
+
+.event-dashboard-side-menu {
+  margin-top: 10px;
+}
+
+.nav-link.active {
+  background: grey;
+  color: white;
 }
 
 .event-dashboard-side-menu li {

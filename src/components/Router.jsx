@@ -17,7 +17,9 @@ const Router = () => (
     <Route exact path='/register' component={RegisterContainer} />
     <Route exact path='/login' component={LoginPageContainer} />
     <Route exact path='/dashboard' component={DashboardContainer} />
-    <Route exact path='/event/:id/dashboard' component={EventDashboardPageContainer} />
+    <Route exact path='/event/:id/dashboard/' component={EventDashboardPageContainer} />
+    <Route exact path='/event/:id/dashboard/:module' component={EventDashboardPageContainer} />
+    <Route exact path='/event/:id/dashboard/:module/:entity' component={EventDashboardPageContainer} />
     <Route exact path='/event/:id' component={EventPageContainer} />
     <Route component={Error404} />
   </Switch>
