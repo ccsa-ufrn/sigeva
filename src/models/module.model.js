@@ -1,5 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { permissionSchema } from './permission.model';
+import { moduleEntitySchema } from './moduleEntity.model';
+import { moduleObjectSchema } from './moduleObject.model';
 
 /** @@ Module Model
  * @ Description: Module represents the services offered by a event
@@ -23,11 +25,9 @@ const moduleSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Event',
   },
-  ofEntities: [Schema.Types.Mixed],
+  ofEntities: [moduleEntitySchema],
   ofPermissions: [permissionSchema],
-  storage: {
-    type: Schema.Types.Mixed,
-  },
+  ofObjects: [moduleObjectSchema],
   config: {
     type: Schema.Types.Mixed,
   },

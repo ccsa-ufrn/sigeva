@@ -15,7 +15,7 @@ class PaymentModule extends Component {
   loadPermissionTab(action) {
     switch(action) {
       case 'make_payment':
-        return <MakePayment />;
+        return <MakePayment context={this.props.paymentContext}/>;
       default:
         return <span>Permissão indefinida</span>
     }
