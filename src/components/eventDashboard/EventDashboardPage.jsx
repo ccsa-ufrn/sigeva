@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import EventDashLayout from '../layout/EventDashLayout';
 import EventDashboardMenu, { EventDashboardMenuItem } from './EventDashboardMenu';
 import Error404 from '../error/Error404';
-import Module from './Module';
+import PaymentModule from './payment/PaymentModule';
 import EventDashboardHome from './EventDashboardHome';
 
 class EventDashboardPage extends Component {
@@ -18,6 +18,7 @@ class EventDashboardPage extends Component {
     this.userContainsEvent = this.userContainsEvent.bind(this);
     this.generateMenu = this.generateMenu.bind(this);
     this.generateModule = this.generateModule.bind(this);
+    this.getModuleContext = this.getModuleContext.bind(this);
   }
 
   userContainsEvent() {
@@ -27,6 +28,11 @@ class EventDashboardPage extends Component {
       });
       return event !== undefined;
     }
+  }
+
+  getModuleContext(moduleSlug) {
+    const moduleContext = this.props.event.context.find(mod => mod.slug === moduleSlug);
+    return moduleContext;
   }
 
   generateMenu() {
@@ -71,7 +77,7 @@ class EventDashboardPage extends Component {
   generateModule() {
     switch(this.state.module) {
       case 'payment':
-        return <Module />
+        return <PaymentModule paymentContext={this.getModuleContext('payment')} />
       default:
         return <EventDashboardHome event={this.props.event} roles={this.props.event.relationship}/>
     }
