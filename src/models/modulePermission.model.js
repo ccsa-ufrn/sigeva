@@ -7,7 +7,7 @@ import mongoose, { Schema } from 'mongoose';
  * Maradona Morais '2017-11-04' >> First definition
  */
 
-const permissionSchema = new Schema({
+const modulePermissionSchema = new Schema({
   name: { // Human readable permission name
     type: String,
     required: true,
@@ -30,4 +30,6 @@ const permissionSchema = new Schema({
   },
 });
 
-export { permissionSchema };
+const modulePermissionModel = mongoose.model('Permission', modulePermissionSchema);
+export { modulePermissionSchema };
+export default modulePermissionModel;

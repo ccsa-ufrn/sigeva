@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { permissionSchema } from './permission.model';
+import { modulePermissionSchema } from './modulePermission.model';
 import { moduleEntitySchema } from './moduleEntity.model';
 import { moduleObjectSchema } from './moduleObject.model';
 
@@ -26,7 +26,7 @@ const moduleSchema = new Schema({
     ref: 'Event',
   },
   ofEntities: [moduleEntitySchema],
-  ofPermissions: [permissionSchema],
+  ofPermissions: [modulePermissionSchema],
   ofObjects: [moduleObjectSchema],
   config: {
     type: Schema.Types.Mixed,

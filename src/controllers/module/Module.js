@@ -1,5 +1,7 @@
 import ModuleDAO from './ModuleDAO';
 import ModuleModel from '../../models/module.model';
+import ModuleEntity from '../../models/moduleEntity.model';
+import ModulePermission from '../../models/modulePermission.model';
 
 /** @@ Module
  * Collection to represents and controll event services
@@ -64,13 +66,65 @@ export default class Module {
     });
   }
 
-  getEntity(entityId) {
-    const entity = this.moduleObject.ofEntities.find((ent) => {
-      return ent._id.equals(entityId);
-    });
-    return entity;
+  setEntity(slug, name, data) {
+    const entity = this.getEntityBySlug(slug);
+    // If already exists a entity with that slug, just update it
+    if (entity === undefined) {
+      // if it is a new one, just push it
+      const newEntity = ModuleEntity({
+        name, slug, data,
+      });
+
+      this.moduleObject.ofEntities.push(newEntity);
+    } else {
+      entity.name = name;
+      entity.data = data;
+    }
   }
 
+  getEntityBySlug(entitySlug) {
+    return this.moduleObject.ofEntities.find(ent => ent.slug === entitySlug);
+  }
+
+  getEntityById(entityId) {
+    return this.moduleObject.ofEntities.find(ent => ent._id.equals(entityId));
+  }
+
+  setPermission(action, name, entitySlug) {
+    const entity = this.getEntityBySlug(entitySlug);
+    if (entity !== undefined) {
+      const permission = this.getPermissionByAction(action);
+      if (permission === undefined) {
+        const newPermission = ModulePermission({
+          action, name, entity: (entity._id),
+        });
+
+        this.moduleObject.ofPermissions.push(newPermission);
+      } else {
+        permission.name = name;
+      }
+    }
+  }
+
+  getPermissionByAction(action) {
+    return this.moduleObject.ofPermissions.find(perm => perm.action === action);
+  }
+
+  addRoleToPermission(permissionId, roleId) {
+    const permission = this.moduleObject.ofPermissions.find(perm => perm._id.equals(permissionId));
+
+    if (permission !== undefined) {
+      const role = permission.ofRoles.find(role => role.equals(roleId));
+      if (role === undefined) {
+        permission.ofRoles.push(roleId);
+      }
+    }
+  }
+
+  /**
+   * Returns a set of entities and permissions of the module based on a set of roles
+   * @param roles role's set
+   */
   getUserContext(roles) {
     const rolesId = roles.map(role => role._id);
 
@@ -92,7 +146,7 @@ export default class Module {
     const entities = [];
 
     permissionsWithRoles.forEach((permission) => {
-      const entity = this.getEntity(permission.entity);
+      const entity = this.getEntityById(permission.entity);
       if (entity !== undefined) {
         const found = entities.find(ele => ele === entity);
         if (found === undefined) {

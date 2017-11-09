@@ -13,6 +13,11 @@ class PaymentModule extends Module {
    */
   constructor(eventId_) {
     super(eventId_, 'Pagamento', 'payment');
+    this.setEntity('payment', 'Pagamento', {
+      instructions: 'Instrução para efetuar pagamento',
+    });
+    this.setPermission('make_payment', 'Efetuar pagamento', 'payment');
+    this.setPermission('approve_payment', 'Aprovar pagamento', 'payment');
   }
 }
 
