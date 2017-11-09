@@ -5,7 +5,7 @@ const fileRequirementSchema = new Schema({
     type: String,
     required: true,
   },
-  discription: String, // Description about the file requirement
+  description: String, // Description about the file requirement
   fileType: { // Type of file, that defines the store location e.g. 'submission', 'receipt'
     type: String,
     required: true,

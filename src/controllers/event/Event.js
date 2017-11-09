@@ -351,6 +351,9 @@ export default class {
           } else {
             // this module not exists yet
             tempModule = this.moduleFactory(moduleSlug);
+            tempModule.initialize()
+              .then(resolve)
+              .catch(reject);
           }
 
           if (tempModule) {

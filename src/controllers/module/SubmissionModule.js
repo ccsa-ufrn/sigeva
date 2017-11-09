@@ -14,6 +14,11 @@ class SubmissionModule extends Module {
   constructor(eventId_) {
     super(eventId_, 'Trabalhos', 'submission');
   }
+
+  initialize() {
+    // do nothing
+    return this;
+  }
 }
 
 export default SubmissionModule;

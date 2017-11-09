@@ -10,7 +10,7 @@ import fieldRequestModel, { fieldRequestSchema } from '../../models/fieldRequest
 
 export default class {
   /**
-   * Initialize a FieldRequest creating a userDAO and requiring a Object
+   * Initialize a FieldRequest creating a DAO and requiring a Object
    */
   constructor() {
     this.fieldRequestObject = FieldRequestDAO.createObject();
