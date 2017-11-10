@@ -123,8 +123,17 @@ form .form-error-message {
 /* END error 404 */
 
 /* BEGIN event dashboard */
-.event-dashboard-side-menu, .event-dashboard-module {
-  margin-top: 17px;
+.event-dashboard-top-padding {
+  padding-top: 17px;
+}
+
+.event-dashboard-side-menu {
+  margin-top: 10px;
+}
+
+.nav-link.active {
+  background: grey;
+  color: white;
 }
 
 .event-dashboard-side-menu li {
@@ -144,3 +153,52 @@ form .form-error-message {
   background: #FF404E;
 }
 /* END event dashboard */
+
+/* BEGIN dropzone */
+.dropzone {
+  width: auto;
+  padding: 15px;
+  background: rgb(244, 244, 244);
+  border: 1px dashed #A4A4A4;
+  border-radius: 10px;
+  text-align: center;
+
+}
+
+.dropzone .dropzone-header {
+  display: inline-block;
+  color: #323232;
+}
+
+.dropzone .dropzone-header .dropzone-icon-box {
+  float: left;
+}
+
+.dropzone .dropzone-header .dropzone-icon {
+  background: url(../img/upload-icon.png) no-repeat;
+  background-size: 50px;
+  margin-right: 10px;
+  width: 50px;
+  height: 50px;
+}
+
+.dropzone.active {
+  background: #EBEBEB;
+  border: 1px solid #FF404E;
+}
+
+.dropzone .dropzone-error {
+  color: #CF2B38;
+  font-size: 11pt;
+}
+
+.dropzone .dropzone-title {
+  color: #262626;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.dropzone .dropzone-description {
+  font-size: 10pt;
+}
+/* END dropzone */

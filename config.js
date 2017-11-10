@@ -12,4 +12,5 @@ module.exports = {
     production: 'mongodb://localhost/sigeva',
   },
   secret: 'your_secret_here',
+  file_dir: '/home/mrmorais/sigeva-code/files',
 };

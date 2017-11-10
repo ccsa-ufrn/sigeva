@@ -36,6 +36,13 @@ export function setRelationship(data) {
   });
 }
 
+export function setContext(data) {
+  return ({
+    type: Action.SET_EVENT_CONTEXT,
+    data,
+  });
+}
+
 export function loadEventRoles(id) {
   return (dispatch) => {
     const config = {
@@ -155,6 +162,34 @@ export function enrollUser(role) {
       })
       .catch(() => {
         dispatch(eventNotFound());
+      });
+  };
+}
+
+export function loadContext(eventId) {
+  return (dispatch) => {
+
+    const config = {
+      method: 'GET',
+      mode: 'cors',
+      timeout: 3000,
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/context`, config)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        if (!json.error) {
+          dispatch(setContext(json.data));
+        } else {
+          dispatch(eventNotFound());
+        }
       });
   };
 }

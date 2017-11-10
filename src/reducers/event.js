@@ -10,6 +10,7 @@ const initialEventState = {
   loading: true,
   roles: null,
   relationship: null,
+  context: null,
 };
 
 const mountObjectData = (data) => {
@@ -39,6 +40,10 @@ const event = (state = initialEventState, action) => {
     case Action.SET_EVENT_RELATIONSHIP:
       return Object.assign({}, state, {
         relationship: action.data,
+      });
+    case Action.SET_EVENT_CONTEXT:
+      return Object.assign({}, state, {
+        context: action.data,
       });
     default:
       return state;

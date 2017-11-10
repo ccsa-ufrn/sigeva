@@ -5,6 +5,7 @@ import Response from './Response';
 import userRouter from './user/UserRouter';
 import eventRouter from './event/EventRouter';
 import systemRouter from './system/SystemRouter';
+import fileRequirementRouter from './fileRequirement/FileRequirementRouter';
 
 /**
  * API
@@ -22,6 +23,7 @@ APIrouter.get('/', (req, res) => {
 APIrouter.use('/user', userRouter); // Set userRouter to /api/user
 APIrouter.use('/event', eventRouter); // Set eventRouter to /api/router
 APIrouter.use('/system', systemRouter); // Set systemRouter to /api/system
+APIrouter.use('/filerequirement', fileRequirementRouter); // Set fileRequirementRouter to /api/filerequirement
 
 // Throw 404 error for API's requests when got the end of API
 APIrouter.all('*', (req, res) => {
