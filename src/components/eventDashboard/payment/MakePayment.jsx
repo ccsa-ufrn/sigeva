@@ -13,13 +13,27 @@ class PaymentInstructions extends Component {
 }
 
 class ReceiptSubmission extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      file: null,
+    }
+  }
+
+  sendReceipt() {
+    // do nothing
+  }
+
   render() {
     return (
       <div>
         <h5>Envio de comprovante de pagamento</h5>
         <div className='row'>
           <div className='col-md-12'>
-            <Dropzone fileRequirementId={this.props.fileRequirement} onSent={d => console.log}/>
+            <Dropzone fileRequirementId={this.props.fileRequirement} onSent={file => this.setState({file})}/>
+            { this.state.file &&
+              <button className='btn btn-primary' onClick={this.sendReceipt.bind(this)}>Enviar comprovante</button>
+            }
           </div>
         </div>
       </div>

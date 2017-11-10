@@ -9,6 +9,7 @@ class Dropzone extends Component {
     this.state = {
       fileRequirement: null,
       file: null,
+      sending: false,
       fail: false,
     };
   }
@@ -31,18 +32,22 @@ class Dropzone extends Component {
 
   doSendFile(formData) {
     if (this.state.fileRequirement) {
+      this.setState({
+        sending: true,
+      });
       sendFile(formData, this.state.fileRequirement._id)
         .then((json) => {
-          console.log(json);
           if (!json.error) {
             this.setState({
-              file: json.data,
+              file: json.data.file,
+              sending: false,
             });
 
-            this.props.onSent(json.data);
+            this.props.onSent(json.data.file);
           } else {
             this.setState({
               fail: true,
+              sending: false,
             });
 
             this.props.onSent(false);
@@ -59,6 +64,7 @@ class Dropzone extends Component {
         fileRequirement={this.state.fileRequirement}
         file={this.state.file}
         fail={this.state.fail}
+        sending={this.state.sending}
       />
     );
   }

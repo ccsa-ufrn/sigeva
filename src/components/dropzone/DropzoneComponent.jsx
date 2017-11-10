@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import DefaultDropzone from 'react-dropzone';
 import fetch from 'isomorphic-fetch';
 
+import { application } from '../../../config'
+
 export default class DropzoneComponent extends Component {
   constructor(props) {
     super(props);
@@ -53,13 +55,23 @@ export default class DropzoneComponent extends Component {
           </div>
         );
       }
+    } else if (this.props.sending) {
+      return(
+        <div className='dropzone'>
+          <div className='dropzone-sending'>
+            Aguarde... O arquivo está sendo enviado
+          </div>
+        </div>
+      );
     } else if (!this.props.fileRequirement) {
       return (<span>Loading...</span>);
     } else if (this.props.file) {
       return (
         <div className='dropzone'>
-          <div className='dropzone-error'>
-            Aqui vai o arquivo
+          <div className='dropzone-file'>
+            <a target='_blank' href={`${application.url}/file/download/${this.props.file._id}`}>
+              { `${this.props.file._id}.${this.props.file.extension}` }
+            </a>
           </div>
         </div>
       );

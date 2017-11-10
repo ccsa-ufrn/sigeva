@@ -33,7 +33,7 @@ export default class {
    * @param name Requirement name
    * @param description datails about the requirement
    * @param fileType the name that will be assigned in the filepath
-   * @param acceptedExtensions file extensions accepted for the request ('.doc .pdf')
+   * @param acceptedExtensions file extensions accepted for the request ('.doc,.pdf')
    */
   setData(name, description, fileType, acceptedExtensions) {
     this.object = Object.assign(this.object, {
