@@ -3,31 +3,87 @@ import DefaultDropzone from 'react-dropzone';
 import fetch from 'isomorphic-fetch';
 
 export default class DropzoneComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      extensionError: false,
+    };
+  }
+
   onDrop(acceptedFiles, rejectedFiles) {
     const formData = new FormData();
     acceptedFiles.forEach((file) => {
-      console.log(file);
       formData.append('file', file);
     });
 
-    this.props.sendFile(formData);
+    if (acceptedFiles.length > 0) {
+      this.props.sendFile(formData);
+    } else {
+      this.setState({
+        extensionError: true,
+      });
+    }
+  }
+
+  formatExtensions(extensions) {
+    const splitedExtensions = extensions.split(',');
+    let formatedExtensions = '';
+    splitedExtensions.forEach((ext) => {
+      formatedExtensions = formatedExtensions.concat(` ${ext}`);
+    });
+    return formatedExtensions;
   }
 
   render() {
-    console.log(this.props);
     if (this.props.fail) {
-      return (<div>Error</div>);
+      if (!this.props.fileRequirement) {
+        return (
+          <div className='dropzone'>
+            <div className='dropzone-error'>
+              Erro ao buscar requisição de arquivo
+            </div>
+          </div>
+        );
+      } else {
+        return (
+          <div className='dropzone'>
+            <div className='dropzone-error'>
+              Erro ao submeter arquivo
+            </div>
+          </div>
+        );
+      }
     } else if (!this.props.fileRequirement) {
       return (<span>Loading...</span>);
+    } else if (this.props.file) {
+      return (
+        <div className='dropzone'>
+          <div className='dropzone-error'>
+            Aqui vai o arquivo
+          </div>
+        </div>
+      );
     } else {
       return (
         <div>
-          <DefaultDropzone onDrop={this.onDrop.bind(this)} accept={this.props.fileRequirement.acceptedExtensions}>
-            <p>
+          <DefaultDropzone className='dropzone' activeClassName='active' onDrop={this.onDrop.bind(this)} accept={this.props.fileRequirement.acceptedExtensions}>
+            <div className='dropzone-title'>
               {this.props.fileRequirement.name}
-              {this.props.fileRequirement.description}
-              {this.props.fileRequirement.acceptedExtensions}
-            </p>
+            </div>
+            <div className='dropzone-header'>
+              <div className='dropzone-icon-box'>
+                <div className='dropzone-icon'></div>
+              </div>
+              Arraste e solte o arquivo ou <span className='btn btn-primary'>importe o arquivo</span>
+            </div>
+            { this.state.extensionError &&
+              <div className='dropzone-error'>
+                A extensão do arquivo inserido é incompatível com as extensões aceitáveis
+              </div>
+            }
+            <div className='dropzone-description'>
+              Extensões aceitáveis: {this.formatExtensions(this.props.fileRequirement.acceptedExtensions)}
+            </div>
           </DefaultDropzone>
         </div>
       );

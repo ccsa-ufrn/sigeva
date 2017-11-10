@@ -17,7 +17,11 @@ class ReceiptSubmission extends Component {
     return (
       <div>
         <h5>Envio de comprovante de pagamento</h5>
-        <Dropzone fileRequirementId='5a0478e1e1bcfe5226a50282' onSent={d => console.log}/>
+        <div className='row'>
+          <div className='col-md-12'>
+            <Dropzone fileRequirementId={this.props.fileRequirement} onSent={d => console.log}/>
+          </div>
+        </div>
       </div>
     );
   }
@@ -30,7 +34,7 @@ class MakePayment extends Component {
       { this.props.context.entities[0] &&
         <div>
           <PaymentInstructions instructions={this.props.context.entities[0].data.instructions} />
-          <ReceiptSubmission />
+          <ReceiptSubmission fileRequirement={this.props.context.entities[0].data.receiptFileRequirement} />
         </div>
       }
     </div>);
