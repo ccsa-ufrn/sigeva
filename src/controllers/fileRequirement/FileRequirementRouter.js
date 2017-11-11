@@ -22,7 +22,8 @@ fileRequirementRouter.post('/upload/:id', simpleAuthorization, (req, res) => {
 
       if (req.files.file) {
         const file = req.files.file;
-        const fileExt = file.name.split('.')[1];
+        const fileNameSplited = file.name.split('.');
+        const fileExt = fileNameSplited[fileNameSplited.length - 1];
 
         databaseFile.setData(docRequirement._id, res.locals.user._id, fileExt);
         databaseFile.store()
