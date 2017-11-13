@@ -172,7 +172,7 @@ export default class Module {
     this.moduleObject.active = value;
   }
 
-  act(user, body, entity, permission, subaction) {
+  act(user, body, entity, subaction) {
     return this;
   }
 

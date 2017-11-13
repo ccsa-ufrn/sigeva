@@ -21,7 +21,9 @@ class ReceiptSubmission extends Component {
   }
 
   sendReceipt() {
-    // do nothing
+    if (this.state.file !== null) {
+      this.props.submitReceipt(this.state.file);
+    }
   }
 
   render() {
@@ -48,7 +50,7 @@ class MakePayment extends Component {
       { this.props.context.entities[0] &&
         <div>
           <PaymentInstructions instructions={this.props.context.entities[0].data.instructions} />
-          <ReceiptSubmission fileRequirement={this.props.context.entities[0].data.receiptFileRequirement} />
+          <ReceiptSubmission submitReceipt={this.props.submitReceipt} fileRequirement={this.props.context.entities[0].data.receiptFileRequirement} />
         </div>
       }
     </div>);

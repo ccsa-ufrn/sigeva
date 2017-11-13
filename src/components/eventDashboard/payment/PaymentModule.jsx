@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MakePayment from './MakePayment';
+import MakePaymentContainer from './MakePaymentContainer';
 
 class PaymentModule extends Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class PaymentModule extends Component {
   loadPermissionTab(action) {
     switch(action) {
       case 'make_payment':
-        return <MakePayment context={this.props.paymentContext}/>;
+        return <MakePaymentContainer context={this.props.paymentContext}/>;
       default:
         return <span>Permissão indefinida</span>
     }

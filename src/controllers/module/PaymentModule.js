@@ -41,11 +41,16 @@ class PaymentModule extends Module {
     });
   }
 
-  act(user, body, entitySlug, permissionAction, subaction) {
+  act(user, roles, body, entitySlug, subaction) {
     const entity = this.getEntityBySlug(entitySlug);
-    const permission = this.getPermissionByAction(permissionAction);
-    // validar se usuário possui a permission
-    // do something
+    switch (subaction) {
+      case 'submit_receipt':
+        // recieve body.fileId and stores at objects
+        break;
+      default:
+        // do nothing
+    }
+
     return this;
   }
 }
