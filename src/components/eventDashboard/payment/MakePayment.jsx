@@ -30,7 +30,7 @@ class ReceiptSubmission extends Component {
         <h5>Envio de comprovante de pagamento</h5>
         <div className='row'>
           <div className='col-md-12'>
-            <Dropzone fileRequirementId={this.props.fileRequirement} onSent={file => this.setState({file})}/>
+            <Dropzone fileRequirementId={this.props.fileRequirement} onSent={file => this.setState({file})}/><br/>
             { this.state.file &&
               <button className='btn btn-primary' onClick={this.sendReceipt.bind(this)}>Enviar comprovante</button>
             }

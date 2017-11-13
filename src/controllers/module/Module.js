@@ -172,6 +172,14 @@ export default class Module {
     this.moduleObject.active = value;
   }
 
+  act(user, body, entity, permission, subaction) {
+    return this;
+  }
+
+  initialize() {
+    return this;
+  }
+
   /**
    * Insert a module in db
    * @return Promise. Resolve(set event values on), Reject(Error)

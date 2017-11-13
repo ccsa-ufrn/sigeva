@@ -205,6 +205,25 @@ eventRouter.get('/:id/module/:slug/deactivate', (req, res) => {
     });
 });
 
+eventRouter.post('/:id/module/:slug/:entity/act/:perm_action/:subaction', simpleAuthorization, (req, res) => {
+  const eventId = req.params.id;
+  const moduleSlug = req.params.slug;
+  const entity = req.params.entity;
+  const permission = req.params.perm_action;
+  const subaction = req.params.subaction;
+  const body = req.body;
+
+  const event = new Event();
+  const user = new User();
+  user.loadById(res.locals.user._id)
+    .then(() => event.loadById(eventId))
+    .then(() => event.getModule(moduleSlug))
+    .then(module => module.act(user, body, entity, permission, subaction))
+    .then((response) => {
+      res.json(Response(false, { deu: response }));
+    });
+});
+
 /**
  * Returns a event by ID
  * @param id event id to search for

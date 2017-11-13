@@ -40,6 +40,14 @@ class PaymentModule extends Module {
         }).catch(reject);
     });
   }
+
+  act(user, body, entitySlug, permissionAction, subaction) {
+    const entity = this.getEntityBySlug(entitySlug);
+    const permission = this.getPermissionByAction(permissionAction);
+    // validar se usuário possui a permission
+    // do something
+    return this;
+  }
 }
 
 export default PaymentModule;
