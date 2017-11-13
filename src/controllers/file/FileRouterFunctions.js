@@ -1,5 +1,6 @@
 import File from './File';
 import { file_dir as fileDir } from '../../../config';
+import fs from 'fs';
 /**
  * Endpoint: /file/download/:id
  */
@@ -9,9 +10,11 @@ const downloadFile = (req, res) => {
   file.loadById(id)
     .then((fileDoc) => {
       const path = `${fileDir}/${fileDoc.fileRequirement.fileType}/${fileDoc._id}.${fileDoc.extension}`;
-      res.sendFile(path);
+      res.download(path);
     })
-    .catch();
+    .catch(() => {
+      res.send('File not found').end();
+    });
 };
 
 export {
