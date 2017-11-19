@@ -4,12 +4,16 @@
   "description": "Sistema de gestão de eventos acadêmicos",
   "main": "main.js",
   "scripts": {
-    "start": "NODE_ENV=dev nodemon src/controllers/Server.js --exec babel-node --presets es2015",
-    "test": "npm run initdb_test && npm run build_server && NODE_ENV=test mocha dist/tests --timeout 10000",
-    "server": "NODE_ENV=prod node dist/controllers/Server.js",
-    "initdb_test": "NODE_ENV=test babel-node src/tools/initializing_db.js",
-    "build_server": "babel src -d dist",
-    "build_react": "webpack --config webpack.config.js",
+    "start": "npm run start:dev",
+    "start:prod": "NODE_ENV=prod node dist/controllers/Server.js",
+	"start:dev": "NODE_ENV=dev nodemon src/controllers/Server.js --exec babel-node --inspect --presets es2015",
+    "test": "npm run initdb:test && npm run build_server && NODE_ENV=test mocha dist/tests --timeout 10000",
+    "initdb:test": "NODE_ENV=test babel-node src/tools/initializing_db.js",
+	"initdb:prod": "NODE_ENV=prod node dist/tools/initializing_db.js",
+	"initdb:dev": "NODE_ENV=dev babel-node src/tools/initializing_db.js",
+	"build:app": "npm run build:*",
+    "build:server": "babel src -d dist --presets es2015",
+    "build:react": "webpack --config webpack.config.js",
     "lint": "eslint ."
   },
   "directories": {
