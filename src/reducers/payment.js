@@ -7,8 +7,13 @@ const initialMakePaymentState = {
   submiting_receipt_error: false,
 };
 
+const initialApprovePaymentState = {
+  to_approve_payments: null,
+};
+
 const initialPaymentState = {
   makePayment: initialMakePaymentState,
+  approvePayment: initialApprovePaymentState,
   approved: false,
   receipts: [],
 };
@@ -30,8 +35,18 @@ const makePayment = (state = initialMakePaymentState, action) => {
         submiting_receipt: false,
         submiting_receipt_error: true,
       });
-    default:
-      return state;
+    default: return state;
+  }
+};
+
+const approvePayment = (state = initialApprovePaymentState, action) => {
+  console.log(action);
+  switch (action.state) {
+    case Action.SET_TO_APPROVE_PAYMENT_DATA:
+      return Object.assign({}, state, {
+        to_approve_payments: action.data,
+      });
+    default: return state;
   }
 };
 
@@ -41,8 +56,11 @@ const payment = (state = initialPaymentState, action) => {
     case Action.DID_PAYMENT_RECEIPT_SUBMIT_WITH_SUCCESS:
     case Action.DID_PAYMENT_RECEIPT_SUBMIT_WITH_FAILURE:
       return Object.assign({}, state, { makePayment: makePayment(state.makePayment, action) });
+    case Action.SET_TO_APPROVE_PAYMENT_DATA:
+      return Object.assign({}, state, {
+        approvePayment: approvePayment(state.approvePayment, action),
+      });
     case Action.SET_PAYMENT_INFO_DATA:
-      console.log(action.data);
       return Object.assign({}, state, {
         approved: action.data.approved,
         receipts: action.data.receipts,

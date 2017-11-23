@@ -7,7 +7,7 @@ class PaymentInstructions extends Component {
   render() {
     return (
       <div>
-        <h5>Instruções para efetuar pagamento</h5><br/>
+        <h5><strong>Instruções para efetuar pagamento</strong></h5><br/>
         <p dangerouslySetInnerHTML={{__html: (this.props.instructions)}}></p>
       </div>
     );
@@ -56,23 +56,22 @@ class ReceiptSubmission extends Component {
     super(props);
     this.state = {
       file: null,
+      submit_status: null,
     }
   }
 
   sendReceipt() {
-    console.log('start send receipt');
     if (this.state.file !== null) {
-      console.log('submit', this.state.file);
+      this.setState({ submit_status: 'Enviando...' });
       this.props.submitReceipt(this.state.file._id);
-      this.setState({file: null});
-      this.props.reloadPaymentInfo();
+      this.setState({file: null, submit_status: 'Comprovante enviado!'});
     }
   }
 
   render() {
     return (
       <div>
-        <h5>Situação do pagamento da inscrição</h5>
+        <h5><strong>Situação do pagamento da inscrição</strong></h5>
         <div className='row'>
           <div className='col-md-12'>
             { !this.props.payment.approved &&
@@ -83,6 +82,11 @@ class ReceiptSubmission extends Component {
                 { this.state.file &&
                   <button className='btn btn-primary' onClick={this.sendReceipt.bind(this)}>Enviar comprovante</button>
                 }
+              </div>
+            }
+            { this.state.submit_status &&
+              <div>
+                { this.state.submit_status }
               </div>
             }
             { this.props.payment.receipts.length !== 0 &&
@@ -98,6 +102,10 @@ class ReceiptSubmission extends Component {
 }
 
 class MakePayment extends Component {
+  componentDidMount() {
+    this.props.reloadPaymentInfo();
+  }
+
   render() {
     return (
     <div>
@@ -107,7 +115,6 @@ class MakePayment extends Component {
           <ReceiptSubmission
             payment={this.props.payment}
             submitReceipt={this.props.submitReceipt}
-            reloadPaymentInfo={this.props.reloadPaymentInfo}
             fileRequirement={this.props.context.entities[0].data.receiptFileRequirement} />
         </div>
       }

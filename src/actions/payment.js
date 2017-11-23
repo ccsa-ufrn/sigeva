@@ -27,6 +27,13 @@ export function setPaymentInfoData(data) {
   });
 }
 
+export function setToApprovePayments(data) {
+  return ({
+    type: Action.SET_TO_APPROVE_PAYMENT_DATA,
+    data,
+  });
+}
+
 export function submitReceipt(fileId) {
   return (dispatch, getState) => {
     dispatch(doingPaymentReceiptSubmit());
@@ -75,6 +82,27 @@ export function loadPaymentInfo(eventId = null) {
       .then(response => response.json())
       .then((json) => {
         dispatch(setPaymentInfoData(json.data));
+      });
+  };
+}
+
+export function loadToApprovePayments() {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/payment/payment/act/get_to_approve_payments`, config)
+      .then(response => response.json())
+      .then((json) => {
+        dispatch(setToApprovePayments(json.data));
       });
   };
 }

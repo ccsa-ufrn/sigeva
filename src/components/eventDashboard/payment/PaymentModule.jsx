@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MakePaymentContainer from './MakePaymentContainer';
+import ApprovePaymentContainer from './ApprovePaymentContainer';
 
 class PaymentModule extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class PaymentModule extends Component {
       case 'make_payment':
         return <MakePaymentContainer context={this.props.paymentContext}/>;
       default:
-        return <span>Permissão indefinida</span>
+        return <ApprovePaymentContainer />;
     }
   }
 

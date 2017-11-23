@@ -1,6 +1,7 @@
 import Module from './Module';
 import FileRequirement from '../fileRequirement/FileRequirement';
 import ModuleObject from '../../models/moduleObject.model';
+import PaymentReceipt from '../../models/paymentReceipt.model';
 
 /** @@ Payment Module
  * Subclass of Module, that represents the Payment Module
@@ -46,12 +47,10 @@ class PaymentModule extends Module {
   submitReceipt(userId, fileId) {
     const object = new ModuleObject({
       entity: 'payment',
-      data: {
+      data: new PaymentReceipt({
         user: userId,
         file: fileId,
-        status: 'to_approve',
-        type: 'receipt',
-      },
+      }),
     });
 
     this.moduleObject.ofObjects.push(object);
@@ -75,6 +74,24 @@ class PaymentModule extends Module {
     });
   }
 
+  /**
+   * Retrieves payments that are waiting for approvements (with the state 'to_approve')
+   */
+  getToApprovePayments() {
+    const toApprovePayments = this.moduleObject.ofObjects.filter(
+      receipt => receipt.data.status === 'to_approve');
+
+    return new Promise((resolve, reject) => {
+      ModuleObject.populate(toApprovePayments, [
+        { path: 'data.user', select: 'name', model: 'User' },
+        { path: 'data.file', model: 'File' }],
+      (err, docs) => {
+        if (err) reject();
+        resolve(docs);
+      });
+    });
+  }
+
   act(user, roles, body, entitySlug, subaction) {
     const context = this.getUserContext(roles);
     if (!context) {
@@ -83,6 +100,7 @@ class PaymentModule extends Module {
 
     const permissions = context.permissions;
     const makePayment = permissions.find(perm => perm.action === 'make_payment');
+    const approvePayment = permissions.find(perm => perm.action === 'approve_payment');
 
     switch (subaction) {
       case 'submit_receipt':
@@ -103,6 +121,12 @@ class PaymentModule extends Module {
           return new Promise((resolve) => {
             resolve(this.getUserInfo(user.userObject._id));
           });
+        }
+        break;
+      case 'get_to_approve_payments':
+        if (approvePayment) {
+          // getToApprovePayments already returns a Promise
+          return this.getToApprovePayments();
         }
         break;
       default:
