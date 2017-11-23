@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import MakePayment from './MakePayment';
-import { submitReceipt } from '../../../actions/payment';
+import { submitReceipt, loadPaymentInfo } from '../../../actions/payment';
 
 const mapStateToProps = state => {
   return {
@@ -13,6 +13,9 @@ const mapDispatchToProps = dispatch => {
   return {
     submitReceipt: (fileId) => {
       dispatch(submitReceipt(fileId));
+    },
+    reloadPaymentInfo: () => {
+      dispatch(loadPaymentInfo());
     },
   };
 }

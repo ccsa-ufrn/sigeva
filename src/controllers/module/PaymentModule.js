@@ -1,5 +1,6 @@
 import Module from './Module';
 import FileRequirement from '../fileRequirement/FileRequirement';
+import ModuleObject from '../../models/moduleObject.model';
 
 /** @@ Payment Module
  * Subclass of Module, that represents the Payment Module
@@ -41,11 +42,68 @@ class PaymentModule extends Module {
     });
   }
 
+  // Stores the fileId for a receipt submission at objects field
+  submitReceipt(userId, fileId) {
+    const object = new ModuleObject({
+      entity: 'payment',
+      data: {
+        user: userId,
+        file: fileId,
+        status: 'to_approve',
+        type: 'receipt',
+      },
+    });
+
+    this.moduleObject.ofObjects.push(object);
+    return this.store();
+  }
+
+  /**
+   * Retrieves the user data from database (receipts) with a flag that defines
+   * if the user payment was approved
+   * @param userId User's identification
+   */
+  getUserInfo(userId) {
+    const receiptsObjects = this.moduleObject.ofObjects.filter(
+      receipt => receipt.data.user.equals(userId));
+
+    const approved = receiptsObjects.reduce((final, current) => final || current.data.status === 'approved', false);
+
+    return ({
+      approved,
+      receipts: receiptsObjects,
+    });
+  }
+
   act(user, roles, body, entitySlug, subaction) {
-    const entity = this.getEntityBySlug(entitySlug);
+    const context = this.getUserContext(roles);
+    if (!context) {
+      return null;
+    }
+
+    const permissions = context.permissions;
+    const makePayment = permissions.find(perm => perm.action === 'make_payment');
+
     switch (subaction) {
       case 'submit_receipt':
-        // recieve body.fileId and stores at objects
+        if (makePayment) {
+          return new Promise((resolve, reject) => {
+            if (body.fileId) {
+              this.submitReceipt(user.userObject._id, body.fileId)
+                .then(resolve({}))
+                .catch(reject);
+            } else {
+              reject('File ID is required to submit receipt');
+            }
+          });
+        }
+        break;
+      case 'get_info':
+        if (makePayment) {
+          return new Promise((resolve) => {
+            resolve(this.getUserInfo(user.userObject._id));
+          });
+        }
         break;
       default:
         // do nothing

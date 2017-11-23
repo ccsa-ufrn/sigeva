@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import { loadUserIfNeed, reloadUser } from '../../actions/userSession';
 import { loadEventIfNeed, loadRelationship, loadContext } from '../../actions/event';
+import { loadPaymentInfo } from '../../actions/payment';
 
 import EventDashboardPage from './EventDashboardPage';
 
@@ -9,6 +10,7 @@ const mapStateToProps = state => {
   return {
     userSession: state.userSession,
     event: state.event,
+    payment: state.payment,
   };
 };
 
@@ -28,7 +30,10 @@ const mapDispatchToProps = dispatch => {
     },
     loadContext: (id) => {
       dispatch(loadContext(id));
-    }
+    },
+    loadPaymentInfo: (id) => {
+      dispatch(loadPaymentInfo(id));
+    },
   };
 }
 

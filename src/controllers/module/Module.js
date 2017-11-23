@@ -110,6 +110,10 @@ export default class Module {
     return this.moduleObject.ofPermissions.find(perm => perm.action === action);
   }
 
+  getPermissionsByEntityID(entityId) {
+    return this.moduleObject.ofPermissions.filter(perm => perm.entity.equals(entityId));
+  }
+
   addRoleToPermission(permissionId, roleId) {
     const permission = this.moduleObject.ofPermissions.find(perm => perm._id.equals(permissionId));
 

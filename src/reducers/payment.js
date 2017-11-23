@@ -2,12 +2,15 @@ import * as Action from '../actions/constants';
 
 const initialMakePaymentState = {
   file: null,
+  file_submited: false,
   submiting_receipt: false,
   submiting_receipt_error: false,
 };
 
 const initialPaymentState = {
   makePayment: initialMakePaymentState,
+  approved: false,
+  receipts: [],
 };
 
 const makePayment = (state = initialMakePaymentState, action) => {
@@ -18,6 +21,7 @@ const makePayment = (state = initialMakePaymentState, action) => {
       });
     case Action.DID_PAYMENT_RECEIPT_SUBMIT_WITH_SUCCESS:
       return Object.assign({}, state, {
+        file_submited: true,
         submiting_receipt: false,
         submiting_receipt_error: false,
       });
@@ -37,6 +41,12 @@ const payment = (state = initialPaymentState, action) => {
     case Action.DID_PAYMENT_RECEIPT_SUBMIT_WITH_SUCCESS:
     case Action.DID_PAYMENT_RECEIPT_SUBMIT_WITH_FAILURE:
       return Object.assign({}, state, { makePayment: makePayment(state.makePayment, action) });
+    case Action.SET_PAYMENT_INFO_DATA:
+      console.log(action.data);
+      return Object.assign({}, state, {
+        approved: action.data.approved,
+        receipts: action.data.receipts,
+      });
     default:
       return state;
   }

@@ -20,6 +20,13 @@ export function didPaymentReceiptSubmitWithFailure() {
   });
 }
 
+export function setPaymentInfoData(data) {
+  return ({
+    type: Action.SET_PAYMENT_INFO_DATA,
+    data,
+  });
+}
+
 export function submitReceipt(fileId) {
   return (dispatch, getState) => {
     dispatch(doingPaymentReceiptSubmit());
@@ -36,7 +43,7 @@ export function submitReceipt(fileId) {
       body: JSON.stringify({ fileId }),
     };
 
-    fetch(`${application.url}/event/${eventId}/module/payment/payment/act/submit_receipt`, config)
+    fetch(`${application.url}/api/event/${eventId}/module/payment/payment/act/submit_receipt`, config)
       .then(response => response.json())
       .then((json) => {
         if (json.error) {
@@ -47,6 +54,27 @@ export function submitReceipt(fileId) {
       })
       .catch(() => {
         dispatch(didPaymentReceiptSubmitWithFailure());
+      });
+  };
+}
+
+export function loadPaymentInfo(eventId = null) {
+  return (dispatch, getState) => {
+    const eventIdFromState = getState().event.id;
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    fetch(`${application.url}/api/event/${eventIdFromState || eventId}/module/payment/payment/act/get_info`, config)
+      .then(response => response.json())
+      .then((json) => {
+        dispatch(setPaymentInfoData(json.data));
       });
   };
 }

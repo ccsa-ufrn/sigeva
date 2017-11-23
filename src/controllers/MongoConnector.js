@@ -29,7 +29,8 @@ export default function () {
 
   // If connection throws an error
   mongoose.connection.on('error', (err) => {
-    console.log(`Mongoose default connection error: ${err}`);
+    console.log('Mongoose default connection error');
+	process.exit(0);
   });
 
   // When the connection is desconnected

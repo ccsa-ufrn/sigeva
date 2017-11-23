@@ -46,7 +46,6 @@ fileRequirementRouter.get('/:id', (req, res) => {
 
   fileReq.loadById(req.params.id)
     .then((doc) => {
-      console.log(doc);
       if (doc) {
         res.json(Response(false, doc));
       } else {

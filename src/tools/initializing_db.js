@@ -21,10 +21,9 @@ sys.setData({
 sys.store()
   .then(() => {
     console.log('Register fields has been created in database');
+	process.exit();
   })
   .catch((err) => {
     console.log('It cannot save register fields. ', err);
-  })
-  .finally(() => {
-    process.exit();
+	process.exit();
   });
