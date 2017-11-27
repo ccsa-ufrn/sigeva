@@ -40,8 +40,7 @@ const makePayment = (state = initialMakePaymentState, action) => {
 };
 
 const approvePayment = (state = initialApprovePaymentState, action) => {
-  console.log(action);
-  switch (action.state) {
+  switch (action.type) {
     case Action.SET_TO_APPROVE_PAYMENT_DATA:
       return Object.assign({}, state, {
         to_approve_payments: action.data,

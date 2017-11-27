@@ -24,7 +24,7 @@ class ReceiptsList extends Component {
               if (receipt.data.type === 'receipt') {
                 return (
                   <li key={receipt._id}>
-                    O comprovante <a href={`${application.url}/file/download/${receipt.data.file}`} target='_blank'>{receipt.data.file}</a>
+                    O comprovante <a href={`${application.url}/file/download/${receipt.data.file}`} target='_blank'>{receipt._id}</a>
                     {receipt.data.status == 'approved' &&
                       <span> foi <span className='badge badge-success'>Aprovado</span></span>
                     }
