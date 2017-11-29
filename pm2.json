@@ -1,0 +1,9 @@
+{
+	"apps": [{
+		"name": "sigeva",
+		"script": "dist/controllers/Server.js",
+		"env": {
+			"NODE_ENV": "prod"
+		}
+	}]
+}
