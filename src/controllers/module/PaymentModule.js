@@ -14,8 +14,8 @@ class PaymentModule extends Module {
   /**
    * Initialize a Payment instance creating a empty Object
    */
-  constructor(eventId_) {
-    super(eventId_, 'Pagamento', 'payment');
+  constructor(event) {
+    super(event, 'Pagamento', 'payment');
   }
 
   initialize() {
@@ -78,16 +78,26 @@ class PaymentModule extends Module {
    * Retrieves payments that are waiting for approvements (with the state 'to_approve')
    */
   getToApprovePayments() {
+    // Get 'to_approve' payments
     const toApprovePayments = this.moduleObject.ofObjects.filter(
       receipt => receipt.data.status === 'to_approve');
 
     return new Promise((resolve, reject) => {
+      // Populate payments with user data and file data
       ModuleObject.populate(toApprovePayments, [
         { path: 'data.user', select: 'name', model: 'User' },
         { path: 'data.file', model: 'File' }],
       (err, docs) => {
         if (err) reject();
-        resolve(docs);
+        const docsWithRoles = docs.map((doc) => {
+          const parsedDoc = new Object();
+          parsedDoc.data = doc.data;
+          parsedDoc._id = doc._id;
+          parsedDoc.roles = this.event.getUserRelationships(String(doc.data.user._id));
+
+          return parsedDoc;
+        });
+        resolve(docsWithRoles);
       });
     });
   }

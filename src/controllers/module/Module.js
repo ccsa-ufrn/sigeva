@@ -14,9 +14,9 @@ export default class Module {
   /**
    * Initialize a Module instance creating a empty Object
    */
-  constructor(eventId = null, name = null, slug = null) {
+  constructor(event = null, name = null, slug = null) {
     this.moduleObject = ModuleDAO.createObject();
-    this.moduleObject.event = eventId;
+    this.event = event;
     this.moduleObject.name = name;
     this.moduleObject.slug = slug;
   }
@@ -26,7 +26,7 @@ export default class Module {
    */
   load() {
     const query = ModuleModel.findOne({
-      event: this.moduleObject.event,
+      event: this.event.eventObject._id,
       slug: this.moduleObject.slug,
     });
 
