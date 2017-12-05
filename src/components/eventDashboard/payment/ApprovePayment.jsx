@@ -11,9 +11,9 @@ class ReceiptsTable extends Component {
           <thead>
             <tr>
               <th>Participante</th>
-              <th>Papel público</th>
+              <th>Papel do usuário</th>
               <th>Comprovante</th>
-              <th></th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -22,11 +22,15 @@ class ReceiptsTable extends Component {
                 return (
                   <tr key={payment._id}>
                     <td>{payment.data.user.name}</td>
-                    <td>Indefinido</td>
+                    <td>{payment.roles.map(role => role.name)}</td>
                     <td>
                       <a href={`/file/download/${payment.data.file._id}`} target='_blank'>
                         {payment._id}
                       </a>
+                    </td>
+                    <td>
+                      <a href='' className='btn btn-outline-success btn-sm'>Aprovar pagamento</a>{' '}
+                      <a href='' className='btn btn-outline-danger btn-sm'>Rejeitar pagamento</a>
                     </td>
                   </tr>
                 );
