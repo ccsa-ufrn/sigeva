@@ -17,7 +17,6 @@ class Dropzone extends Component {
   componentDidMount() {
     loadRequirement(this.props.fileRequirementId)
       .then((json) => {
-        console.log(json);
         if (!json.error) {
           this.setState({
             fileRequirement: json.data,

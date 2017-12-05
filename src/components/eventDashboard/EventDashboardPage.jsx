@@ -75,11 +75,17 @@ class EventDashboardPage extends Component {
   }
 
   generateModule() {
+    if (!this.props.event.context && this.state.module)
+      return <Redirect to={`/`} />;
+
     switch(this.state.module) {
       case 'payment':
         return <PaymentModule paymentContext={this.getModuleContext('payment')} />
       default:
-        return <EventDashboardHome event={this.props.event} roles={this.props.event.relationship}/>
+        return <EventDashboardHome
+          event={this.props.event}
+          roles={this.props.event.relationship}
+          payment={this.props.payment} />
     }
   }
 
@@ -88,6 +94,7 @@ class EventDashboardPage extends Component {
     this.props.loadEventIfNeed(this.props.match.params.id);
     this.props.loadRelationship(this.props.match.params.id);
     this.props.loadContext(this.props.match.params.id);
+    this.props.loadPaymentInfo(this.props.match.params.id);
   }
 
   componentWillReceiveProps(nextProps) {

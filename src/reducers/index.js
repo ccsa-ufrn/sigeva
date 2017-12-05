@@ -4,6 +4,7 @@ import login from './login';
 import userSession from './userSession';
 import event from './event';
 import eventsBoard from './eventsBoard';
+import payment from './payment';
 
 const reducers = combineReducers({
   userSession,
@@ -11,6 +12,7 @@ const reducers = combineReducers({
   login,
   event,
   eventsBoard,
+  payment,
 });
 
 export default reducers;

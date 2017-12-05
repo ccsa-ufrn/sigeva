@@ -199,7 +199,7 @@ export default class {
   }
 
   /**
-   * Returns user's rules in a event
+   * Returns user's roles in a event
    * @param userId_ user id
    */
   getUserRelationships(userId_) {
@@ -304,10 +304,10 @@ export default class {
     let module = null;
     switch (moduleSlug) {
       case 'payment':
-        module = new PaymentModule(this.eventObject._id);
+        module = new PaymentModule(this);
         break;
       case 'submission':
-        module = new SubmissionModule(this.eventObject._id);
+        module = new SubmissionModule(this);
         break;
       default:
         // do nothing
