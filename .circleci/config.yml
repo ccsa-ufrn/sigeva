@@ -28,6 +28,7 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+      - run: mongo < src/tools/init_db.js
 
       # run tests!
       - run: yarn test
