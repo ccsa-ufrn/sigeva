@@ -1,0 +1,7 @@
+version: '3'
+services:
+    sigeva-w:
+        build: .
+        network_mode: "host"
+        volumes:
+            - ./files:/usr/src/app/files
