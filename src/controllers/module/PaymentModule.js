@@ -1,6 +1,7 @@
 import Module from './Module';
 import FileRequirement from '../fileRequirement/FileRequirement';
 import ModuleObject from '../../models/moduleObject.model';
+import ModuleModel from '../../models/module.model';
 import PaymentReceipt from '../../models/paymentReceipt.model';
 
 /** @@ Payment Module
@@ -102,6 +103,34 @@ class PaymentModule extends Module {
     });
   }
 
+  /**
+   * Updates a receipt status ('to_approve' -> 'rejected'|'approved')
+   * @param receiptId receipt id
+   * @param newStatus new status
+   */
+  updateReceiptStatus(receiptId, newStatus) {
+    // Doing it by a hard way, using mongoose operations
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': receiptId },
+        {
+          $set: {
+            'ofObjects.$.data.status': newStatus,
+          },
+        }, (err, doc) => {
+          if (err) reject(err);
+          resolve(doc);
+        });
+    });
+  }
+
+  /**
+   * Runs a action performed by the user
+   * @param user logged User instance
+   * @param roles roles owned by the logged user
+   * @param body request POST body
+   * @param entitySlug entitty identification slug
+   * @param subaction action that will be dispacthed
+   */
   act(user, roles, body, entitySlug, subaction) {
     const context = this.getUserContext(roles);
     if (!context) {
@@ -137,6 +166,19 @@ class PaymentModule extends Module {
         if (approvePayment) {
           // getToApprovePayments already returns a Promise
           return this.getToApprovePayments();
+        }
+        break;
+      case 'update_receipt_status':
+        if (approvePayment) {
+          return new Promise((resolve, reject) => {
+            if (body.receiptId && body.newStatus) {
+              this.updateReceiptStatus(body.receiptId, body.newStatus)
+                .then(resolve({}))
+                .catch(reject);
+            } else {
+              reject('Receipt ID or new status not defined');
+            }
+          });
         }
         break;
       default:
