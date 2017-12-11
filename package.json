@@ -7,6 +7,7 @@
     "start": "npm run start:dev",
     "start:prod": "NODE_ENV=prod node dist/controllers/Server.js",
     "start:dev": "NODE_ENV=dev nodemon src/controllers/Server.js --exec babel-node --inspect --presets es2015",
+    "initdb:test": "NODE_ENV=test babel-node src/tools/initializing_db.js",
     "test": "npm run initdb:test && npm run build:server && NODE_ENV=test mocha dist/tests --timeout 10000",
     "build:*": "npm run build:server && npm run build:react",
     "build:server": "babel src -d dist --presets es2015",
