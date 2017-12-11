@@ -43,5 +43,8 @@ jspm_packages
 # Configuration files
 config.js
 
+# generated bundles
+public/js/bundle.js
+
 # Upload Files
 files/
