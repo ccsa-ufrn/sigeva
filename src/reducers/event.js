@@ -4,20 +4,30 @@ const initialEventState = {
   id: null,
   name: null,
   enrollmentPeriod: null,
-  // location: null,
+  location: null,
   // roles: null,
   not_found: false,
   loading: true,
   roles: null,
   relationship: null,
   context: null,
+  subtitle: null,
+  readableEnrollmentPeriod: null,
+  readableEventPeriod: null,
+  description: null,
 };
 
 const mountObjectData = (data) => {
+  console.log(data.description)
   return ({
     id: data._id,
     name: data.name,
     enrollmentPeriod: data.enrollmentPeriod,
+    readableEnrollmentPeriod: data.readableEnrollmentPeriod,
+    readableEventPeriod: data.readableEventPeriod,
+    location: data.location,
+    subtitle: data.subtitle,
+    description: data.description,
   });
 };
 

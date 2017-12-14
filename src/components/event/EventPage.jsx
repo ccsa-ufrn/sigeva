@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import MainLayout from '../layout/MainLayout';
 import Error404 from '../error/Error404';
 import InscriptionBoardContainer from './InscriptionBoardContainer';
+import EventDetailContainer from './EventDetailContainer'
 
 class EventPage extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class EventPage extends Component {
         <MainLayout path={path}>
           <div className='row'>
             <div className='col-md-8'>
-              {/* event details goes here */}
+              <EventDetailContainer />
             </div>
             <div className='col-md-4'>
               <InscriptionBoardContainer />

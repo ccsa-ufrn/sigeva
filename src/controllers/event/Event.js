@@ -33,12 +33,15 @@ export default class {
    * @return error message.
    */
   setData(data_) {
-    const fixedFields = ['name', 'subtitle', 'location'];
+    const fixedFields = ['name', 'subtitle', 'location', 'description'];
     const errors = []; // Array of errors
 
     // Defining event period
     const eventPeriodBegin = EventHelper.parseDate(data_.eventPeriodBegin);
     const eventPeriodEnd = EventHelper.parseDate(data_.eventPeriodEnd);
+
+    console.log(data_.teste);
+
 
     const eventPeriod = EventHelper.mountDateRange(eventPeriodBegin, eventPeriodEnd, errors, 'eventPeriod');
     if (eventPeriod) {
@@ -70,6 +73,8 @@ export default class {
           errors.push(FieldError(field, `Valor inválido para ${field}`));
         } else {
           this.eventObject[field] = data_[field];
+          console.log(this.eventObject[field])
+          console.log(data_[field])
         }
       } else {
         // It's a required field, must be received
@@ -127,6 +132,7 @@ export default class {
    * @return Promise. Resolve(Events), Rejects(Errors)
    */
   static loadEvents(page_, count_, query_, fields_, sort_, published_) {
+    console.log(fields_)
     const fieldsStr = EventHelper.eventFieldsParse(fields_);
     const queryStr = `${query_}.*`;
     const query = query_ !== '' ? { name: { $regex: queryStr, $options: 'i' } } : {};

@@ -51,7 +51,7 @@ const humanReadablePeriod = (dateBegin_, dateEnd_) => {
  * @return parsed array in Mongoose request format
  */
 const eventFieldsParse = (fields) => {
-  const requestableFields = ['name', 'subtitle', 'location', 'eventPeriod', 'enrollmentPeriod', 'published'];
+  const requestableFields = ['name', 'subtitle', 'location', 'eventPeriod', 'enrollmentPeriod', 'published', 'description'];
   let fieldsStr = '';
   const fieldsArray = fields.split(',');
   fieldsArray.forEach((f) => {

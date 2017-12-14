@@ -26,6 +26,10 @@ const eventSchema = new Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+    required: true,
+  },
   eventPeriod: { // Event Period
     type: dateRangeSchema,
     required: true,
