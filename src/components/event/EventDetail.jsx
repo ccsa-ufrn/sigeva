@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import _ from 'lodash'
+
 
 class EventDetailHeader extends Component {
     constructor(props){

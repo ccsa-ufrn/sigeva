@@ -1,5 +1,4 @@
 import mongoose, { Schema } from 'mongoose';
-import UserSchema from '/user.model'
 /**
  * @@ File Model
  * Represents
@@ -18,8 +17,8 @@ const passwordResetSchema = new Schema ({
     required: true,
   },
   active: {
-    type: boolean,
-    default: false,
+    type: Boolean,
+    default: true,
   },
 });
 

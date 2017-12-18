@@ -6,6 +6,8 @@ import { simpleAuthorization } from '../authorization/Authorization';
 import { secret } from '../../../config';
 
 import User from './User';
+import Teste from '../../models/passwordReset.model'
+import UserHelper from './UserHelper';
 
 /**
  * User Router
@@ -127,5 +129,15 @@ userRouter.get('/:id', (req, res) => {
       res.json(Response(true, {}, 'Usuário não encontrado'));
     });
 });
+
+userRouter.post('/resetPass', (req, res) => {
+  const userEmail = req.body.email;
+
+  if(UserHelper.emailAlreadyExists(userEmail)){
+    console.log('esse email existe');
+  }
+
+});
+
 
 export default userRouter;

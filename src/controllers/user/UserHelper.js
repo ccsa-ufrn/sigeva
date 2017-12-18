@@ -115,6 +115,14 @@ const emailAlreadyExists = (email_) => {
   });
 };
 
+const passResetCode = (userId_) => {
+  let date = new Date();
+  let code = date.getTime() + userId_;
+
+  return code;
+
+}
+
 export {
   parseFields,
   parseFieldsToArray,
@@ -124,4 +132,5 @@ export {
   isBetweenLength,
   createField,
   emailAlreadyExists,
+  passResetCode,
 };

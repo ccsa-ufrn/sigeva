@@ -9,6 +9,8 @@ import LoginPageContainer from './login/LoginPageContainer';
 import DashboardContainer from './dashboard/DashboardContainer';
 import EventPageContainer from './event/EventPageContainer';
 import EventDashboardPageContainer from './eventDashboard/EventDashboardPageContainer';
+import MainPassReset from './passReset/MainPassReset';
+import PassResetForm from './passReset/PassResetForm';
 import DropzoneTest from './dropzone/DropzoneTest';
 import Error404 from './error/Error404';
 
@@ -18,6 +20,8 @@ const Router = () => (
     <Route exact path='/register' component={RegisterContainer} />
     <Route exact path='/login' component={LoginPageContainer} />
     <Route exact path='/dashboard' component={DashboardContainer} />
+    <Route exact path='/passReset' component={MainPassReset} />
+    <Route exact path='/passResetForm' component={PassResetForm} />
     <Route exact path='/event/:id/dashboard/' component={EventDashboardPageContainer} />
     <Route exact path='/event/:id/dashboard/:module' component={EventDashboardPageContainer} />
     <Route exact path='/event/:id/dashboard/:module/:entity' component={EventDashboardPageContainer} />
