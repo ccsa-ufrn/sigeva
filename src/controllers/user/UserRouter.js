@@ -6,7 +6,7 @@ import { simpleAuthorization } from '../authorization/Authorization';
 import { secret } from '../../../config';
 
 import User from './User';
-import Teste from '../../models/passwordReset.model'
+import PassReset from '../../models/passwordReset.model'
 import UserHelper from './UserHelper';
 
 /**
@@ -132,10 +132,18 @@ userRouter.get('/:id', (req, res) => {
 
 userRouter.post('/resetPass', (req, res) => {
   const userEmail = req.body.email;
+  const user = new User();
+  
+  let passReset = new passReset();
 
-  if(UserHelper.emailAlreadyExists(userEmail)){
-    console.log('esse email existe');
-  }
+  user.loadByEmail(userEmail)
+    .then((doc) => {
+      res.json(Response(true, {}, 'Email encontrado'));
+  
+    })
+    .catch(() => {
+      res.json(Response(true, {}, 'Email não encontrado'));
+    })
 
 });
 

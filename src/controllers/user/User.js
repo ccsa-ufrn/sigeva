@@ -173,7 +173,7 @@ export default class {
         if (doc) {
           // Set this user as the required
           this.userObject = doc;
-          resolve();
+          resolve(doc._id);
         } else {
           // This user doesn't exists
           reject();
