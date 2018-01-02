@@ -43,7 +43,7 @@ class EventDashboardMenu extends Component {
             <strong>{this.props.event.name}</strong>
           </div>
           <div className="card-body">
-            <img src='https://seminario.ccsa.ufrn.br/assets/ng2/marca.png' width='100%'/>
+            <img src={this.props.event.thumbnail} width='100%'/>
           </div>
         </div>
         <ul className='nav flex-column event-dashboard-side-menu'>

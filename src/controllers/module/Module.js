@@ -17,6 +17,10 @@ export default class Module {
   constructor(event = null, name = null, slug = null) {
     this.moduleObject = ModuleDAO.createObject();
     this.event = event;
+    /* It's a stub to handle a bug */
+    if (event) {
+      this.moduleObject.event = event.eventObject._id;
+    }
     this.moduleObject.name = name;
     this.moduleObject.slug = slug;
   }

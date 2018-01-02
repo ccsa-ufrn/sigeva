@@ -25,7 +25,7 @@ class PaymentModule extends Module {
       'Comprovante de pagamento',
       'Comprovante de pagamento do boleto de inscrição no evento',
       'receipt',
-      '.pdf .png .jpeg .jpg',
+      '.pdf,.png,.jpeg,.jpg',
     );
     return new Promise((resolve, reject) => {
       receipt.store()

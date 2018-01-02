@@ -45,7 +45,7 @@ eventRouter.get('/', (req, res) => {
   const page = (req.query.page) ? parseInt(req.query.page, 10) : 1;
   const count = (req.query.count) ? parseInt(req.query.count, 10) : 5;
   const query = (req.query.query) ? req.query.query : '';
-  const fields = (req.query.fields) ? req.query.fields : 'name,subtitle,location,eventPeriod,enrollmentPeriod,published';
+  const fields = (req.query.fields) ? req.query.fields : 'name,subtitle,location,eventPeriod,enrollmentPeriod,published,thumbnail';
   const order = (req.query.order) ? req.query.order : '-createdAt'; // News events first
   const published = (req.query.published) ? req.query.published : true;
   // By default returns published events
@@ -243,7 +243,7 @@ eventRouter.post('/:id/module/:slug/:entity/act/:subaction', simpleAuthorization
  * @MissingTests
 */
 eventRouter.get('/:id', (req, res) => {
-  const fields = (req.query.fields) ? req.query.fields : 'name,subtitle,eventPeriod,enrollmentPeriod,location,published';
+  const fields = (req.query.fields) ? req.query.fields : 'name,subtitle,eventPeriod,enrollmentPeriod,location,published,thumbnail';
 
   const event = new Event();
   event.loadById(req.params.id)
