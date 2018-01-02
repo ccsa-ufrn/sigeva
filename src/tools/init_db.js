@@ -15,7 +15,7 @@ db.fieldrequests.insertMany([
 		required: true,
 	},
 	{
-		telefone: 'phone',
+		name: 'phone',
 		readableName: 'Telefone',
 		HTMLtype: 'text',
 		editable: true,

@@ -4,6 +4,7 @@ const initialEventState = {
   id: null,
   name: null,
   enrollmentPeriod: null,
+  thumbnail: null,
   // location: null,
   // roles: null,
   not_found: false,
@@ -17,6 +18,7 @@ const mountObjectData = (data) => {
   return ({
     id: data._id,
     name: data.name,
+    thumbnail: data.thumbnail,
     enrollmentPeriod: data.enrollmentPeriod,
   });
 };

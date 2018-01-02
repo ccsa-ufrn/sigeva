@@ -26,6 +26,10 @@ const eventSchema = new Schema({
     type: String,
     required: true,
   },
+  thumbnail: { // Event thumbnail URL address
+    type: String,
+    default: 'public/img/default-event-thumbnail.png',
+  },
   eventPeriod: { // Event Period
     type: dateRangeSchema,
     required: true,

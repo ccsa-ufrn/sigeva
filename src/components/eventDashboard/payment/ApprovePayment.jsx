@@ -3,6 +3,12 @@ import React, { Component } from 'react';
 import { application } from '../../../../config';
 
 class ReceiptsTable extends Component {
+  constructor() {
+    super();
+    this.approvePayment = this.approvePayment.bind(this);
+    this.rejectPayment = this.rejectPayment.bind(this);
+  }
+
   render() {
     return (
       <div>
@@ -29,8 +35,8 @@ class ReceiptsTable extends Component {
                       </a>
                     </td>
                     <td>
-                      <a href='' className='btn btn-outline-success btn-sm'>Aprovar pagamento</a>{' '}
-                      <a href='' className='btn btn-outline-danger btn-sm'>Rejeitar pagamento</a>
+                      <button onClick={() => this.approvePayment(payment._id)} className='btn btn-outline-success btn-sm'>Aprovar pagamento</button>{' '}
+                      <button onClick={() => this.rejectPayment(payment._id)} className='btn btn-outline-danger btn-sm'>Rejeitar pagamento</button>
                     </td>
                   </tr>
                 );
@@ -40,6 +46,14 @@ class ReceiptsTable extends Component {
         </table>
       </div>
     );
+  }
+
+  approvePayment(receiptId) {
+    this.props.updateStatus(receiptId, 'approved');
+  }
+
+  rejectPayment(receiptId) {
+    this.props.updateStatus(receiptId, 'rejected');
   }
 }
 
@@ -53,7 +67,7 @@ class ApprovePayment extends Component {
     return (
       <div>
       { this.props.approvePayment.to_approve_payments &&
-        <ReceiptsTable payments={this.props.approvePayment.to_approve_payments} />
+        <ReceiptsTable payments={this.props.approvePayment.to_approve_payments} updateStatus={this.props.updateReceiptStatus} />
       }
       </div>
     );

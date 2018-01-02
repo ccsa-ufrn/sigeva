@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import ApprovePayment from './ApprovePayment';
-import { loadToApprovePayments } from '../../../actions/payment';
+import { loadToApprovePayments, updateReceiptStatus } from '../../../actions/payment';
 
 const mapStateToProps = state => {
   return {
@@ -13,6 +13,9 @@ const mapDispatchToProps = dispatch => {
   return {
     loadToApprovePayments: () => {
       dispatch(loadToApprovePayments());
+    },
+    updateReceiptStatus: (receiptId, newStatus) => {
+      dispatch(updateReceiptStatus(receiptId, newStatus));
     },
   };
 }

@@ -106,3 +106,27 @@ export function loadToApprovePayments() {
       });
   };
 }
+
+export function updateReceiptStatus(receiptId, newStatus) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ receiptId, newStatus }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/payment/payment/act/update_receipt_status`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (!json.error) {
+          dispatch(loadToApprovePayments());
+        }
+      });
+  };
+}
