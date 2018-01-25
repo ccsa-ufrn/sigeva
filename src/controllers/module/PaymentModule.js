@@ -184,7 +184,7 @@ class PaymentModule extends Module {
       default:
         // do nothing
     }
-
+    // TODO: this return statement is a stub, remove it
     return this;
   }
 }

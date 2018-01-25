@@ -7,6 +7,7 @@ import RelationshipModel from '../../models/relationship.model';
 
 import Module from '../module/Module';
 import PaymentModule from '../module/PaymentModule';
+import ThematicGroupModule from '../module/ThematicGroupModule';
 import SubmissionModule from '../module/SubmissionModule';
 
 import * as EventHelper from './EventHelper';
@@ -305,6 +306,9 @@ export default class {
     switch (moduleSlug) {
       case 'payment':
         module = new PaymentModule(this);
+        break;
+      case 'thematicgroups':
+        module = new ThematicGroupModule(this);
         break;
       case 'submission':
         module = new SubmissionModule(this);

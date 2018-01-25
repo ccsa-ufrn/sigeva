@@ -5,6 +5,7 @@ import EventDashLayout from '../layout/EventDashLayout';
 import EventDashboardMenu, { EventDashboardMenuItem } from './EventDashboardMenu';
 import Error404 from '../error/Error404';
 import PaymentModule from './payment/PaymentModule';
+import ThematicGroupsModule from './thematicgroups/ThematicGroupsModule';
 import EventDashboardHome from './EventDashboardHome';
 
 class EventDashboardPage extends Component {
@@ -47,7 +48,7 @@ class EventDashboardPage extends Component {
            />
         { this.props.event.context ?
           this.props.event.context.map((mod)=> {
-            if (mod.slug == 'payment') {
+            if (mod.slug == 'payment' || mod.slug == 'thematicgroups') {
               return <EventDashboardMenuItem
                 key={mod.slug}
                 module={{name: mod.name, slug: mod.slug}}
@@ -81,6 +82,8 @@ class EventDashboardPage extends Component {
     switch(this.state.module) {
       case 'payment':
         return <PaymentModule paymentContext={this.getModuleContext('payment')} />
+      case 'thematicgroups':
+        return <ThematicGroupsModule />
       default:
         return <EventDashboardHome
           event={this.props.event}
