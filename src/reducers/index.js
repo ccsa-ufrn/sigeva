@@ -5,6 +5,7 @@ import userSession from './userSession';
 import event from './event';
 import eventsBoard from './eventsBoard';
 import payment from './payment';
+import thematicGroupsAreas from './thematicGroupsAreas';
 
 const reducers = combineReducers({
   userSession,
@@ -13,6 +14,7 @@ const reducers = combineReducers({
   event,
   eventsBoard,
   payment,
+  thematicGroupsAreas,
 });
 
 export default reducers;

@@ -83,7 +83,7 @@ class EventDashboardPage extends Component {
       case 'payment':
         return <PaymentModule paymentContext={this.getModuleContext('payment')} />
       case 'thematicgroups':
-        return <ThematicGroupsModule />
+        return <ThematicGroupsModule thematicgroupsContext={this.getModuleContext('thematicgroups')}/>
       default:
         return <EventDashboardHome
           event={this.props.event}

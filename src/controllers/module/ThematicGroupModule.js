@@ -58,9 +58,14 @@ class ThematicGroupModule extends Module {
     switch (subaction) {
       case 'create_area':
         if (manageAreas) {
-          // To create an area is expected a area name
+          // To create an area is expected an area name
           const areaName = body.areaName;
           return this.createArea(areaName);
+        }
+        break;
+      case 'get_areas':
+        if (manageAreas) {
+          return this.getAreas();
         }
         break;
       case 'create_tg':
@@ -136,6 +141,13 @@ class ThematicGroupModule extends Module {
           resolve(doc);
         });
     });
+  }
+
+  /**
+   * Returns a set of areas in the event
+   */
+  getAreas() {
+    return ThematicGroupArea.getAreasByEventId(this.moduleObject.event);
   }
 }
 
