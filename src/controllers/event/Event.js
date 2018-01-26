@@ -213,11 +213,13 @@ export default class {
     }
 
     const roles = this.eventObject.ofRoles.filter((role) => {
-      let t = false;
-      userRelationship.ofRoles.forEach((uRole) => {
-        t = (String(uRole) == String(role._id));
-      });
-      return t;
+      let flag = false;
+      for (let i = 0; i < userRelationship.ofRoles.length; i += 1) {
+        if (!flag && (String(userRelationship.ofRoles[i]) === String(role._id))) {
+          flag = true;
+        }
+      }
+      return flag;
     });
 
     return roles;
