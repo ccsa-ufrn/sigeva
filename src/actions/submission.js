@@ -29,6 +29,7 @@ export function loadSubmissionEntity(entitySlug) {
         if (json.error) {
           // TODO handle this error
         } else {
+          console.log(json.data);
           dispatch(setSubmissionEntity(json.data));
         }
       });

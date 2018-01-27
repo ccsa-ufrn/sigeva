@@ -15,7 +15,7 @@ class SubmissionModule extends Component {
   loadPermissionTab(action) {
     switch(action) {
       case 'submit_object':
-        return <SubmissionModule entity={this.props.entity} />;
+        return <SubmitObjectContainer entity={this.props.entity} />;
       case 'evaluate_object':
         return null;
       default:

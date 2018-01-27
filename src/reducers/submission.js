@@ -1,7 +1,7 @@
 import * as Action from '../actions/constants';
 
 const initialSubmission = {
-  entity: {},
+  entity: null,
 };
 
 const submission = (state = initialSubmission, action) => {

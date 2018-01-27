@@ -6,13 +6,14 @@ import { loadSubmissionEntity } from '../../../actions/submission';
 const mapStateToProps = state => {
   return {
     submission: state.submission,
+    payment: state.payment,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadSubmissionEntity: () => {
-      dispatch(loadSubmissionEntity());
+    loadSubmissionEntity: (entity) => {
+      dispatch(loadSubmissionEntity(entity));
     },
   };
 };
