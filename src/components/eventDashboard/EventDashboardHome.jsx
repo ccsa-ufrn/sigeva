@@ -6,7 +6,7 @@ class EventDashboardHome extends Component {
       <div className='event-dashboard-module row'>
         <div className='col-md-12'>
           <div className='alert alert-info' role='alert'>
-            Bem vindo ao <strong>{this.props.event.name}</strong>. Suas relações com este evento são:
+            Bem vindo ao evento <strong>{this.props.event.name}</strong>. Suas relações com este evento são:
             <strong>
             { this.props.roles &&
             this.props.roles.map((role) => { return ` ${role.name}` })

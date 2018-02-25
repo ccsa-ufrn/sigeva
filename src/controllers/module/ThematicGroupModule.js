@@ -44,6 +44,18 @@ class ThematicGroupModule extends Module {
    * @param subaction action that will be dispacthed
    */
   act(user, roles, body, entitySlug, subaction) {
+    // PUBLIC ENDPOINTS
+    // Getting Thematic Groups
+    switch (subaction) {
+      case 'get_tgs':
+        return new Promise((resolve) => {
+          resolve(this.moduleObject.ofObjects); // always resolves
+        });
+      default:
+        // do nothing
+    }
+
+    // PRIVATE ENDPOINTS
     // Gets user capabilities to passed set of roles
     const context = this.getUserContext(roles);
     if (!context) {

@@ -18,6 +18,7 @@ const submissionEntitySchema = new Schema({
     required: false,
   },
   submissionPeriod: dateRangeSchema, // Date range of submission period
+  evaluationPeriod: dateRangeSchema, // Date range for work evaluation
   ofRequiredFiles: [submissionFileRequirementSchema], // Required files
   ofRequiredFields: [mongoose.SchemaTypes.ObjectId], // Required fields
   maxAuthors: { // max number of authors
