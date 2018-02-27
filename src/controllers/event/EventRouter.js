@@ -206,6 +206,17 @@ eventRouter.get('/:id/module/:slug/deactivate', (req, res) => {
     });
 });
 
+eventRouter.get('/:id/news/all', (req, res) => {
+  const eventId = req.params.id;
+  const event = new Event();
+  event.loadById(eventId)
+    .then(() => event.getModule('news'))
+    .then((module) => {
+      res.json(Response(false, module.moduleObject.ofObjects.reverse()));
+    })
+    .catch(() => { res.json(Response(true, {})); });
+});
+
 /**
  * Executes a action in a module of the event
  * @param id event's id

@@ -33,6 +33,7 @@
     "body-parser": "^1.17.2",
     "bootstrap": "^3.3.7",
     "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
     "ejs": "^2.5.7",
     "express": "^4.15.4",
     "express-fileupload": "^0.3.0",
