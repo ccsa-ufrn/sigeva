@@ -202,3 +202,7 @@ form .form-error-message {
   font-size: 10pt;
 }
 /* END dropzone */
+
+h5 strong {
+  border-bottom: 3px solid #CF2B38;
+}

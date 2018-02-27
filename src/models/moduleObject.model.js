@@ -8,7 +8,7 @@ import mongoose, { Schema } from 'mongoose';
  */
 
 const moduleObjectSchema = new Schema({
-  entity: Schema.Types.ObjectId,
+  entity: Schema.Types.String,
   data: Schema.Types.Mixed,
 });
 
