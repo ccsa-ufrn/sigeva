@@ -7,6 +7,7 @@ import Error404 from '../error/Error404';
 import PaymentModule from './payment/PaymentModule';
 import ThematicGroupsModule from './thematicgroups/ThematicGroupsModule';
 import SubmissionModule from './submission/SubmissionModule';
+import NewsModuleContainer from './news/NewsModuleContainer';
 import EventDashboardHome from './EventDashboardHome';
 
 class EventDashboardPage extends Component {
@@ -49,7 +50,7 @@ class EventDashboardPage extends Component {
            />
         { this.props.event.context ?
           this.props.event.context.map((mod)=> {
-            if (mod.slug == 'payment' || mod.slug == 'thematicgroups') {
+            if (mod.slug == 'payment' || mod.slug == 'thematicgroups' || mod.slug == 'news') {
               return <EventDashboardMenuItem
                 key={mod.slug}
                 module={{name: mod.name, slug: mod.slug}}
@@ -87,6 +88,8 @@ class EventDashboardPage extends Component {
         return <ThematicGroupsModule thematicgroupsContext={this.getModuleContext('thematicgroups')}/>
       case 'submission':
         return <SubmissionModule submissionContext={this.getModuleContext('submission')} entity={this.state.entity} />
+      case 'news':
+        return <NewsModuleContainer />
       default:
         return <EventDashboardHome
           event={this.props.event}

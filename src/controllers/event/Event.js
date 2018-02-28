@@ -9,6 +9,7 @@ import Module from '../module/Module';
 import PaymentModule from '../module/PaymentModule';
 import ThematicGroupModule from '../module/ThematicGroupModule';
 import SubmissionModule from '../module/SubmissionModule';
+import NewsModule from '../module/NewsModule';
 
 import * as EventHelper from './EventHelper';
 
@@ -314,6 +315,9 @@ export default class {
         break;
       case 'submission':
         module = new SubmissionModule(this);
+        break;
+      case 'news':
+        module = new NewsModule(this);
         break;
       default:
         // do nothing

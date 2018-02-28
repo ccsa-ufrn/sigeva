@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 import fileUpload from 'express-fileupload';
 import connector from './MongoConnector';
@@ -14,6 +15,8 @@ const app = express();
 app.use(bodyParser.urlencoded({
   extended: false,
 }));
+
+app.use(cors());
 
 // enable application to use cookies
 app.use(cookieParser());
