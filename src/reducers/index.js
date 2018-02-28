@@ -8,6 +8,7 @@ import payment from './payment';
 import thematicGroupsAreas from './thematicGroupsAreas';
 import thematicGroups from './thematicGroups';
 import submission from './submission';
+import news from './news';
 
 const reducers = combineReducers({
   userSession,
@@ -19,6 +20,7 @@ const reducers = combineReducers({
   thematicGroupsAreas,
   thematicGroups,
   submission,
+  news,
 });
 
 export default reducers;
