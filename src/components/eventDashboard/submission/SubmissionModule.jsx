@@ -30,7 +30,7 @@ class SubmissionModule extends Component {
           {
             this.props.submissionContext.permissions.map((perm) => {
               return (
-                <li key={perm._id} className='nav-item'>
+                <li key={perm.action} className='nav-item'>
                   <a className={`nav-link ${this.state.initialAction == perm.action ? 'active': ''}`} id={`payment-${perm.action}-pill`} data-toggle='pill' href={`#paymet-${perm.action}-tab`} role="tab" aria-controls={`payment-${perm.action}`} aria-selected='true'>{perm.name}</a>
                 </li>
               );
