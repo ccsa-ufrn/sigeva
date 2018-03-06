@@ -41,7 +41,7 @@ class SubmissionModule extends Component {
           {
             this.props.submissionContext.permissions.map((perm) => {
               return (
-                <div key={perm._id} className={`tab-pane fade ${this.state.initialAction == perm.action ? 'show active': ''}`} id={`paymet-${perm.action}-tab`} role="tabpanel" aria-labelledby={`paymet-${perm.action}-pill`}>
+                <div key={perm.action} className={`tab-pane fade ${this.state.initialAction == perm.action ? 'show active': ''}`} id={`paymet-${perm.action}-tab`} role="tabpanel" aria-labelledby={`paymet-${perm.action}-pill`}>
                   { this.loadPermissionTab(perm.action) }
                 </div>
               );
