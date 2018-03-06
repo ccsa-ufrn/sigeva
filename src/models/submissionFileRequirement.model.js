@@ -11,7 +11,7 @@ const submissionFileRequirementSchema = new Schema({
     type: mongoose.SchemaTypes.ObjectId,
     required: true,
   },
-  fileType: { // system identification of file (original, anonymous...)
+  fileType: { // system identification of file (named, hidden)
     type: String,
     required: true,
   },
