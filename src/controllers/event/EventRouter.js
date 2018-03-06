@@ -247,6 +247,36 @@ eventRouter.post('/:id/module/:slug/:entity/act/:subaction', simpleAuthorization
 });
 
 /**
+ * Find a enrolled user with a email
+ */
+eventRouter.post('/:id/findUser', simpleAuthorization, (req, res) => {
+  const eventId = req.params.id;
+  const event = new Event();
+  const user = new User();
+  const email = req.body.userEmail;
+
+  user.loadByEmail(email)
+    .then(() => event.loadById(eventId))
+    .then(() =>
+      new Promise((resolve, reject) => {
+        const roles = event.getUserRelationships(String(user.userObject._id));
+        if (roles.length > 0) {
+          resolve({
+            name: user.userObject.name,
+            _id: user.userObject._id,
+          });
+        } else {
+          reject();
+        }
+      }),
+    )
+    .then((userObj) => {
+      res.json(Response(false, userObj));
+    })
+    .catch(() => res.json(Response(true, [], 'User not found')));
+});
+
+/**
  * Returns a event by ID
  * @param id event id to search for
  * @return event if found

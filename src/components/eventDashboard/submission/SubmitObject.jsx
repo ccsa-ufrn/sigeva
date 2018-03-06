@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import UserPicker from '../../userPicker/userPicker';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 
@@ -49,17 +50,18 @@ class SubmissionPane extends Component {
         <p>{this.props.entity.data.description}</p>
         <div className="form-group">
           <label>Título do trabalho</label>
-          <input className="form-control"  />
+          <input className="form-control" />
         </div>
         <div className="form-group">
           <label>Grupo temático</label>
-          <select>
-            {
+          <select className="form-control">
+            { this.props.thematicGroups &&
               this.props.thematicGroups.map((tg) => {
                 return (<option key={tg.data._id} value={tg.data._id}>{tg.data.name}</option>);
               })
             }
-          </select>
+          </select><br/>
+          <UserPicker type="artigo" eventId="5a70ca268f5fc344c2cac32d"/>
         </div>
       </div>
     );
@@ -77,7 +79,6 @@ class SubmitObject extends Component {
   }
 
   render() {
-    console.log(this.props.thematicGroups);
     if (this.props.submission.entity) {
       const entity = this.props.submission.entity;
       // Handle payment requirement
@@ -94,7 +95,7 @@ class SubmitObject extends Component {
       const submissionPeriodEnd = new Date(entity.data.submissionPeriod.end);
 
       if (submissionPeriodBegin < now && now < submissionPeriodEnd) {
-        return (<SubmissionPane entity={this.props.submission.entity} />);
+        return (<SubmissionPane entity={this.props.submission.entity} thematicGroups={this.props.thematicGroups} />);
       } else {
         return (<OutOfDateWarning begin={submissionPeriodBegin} end={submissionPeriodEnd} />);
       }
