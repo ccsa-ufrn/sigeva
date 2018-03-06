@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import UserPicker from '../../userPicker/userPicker';
+import Dropzone from '../../dropzone/Dropzone';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 
@@ -41,27 +42,126 @@ class OutOfDateWarning extends Component {
 class SubmissionPane extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      title: "",
+      abstract: "",
+      keywords: "",
+      thematicGroup: "",
+      users: [],
+      files: [],
+    }
+
+    this.changeUsers = this.changeUsers.bind(this);
+    this.changeTitle = this.changeTitle.bind(this);
+    this.changeAbstract = this.changeAbstract.bind(this);
+    this.changeKeywords = this.changeKeywords.bind(this);
+    this.changeTG = this.changeTG.bind(this);
+    this.addFile = this.addFile.bind(this);
+    this.doSubmitObject = this.doSubmitObject.bind(this);
+  }
+
+  changeTitle(e) {
+    const target = e.nativeEvent.target;
+    this.setState({
+      title: target.value,
+    });
+  }
+
+  changeAbstract(e) {
+    const target = e.nativeEvent.target;
+    this.setState({
+      abstract: target.value,
+    });
+  }
+
+  changeKeywords(e) {
+    const target = e.nativeEvent.target;
+    this.setState({
+      keywords: target.value,
+    });
+  }
+
+  changeTG(e) {
+    const target = e.nativeEvent.target;
+    this.setState({
+      thematicGroup: target.value,
+    });
+  }
+
+  changeUsers(users_) {
+    this.setState({
+      users: users_,
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.thematicGroup == null) {
+      if (this.props.thematicGroups.length > 0) {
+        this.setState({
+          thematicGroup: this.props.thematicGroups[0].data._id,
+        });
+      }
+    }
+  }
+
+  addFile(file) {
+    const newFiles = this.state.files;
+    newFiles.push(file._id);
+    this.setState({
+      files: newFiles
+    });
+  }
+
+  doSubmitObject() {
+    this.props.submitObject(this.props.entity.slug, this.state);
   }
 
   render() {
     return (
       <div>
         <h5><strong>Submissão do tipo "{this.props.entity.name}"</strong></h5>
-        <p>{this.props.entity.data.description}</p>
         <div className="form-group">
-          <label>Título do trabalho</label>
-          <input className="form-control" />
+          <label htmlFor="form-title">Título do trabalho</label>
+          <input id="form-title" className="form-control" onChange={this.changeTitle} />
         </div>
         <div className="form-group">
-          <label>Grupo temático</label>
-          <select className="form-control">
+          <label htmlFor="form-abstract">Resumo</label>
+          <textarea id="form-abstract" className="form-control" onChange={this.changeAbstract}></textarea>
+        </div>
+        <div className="form-group">
+          <label htmlFor="form-keywords">Palavras-chave</label>
+          <input id="form-keywords" className="form-control" onChange={this.changeKeywords} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="form-tgs">Grupo temático</label>
+          <select id="form-tgs" className="form-control" onChange={this.changeTG}>
             { this.props.thematicGroups &&
               this.props.thematicGroups.map((tg) => {
                 return (<option key={tg.data._id} value={tg.data._id}>{tg.data.name}</option>);
               })
             }
           </select><br/>
-          <UserPicker type="artigo" eventId="5a70ca268f5fc344c2cac32d"/>
+          <UserPicker
+            type="artigo"
+            eventId={this.props.eventId}
+            maxAuthors={this.props.entity.data.maxAuthors}
+            initialUserEmail={this.props.userEmail}
+            onChange={this.changeUsers}
+          />
+          <strong>Arquivos necessários para submissão</strong>
+          {
+            this.props.entity.data.ofRequiredFiles.map((fileRequirement) => {
+              return(
+                <div key={fileRequirement._id}>
+                  <Dropzone fileRequirementId={fileRequirement.fileRequirement} onSent={this.addFile} /><br/>
+                </div>
+              );
+            })
+          }
+          <div className="form-group">
+            <button className="btn btn-success" onClick={this.doSubmitObject}>Submeter trabalho</button>
+          </div>
         </div>
       </div>
     );
@@ -71,11 +171,25 @@ class SubmissionPane extends Component {
 class SubmitObject extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      submited: false,
+    }
+
+    this.doSubmitObject = this.doSubmitObject.bind(this);
   }
 
   componentDidMount() {
+    this.props.loadUserIfNeed();
     this.props.loadSubmissionEntity(this.props.entity);
     this.props.loadThematicGroups();
+  }
+
+  doSubmitObject(entity, data) {
+    this.props.submitObject(entity, data);
+    this.setState({
+      submited: true,
+    })
   }
 
   render() {
@@ -95,12 +209,23 @@ class SubmitObject extends Component {
       const submissionPeriodEnd = new Date(entity.data.submissionPeriod.end);
 
       if (submissionPeriodBegin < now && now < submissionPeriodEnd) {
-        return (<SubmissionPane entity={this.props.submission.entity} thematicGroups={this.props.thematicGroups} />);
+        if (this.state.submited) {
+          return (<h5>Submetido com sucesso!</h5>);
+        } else {
+          return (<SubmissionPane
+            eventId={this.props.eventId}
+            entity={this.props.submission.entity}
+            thematicGroups={this.props.thematicGroups}
+            userEmail={this.props.userSession.logged_user.email}
+            submitObject={this.doSubmitObject}
+          />);
+        }
       } else {
         return (<OutOfDateWarning begin={submissionPeriodBegin} end={submissionPeriodEnd} />);
       }
 
-      return (<SubmissionPane entity={this.props.submission.entity} thematicGroups={this.props.thematicGroups} />);
+      //return (<SubmissionPane eventId={this.props.eventId} entity={this.props.submission.entity} thematicGroups={this.props.thematicGroups} userEmail={this.props.userSession.logged_user.email}/>);
+
     }
 
     return (<div>Carregando...</div>);

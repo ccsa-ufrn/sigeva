@@ -68,6 +68,9 @@ export default class DropzoneComponent extends Component {
     } else if (this.props.file) {
       return (
         <div className='dropzone'>
+          <div className='dropzone-title'>
+            {this.props.fileRequirement.name}
+          </div>
           <div className='dropzone-file'>
             <a target='_blank' href={`${application.url}/file/download/${this.props.file._id}`}>
               { `${this.props.file._id}.${this.props.file.extension}` }

@@ -35,3 +35,30 @@ export function loadSubmissionEntity(entitySlug) {
       });
   };
 }
+
+export function submitObject(entitySlug, data) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/submit_object`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // TODO handle this error
+        } else {
+          console.log(json.data);
+        }
+      });
+  };
+}
