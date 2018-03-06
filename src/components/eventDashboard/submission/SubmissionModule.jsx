@@ -30,7 +30,7 @@ class SubmissionModule extends Component {
           {
             this.props.submissionContext.permissions.map((perm) => {
               return (
-                <li key={perm.action} className='nav-item'>
+                <li key={perm._id} className='nav-item'>
                   <a className={`nav-link ${this.state.initialAction == perm.action ? 'active': ''}`} id={`payment-${perm.action}-pill`} data-toggle='pill' href={`#paymet-${perm.action}-tab`} role="tab" aria-controls={`payment-${perm.action}`} aria-selected='true'>{perm.name}</a>
                 </li>
               );
@@ -41,7 +41,7 @@ class SubmissionModule extends Component {
           {
             this.props.submissionContext.permissions.map((perm) => {
               return (
-                <div key={perm.action} className={`tab-pane fade ${this.state.initialAction == perm.action ? 'show active': ''}`} id={`paymet-${perm.action}-tab`} role="tabpanel" aria-labelledby={`paymet-${perm.action}-pill`}>
+                <div key={perm._id} className={`tab-pane fade ${this.state.initialAction == perm.action ? 'show active': ''}`} id={`paymet-${perm.action}-tab`} role="tabpanel" aria-labelledby={`paymet-${perm.action}-pill`}>
                   { this.loadPermissionTab(perm.action) }
                 </div>
               );
