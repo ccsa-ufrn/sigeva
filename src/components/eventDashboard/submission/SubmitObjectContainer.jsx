@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import SubmitObject from './SubmitObject';
-import { loadSubmissionEntity, submitObject } from '../../../actions/submission';
+import { submitObject } from '../../../actions/submission';
 import { loadThematicGroups } from '../../../actions/thematicGroups';
 import { loadUserIfNeed } from '../../../actions/userSession';
 
@@ -17,9 +17,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadSubmissionEntity: (entity) => {
-      dispatch(loadSubmissionEntity(entity));
-    },
     loadThematicGroups: () => {
       dispatch(loadThematicGroups());
     },
