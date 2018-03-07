@@ -6,7 +6,7 @@ import EventDashboardMenu, { EventDashboardMenuItem } from './EventDashboardMenu
 import Error404 from '../error/Error404';
 import PaymentModule from './payment/PaymentModule';
 import ThematicGroupsModule from './thematicgroups/ThematicGroupsModule';
-import SubmissionModule from './submission/SubmissionModule';
+import SubmissionModuleContainer from './submission/SubmissionModuleContainer';
 import NewsModuleContainer from './news/NewsModuleContainer';
 import EventDashboardHome from './EventDashboardHome';
 
@@ -87,7 +87,7 @@ class EventDashboardPage extends Component {
       case 'thematicgroups':
         return <ThematicGroupsModule thematicgroupsContext={this.getModuleContext('thematicgroups')}/>
       case 'submission':
-        return <SubmissionModule submissionContext={this.getModuleContext('submission')} entity={this.state.entity} />
+        return <SubmissionModuleContainer submissionContext={this.getModuleContext('submission')} entity={this.state.entity} />
       case 'news':
         return <NewsModuleContainer />
       default:

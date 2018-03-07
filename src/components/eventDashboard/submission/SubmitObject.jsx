@@ -181,7 +181,6 @@ class SubmitObject extends Component {
 
   componentDidMount() {
     this.props.loadUserIfNeed();
-    this.props.loadSubmissionEntity(this.props.entity);
     this.props.loadThematicGroups();
   }
 
