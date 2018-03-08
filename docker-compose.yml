@@ -5,3 +5,4 @@ services:
         network_mode: "host"
         volumes:
             - ./files:/usr/src/app/files
+            - ./src/view:/usr/src/app/src/view

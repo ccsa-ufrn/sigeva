@@ -43,13 +43,26 @@ class SubmissionPane extends Component {
   constructor(props) {
     super(props);
 
+    let thematicGroups = [];
+    if (this.props.entity.slug == 'teachingcases') {
+      thematicGroups = this.props.thematicGroups.filter((el => el.data.name === 'Casos para Ensino'));
+    } else {
+      thematicGroups = this.props.thematicGroups.filter((el => el.data.name !== 'Casos para Ensino'));
+    }
+
+    let thematicGroup = "";
+    if (thematicGroups.length > 0) {
+      thematicGroup = thematicGroups[0]._id;
+    }
+
     this.state = {
       title: "",
       abstract: "",
       keywords: "",
-      thematicGroup: "",
+      thematicGroup: thematicGroup,
       users: [],
       files: [],
+      thematicGroups: thematicGroups,
     }
 
     this.changeUsers = this.changeUsers.bind(this);
@@ -96,10 +109,24 @@ class SubmissionPane extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    let thematicGroups = [];
+
+    if (this.props.entity.slug == 'teachingcases') {
+      thematicGroups = this.props.thematicGroups.filter((el => el.data.name === 'Casos para Ensino'));
+    } else {
+      thematicGroups = this.props.thematicGroups.filter((el => el.data.name !== 'Casos para Ensino'));
+    }
+
+    if (this.state.thematicGroups.length != thematicGroups.length) {
+      this.setState({
+        thematicGroups: thematicGroups,
+      });
+    }
+
     if (this.state.thematicGroup == null) {
-      if (this.props.thematicGroups.length > 0) {
+      if (this.state.thematicGroups.length > 0) {
         this.setState({
-          thematicGroup: this.props.thematicGroups[0].data._id,
+          thematicGroup: thematicGroups[0]._id,
         });
       }
     }
@@ -136,8 +163,8 @@ class SubmissionPane extends Component {
         <div className="form-group">
           <label htmlFor="form-tgs">Grupo temático</label>
           <select id="form-tgs" className="form-control" onChange={this.changeTG}>
-            { this.props.thematicGroups &&
-              this.props.thematicGroups.map((tg) => {
+            { this.state.thematicGroups &&
+              this.state.thematicGroups.map((tg) => {
                 return (<option key={tg.data._id} value={tg.data._id}>{tg.data.name}</option>);
               })
             }
