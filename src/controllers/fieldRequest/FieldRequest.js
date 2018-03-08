@@ -43,11 +43,32 @@ export default class {
   }
 
   /**
+   * Load fielRequest by Name
+   * @param name_ name
+   */
+  loadByName(name_) {
+    const query = fieldRequestModel.find({
+      name: name_,
+    });
+    return new Promise((resolve, reject) => {
+      FieldRequestDAO.executeQuery(query)
+        .then((doc, err) => {
+          if (!err) {
+            this.fieldRequestObject = doc;
+          } else {
+            reject();
+          }
+        });
+    });
+  }
+
+  /**
    * Return a object with "public" informations about the FieldRequest
    * @return FieldRequest informations
    */
   getData() {
     return {
+      _id: this.fieldRequestObject._id,
       name: this.fieldRequestObject.name,
       readableName: this.fieldRequestObject.readableName,
       HTMLtype: this.fieldRequestObject.HTMLtype,

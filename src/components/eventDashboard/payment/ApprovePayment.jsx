@@ -27,7 +27,13 @@ class ReceiptsTable extends Component {
               this.props.payments.map((payment) => {
                 return (
                   <tr key={payment._id}>
-                    <td>{payment.data.user.name}</td>
+                    <td>{payment.data.user.name}{' '}
+                      { payment.data.user.ofFields.map((field) => {
+                        if (field.request.name == "cpf") {
+                          return (<span key='cpf'>( CPF: {field.value} )</span>);
+                        }
+                      }) }
+                    </td>
                     <td>{payment.roles.map(role => role.name)}</td>
                     <td>
                       <a href={`/file/download/${payment.data.file._id}`} target='_blank'>
@@ -63,7 +69,6 @@ class ApprovePayment extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div>
       { this.props.approvePayment.to_approve_payments &&
