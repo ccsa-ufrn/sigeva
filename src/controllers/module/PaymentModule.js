@@ -1,5 +1,6 @@
 import Module from './Module';
 import FileRequirement from '../fileRequirement/FileRequirement';
+import FieldRequest from '../fieldRequest/FieldRequest';
 import ModuleObject from '../../models/moduleObject.model';
 import ModuleModel from '../../models/module.model';
 import PaymentReceipt from '../../models/paymentReceipt.model';
@@ -86,19 +87,26 @@ class PaymentModule extends Module {
     return new Promise((resolve, reject) => {
       // Populate payments with user data and file data
       ModuleObject.populate(toApprovePayments, [
-        { path: 'data.user', select: 'name', model: 'User' },
+        { path: 'data.user', select: 'name ofFields', model: 'User' },
         { path: 'data.file', model: 'File' }],
       (err, docs) => {
         if (err) reject();
-        const docsWithRoles = docs.map((doc) => {
-          const parsedDoc = new Object();
-          parsedDoc.data = doc.data;
-          parsedDoc._id = doc._id;
-          parsedDoc.roles = this.event.getUserRelationships(String(doc.data.user._id));
 
-          return parsedDoc;
+        ModuleObject.populate(docs, [
+          { path: 'data.user.ofFields.request', model: 'FieldRequest' },
+        ], (err_, docs_) => {
+          if (err_) reject();
+
+          const docsWithRoles = docs_.map((doc) => {
+            const parsedDoc = new Object();
+            parsedDoc.data = doc.data;
+            parsedDoc._id = doc._id;
+            parsedDoc.roles = this.event.getUserRelationships(String(doc.data.user._id));
+
+            return parsedDoc;
+          });
+          resolve(docsWithRoles);
         });
-        resolve(docsWithRoles);
       });
     });
   }
