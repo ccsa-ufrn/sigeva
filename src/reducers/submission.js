@@ -2,6 +2,7 @@ import * as Action from '../actions/constants';
 
 const initialSubmission = {
   entity: null,
+  userObjects: [],
 };
 
 const submission = (state = initialSubmission, action) => {
@@ -9,6 +10,10 @@ const submission = (state = initialSubmission, action) => {
     case Action.SET_SUBMISSION_ENTITY:
       return Object.assign({}, state, {
         entity: action.data,
+      });
+    case Action.SET_SUBMISSION_USER_OBJECTS:
+      return Object.assign({}, state, {
+        userObjects: action.data,
       });
     default:
       return state;

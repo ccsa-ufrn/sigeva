@@ -9,6 +9,13 @@ export function setSubmissionEntity(data) {
   });
 }
 
+export function setUserObjects(data) {
+  return ({
+    type: Action.SET_SUBMISSION_USER_OBJECTS,
+    data,
+  });
+}
+
 export function loadSubmissionEntity(entitySlug) {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
@@ -58,6 +65,32 @@ export function submitObject(entitySlug, data) {
           // TODO handle this error
         } else {
           console.log(json.data);
+        }
+      });
+  };
+}
+
+export function loadUserObjects(entitySlug) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/get_my_objects`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // TODO handle this error
+        } else {
+          dispatch(setUserObjects(json.data));
         }
       });
   };

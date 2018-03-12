@@ -7,6 +7,10 @@ const submissionObjectSchema = new Schema({
   thematicGroup: Schema.Types.ObjectId,
   authors: [Schema.Types.ObjectId],
   files: [Schema.Types.ObjectId],
+  state: {
+    type: String,
+    default: 'waiting_evaluation', // waiting_evaluation, rejected, approved
+  },
 });
 
 const submissionObjectModel = mongoose.model('SubmissionObject', submissionObjectSchema);
