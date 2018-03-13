@@ -9,6 +9,7 @@ import thematicGroupsAreas from './thematicGroupsAreas';
 import thematicGroups from './thematicGroups';
 import submission from './submission';
 import news from './news';
+import activities from './activities';
 
 const reducers = combineReducers({
   userSession,
@@ -21,6 +22,7 @@ const reducers = combineReducers({
   thematicGroups,
   submission,
   news,
+  activities,
 });
 
 export default reducers;

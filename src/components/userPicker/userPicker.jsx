@@ -72,8 +72,7 @@ class UserPicker extends Component {
   render() {
     return(
       <div className="user-picker">
-        <strong>Seleção de co-autores</strong><br/>
-        <small>Digite o e-mail de um usuário inscrito no evento para adicioná-lo como co-autor do {this.props.type}. A quantidade máxima de co-autores é {this.props.maxAuthors}</small>
+        <small>Digite o e-mail de um usuário inscrito no evento para adicioná-lo. A quantidade máxima é {this.props.maxAuthors}</small>
         <div className="input-group mb-3">
           <input type="text" className="form-control" value={this.state.query} onChange={this.changeQuery} />
           { this.state.users.length < this.props.maxAuthors &&
