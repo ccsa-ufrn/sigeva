@@ -117,12 +117,38 @@ class SubmissionModule extends Module {
     return this.store();
   }
 
+  getObjectsByUserId(entitySlug, userId) {
+    const objectsOfEntity = this.moduleObject.ofObjects.filter(obj => obj.entity === entitySlug);
+    const objectsOfUser = objectsOfEntity.filter((obj) => {
+      let flag = false;
+      obj.data.authors.forEach((author) => {
+        if (String(author) === String(userId)) {
+          flag = true;
+        }
+      }, this);
+      return flag;
+    });
+
+    return new Promise((resolve, reject) => {
+      ModuleObject.populate(objectsOfUser, [
+        { path: 'data.authors', select: 'name', model: 'User' },
+        { path: 'data.files', model: 'File' },
+      ], (err, docs) => {
+        ModuleObject.populate(docs, [
+          { path: 'data.files.fileRequirement', model: 'FileRequirement' },
+        ], (err_, docs_) => {
+          resolve(docs_);
+        });
+      });
+    });
+  }
+
   /**
    * Runs a action performed by the user
    * @param user logged User instance
    * @param roles roles owned by the logged user
    * @param body request POST body
-   * @param entitySlug entitty identification slug
+   * @param entitySlug entity identification slug
    * @param subaction action that will be dispacthed
    */
   act(user, roles, body, entitySlug, subaction) {
@@ -137,6 +163,7 @@ class SubmissionModule extends Module {
     });
 
     const submitPermission = permissionsOnEntity.find(perm => perm.action === 'submit_object');
+    const seePermission = permissionsOnEntity.find(perm => perm.action === 'see_objects');
 
     switch (subaction) {
       case 'get_entity':
@@ -153,6 +180,11 @@ class SubmissionModule extends Module {
               .then(resolve({}))
               .catch(resolve({}));
           });
+        }
+        break;
+      case 'get_my_objects':
+        if (seePermission) {
+          return this.getObjectsByUserId(entitySlug, user.userObject._id);
         }
         break;
       default:

@@ -8,6 +8,7 @@ import PaymentModule from './payment/PaymentModule';
 import ThematicGroupsModule from './thematicgroups/ThematicGroupsModule';
 import SubmissionModuleContainer from './submission/SubmissionModuleContainer';
 import NewsModuleContainer from './news/NewsModuleContainer';
+import ActivitiesModuleContainer from './activities/ActivitiesModuleContainer';
 import EventDashboardHome from './EventDashboardHome';
 
 class EventDashboardPage extends Component {
@@ -88,6 +89,8 @@ class EventDashboardPage extends Component {
         return <ThematicGroupsModule thematicgroupsContext={this.getModuleContext('thematicgroups')}/>
       case 'submission':
         return <SubmissionModuleContainer submissionContext={this.getModuleContext('submission')} entity={this.state.entity} />
+      case 'activities':
+        return <ActivitiesModuleContainer activitiesContext={this.getModuleContext('activities')} entity={this.state.entity} />
       case 'news':
         return <NewsModuleContainer />
       default:

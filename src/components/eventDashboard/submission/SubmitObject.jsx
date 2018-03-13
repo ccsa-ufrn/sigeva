@@ -169,8 +169,8 @@ class SubmissionPane extends Component {
               })
             }
           </select><br/>
+          <strong>Seleção de co-autores</strong><br/>
           <UserPicker
-            type="artigo"
             eventId={this.props.eventId}
             maxAuthors={this.props.entity.data.maxAuthors}
             initialUserEmail={this.props.userEmail}
