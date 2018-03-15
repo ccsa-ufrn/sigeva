@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ManageThematicGroupsAreasContainer from './ManageThematicGroupsAreasContainer';
+import ManageThematicGroupsContainer from './ManageThematicGroupsContainer';
+import ManageCoordinatorsContainer from './ManageCoordinatorsContainer';
 
 class ThematicGroupsModule extends Component {
   constructor(props) {
@@ -17,10 +19,9 @@ class ThematicGroupsModule extends Component {
       case 'manage_areas':
         return <ManageThematicGroupsAreasContainer />;
       case 'manage_tgs':
-        return null;
-        // return <ManageThematicGroupsContainer />;
+        return <ManageThematicGroupsContainer />;
       case 'update_coordinators':
-        return null;
+        return <ManageCoordinatorsContainer />;
       default:
         return null;
     }
