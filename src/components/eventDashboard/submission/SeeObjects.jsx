@@ -11,6 +11,7 @@ class SeeObjects extends Component {
 
   render() {
     return(
+
       <div>
         <h5><strong>Ver submissões realizadas</strong></h5>
         <table className='table'>
@@ -29,11 +30,19 @@ class SeeObjects extends Component {
                   <tr key={object._id}>
                     <td>{object.data.title}</td>
                     <td>{object.data.authors.map((author)=> `${author.name} - `)}</td>
-                    <td>{ object.data.files &&
+                    <td>{object.data.files &&
                       object.data.files.map((file) => {
-                        return (<span><a href={`/file/download/${file._id}`} target='_blank'>{file.fileRequirement.name}</a><br/></span>)
+                        return (<span key={file._id}><a href={`/file/download/${file._id}`} target='_blank'>{file.fileRequirement.name}</a><br/></span>)
                       })
                     }</td>
+                    <td>
+                    { object.data.state == 'waiting_evaluation' ?
+                      'Aguardando avaliação' :
+                      object.data.state == 'approved' ?
+                      'Aprovado' :
+                      'Rejeitado'
+                    }
+                    </td>
                   </tr>
                 );
               })

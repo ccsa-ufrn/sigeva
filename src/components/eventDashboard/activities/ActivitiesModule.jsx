@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import SubmitObjectContainer from './SubmitObjectContainer';
-// import SeeObjectsContainer from './SeeObjectsContainer';
 
 class ActivitiesModule extends Component {
   constructor(props) {
@@ -8,6 +7,7 @@ class ActivitiesModule extends Component {
 
     const entity = this.props.activitiesContext.entities.filter(el => el.slug == this.props.entity)[0];
     const permissions = this.props.activitiesContext.permissions.filter(perm => perm.entity == entity._id);
+    console.log('permissions', permissions);
     this.state = {
       permissions: permissions,
       initialAction: null,

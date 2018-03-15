@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SubmitObjectContainer from './SubmitObjectContainer';
+import SeeToApproveSubmissionsContainer from './SeeToApproveSubmissionsContainer';
 import SeeObjectsContainer from './SeeObjectsContainer';
 
 class SubmissionModule extends Component {
@@ -26,8 +27,8 @@ class SubmissionModule extends Component {
         return <SubmitObjectContainer entity={this.props.entity} />;
       case 'see_objects':
         return <SeeObjectsContainer entity={this.props.entity} />;
-      case 'evaluate_object':
-        return null;
+      case 'evaluate_submissions':
+        return <SeeToApproveSubmissionsContainer entity={this.props.entity} />;
       default:
         return null;
     }

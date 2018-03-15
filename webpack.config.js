@@ -5,8 +5,8 @@ const react = {
   entry: path.join(__dirname, '/src/components/ClientApp.jsx'),
   output: {
     path: path.join(__dirname, '/public/js'),
-    // filename: 'bundle.js',
-    filename: 'bundle.[chunkhash].js',
+    filename: 'bundle.js',
+    // filename: 'bundle.[chunkhash].js',
   },
   module: {
     loaders: [
