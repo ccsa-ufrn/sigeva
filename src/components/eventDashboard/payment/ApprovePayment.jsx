@@ -10,6 +10,10 @@ class ReceiptsTable extends Component {
   }
 
   render() {
+    const style = {
+      textTransform: 'capitalize'
+    };
+
     return (
       <div>
         <h5><strong>Pagamentos para aprovação</strong></h5>
@@ -27,13 +31,13 @@ class ReceiptsTable extends Component {
               this.props.payments.map((payment) => {
                 return (
                   <tr key={payment._id}>
-                    <td>{payment.data.user.name}{' '}
+                    <td><p style={style}>{payment.data.user.name}{' '}
                       { payment.data.user.ofFields.map((field) => {
                         if (field.request.name == "cpf") {
                           return (<span key='cpf'>( CPF: {field.value} )</span>);
                         }
                       }) }
-                    </td>
+                    </p></td>
                     <td>{payment.roles.map(role => role.name)}</td>
                     <td>
                       <a href={`/file/download/${payment.data.file._id}`} target='_blank'>

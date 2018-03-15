@@ -137,6 +137,30 @@ class SubmissionModule extends Module {
         ModuleObject.populate(docs, [
           { path: 'data.files.fileRequirement', model: 'FileRequirement' },
         ], (err_, docs_) => {
+          if (err_) reject();
+          if (docs_) {
+            resolve(docs_);
+          }
+        });
+      });
+    });
+  }
+
+  /**
+   * Retrieves submissions that are waiting for approvements (with the state 'to_approve')
+   */
+  getToApproveSubmission(entitySlug) {
+    const objectsOfEntity = this.moduleObject.ofObjects.filter(obj => obj.entity === entitySlug);
+    const toApproveSubmission = objectsOfEntity.filter(
+      state => state.data.state === 'waiting_evaluation');
+
+    return new Promise((resolve, reject) => {
+      ModuleObject.populate(toApproveSubmission, [
+        { path: 'data.files', model: 'File' },
+      ], (err, docs) => {
+        ModuleObject.populate(docs, [
+          { path: 'data.files.fileRequirement', model: 'FileRequirement' },
+        ], (err_, docs_) => {
           resolve(docs_);
         });
       });
@@ -187,6 +211,19 @@ class SubmissionModule extends Module {
           return this.getObjectsByUserId(entitySlug, user.userObject._id);
         }
         break;
+      case 'get_to_approve_submissions':
+        if (seePermission) {
+          return this.getToApproveSubmission(entitySlug);
+        }
+        break;
+      // case 'approve_submission':
+      //   if(seePermission) {
+      //     return
+      //   }
+      // case 'reject_submission':
+      //   if(seePermission) {
+      //     return
+      //   }
       default:
         // Do nothing
     }

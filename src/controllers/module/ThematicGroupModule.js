@@ -48,9 +48,10 @@ class ThematicGroupModule extends Module {
     // Getting Thematic Groups
     switch (subaction) {
       case 'get_tgs':
-        return new Promise((resolve) => {
-          resolve(this.moduleObject.ofObjects); // always resolves
-        });
+        // return new Promise((resolve) => {
+        //   resolve(this.moduleObject.ofObjects); // always resolves
+        // });
+        return this.getThematicGroups();
       default:
         // do nothing
     }
@@ -160,6 +161,18 @@ class ThematicGroupModule extends Module {
    */
   getAreas() {
     return ThematicGroupArea.getAreasByEventId(this.moduleObject.event);
+  }
+
+  getThematicGroups() {
+    const thematicGroups = this.moduleObject.ofObjects;
+    return new Promise((resolve, reject) => {
+      ModuleObject.populate(thematicGroups, [
+        { path: 'data.coordinators', select: 'name email', model: 'User' },
+      ], (err, docs) => {
+        if (err) reject();
+        resolve(docs);
+      });
+    });
   }
 }
 

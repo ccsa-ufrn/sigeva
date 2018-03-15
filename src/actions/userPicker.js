@@ -2,7 +2,6 @@ import fetch from 'isomorphic-fetch';
 import { application } from '../../config';
 
 export function findUserByEmail(email, eventId) {
-  console.log('o email é', email);
   const config = {
     method: 'POST',
     mode: 'cors',
