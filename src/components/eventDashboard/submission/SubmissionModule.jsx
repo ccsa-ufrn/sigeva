@@ -27,8 +27,6 @@ class SubmissionModule extends Component {
         return <SubmitObjectContainer entity={this.props.entity} />;
       case 'see_objects':
         return <SeeObjectsContainer entity={this.props.entity} />;
-      case 'evaluate_submissions':
-        return <SeeToApproveSubmissionsContainer entity={this.props.entity} />;
       default:
         return null;
     }
@@ -46,11 +44,14 @@ class SubmissionModule extends Component {
       permissions: permissions
     });
 
-    this.props.loadSubmissionEntity(nextProps.entity);
+    if (nextProps.entity !== this.props.entity) {
+      this.props.loadSubmissionEntity(nextProps.entity);
+    }
   }
 
   componentDidMount() {
     this.props.loadSubmissionEntity(this.props.entity);
+    this.props.loadObjectsToEvaluate(this.props.entity);
   }
 
   render() {
@@ -66,6 +67,13 @@ class SubmissionModule extends Component {
               );
             })
           }
+          {
+            this.props.submission.objectsToEvaluate.thematicGroups &&
+            this.props.submission.objectsToEvaluate.thematicGroups.length !== 0 &&
+            <li className="nav-item">
+              <a className={`nav-link ${this.state.initialAction == 'evaluate' ? 'active': ''}`} id={`${this.props.entity}-evaluation-pill`} data-toggle='pill' href={`#${this.props.entity}-evaluation-tab`} role="tab" aria-controls={`${this.props.entity}-evaluation`} aria-selected='true'>Avaliar trabalhos</a>
+            </li>
+          }
         </ul>
         <div className="tab-content" id="pills-tabContent">
           {
@@ -76,6 +84,13 @@ class SubmissionModule extends Component {
                 </div>
               );
             })
+          }
+          {
+            this.props.submission.objectsToEvaluate.thematicGroups &&
+            this.props.submission.objectsToEvaluate.thematicGroups.length !== 0 &&
+            <div className={`tab-pane fade ${this.state.initialAction == 'evaluate' ? 'show active': ''}`} id={`${this.props.entity}-evaluation-tab`} role="tabpanel" aria-labelledby={`${this.props.entity}-evaluation-pill`}>
+              <SeeToApproveSubmissionsContainer entity={this.props.entity}/>
+            </div>
           }
         </div>
       </div>
