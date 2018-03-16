@@ -50,9 +50,9 @@ class SubmissionPane extends Component {
       thematicGroups = this.props.thematicGroups.filter((el => el.data.name !== 'Casos para Ensino'));
     }
 
-    let thematicGroup = "";
+    let thematicGroup = null;
     if (thematicGroups.length > 0) {
-      thematicGroup = thematicGroups[0]._id;
+      thematicGroup = thematicGroups[0].data._id;
     }
 
     this.state = {
@@ -124,9 +124,9 @@ class SubmissionPane extends Component {
     }
 
     if (this.state.thematicGroup == null) {
-      if (this.state.thematicGroups.length > 0) {
+      if (thematicGroups.length > 0) {
         this.setState({
-          thematicGroup: thematicGroups[0]._id,
+          thematicGroup: thematicGroups[0].data._id,
         });
       }
     }

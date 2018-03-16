@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => {
     },
     submitObject: (entity, data) => {
       dispatch(submitObject(entity, data));
-    }
+    },
   };
 };
 

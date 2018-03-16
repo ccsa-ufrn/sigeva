@@ -181,7 +181,7 @@ class PaymentModule extends Module {
           return new Promise((resolve, reject) => {
             if (body.receiptId && body.newStatus) {
               this.updateReceiptStatus(body.receiptId, body.newStatus)
-                .then(resolve({}))
+                .then(resolve(this.getToApprovePayments()))
                 .catch(reject);
             } else {
               reject('Receipt ID or new status not defined');

@@ -5,6 +5,9 @@ import ModuleObject from '../../models/moduleObject.model';
 import SubmissionObject from '../../models/submissionObject.model';
 import FileRequirement from '../fileRequirement/FileRequirement';
 import DateRange from '../../models/dateRange.model';
+import ModuleModel from '../../models/module.model';
+import ThematicGroupModule from './ThematicGroupModule';
+import eachOf from 'async/eachOf';
 
 /** @@ Submission Module
  * Subclass of Module, that represents the Submission Module
@@ -149,21 +152,78 @@ class SubmissionModule extends Module {
   /**
    * Retrieves submissions that are waiting for approvements (with the state 'to_approve')
    */
-  getToApproveSubmission(entitySlug) {
-    const objectsOfEntity = this.moduleObject.ofObjects.filter(obj => obj.entity === entitySlug);
-    const toApproveSubmission = objectsOfEntity.filter(
-      state => state.data.state === 'waiting_evaluation');
-
+  getToEvaluateSubmission(entitySlug, userId, event) {
+    // first is necessary find the gts where the user is included as coordinator
+    const data = { thematicGroups: [] };
     return new Promise((resolve, reject) => {
-      ModuleObject.populate(toApproveSubmission, [
-        { path: 'data.files', model: 'File' },
-      ], (err, docs) => {
-        ModuleObject.populate(docs, [
-          { path: 'data.files.fileRequirement', model: 'FileRequirement' },
-        ], (err_, docs_) => {
-          resolve(docs_);
+      event.getModule('thematicgroups')
+        .then((tgModule) => {
+          tgModule.getThematicGroups()
+            .then((docs) => {
+              const userTgsAsCoordinator = docs.filter((tg_) => {
+                let flag = false;
+                tg_.data.coordinators.forEach((coord) => {
+                  flag = (!flag) && String(coord._id) === String(userId);
+                }, this);
+                return flag;
+              });
+
+              eachOf(userTgsAsCoordinator, (tg_, key, callback) => {
+                const objects = this.moduleObject.ofObjects.filter((obj) => {
+                  return (String(obj.data.thematicGroup) === String(tg_.data._id))
+                    && obj.entity === entitySlug;
+                });
+
+                ModuleObject.populate(objects, [
+                  { path: 'data.files', model: 'File' },
+                ], (err, docs_) => {
+                  data.thematicGroups.push({
+                    name: tg_.data.name,
+                    _id: tg_._id,
+                    objects: docs_,
+                  });
+                  callback();
+                });
+              }, () => { resolve(data); });
+            });
         });
-      });
+    });
+  }
+
+  changeObjectState(entitySlug, objectId, newState, userActorId, event) {
+    return new Promise((resolve, reject) => {
+      this.getToEvaluateSubmission(entitySlug, userActorId, event)
+        .then((userTgs) => {
+          let found = false;
+          userTgs.thematicGroups.forEach((tg_) => {
+            tg_.objects.forEach((obj_) => {
+              if (!found) {
+                found = (String(obj_.data._id) === String(objectId));
+              }
+            }, this);
+          }, this);
+          if (found) {
+            // if found the object this user can evaluate it!
+            const newOfObjects = this.moduleObject.ofObjects.map((obj) => {
+              if (String(obj.data._id) === objectId) {
+                const newObj = obj;
+                newObj.data.state = newState;
+                return newObj;
+              }
+              return obj;
+            });
+
+            ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id },
+              {
+                $set: {
+                  ofObjects: newOfObjects,
+                },
+              }, (err, doc) => {
+                if (err) reject(err);
+                resolve(doc);
+              });
+          }
+        });
     });
   }
 
@@ -175,7 +235,7 @@ class SubmissionModule extends Module {
    * @param entitySlug entity identification slug
    * @param subaction action that will be dispacthed
    */
-  act(user, roles, body, entitySlug, subaction) {
+  act(user, roles, body, entitySlug, subaction, event) {
     const context = this.getUserContext(roles);
     if (!context) {
       return null;
@@ -211,19 +271,14 @@ class SubmissionModule extends Module {
           return this.getObjectsByUserId(entitySlug, user.userObject._id);
         }
         break;
-      case 'get_to_approve_submissions':
-        if (seePermission) {
-          return this.getToApproveSubmission(entitySlug);
-        }
-        break;
-      // case 'approve_submission':
-      //   if(seePermission) {
-      //     return
-      //   }
-      // case 'reject_submission':
-      //   if(seePermission) {
-      //     return
-      //   }
+      case 'get_to_evaluate_submissions':
+        return this.getToEvaluateSubmission(entitySlug, user.userObject._id, event);
+      case 'change_object_state':
+        return this.changeObjectState(entitySlug,
+          body.objectId,
+          body.newState,
+          user.userObject._id,
+          event);
       default:
         // Do nothing
     }

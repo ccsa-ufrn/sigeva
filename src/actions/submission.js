@@ -50,33 +50,6 @@ export function loadSubmissionEntity(entitySlug) {
   };
 }
 
-export function submitObject(entitySlug, data) {
-  return (dispatch, getState) => {
-    const eventId = getState().event.id;
-
-    const config = {
-      method: 'POST',
-      mode: 'cors',
-      credentials: 'include',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    };
-
-    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/submit_object`, config)
-      .then(response => response.json())
-      .then((json) => {
-        if (json.error) {
-          // TODO handle this error
-        } else {
-          console.log(json.data);
-        }
-      });
-  };
-}
-
 export function loadUserObjects(entitySlug) {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
@@ -103,7 +76,34 @@ export function loadUserObjects(entitySlug) {
   };
 }
 
-export function loadToApproveSubmission(entitySlug) {
+export function submitObject(entitySlug, data) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/submit_object`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // TODO handle this error
+        } else {
+          dispatch(loadUserObjects(entitySlug));
+        }
+      });
+  };
+}
+
+export function loadObjectsToEvaluate(entitySlug) {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
 
@@ -117,7 +117,7 @@ export function loadToApproveSubmission(entitySlug) {
       },
     };
 
-    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/get_to_approve_submissions`, config)
+    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/get_to_evaluate_submissions`, config)
       .then(response => response.json())
       .then((json) => {
         dispatch(setToApproveSubmission(json.data));
@@ -125,7 +125,7 @@ export function loadToApproveSubmission(entitySlug) {
   };
 }
 
-export function approveSubmission(objectId, entitySlug) {
+export function changeObjectState(entitySlug, objectId, newState) {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
 
@@ -137,16 +137,19 @@ export function approveSubmission(objectId, entitySlug) {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(objectId),
+      body: JSON.stringify({
+        objectId,
+        newState,
+      }),
     };
 
-    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/aprove_submission`, config)
+    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/change_object_state`, config)
       .then(response => response.json())
       .then((json) => {
         if (json.error) {
           // TODO handle this error
         } else {
-          dispatch(loadToApproveSubmission(entitySlug));
+          dispatch(loadObjectsToEvaluate(entitySlug));
         }
       });
   };
@@ -164,7 +167,10 @@ export function rejectSubmission(objectId, entitySlug) {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(objectId),
+      body: JSON.stringify({
+        submissionId: data.id,
+        entitySlug: data.slug,
+      }),
     };
 
     fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/reject_submission`, config)
