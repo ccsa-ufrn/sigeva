@@ -163,7 +163,9 @@ class SubmissionModule extends Module {
               const userTgsAsCoordinator = docs.filter((tg_) => {
                 let flag = false;
                 tg_.data.coordinators.forEach((coord) => {
-                  flag = (!flag) && String(coord._id) === String(userId);
+                  if (!flag) {
+                    flag = String(coord._id) === String(userId);
+                  }
                 }, this);
                 return flag;
               });
