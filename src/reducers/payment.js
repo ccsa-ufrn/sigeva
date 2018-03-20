@@ -14,6 +14,7 @@ const initialApprovePaymentState = {
 const initialPaymentState = {
   makePayment: initialMakePaymentState,
   approvePayment: initialApprovePaymentState,
+  exemptsList: [],
   approved: false,
   receipts: [],
 };
@@ -63,6 +64,10 @@ const payment = (state = initialPaymentState, action) => {
       return Object.assign({}, state, {
         approved: action.data.approved,
         receipts: action.data.receipts,
+      });
+    case Action.SET_PAYMENT_EXEMPTS_LIST:
+      return Object.assign({}, state, {
+        exemptsList: action.data,
       });
     default:
       return state;

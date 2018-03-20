@@ -59,6 +59,24 @@ class PaymentModule extends Module {
     return this.store();
   }
 
+  exemptPayment(userId) {
+    const object = new ModuleObject({
+      entity: 'payment',
+      data: new PaymentReceipt({
+        user: userId,
+        type: 'free',
+        status: 'approved',
+      }),
+    });
+
+    this.moduleObject.ofObjects.push(object);
+    return new Promise((resolve, reject) => {
+      return this.store()
+        .then(() => { resolve(); })
+        .catch(() => { reject(); });
+    });
+  }
+
   /**
    * Retrieves the user data from database (receipts) with a flag that defines
    * if the user payment was approved
@@ -68,7 +86,7 @@ class PaymentModule extends Module {
     const receiptsObjects = this.moduleObject.ofObjects.filter(
       receipt => receipt.data.user.equals(userId));
 
-    const approved = receiptsObjects.reduce((final, current) => final || current.data.status === 'approved', false);
+    const approved = receiptsObjects.reduce((final, current) => final || current.data.status === 'approved' || current.data.type === 'free', false);
 
     return ({
       approved,
@@ -132,6 +150,21 @@ class PaymentModule extends Module {
   }
 
   /**
+   * Returns a list of user with free payment type
+   */
+  getExemptsList() {
+    return new Promise((resolve, reject) => {
+      const freeObjects = this.moduleObject.ofObjects.filter(obj => obj.data.type === 'free');
+      ModuleModel.populate(freeObjects, [{
+        path: 'data.user', select: 'name email', model: 'User',
+      }], (err, docs) => {
+        if (err) reject();
+        resolve(docs);
+      });
+    });
+  }
+
+  /**
    * Runs a action performed by the user
    * @param user logged User instance
    * @param roles roles owned by the logged user
@@ -148,6 +181,7 @@ class PaymentModule extends Module {
     const permissions = context.permissions;
     const makePayment = permissions.find(perm => perm.action === 'make_payment');
     const approvePayment = permissions.find(perm => perm.action === 'approve_payment');
+    const exemptPayment = permissions.find(perm => perm.action === 'exempt_payment');
 
     switch (subaction) {
       case 'submit_receipt':
@@ -187,6 +221,16 @@ class PaymentModule extends Module {
               reject('Receipt ID or new status not defined');
             }
           });
+        }
+        break;
+      case 'get_exempts_list':
+        if (exemptPayment) {
+          return this.getExemptsList();
+        }
+        break;
+      case 'exempt_user':
+        if (exemptPayment) {
+          return this.exemptPayment(body.userId);
         }
         break;
       default:
