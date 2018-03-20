@@ -1,5 +1,6 @@
 import Module from './Module';
 import ModuleObject from '../../models/moduleObject.model';
+import ModuleModel from '../../models/module.model';
 import NewObject from '../../models/newObject.model';
 
 /** @@ News Module
@@ -37,6 +38,21 @@ class NewsModule extends Module {
     return this.store();
   }
 
+  updateNew(newId, title, text) {
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': newId },
+        {
+          $set: {
+            'ofObjects.$.data.title': title,
+            'ofObjects.$.data.text': text,
+          },
+        }, (err) => {
+          if (err) reject(err);
+          resolve({});
+        });
+    });
+  }
+
   /**
    * Runs a action performed by the user
    * @param user logged User instance
@@ -70,6 +86,13 @@ class NewsModule extends Module {
         if (manageNews) {
           if (body.title && body.text) {
             return this.createNew(body.title, body.text, body.highlighted);
+          }
+        }
+        break;
+      case 'update_new':
+        if (manageNews) {
+          if (body.newId && body.title && body.text) {
+            return this.updateNew(body.newId, body.title, body.text);
           }
         }
         break;

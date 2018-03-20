@@ -17,7 +17,7 @@ class NewsModule extends Component {
         <h5><strong>Escrever nova notícia</strong></h5>
         <CreateNew createNew={this.props.createNew} loadNews={this.props.loadNews} />
         <h5><strong>Lista de Notícias</strong></h5>
-        <ListNews news={this.props.news} />
+        <ListNews news={this.props.news} updateNew={this.props.updateNew} />
       </div>
     );
   }

@@ -9,29 +9,6 @@ export function setNews(data) {
   });
 }
 
-export function createNew(title, text) {
-  return (dispatch, getState) => {
-    const eventId = getState().event.id;
-
-    const config = {
-      method: 'POST',
-      mode: 'cors',
-      credentials: 'include',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ title, text }),
-    };
-
-    fetch(`${application.url}/api/event/${eventId}/module/news/news/act/create_new`, config)
-      .then(response => response.json())
-      .then(() => {
-        // do nothing for now
-      });
-  };
-}
-
 export function loadNews() {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
@@ -56,3 +33,52 @@ export function loadNews() {
   };
 }
 
+export function createNew(title, text) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title, text }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/news/news/act/create_new`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (!json.error) {
+          dispatch(loadNews());
+        }
+      });
+  };
+}
+
+export function updateNew(newId, title, text) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ newId, title, text }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/news/news/act/update_new`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (!json.error) {
+          dispatch(loadNews());
+        }
+      });
+  };
+}
