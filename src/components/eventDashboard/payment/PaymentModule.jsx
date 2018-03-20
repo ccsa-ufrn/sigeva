@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import MakePaymentContainer from './MakePaymentContainer';
 import ApprovePaymentContainer from './ApprovePaymentContainer';
+import ExemptPaymentContainer from './ExemptPaymentContainer';
 
 class PaymentModule extends Component {
   constructor(props) {
@@ -17,8 +18,12 @@ class PaymentModule extends Component {
     switch(action) {
       case 'make_payment':
         return <MakePaymentContainer context={this.props.paymentContext}/>;
-      default:
+      case 'approve_payment':
         return <ApprovePaymentContainer />;
+      case 'exempt_payment':
+        return <ExemptPaymentContainer />;
+      default:
+        return null;
     }
   }
 

@@ -34,6 +34,13 @@ export function setToApprovePayments(data) {
   });
 }
 
+export function setExemptsList(data) {
+  return ({
+    type: Action.SET_PAYMENT_EXEMPTS_LIST,
+    data,
+  });
+}
+
 export function submitReceipt(fileId) {
   return (dispatch, getState) => {
     dispatch(doingPaymentReceiptSubmit());
@@ -126,6 +133,53 @@ export function updateReceiptStatus(receiptId, newStatus) {
       .then((json) => {
         if (!json.error) {
           dispatch(loadToApprovePayments());
+        }
+      });
+  };
+}
+
+export function loadExemptsList() {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/payment/payment/act/get_exempts_list`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (!json.error) {
+          dispatch(setExemptsList(json.data));
+        }
+      });
+  };
+}
+
+export function exemptUser(userId) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/payment/payment/act/exempt_user`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (!json.error) {
+          dispatch(loadExemptsList());
         }
       });
   };
