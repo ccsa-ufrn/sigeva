@@ -16,6 +16,13 @@ export function setUserObjects(data) {
   });
 }
 
+export function setAllObjects(data) {
+  return ({
+    type: Action.SET_SUBMISSION_ALL_OBJECTS,
+    data,
+  });
+}
+
 export function setToApproveSubmission(data) {
   return ({
     type: Action.SET_SUBMISSION_TO_APPROVE,
@@ -43,7 +50,6 @@ export function loadSubmissionEntity(entitySlug) {
         if (json.error) {
           // TODO handle this error
         } else {
-          console.log(json.data);
           dispatch(setSubmissionEntity(json.data));
         }
       });
@@ -71,6 +77,32 @@ export function loadUserObjects(entitySlug) {
           // TODO handle this error
         } else {
           dispatch(setUserObjects(json.data));
+        }
+      });
+  };
+}
+
+export function loadAllObjects(entitySlug) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/get_all_objects`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(setAllObjects(json.data));
         }
       });
   };
