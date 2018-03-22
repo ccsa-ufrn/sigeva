@@ -149,6 +149,33 @@ class SubmissionModule extends Module {
     });
   }
 
+  getAllObjects(entitySlug, event) {
+    const objectsOfEntity = this.moduleObject.ofObjects.filter(obj => obj.entity === entitySlug);
+
+    return new Promise((resolve, reject) => {
+      event.getModule('thematicgroups')
+        .then((tgModule) => {
+          tgModule.getThematicGroups()
+            .then((thematicGroups) => {
+              const objectsOfEntityWithTGs = objectsOfEntity.map((oldObject) => {
+                const tgOfObj = thematicGroups
+                  .find(tg => String(tg.data._id) === String(oldObject.data.thematicGroup));
+                const newObj = oldObject;
+                newObj.data.thematicGroup = tgOfObj;
+                return newObj;
+              });
+
+              ModuleObject.populate(objectsOfEntityWithTGs, [
+                { path: 'data.authors', select: 'name email', model: 'User' },
+              ], (err, docs) => {
+                if (err) reject();
+                resolve(docs);
+              });
+            }).catch(() => { reject(); });
+        }).catch(() => { reject(); });
+    });
+  }
+
   /**
    * Retrieves submissions that are waiting for approvements (with the state 'to_approve')
    */
@@ -250,6 +277,7 @@ class SubmissionModule extends Module {
 
     const submitPermission = permissionsOnEntity.find(perm => perm.action === 'submit_object');
     const seePermission = permissionsOnEntity.find(perm => perm.action === 'see_objects');
+    const seeAllPermission = permissionsOnEntity.find(perm => perm.action === 'see_all_objects');
 
     switch (subaction) {
       case 'get_entity':
@@ -271,6 +299,11 @@ class SubmissionModule extends Module {
       case 'get_my_objects':
         if (seePermission) {
           return this.getObjectsByUserId(entitySlug, user.userObject._id);
+        }
+        break;
+      case 'get_all_objects':
+        if (seeAllPermission) {
+          return this.getAllObjects(entitySlug, event);
         }
         break;
       case 'get_to_evaluate_submissions':
