@@ -208,6 +208,7 @@ class SubmitObject extends Component {
 
   componentDidMount() {
     this.props.loadUserIfNeed();
+    this.props.loadObjectsToEvaluate(this.props.entity);
     this.props.loadThematicGroups();
   }
 
@@ -225,7 +226,9 @@ class SubmitObject extends Component {
       if (entity.data.requirePayment === true) {
         if (this.props.payment.approved === false) {
           // Payment is required but the user did not paid
-          return (<PaymentRequiredWarning/>);
+          if (!this.props.isTGCoordinator) { // coordinators has privileges
+            return (<PaymentRequiredWarning/>);
+          }
         }
       }
       // Payment if required was approved or was not required
