@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SubmitObjectContainer from './SubmitObjectContainer';
+import ConsolidateObject from './ConsolidateObject';
 
 class ActivitiesModule extends Component {
   constructor(props) {
@@ -23,6 +24,8 @@ class ActivitiesModule extends Component {
     switch(action) {
       case 'submit_object':
         return <SubmitObjectContainer entity={this.props.entity} />;
+      case 'consolidate_object':
+        return <ConsolidateObject entity={this.props.entity} />;
       default:
         return null;
     }
