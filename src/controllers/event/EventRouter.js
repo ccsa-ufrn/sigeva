@@ -1,9 +1,11 @@
 import { Router } from 'express';
 import Event from './Event';
 import User from '../user/User';
+import ModuleObject from '../../models/moduleObject.model';
 import Response from '../Response';
 import { simpleAuthorization } from '../authorization/Authorization';
 import * as Constants from './constants';
+import ThematicGroupArea from '../thematicGroupArea/ThematicGroupArea';
 
 /**
  * @@ Event Express Router
@@ -217,6 +219,53 @@ eventRouter.get('/:id/news/all', (req, res) => {
     .catch(() => { res.json(Response(true, {})); });
 });
 
+eventRouter.get('/:id/gts/all', (req, res) => {
+  const eventId = req.params.id;
+  const event = new Event();
+  event.loadById(eventId)
+    .then(() => ThematicGroupArea.getAreasByEventId(eventId))
+    .then((areas) => {
+      event.getModule('thematicgroups')
+        .then((thematicGroups) => {
+          let newAreas = [];
+          new Promise((resolve, reject) => {
+            ModuleObject.populate(thematicGroups.moduleObject.ofObjects, [
+              { path: 'data.coordinators', select: 'name email', model: 'User' },
+            ], (err, docs) => {
+              if (err) reject();
+              resolve(docs);
+            });
+          })
+            .then((docs) => {
+              areas.forEach((area) => {
+                let newArea = area;
+                const allTgs = docs.map(tg => tg.data);
+                let tgs = allTgs.filter(tg => tg.area == area.id);
+                tgs = tgs.map((tg) => {
+                  const coordsString = tg.coordinators.reduce(
+                    (previousValue, currentValue, index) => {
+                      let coords = `${previousValue}${currentValue.name}`;
+                      if (index < tg.coordinators.length - 1) {
+                        coords = `${coords}, `;
+                      }
+                      return coords;
+                    }, '');
+
+                  return ({
+                    name: tg.name,
+                    syllabus: tg.description,
+                    coordinators: coordsString,
+                  });
+                });
+                newAreas.push({ name: newArea.name, tgs });
+              });
+              res.json(Response(false, newAreas.reverse()));
+            });
+        })
+        .catch(() => { res.json(Response(true, {})); });
+    })
+    .catch(() => { res.json(Response(true, {})); });
+});
 /**
  * Executes a action in a module of the event
  * @param id event's id

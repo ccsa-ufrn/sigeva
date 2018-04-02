@@ -90,6 +90,7 @@ class ActivitiesModule extends Module {
     });
 
     const submitPermission = permissionsOnEntity.find(perm => perm.action === 'submit_object');
+    const consolidatePermission = permissionsOnEntity.find(perm => perm.action === 'consolidate_object');
     switch (subaction) {
       case 'get_entity':
         if (submitPermission) {
@@ -110,6 +111,11 @@ class ActivitiesModule extends Module {
               .then(resolve({}))
               .catch(resolve({}));
           });
+        }
+        break;
+      case 'create_session':
+        if (consolidatePermission) {
+          // Continua daqui
         }
         break;
       default:
