@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SubmitObjectContainer from './SubmitObjectContainer';
 import ConsolidateObject from './ConsolidateObject';
+import SeeAllObjectsContainer from './SeeAllObjectsContainer';
 
 class ActivitiesModule extends Component {
   constructor(props) {
@@ -8,7 +9,7 @@ class ActivitiesModule extends Component {
 
     const entity = this.props.activitiesContext.entities.filter(el => el.slug == this.props.entity)[0];
     const permissions = this.props.activitiesContext.permissions.filter(perm => perm.entity == entity._id);
-    console.log('permissions', permissions);
+
     this.state = {
       permissions: permissions,
       initialAction: null,
@@ -24,6 +25,8 @@ class ActivitiesModule extends Component {
     switch(action) {
       case 'submit_object':
         return <SubmitObjectContainer entity={this.props.entity} />;
+      case 'see_all_objects':
+        return <SeeAllObjectsContainer entity={this.props.entity} />;
       case 'consolidate_object':
         return <ConsolidateObject entity={this.props.entity} />;
       default:

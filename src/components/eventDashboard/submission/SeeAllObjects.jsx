@@ -18,7 +18,11 @@ class SeeAllObjects extends Component {
   render() {
     return(
       <div>
-        <h5><strong>Todas submissões realizadas</strong></h5>
+        <h5><strong>Todas submissões realizadas{' '}
+          { this.props.allObjects &&
+            `(${this.props.allObjects.length})`
+          }
+        </strong></h5>
         <table className='table'>
           <thead>
             <tr>
