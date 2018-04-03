@@ -9,6 +9,13 @@ export function setActivitiesEntity(data) {
   });
 }
 
+export function setAllObjects(data) {
+  return ({
+    type: Action.SET_ACTIVITIES_ALL_OBJECTS,
+    data,
+  });
+}
+
 export function loadActivitiesEntity(entitySlug) {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
@@ -53,10 +60,33 @@ export function submitObject(entitySlug, data) {
     fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/submit_object`, config)
       .then(response => response.json())
       .then((json) => {
+        // DO SOMETHING
+      });
+  };
+}
+
+
+export function loadAllObjects(entitySlug) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/get_all_objects`, config)
+      .then(response => response.json())
+      .then((json) => {
         if (json.error) {
-          // TODO handle this error
+          // handle this error
         } else {
-          console.log(json.data);
+          dispatch(setAllObjects(json.data));
         }
       });
   };

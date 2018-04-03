@@ -71,6 +71,24 @@ class ActivitiesModule extends Module {
     return this.store();
   }
 
+  getAllObjects(entitySlug) {
+    const objectsOfEntity = this.moduleObject.ofObjects.filter(obj => obj.entity === entitySlug);
+    return new Promise((resolve, reject) => {
+      ModuleObject.populate(objectsOfEntity, [
+        { path: 'data.ofProposersUsers', select: 'name email', model: 'User' },
+        { path: 'data.ofFiles', model: 'File' },
+        { path: 'data.ofFields.request', model: 'FieldRequest' },
+      ], (err, docs) => {
+        ModuleObject.populate(docs, [
+          { path: 'data.ofFiles.fileRequirement', model: 'FileRequirement' },
+        ], (err_, docs_) => {
+          if (err) reject();
+          resolve(docs_);
+        });
+      });
+    });
+  }
+
   /**
    * Runs a action performed by the user
    * @param user logged User instance
@@ -91,6 +109,7 @@ class ActivitiesModule extends Module {
 
     const submitPermission = permissionsOnEntity.find(perm => perm.action === 'submit_object');
     const consolidatePermission = permissionsOnEntity.find(perm => perm.action === 'consolidate_object');
+    const seeAllPermission = permissionsOnEntity.find(perm => perm.action === 'see_all_objects');
     switch (subaction) {
       case 'get_entity':
         if (submitPermission) {
@@ -111,6 +130,11 @@ class ActivitiesModule extends Module {
               .then(resolve({}))
               .catch(resolve({}));
           });
+        }
+        break;
+      case 'get_all_objects':
+        if (seeAllPermission) {
+          return this.getAllObjects(entitySlug);
         }
         break;
       case 'create_session':
