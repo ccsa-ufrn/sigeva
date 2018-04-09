@@ -93,7 +93,6 @@ export function loadAllObjects(entitySlug) {
         if (json.error) {
           // handle this error
         } else {
-          console.log(json.data);
           dispatch(setAllObjects(json.data));
         }
       });
@@ -153,5 +152,66 @@ export function loadSessions(entitySlug) {
           dispatch(setSessions(json.data));
         }
       });
-  }
+  };
+}
+
+export function consolidateActivity(entitySlug, activityId, sessions, location, vacancies) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        activityId,
+        sessions,
+        location,
+        vacancies,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/consolidate_activity`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(loadAllObjects(entitySlug));
+        }
+      });
+  };
+}
+
+export function deconsolidateActivity(entitySlug, activityId) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        activityId,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/deconsolidate_activity`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(loadAllObjects(entitySlug));
+        }
+      });
+  };
 }

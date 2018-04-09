@@ -7,9 +7,13 @@ class ObjectConsolidation extends Component {
     this.state = {
       selectedSessions: [],
       location: '',
+      vacancies: props.object.data.vacancies,
     }
 
     this.changeSelection = this.changeSelection.bind(this);
+    this.changeVacancies = this.changeVacancies.bind(this);
+    this.changeLocation = this.changeLocation.bind(this);
+    this.consolidateActivity = this.consolidateActivity.bind(this);
   }
 
   changeSelection(e, sessionId) {
@@ -24,6 +28,24 @@ class ObjectConsolidation extends Component {
         return { selectedSessions: selecteds };
       });
     }
+  }
+
+  changeLocation(e) {
+    const target = e.nativeEvent.target;
+    this.setState({
+      location: target.value,
+    })
+  }
+
+  changeVacancies(e) {
+    const target = e.nativeEvent.target;
+    this.setState({
+      vacancies: parseInt(target.value),
+    });
+  }
+
+  consolidateActivity() {
+    this.props.consolidateActivity(this.props.object.entity, this.props.object._id, this.state.selectedSessions, this.state.location, this.state.vacancies);
   }
 
   render() {
@@ -46,9 +68,10 @@ class ObjectConsolidation extends Component {
                   </div>
                 );
               })
-            }<br />
-            Local da atividade: <input type="text"  />
-            Vagas ofertadas: <input type="number"/>
+            }
+            Local da atividade: <input type="text" onChange={this.changeLocation} />{' '}
+            Vagas ofertadas: <input type="number" defaultValue={this.props.object.data.vacancies} onChange={this.changeVacancies} />
+            <a className="btn btn-success" onClick={this.consolidateActivity}>Consolidar atividade</a>
             </div>
           </div>
         </td>
@@ -78,7 +101,7 @@ class ConsolidateObject extends Component {
 
   changeDay(e) {
     const target = e.nativeEvent.target;
-    const newDate = new Date(this.state.date.getFullYear(), 
+    const newDate = new Date(this.state.date.getFullYear(),
                              this.state.date.getMonth(),
                              target.value);
     this.setState({
@@ -88,7 +111,7 @@ class ConsolidateObject extends Component {
 
   changeMonth(e) {
     const target = e.nativeEvent.target;
-    const newDate = new Date(this.state.date.getFullYear(), 
+    const newDate = new Date(this.state.date.getFullYear(),
                              target.value - 1,
                              this.state.date.getDate());
     this.setState({
@@ -98,7 +121,7 @@ class ConsolidateObject extends Component {
 
   changeYear(e) {
     const target = e.nativeEvent.target;
-    const newDate = new Date(target.value, 
+    const newDate = new Date(target.value,
                              this.state.date.getMonth(),
                              this.state.date.getDate());
     this.setState({
@@ -122,8 +145,14 @@ class ConsolidateObject extends Component {
     this.props.loadAllObjects(this.props.entity);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.entity !== this.props.entity) {
+      this.props.loadSessions(nextProps.entity);
+      this.props.loadAllObjects(nextProps.entity);
+    }
+  }
+
   render() {
-    console.log(this.props);
     return(
       <div>
         <h5><strong>Criar bloco de atividades</strong></h5>
@@ -168,7 +197,7 @@ class ConsolidateObject extends Component {
           <div className="col-md-12">
             <a onClick={this.createSession} className="form-control btn btn-success">Adicionar bloco de atividades</a>
           </div>
-        </div>
+        </div><br/>
         <h5><strong>Blocos de atividades</strong></h5>
         { this.props.sessions &&
           this.props.sessions.map((session) => {
@@ -181,12 +210,36 @@ class ConsolidateObject extends Component {
               <div key={session._id} className="card">
                 <div className="card-body">
                   <div className="card-title">{`${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${shift}`}</div>
+                  <table>
+                    <tbody>
+                    { this.props.allObjects &&
+                      this.props.allObjects.filter( obj=>obj.data.status !== "waiting" ).filter((object) => {
+                        if (object.data.consolidation !== undefined) {
+                          return object.data.consolidation.sessions.reduce((previous, currentSess) => {
+                            return previous || currentSess == session._id;
+                          }, false);
+                        } else {
+                          return false;
+                        }
+                      }).map((activity) => {
+                        return (
+                          <tr key={activity._id}>
+                            <td>
+                              <strong>{activity.data.title}</strong> <a onClick={() => {this.props.deconsolidateActivity(this.props.entity, activity._id)}}>Desconsolidar</a><br/>
+                              {activity.data.consolidation.location} ({activity.data.consolidation.vacancies} vagas)
+                            </td>
+                          </tr>
+                        );
+                      })
+                    }
+                    </tbody>
+                  </table>
                 </div>
               </div>
             );
           })
         }
-        <h5><strong>Atividades não consolidadas</strong></h5>
+        <br/><h5><strong>Atividades não consolidadas</strong></h5>
         <table className="table">
           <thead>
             <tr>
@@ -197,7 +250,7 @@ class ConsolidateObject extends Component {
             { this.props.allObjects &&
               this.props.allObjects.filter(s => s.data.status == "waiting").map((object) => {
                 return (
-                  <ObjectConsolidation key={object._id} object={object} sessions={this.props.sessions} />
+                  <ObjectConsolidation key={object._id} object={object} sessions={this.props.sessions} consolidateActivity={this.props.consolidateActivity} />
                 );
               })
             }
