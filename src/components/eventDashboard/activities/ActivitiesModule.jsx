@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SubmitObjectContainer from './SubmitObjectContainer';
-import ConsolidateObject from './ConsolidateObject';
+import ConsolidateObjectContainer from './ConsolidateObjectContainer';
 import SeeAllObjectsContainer from './SeeAllObjectsContainer';
 
 class ActivitiesModule extends Component {
@@ -28,7 +28,7 @@ class ActivitiesModule extends Component {
       case 'see_all_objects':
         return <SeeAllObjectsContainer entity={this.props.entity} />;
       case 'consolidate_object':
-        return <ConsolidateObject entity={this.props.entity} />;
+        return <ConsolidateObjectContainer entity={this.props.entity} />;
       default:
         return null;
     }

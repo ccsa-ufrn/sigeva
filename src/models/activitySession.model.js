@@ -4,9 +4,10 @@ const activitySessionSchema = new Schema({
   event: {
     type: Schema.Types.ObjectId,
   },
-  day: Number,
-  month: Number,
-  year: Number,
+  entity: {
+    type: Schema.Types.ObjectId,
+  },
+  date: Date,
   shift: Number, // 0 - Manhã; 1 - Tarde; 2 - Noite
 });
 

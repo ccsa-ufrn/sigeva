@@ -1,10 +1,13 @@
 import Module from './Module';
+import ModuleModel from '../../models/module.model';
 import ModuleObject from '../../models/moduleObject.model';
 import FileRequirement from '../fileRequirement/FileRequirement';
 import FieldRequest from '../fieldRequest/FieldRequest';
 import ActivityObject from '../../models/activityObject.model';
 import DateRange from '../../models/dateRange.model';
 import ActivityEntity from '../../models/activityEntity.model';
+import ActivitySession from '../../models/activitySession.model';
+import ActivityConsolidation from '../../models/activityConsolidation.model';
 
 /** @@ Activities Module
  * Subclass of Module, that represents the Activities Module
@@ -89,6 +92,59 @@ class ActivitiesModule extends Module {
     });
   }
 
+  createSession(eventId, entityId, date, shift) {
+    const newSession = new ActivitySession({
+      event: eventId,
+      entity: entityId,
+      date,
+      shift,
+    });
+    return newSession.save();
+  }
+
+  getSessions(eventId, entityId) {
+    return new Promise((resolve, reject) => {
+      ActivitySession.find({ event: eventId, entity: entityId }, (err, res) => {
+        if (!err) resolve(res);
+        reject();
+      });
+    });
+  }
+
+  consolidateActivity(activityId, sessions, location, vacancies) {
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': activityId },
+        {
+          $set: {
+            'ofObjects.$.data.status': 'consolidated',
+            'ofObjects.$.data.consolidation': new ActivityConsolidation({
+              sessions,
+              location,
+              vacancies,
+            }),
+          },
+        }, (err, doc) => {
+          if (!err) resolve({});
+          reject({});
+        });
+    });
+  }
+
+  deconsolidateActivity(activityId) {
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': activityId },
+        {
+          $set: {
+            'ofObjects.$.data.status': 'waiting',
+            'ofObjects.$.data.consolidation': null,
+          },
+        }, (err, doc) => {
+          if (!err) resolve({});
+          reject({});
+        });
+    });
+  }
+
   /**
    * Runs a action performed by the user
    * @param user logged User instance
@@ -139,7 +195,29 @@ class ActivitiesModule extends Module {
         break;
       case 'create_session':
         if (consolidatePermission) {
-          // Continua daqui
+          const date = body.date;
+          const shift = body.shift;
+          return this.createSession(this.event.eventObject._id,
+            this.getEntityBySlug(entitySlug)._id, date, shift);
+        }
+        break;
+      case 'get_sessions':
+        if (consolidatePermission) {
+          return this.getSessions(this.event.eventObject._id, this.getEntityBySlug(entitySlug)._id);
+        }
+        break;
+      case 'consolidate_activity':
+        if (consolidatePermission) {
+          const atvId = body.activityId;
+          const sessions = body.sessions;
+          const location = body.location;
+          const vacancies = body.vacancies;
+          return this.consolidateActivity(atvId, sessions, location, vacancies);
+        }
+        break;
+      case 'deconsolidate_activity':
+        if (consolidatePermission) {
+          return this.deconsolidateActivity(body.activityId);
         }
         break;
       default:

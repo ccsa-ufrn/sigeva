@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import { fieldSchema } from './field.model';
+import { activityConsolidationSchema } from './activityConsolidation.model';
 
 // Representa a inscrição de um usuário à atividade
 const enrollmentSchema = new Schema({
@@ -18,9 +19,13 @@ const activityObjectSchema = new Schema({
   ofFields: [fieldSchema],
   ofFiles: [Schema.Types.ObjectId],
   ofProposersUsers: [Schema.Types.ObjectId], // propositores (incluindo o usuário logado)
-  status: {
+  status: { // waiting, consolidated
     type: String,
     default: 'waiting',
+  },
+  consolidation: {
+    type: activityConsolidationSchema,
+    default: null,
   },
   ofEnrollments: [enrollmentSchema],
 });
