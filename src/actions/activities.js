@@ -16,6 +16,13 @@ export function setAllObjects(data) {
   });
 }
 
+export function setSessions(data) {
+  return ({
+    type: Action.SET_ACTIVITIES_SESSIONS,
+    data,
+  });
+}
+
 export function loadActivitiesEntity(entitySlug) {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
@@ -86,8 +93,65 @@ export function loadAllObjects(entitySlug) {
         if (json.error) {
           // handle this error
         } else {
+          console.log(json.data);
           dispatch(setAllObjects(json.data));
         }
       });
   };
+}
+
+export function createSession(entitySlug, date, shift) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        date,
+        shift,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/create_session`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(loadSessions(entitySlug));
+        }
+      });
+  };
+}
+
+export function loadSessions(entitySlug) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/get_sessions`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(setSessions(json.data));
+        }
+      });
+  }
 }

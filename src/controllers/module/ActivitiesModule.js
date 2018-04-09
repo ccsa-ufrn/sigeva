@@ -5,6 +5,7 @@ import FieldRequest from '../fieldRequest/FieldRequest';
 import ActivityObject from '../../models/activityObject.model';
 import DateRange from '../../models/dateRange.model';
 import ActivityEntity from '../../models/activityEntity.model';
+import ActivitySession from '../../models/activitySession.model';
 
 /** @@ Activities Module
  * Subclass of Module, that represents the Activities Module
@@ -89,6 +90,25 @@ class ActivitiesModule extends Module {
     });
   }
 
+  createSession(eventId, entityId, date, shift) {
+    const newSession = new ActivitySession({
+      event: eventId,
+      entity: entityId,
+      date,
+      shift,
+    });
+    return newSession.save();
+  }
+
+  getSessions(eventId, entityId) {
+    return new Promise((resolve, reject) => {
+      ActivitySession.find({ event: eventId, entity: entityId }, (err, res) => {
+        if (!err) resolve(res);
+        reject();
+      });
+    });
+  }
+
   /**
    * Runs a action performed by the user
    * @param user logged User instance
@@ -139,7 +159,14 @@ class ActivitiesModule extends Module {
         break;
       case 'create_session':
         if (consolidatePermission) {
-          // Continua daqui
+          const date = body.date;
+          const shift = body.shift;
+          return this.createSession(this.event.eventObject._id, this.getEntityBySlug(entitySlug)._id, date, shift);
+        }
+        break;
+      case 'get_sessions':
+        if (consolidatePermission) {
+          return this.getSessions(this.event.eventObject._id, this.getEntityBySlug(entitySlug)._id);
         }
         break;
       default:
