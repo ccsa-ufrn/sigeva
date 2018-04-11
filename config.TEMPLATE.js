@@ -7,10 +7,10 @@ module.exports = {
     port: 3000,
   },
   mongo_connection: {
-    development: 'mongodb://localhost/sigeva_dev',
-    test: 'mongodb://localhost/sigeva_test',
+    development: 'mongodb://localhost/sigeva',
+    test: 'mongodb://localhost/sigeva',
     production: 'mongodb://localhost/sigeva',
   },
   secret: 'your_secret_here',
-  file_dir: '/absolute/path/to/file/directory',
+  file_dir: '/upload/file/here',
 };

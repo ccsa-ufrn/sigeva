@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SubmitObjectContainer from './SubmitObjectContainer';
 import ConsolidateObjectContainer from './ConsolidateObjectContainer';
 import SeeAllObjectsContainer from './SeeAllObjectsContainer';
+import SeeAllObjectsToEnrollContainer from './SeeAllObjectsToEnrollContainer';
 
 class ActivitiesModule extends Component {
   constructor(props) {
@@ -29,6 +30,8 @@ class ActivitiesModule extends Component {
         return <SeeAllObjectsContainer entity={this.props.entity} />;
       case 'consolidate_object':
         return <ConsolidateObjectContainer entity={this.props.entity} />;
+      case 'enroll_in_object':
+        return <SeeAllObjectsToEnrollContainer entity={this.props.entity} />;
       default:
         return null;
     }
