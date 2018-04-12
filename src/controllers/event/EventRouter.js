@@ -287,7 +287,6 @@ eventRouter.post('/:id/module/:slug/:entity/act/:subaction', simpleAuthorization
     .then(() => event.getModule(moduleSlug))
     .then((module) => {
       const roles = event.getUserRelationships(String(user.userObject._id));
-      console.log(roles);
       return module.act(user, roles, body, entity, subaction, event);
     })
     .then((response) => {

@@ -42,24 +42,38 @@ class SeeAllObjectsToEnrollPane extends Component {
 
     this.enroll = this.enroll.bind(this);
     this.exit = this.exit.bind(this);
+    this.checkEnrollment = this.checkEnrollment.bind(this);
   }
 
   componentDidMount() {
-    this.props.loadAllObjectsToEnroll(this.props.entity);
+    this.props.loadObjects(this.props.entity, this.props.userSession.logged_user.id);
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.entity !== this.props.entity) {
-      this.props.loadAllObjectsToEnroll(this.props.entity);
+      this.props.loadObjects(this.props.entity, this.props.userSession.logged_user.id);
     }
   }
 
   enroll(enrollObject) {
-    this.props.enroll(this.props.entity, enrollObject);
+    if(this.checkEnrollment(enrollObject.sessions) == 0) {
+      this.props.enroll(this.props.entity, enrollObject);
+    }   
   }
 
   exit(enrollObject) {
-    this.props.exit(this.props.entity, enrollObject);
+      this.props.exit(this.props.entity, enrollObject);
+  }
+
+  checkEnrollment(sessions) {
+    const joinedList = Array.from(this.props.listOfEnrolledSessions.reduce((arr, e) => arr.concat(e), []));
+    const matchingList = sessions.reduce((filtered, option) => {
+      if(joinedList.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
+        filtered.push(1);
+      }    
+      return filtered;
+    }, []);
+    return matchingList;
   }
 
   render() {      
@@ -80,6 +94,7 @@ class SeeAllObjectsToEnrollPane extends Component {
           <tbody>
             {
               this.props.allObjectsToEnroll &&
+              this.props.listOfEnrolledSessions &&
               this.props.allObjectsToEnroll.map((object) => {
                 return (
                   <tr key={object._id}>
@@ -110,12 +125,18 @@ class SeeAllObjectsToEnrollPane extends Component {
                           );
                         })
                       }
-                      { !object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
-                        <EnrollButton onClick={() => this.enroll({ activityId: object._id, userId: this.props.userSession.logged_user.id})}
+                      {     
+                        !object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
+                        <EnrollButton onClick={() => this.enroll({ activityId: object._id, 
+                          userId: this.props.userSession.logged_user.id,
+                          sessions: object.data.consolidation.sessions})}
                           style={'primary'} text={'Inscrever-se'} />
                       }
-                      { object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
-                        <EnrollButton onClick={() => this.exit({ activityId: object._id, userId: this.props.userSession.logged_user.id})}
+                      {
+                        object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
+                        <EnrollButton onClick={() => this.exit({ activityId: object._id, 
+                          userId: this.props.userSession.logged_user.id,
+                          sessions: object.data.consolidation.sessions})}
                           style={'danger'} text={'Desfazer inscrição'} />
                       }
                     </td>
@@ -151,7 +172,9 @@ class SeeAllObjectsToEnroll extends Component {
           return (<SeeAllObjectsToEnrollPane entity={this.props.entity} 
             userSession={this.props.userSession} 
             allObjectsToEnroll={this.props.allObjectsToEnroll}
-            loadAllObjectsToEnroll={this.props.loadAllObjectsToEnroll} 
+            allObjectsUserEnrolled={this.props.allObjectsUserEnrolled}
+            listOfEnrolledSessions={this.props.listOfEnrolledSessions}
+            loadObjects={this.props.loadObjects} 
             enroll={this.props.enroll}
             exit={this.props.exit}
             />);

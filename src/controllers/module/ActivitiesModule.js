@@ -113,6 +113,31 @@ class ActivitiesModule extends Module {
     });
   }
 
+  getAllObjectsUserEnrolled(userId) {
+    const ofEnrollments = this.moduleObject.ofObjects.reduce((filtered, option) => {
+      const listOfUsers = option.data.ofEnrollments.map(users => users.user.toString());
+      if (listOfUsers.includes(userId)) {
+        filtered.push(option);
+      }
+      return filtered;
+    }, []);
+    return new Promise((resolve, reject) => {
+      ModuleObject.populate(ofEnrollments, [
+        { path: 'data.ofProposersUsers', select: 'name email', model: 'User' },
+        { path: 'data.ofFiles', model: 'File' },
+        { path: 'data.ofFields.request', model: 'FieldRequest' },
+        { path: 'data.consolidation.sessions', select: 'date shift', model: 'ActivitySession'}
+      ], (err, docs) => {
+        ModuleObject.populate(docs, [
+          { path: 'data.ofFiles.fileRequirement', model: 'FileRequirement' },
+        ], (err_, docs_) => {
+          if (err) reject();
+          resolve(docs_);
+        });
+      });
+    });
+  }
+
   createSession(eventId, entityId, date, shift) {
     const newSession = new ActivitySession({
       event: eventId,
@@ -286,6 +311,12 @@ class ActivitiesModule extends Module {
       case 'get_all_objects_to_enroll':
         if (enrollInObject) {
           return this.getAllObjectsToEnroll(entitySlug);
+        }
+        break;
+      case 'get_objects_enrolled':
+        if (enrollInObject) {
+          const userId = body.userId;
+          return this.getAllObjectsUserEnrolled(userId);
         }
         break;
       case 'enroll_in_object':

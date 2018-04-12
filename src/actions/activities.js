@@ -30,6 +30,25 @@ export function setAllObjectsToEnroll(data) {
   });
 }
 
+export function setAllEnrolledObjects(data) {
+  return ({
+    type: Action.SET_ACTIVITIES_ALL_ENROLLED_OBJECTS,
+    data,
+  });
+}
+
+export function setEnrolledSessions(data) {
+  const listWithoutId = data.reduce((filtered, option) => {
+    const session = option.data.consolidation.sessions.map((obj) => { const newObj = { date: obj.date, shift: obj.shift }; return newObj; });
+    filtered.push(session);
+    return filtered;
+  }, []);
+  return ({
+    type: Action.SET_ACTIVITIES_ENROLLED_SESSIONS,
+    listWithoutId,
+  });
+}
+
 export function loadActivitiesEntity(entitySlug) {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
@@ -249,6 +268,36 @@ export function loadAllObjectsToEnroll(entitySlug) {
   };
 }
 
+export function loadObjects(entitySlug, userId) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/get_objects_enrolled`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(setAllEnrolledObjects(json.data));
+          dispatch(setEnrolledSessions(json.data));
+          dispatch(loadAllObjectsToEnroll(entitySlug));
+        }
+      });
+  };
+}
 export function enroll(entitySlug, enrollObject) {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
@@ -273,7 +322,7 @@ export function enroll(entitySlug, enrollObject) {
         if (json.error) {
           // handle this error
         } else {
-          dispatch(loadAllObjectsToEnroll(entitySlug));
+          dispatch(loadObjects(entitySlug, enrollObject.userId));
         }
       });
   };
@@ -303,8 +352,7 @@ export function exit(entitySlug, enrollObject) {
         if (json.error) {
           // handle this error
         } else {
-          console.log(entitySlug);
-          dispatch(loadAllObjectsToEnroll(entitySlug));
+          dispatch(loadObjects(entitySlug, enrollObject.userId));
         }
       });
   };
