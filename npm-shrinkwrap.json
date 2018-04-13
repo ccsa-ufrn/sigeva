@@ -6277,6 +6277,11 @@
         "warning": "3.0.0"
       }
     },
+    "reactjs-popup": {
+      "version": "1.0.7",
+      "resolved": "https://registry.npmjs.org/reactjs-popup/-/reactjs-popup-1.0.7.tgz",
+      "integrity": "sha512-Q6IgKyub4BaiPerLEMIuV7G8Z9ILvVh4HIKUxOUQ8WDuSk88lD/P+dwtoUPvO4Ks+xXheuWzW/jobizf4Tu/Gw=="
+    },
     "read-all-stream": {
       "version": "3.1.0",
       "resolved": "https://registry.npmjs.org/read-all-stream/-/read-all-stream-3.1.0.tgz",

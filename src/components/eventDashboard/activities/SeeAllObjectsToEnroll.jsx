@@ -139,6 +139,11 @@ class SeeAllObjectsToEnrollPane extends Component {
                           sessions: object.data.consolidation.sessions})}
                           style={'danger'} text={'Desfazer inscrição'} />
                       }
+                      {
+                        this.checkEnrollment(object.data.consolidation.sessions) != 0 &&
+                        !object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
+                        <p>Você já está inscrito em uma atividade que conflita com essa em relação a horários</p> 
+                      }
                     </td>
                     <td>
                       {

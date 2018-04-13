@@ -33,7 +33,7 @@ const activities = (state = initialActivities, action) => {
       });
     case Action.SET_ACTIVITIES_ENROLLED_SESSIONS:
       return Object.assign({}, state, {
-        listOfEnrolledSessions: action.listWithoutId,
+        listOfEnrolledSessions: action.data,
       });
     default:
       return state;

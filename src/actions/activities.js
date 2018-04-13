@@ -38,14 +38,9 @@ export function setAllEnrolledObjects(data) {
 }
 
 export function setEnrolledSessions(data) {
-  const listWithoutId = data.reduce((filtered, option) => {
-    const session = option.data.consolidation.sessions.map((obj) => { const newObj = { date: obj.date, shift: obj.shift }; return newObj; });
-    filtered.push(session);
-    return filtered;
-  }, []);
   return ({
     type: Action.SET_ACTIVITIES_ENROLLED_SESSIONS,
-    listWithoutId,
+    data,
   });
 }
 
@@ -292,7 +287,7 @@ export function loadObjects(entitySlug, userId) {
           // handle this error
         } else {
           dispatch(setAllEnrolledObjects(json.data));
-          dispatch(setEnrolledSessions(json.data));
+          dispatch(setEnrolledSessions(json.data.map(obj => obj.data.consolidation.sessions)));
           dispatch(loadAllObjectsToEnroll(entitySlug));
         }
       });
