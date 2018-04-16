@@ -256,7 +256,7 @@ class ActivitiesModule extends Module {
     const enrollInObject = permissionsOnEntity.find(perm => perm.action === 'enroll_in_object');
     switch (subaction) {
       case 'get_entity':
-        if (submitPermission) {
+            if (submitPermission || enrollInObject) {
           return new Promise((resolve) => {
             ModuleObject.populate(this.getEntityBySlug(entitySlug), [
               { path: 'data.ofProposalRequiredFields', model: 'FieldRequest' },
