@@ -10,6 +10,7 @@ const mapStateToProps = state => {
     listOfEnrolledSessions: state.activities.listOfEnrolledSessions,
     userSession: state.userSession,
     activities: state.activities,
+    payment: state.payment,
   };
 };
 
