@@ -8,6 +8,7 @@ import DateRange from '../../models/dateRange.model';
 import ActivityEntity from '../../models/activityEntity.model';
 import ActivitySession from '../../models/activitySession.model';
 import ActivityConsolidation from '../../models/activityConsolidation.model';
+import Enrollment from '../../models/enrollment.model';
 
 /** @@ Activities Module
  * Subclass of Module, that represents the Activities Module
@@ -92,6 +93,51 @@ class ActivitiesModule extends Module {
     });
   }
 
+  getAllObjectsToEnroll(entitySlug) {
+    const objectsOfEntity = this.moduleObject.ofObjects.filter(obj => obj.entity === entitySlug);
+    const objectsToEnroll = objectsOfEntity.filter(obj => obj.data.status === 'consolidated');
+    return new Promise((resolve, reject) => {
+      ModuleObject.populate(objectsToEnroll, [
+        { path: 'data.ofProposersUsers', select: 'name email', model: 'User' },
+        { path: 'data.ofFiles', model: 'File' },
+        { path: 'data.ofFields.request', model: 'FieldRequest' },
+        { path: 'data.consolidation.sessions', select: 'date shift', model: 'ActivitySession'}
+      ], (err, docs) => {
+        ModuleObject.populate(docs, [
+          { path: 'data.ofFiles.fileRequirement', model: 'FileRequirement' },
+        ], (err_, docs_) => {
+          if (err) reject();
+          resolve(docs_);
+        });
+      });
+    });
+  }
+
+  getAllObjectsUserEnrolled(userId) {
+    const ofEnrollments = this.moduleObject.ofObjects.reduce((filtered, option) => {
+      const listOfUsers = option.data.ofEnrollments.map(users => users.user.toString());
+      if (listOfUsers.includes(userId)) {
+        filtered.push(option);
+      }
+      return filtered;
+    }, []);
+    return new Promise((resolve, reject) => {
+      ModuleObject.populate(ofEnrollments, [
+        { path: 'data.ofProposersUsers', select: 'name email', model: 'User' },
+        { path: 'data.ofFiles', model: 'File' },
+        { path: 'data.ofFields.request', model: 'FieldRequest' },
+        { path: 'data.consolidation.sessions', select: 'date shift', model: 'ActivitySession'}
+      ], (err, docs) => {
+        ModuleObject.populate(docs, [
+          { path: 'data.ofFiles.fileRequirement', model: 'FileRequirement' },
+        ], (err_, docs_) => {
+          if (err) reject();
+          resolve(docs_);
+        });
+      });
+    });
+  }
+
   createSession(eventId, entityId, date, shift) {
     const newSession = new ActivitySession({
       event: eventId,
@@ -130,6 +176,47 @@ class ActivitiesModule extends Module {
     });
   }
 
+  enrollInObject(activityId, user) {
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': activityId },
+        {
+          $push: {
+            'ofObjects.$.data.ofEnrollments': new Enrollment({
+              user,
+              present: false,
+            }),
+          },
+        }, (err, doc) => {
+          if (!err) resolve({});
+          reject({});
+        });
+    });
+  }
+
+  exitObject(activityId, userId) {
+    const activity = this.moduleObject.ofObjects.filter(obj => obj._id == activityId);
+    const newOfEnrollments = activity[0].data.ofEnrollments.filter(obj => obj.user != userId)
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': activityId },
+        {
+          $set: {
+            'ofObjects.$.data.ofEnrollments': newOfEnrollments },
+        }, (err, doc) => {
+          if (!err) resolve({});
+          reject({});
+        });
+    });
+  }
+
+  checkVacancies(entitySlug, activityId) {
+    const objectsOfEntity = this.moduleObject.ofObjects.filter(obj => obj.entity === entitySlug);
+    const activity = objectsOfEntity.filter(obj => obj._id == activityId);
+    if (activity[0].data.ofEnrollments.length < activity[0].data.consolidation.vacancies) {
+      return true;
+    }
+    return false;
+  }
+
   deconsolidateActivity(activityId) {
     return new Promise((resolve, reject) => {
       ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': activityId },
@@ -166,6 +253,7 @@ class ActivitiesModule extends Module {
     const submitPermission = permissionsOnEntity.find(perm => perm.action === 'submit_object');
     const consolidatePermission = permissionsOnEntity.find(perm => perm.action === 'consolidate_object');
     const seeAllPermission = permissionsOnEntity.find(perm => perm.action === 'see_all_objects');
+    const enrollInObject = permissionsOnEntity.find(perm => perm.action === 'enroll_in_object');
     switch (subaction) {
       case 'get_entity':
         if (submitPermission) {
@@ -218,6 +306,33 @@ class ActivitiesModule extends Module {
       case 'deconsolidate_activity':
         if (consolidatePermission) {
           return this.deconsolidateActivity(body.activityId);
+        }
+        break;
+      case 'get_all_objects_to_enroll':
+        if (enrollInObject) {
+          return this.getAllObjectsToEnroll(entitySlug);
+        }
+        break;
+      case 'get_objects_enrolled':
+        if (enrollInObject) {
+          const userId = body.userId;
+          return this.getAllObjectsUserEnrolled(userId);
+        }
+        break;
+      case 'enroll_in_object':
+        if (enrollInObject) {
+          const atvId = body.activityId;
+          const userId = body.userId;
+          if (this.checkVacancies(entitySlug, atvId)) {
+            return this.enrollInObject(atvId, userId);
+          }
+        }
+        break;
+      case 'exit_object':
+        if (enrollInObject) {
+          const atvId = body.activityId;
+          const userId = body.userId;
+          return this.exitObject(atvId, userId);
         }
         break;
       default:

@@ -23,6 +23,27 @@ export function setSessions(data) {
   });
 }
 
+export function setAllObjectsToEnroll(data) {
+  return ({
+    type: Action.SET_ACTIVITIES_ALL_OBJECTS_TO_ENROLL,
+    data,
+  });
+}
+
+export function setAllEnrolledObjects(data) {
+  return ({
+    type: Action.SET_ACTIVITIES_ALL_ENROLLED_OBJECTS,
+    data,
+  });
+}
+
+export function setEnrolledSessions(data) {
+  return ({
+    type: Action.SET_ACTIVITIES_ENROLLED_SESSIONS,
+    data,
+  });
+}
+
 export function loadActivitiesEntity(entitySlug) {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
@@ -211,6 +232,122 @@ export function deconsolidateActivity(entitySlug, activityId) {
           // handle this error
         } else {
           dispatch(loadAllObjects(entitySlug));
+        }
+      });
+  };
+}
+
+export function loadAllObjectsToEnroll(entitySlug) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/get_all_objects_to_enroll`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(setAllObjectsToEnroll(json.data));
+        }
+      });
+  };
+}
+
+export function loadObjects(entitySlug, userId) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/get_objects_enrolled`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(setAllEnrolledObjects(json.data));
+          dispatch(setEnrolledSessions(json.data.map(obj => obj.data.consolidation.sessions)));
+          dispatch(loadAllObjectsToEnroll(entitySlug));
+        }
+      });
+  };
+}
+export function enroll(entitySlug, enrollObject) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        activityId: enrollObject.activityId,
+        userId: enrollObject.userId,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/enroll_in_object`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(loadObjects(entitySlug, enrollObject.userId));
+        }
+      });
+  };
+}
+
+export function exit(entitySlug, enrollObject) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        activityId: enrollObject.activityId,
+        userId: enrollObject.userId,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/exit_object`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(loadObjects(entitySlug, enrollObject.userId));
         }
       });
   };
