@@ -183,12 +183,9 @@ class SeeAllObjectsToEnroll extends Component {
       // Handle payment requirement
       if (entity.data.requirePayment === true) {
         if (this.props.payment.approved === false) {
-          // Payment is required but the user did not paid
-          if (!this.props.isTGCoordinator) { // coordinators has privileges
             return (<PaymentRequiredWarning/>);
           }
         }
-      }
 
       const now = new Date();
       const enrollmentPeriodBegin = new Date(entity.data.enrollmentPeriod.begin);
