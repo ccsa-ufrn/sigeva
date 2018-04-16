@@ -24,6 +24,18 @@ class OutOfDateWarning extends Component {
   }
 }
 
+class PaymentRequiredWarning extends Component {
+  render() {
+    return(
+      <div className='alert alert-danger' role='alert'>
+        <h5><strong>Acesso indisponível</strong></h5>
+        Não é possível efetuar inscrição nesse tipo de atividade pois é exigida aprovação pelo
+          Módulo de Pagamento. Acesse o menu <strong>Pagamento</strong> para ter mais instruções.
+      </div>
+    );
+  }
+}
+
 class EnrollButton extends Component {
   render() {
     return(
@@ -168,6 +180,15 @@ class SeeAllObjectsToEnroll extends Component {
   render() {
     if (this.props.activities.entity) {
       const entity = this.props.activities.entity;
+      // Handle payment requirement
+      if (entity.data.requirePayment === true) {
+        if (this.props.payment.approved === false) {
+          // Payment is required but the user did not paid
+          if (!this.props.isTGCoordinator) { // coordinators has privileges
+            return (<PaymentRequiredWarning/>);
+          }
+        }
+      }
 
       const now = new Date();
       const enrollmentPeriodBegin = new Date(entity.data.enrollmentPeriod.begin);
