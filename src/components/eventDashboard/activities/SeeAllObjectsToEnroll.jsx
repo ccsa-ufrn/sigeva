@@ -129,7 +129,7 @@ class SeeAllObjectsToEnrollPane extends Component {
                       <p style={{textAlign: 'justify'}}>
                       <strong>Ementa</strong>: { object.data.syllabus }</p>
                       { object.data.ofFields &&
-                        object.data.ofFields.map((field) => {
+                        object.data.ofFields.filter(field => field.request.name == "debaters").map((field) => {
                           return (
                             <p key={field._id} style={{textAlign: 'justify'}}>
                               <strong>{field.request.readableName}</strong>: {field.value}
