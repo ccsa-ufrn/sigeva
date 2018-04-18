@@ -11,6 +11,10 @@ module.exports = {
     test: 'mongodb://localhost/sigeva',
     production: 'mongodb://localhost/sigeva',
   },
+  email: {
+    user: 'email user',
+    password: 'password',
+  },
   secret: 'your_secret_here',
   file_dir: '/upload/file/here',
 };

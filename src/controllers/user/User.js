@@ -240,6 +240,46 @@ export default class {
     return this.store();
   }
 
+  /**
+   * Generate a code to recover password
+   */
+  generateRecoverPasswordCode() {
+    const codeGen = (size) => {
+      let text = '';
+      const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+      for (let i = 0; i < size; i += 1) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
+
+      return text;
+    };
+    const code = codeGen(10);
+
+    return new Promise((resolve, reject) => {
+      userModel.findOneAndUpdate({ _id: this.userObject._id },
+        {
+          $set: {
+            passwordCode: code,
+          },
+        }, (err, doc) => {
+          if (err) reject({});
+          resolve(code);
+        },
+      );
+    });
+  }
+
+  newPassword(pass) {
+    // Hash password with bcrypt (https://www.npmjs.com/package/bcrypt)
+    const saltRounds = 10;
+    const hashPassword = bcrypt.hashSync(pass, saltRounds);
+    if (hashPassword) {
+      this.userObject.password = hashPassword;
+    }
+    return this.store();
+  }
+
   store() {
     return new Promise((resolve, reject) => {
       UserDAO.insertUser(this.userObject)
