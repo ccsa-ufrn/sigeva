@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class LoginBoard extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class LoginBoard extends Component {
               <label htmlFor="password-login-sgv" className="col-sm-3 col-form-label">Senha</label>
               <div className="col-sm-9">
                 <input id="password-login-sgv" type="password" name="password" onChange={this.doHandleChange} className="form-control form-control-sm"/>
-                <a href="" className="small">Esqueceu a senha?</a>
+                <Link to={'/recover-password'} className="small">Esqueceu a senha?</Link>
               </div>
             </div>
             { this.props.errorMessage !== '' && !this.props.doingLogin && !this.props.success &&

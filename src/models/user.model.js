@@ -39,6 +39,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  passwordCode: {
+    type: String,
+    default: '',
+  },
   ofTypes: [String], // types of user: Administrator, Common or both.
   // ofFields uses subdocs Mongoose's feature: http://mongoosejs.com/docs/subdocs.html
   ofFields: [], // Array of fields that can be defined by a administrator TODO: Link with field

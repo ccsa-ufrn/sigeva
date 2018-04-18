@@ -42,6 +42,7 @@
     "jsonwebtoken": "^8.0.1",
     "moment": "^2.19.1",
     "mongoose": "^4.11.6",
+    "nodemailer": "^4.6.4",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-draft-wysiwyg": "^1.12.10",
