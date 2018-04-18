@@ -37,7 +37,12 @@ export function setAllEnrolledObjects(data) {
   });
 }
 
-export function setEnrolledSessions(data) {
+export function setEnrolledSessions(sessionsWithoutEntity) {
+  const data = sessionsWithoutEntity.reduce((filtered, option) => {
+    const newSession = { sessions: option.data.consolidation.sessions, entity: option.entity };
+    filtered.push(newSession);
+    return filtered;
+  }, []);
   return ({
     type: Action.SET_ACTIVITIES_ENROLLED_SESSIONS,
     data,
@@ -287,7 +292,7 @@ export function loadObjects(entitySlug, userId) {
           // handle this error
         } else {
           dispatch(setAllEnrolledObjects(json.data));
-          dispatch(setEnrolledSessions(json.data.map(obj => obj.data.consolidation.sessions)));
+          dispatch(setEnrolledSessions(json.data));
           dispatch(loadAllObjectsToEnroll(entitySlug));
         }
       });

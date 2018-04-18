@@ -68,7 +68,7 @@ class SeeAllObjectsToEnrollPane extends Component {
   }
 
   enroll(enrollObject) {
-    if(this.checkEnrollment(enrollObject.sessions) == 0) {
+    if(this.checkEnrollment({sessions: enrollObject.sessions, entity: this.props.entity}) == 0) {
       this.props.enroll(this.props.entity, enrollObject);
     }   
   }
@@ -77,12 +77,21 @@ class SeeAllObjectsToEnrollPane extends Component {
       this.props.exit(this.props.entity, enrollObject);
   }
 
-  checkEnrollment(sessions) {
-    const joinedList = Array.from(this.props.listOfEnrolledSessions.reduce((arr, e) => arr.concat(e), []));
-    const matchingList = sessions.reduce((filtered, option) => {
-      if(joinedList.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
-        filtered.push(1);
-      }    
+  checkEnrollment(object) {
+    const roundTables = this.props.listOfEnrolledSessions.filter(obj => obj.entity == "roundtable" || obj.entity == "conference");
+    const others = this.props.listOfEnrolledSessions.filter(obj => obj.entity == "minicourse" || obj.entity == "workshop");
+    const roundTablesSessions = Array.from((roundTables.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
+    const othersSessions = Array.from((others.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
+    const matchingList = object.sessions.reduce((filtered, option) => {
+      if(object.entity == "roundtable") {
+        if(roundTablesSessions.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
+          filtered.push(1);
+        }    
+      } else {
+        if(othersSessions.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
+          filtered.push(1);
+        }
+      }
       return filtered;
     }, []);
     return matchingList;
@@ -152,7 +161,7 @@ class SeeAllObjectsToEnrollPane extends Component {
                           style={'danger'} text={'Desfazer inscrição'} />
                       }
                       {
-                        this.checkEnrollment(object.data.consolidation.sessions) != 0 &&
+                        this.checkEnrollment({ sessions: object.data.consolidation.sessions, entity: this.props.entity}) != 0 &&
                         !object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
                         <p>Você já está inscrito em uma atividade que conflita com essa em relação a horários</p> 
                       }
