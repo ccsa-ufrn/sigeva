@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import JWT from 'jsonwebtoken';
+import NodeMailer from 'nodemailer';
 
 import Response from '../Response';
 import { simpleAuthorization } from '../authorization/Authorization';
-import { secret } from '../../../config';
+import { secret, email } from '../../../config';
 
 import User from './User';
 
@@ -68,7 +69,6 @@ userRouter.post('/authorize', (req, res) => {
     })
     .catch((err) => {
       // The user with passed email doesn't exists
-      console.log(err);
       res.json(Response(true, {}, 'Não existe usuário com este email'));
     });
 });
@@ -97,8 +97,78 @@ userRouter.get('/logout', simpleAuthorization, (req, res) => {
     res.clearCookie('sigeva_user_token').json(Response(false, {}));
   } catch (e) {
     res.json(Response(true, {}, 'Erro desconhecido ao fechar sessão de usuário'));
-    console.error(e);
   }
+});
+
+/**
+ * Generate a code to recover password
+ */
+userRouter.post('/recover-password', (req, res) => {
+  const user = new User();
+  const userEmail = req.body.email;
+
+  user.loadByEmail(userEmail)
+    .then(() => {
+      user.generateRecoverPasswordCode()
+        .then((generatedCode) => {
+          // send mail here
+          const transporter = NodeMailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: email.user,
+              pass: email.password,
+            },
+          });
+          const mailOptions = {
+            from: email.user,
+            to: userEmail,
+            subject: '[Sigeva] Recuperação de Senha',
+            html: `<h4>Solicitação de nova senha</h4>
+            <p>Foi solicitada a criação de uma nova senha para a conta com este e-mail na plataforma
+            Sigeva
+            </p>
+            <p>Código de recuperação: ${generatedCode}</p>
+            <center><a href="http://sigeva.ccsa.ufrn.br/new-password/${user.userObject._id}/${generatedCode}" target="_blank">Criar nova senha</a></center>
+            `,
+          };
+          transporter.sendMail(mailOptions, (err) => {
+            // if (err) res.json(Response(true, {}));
+            res.json(Response(false, {}));
+          });
+        })
+        .catch(() => { res.json(Response(true, {})); });
+    })
+    .catch(() => {
+      res.json(Response(true, {}, 'Usuário não encontrado'));
+    });
+});
+
+/**
+ * Set new password
+ */
+userRouter.post('/new-password', (req, res) => {
+  const user = new User();
+  const password = req.body.newPassword;
+  const userId = req.body.userId;
+  const code = req.body.code;
+
+  user.loadById(userId)
+    .then(() => {
+      if (user.userObject.passwordCode) {
+        if (user.userObject.passwordCode === code) {
+          user.newPassword(password)
+            .then(() => {
+              res.json(Response(false, {}));
+            })
+            .catch(() => {
+              res.json(Response(true, {}));
+            });
+        }
+      }
+    })
+    .catch(() => {
+      res.json(Response(true, {}, 'Usuário não encontrado'));
+    });
 });
 
 /**

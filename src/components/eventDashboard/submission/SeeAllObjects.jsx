@@ -34,7 +34,7 @@ class SeeAllObjects extends Component {
           </thead>
           <tbody>
             { this.props.allObjects &&
-              this.props.allObjects.map((object) => {
+              this.props.allObjects.sort((a,b) => {return (a.data.thematicGroup.data.name > b.data.thematicGroup.data.name) ? 1 : ((b.data.thematicGroup.data.name > a.data.thematicGroup.data.name) ? -1 : 0); }).map((object) => {
                 return (
                   <tr key={object._id}>
                     <td><strong>{object.data.title}</strong><br/></td>
