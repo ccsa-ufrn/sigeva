@@ -128,7 +128,7 @@ userRouter.post('/recover-password', (req, res) => {
             Sigeva
             </p>
             <p>Código de recuperação: ${generatedCode}</p>
-            <center><a href="http://localhost:3000/new-password/${user.userObject._id}/${generatedCode}" target="_blank">Criar nova senha</a></center>
+            <center><a href="http://sigeva.ccsa.ufrn.br/new-password/${user.userObject._id}/${generatedCode}" target="_blank">Criar nova senha</a></center>
             `,
           };
           transporter.sendMail(mailOptions, (err) => {
