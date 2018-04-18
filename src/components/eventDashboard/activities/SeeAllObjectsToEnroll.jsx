@@ -79,16 +79,22 @@ class SeeAllObjectsToEnrollPane extends Component {
 
   checkEnrollment(object) {
     const roundTables = this.props.listOfEnrolledSessions.filter(obj => obj.entity == "roundtable" || obj.entity == "conference");
-    const others = this.props.listOfEnrolledSessions.filter(obj => obj.entity == "minicourse" || obj.entity == "workshop");
+    const minicourse = this.props.listOfEnrolledSessions.filter(obj => obj.entity == "minicourse");
+    const workshop = this.props.listOfEnrolledSessions.filter(obj => obj.entity == "workshop");
     const roundTablesSessions = Array.from((roundTables.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
-    const othersSessions = Array.from((others.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
+    const minicourseSessions = Array.from((others.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
+    const workshopSessions = Array.from((others.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
     const matchingList = object.sessions.reduce((filtered, option) => {
-      if(object.entity == "roundtable") {
+      if(object.entity == "roundtable" || object.entity == "conference") {
         if(roundTablesSessions.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
           filtered.push(1);
         }    
+      } else if(object.entity == "minicourse") {
+        if(minicourseSessions.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
+          filtered.push(1);
+        }
       } else {
-        if(othersSessions.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
+        if(workshopSessions.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
           filtered.push(1);
         }
       }
