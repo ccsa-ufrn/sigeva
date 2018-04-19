@@ -82,8 +82,8 @@ class SeeAllObjectsToEnrollPane extends Component {
     const minicourse = this.props.listOfEnrolledSessions.filter(obj => obj.entity == "minicourse");
     const workshop = this.props.listOfEnrolledSessions.filter(obj => obj.entity == "workshop");
     const roundTablesSessions = Array.from((roundTables.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
-    const minicourseSessions = Array.from((others.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
-    const workshopSessions = Array.from((others.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
+    const minicourseSessions = Array.from((minicourse.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
+    const workshopSessions = Array.from((workshop.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
     const matchingList = object.sessions.reduce((filtered, option) => {
       if(object.entity == "roundtable" || object.entity == "conference") {
         if(roundTablesSessions.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
