@@ -30,6 +30,8 @@ class SubmissionModule extends Component {
         return <SeeObjectsContainer entity={this.props.entity} />;
       case 'see_all_objects':
         return <SeeAllObjectsContainer entity={this.props.entity} />;
+      case 'consolidate_object':
+        return <ConsolidateObjectsContainer entity={this.props.entity} />;
       default:
         return null;
     }

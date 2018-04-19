@@ -5,6 +5,7 @@ const initialSubmission = {
   userObjects: [],
   allObjects: [],
   objectsToEvaluate: [],
+  sessions: [],
 };
 
 const submission = (state = initialSubmission, action) => {
@@ -25,6 +26,10 @@ const submission = (state = initialSubmission, action) => {
       return Object.assign({}, state, {
         allObjects: action.data,
       });
+    case Action.SET_ACTIVITIES_SESSIONS:
+      return Object.assign({}, state, {
+        allObjects: action.data,
+      })
     default:
       return state;
   }
