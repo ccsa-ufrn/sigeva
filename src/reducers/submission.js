@@ -26,10 +26,10 @@ const submission = (state = initialSubmission, action) => {
       return Object.assign({}, state, {
         allObjects: action.data,
       });
-    case Action.SET_ACTIVITIES_SESSIONS:
+    case Action.SET_SUBMISSIONS_SESSIONS:
       return Object.assign({}, state, {
-        allObjects: action.data,
-      })
+        sessions: action.data,
+      });
     default:
       return state;
   }
