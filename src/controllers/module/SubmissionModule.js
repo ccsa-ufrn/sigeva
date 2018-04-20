@@ -281,7 +281,7 @@ class SubmissionModule extends Module {
 
     switch (subaction) {
       case 'get_entity':
-        if (submitPermission) {
+        if (submitPermission || seePermission || seeAllPermission) {
           return new Promise((resolve) => {
             resolve(this.getEntityBySlug(entitySlug));
           });
