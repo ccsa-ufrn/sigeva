@@ -16,6 +16,13 @@ export function setAllObjects(data) {
   });
 }
 
+export function setListToPrint(data) {
+  return ({
+    type: Action.SET_ACTIVITIES_LIST_OF_PRESENCE,
+    data,
+  });
+}
+
 export function setSessions(data) {
   return ({
     type: Action.SET_ACTIVITIES_SESSIONS,

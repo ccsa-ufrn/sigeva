@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 
 import SeeAllObjects from './SeeAllObjects';
-import { loadAllObjects } from '../../../actions/activities';
+import { loadAllObjects, setListToPrint } from '../../../actions/activities';
 
 const mapStateToProps = state => {
   return {
     allObjects: state.activities.allObjects,
+    listOfPresence: state.activities.listOfPresence,
   };
 };
 
@@ -14,6 +15,9 @@ const mapDispatchToProps = dispatch => {
     loadAllObjects: (entitySlug) => {
       dispatch(loadAllObjects(entitySlug));
     },
+    setListToPrint: (ofEnrollments) => {
+      dispatch(setListToPrint(ofEnrollments));
+    }
   };
 };
 
