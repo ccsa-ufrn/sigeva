@@ -194,10 +194,12 @@ class SeeAllObjectsToEnrollPane extends Component {
 class SeeAllObjectsToEnroll extends Component {
   render() {
     if (this.props.activities.entity) {
+      const listOfProposers = Array.from(this.props.allObjectsToEnroll.map(object => object.data.ofProposersUsers.map(user => user._id))).reduce((arr, e) => arr.concat(e), []);
       const entity = this.props.activities.entity;
       // Handle payment requirement
       if (entity.data.requirePayment === true) {
         if (this.props.payment.approved === false) {
+          if(!listOfProposers.includes(this.props.userSession.logged_user.id))
             return (<PaymentRequiredWarning/>);
           }
         }
