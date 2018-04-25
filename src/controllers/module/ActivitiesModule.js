@@ -80,6 +80,7 @@ class ActivitiesModule extends Module {
     return new Promise((resolve, reject) => {
       ModuleObject.populate(objectsOfEntity, [
         { path: 'data.ofProposersUsers', select: 'name email', model: 'User' },
+        { path: 'data.ofEnrollments.user', select: 'name email', model: 'User' },
         { path: 'data.ofFiles', model: 'File' },
         { path: 'data.ofFields.request', model: 'FieldRequest' },
       ], (err, docs) => {

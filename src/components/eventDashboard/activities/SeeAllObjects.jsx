@@ -1,18 +1,85 @@
 import React, { Component } from 'react';
+import ReactToPrint from 'react-to-print';
 
-class SeeAllObjects extends Component {
+class ListOfPresencePane extends Component {
   constructor(props) {
     super(props);
-  }
 
+    this.setListToPrint = this.setListToPrint.bind(this);
+  }
+  
   componentDidMount() {
     this.props.loadAllObjects(this.props.entity);
   }
 
   componentDidUpdate(prevProps, prevState) {
+    this.props.setListToPrint([]);
     if (prevProps.entity !== this.props.entity) {
       this.props.loadAllObjects(this.props.entity);
     }
+  }
+
+  setListToPrint(ofEnrollments) {
+    this.props.setListToPrint(ofEnrollments);
+  }
+
+  render() {
+    return(
+      <div>
+      <h5>Lista de Presença</h5>
+      <table className='table'>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>Assinatura</th>
+            </tr>
+          </thead>
+          <tbody>
+          { this.props.listOfPresence &&
+            this.props.listOfPresence.map(user => {
+              return (
+                <tr key={user._id}>
+                  <td>{user.user.name}</td>
+                  <td>{user.user.email}</td>
+                  <td></td>
+                </tr>
+              );
+            })
+          }
+          </tbody>
+      </table>
+      <br/>
+      <span><a className="btn btn-primary" onClick={() => this.setListToPrint([])}>
+                        'Voltar  '   
+                        </a>{' '}</span>
+      </div>
+    )
+  }
+
+}
+
+class SeeAllObjectsPane extends Component {
+  constructor(props) {
+    super(props);
+
+    this.setListToPrint = this.setListToPrint.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.loadAllObjects(this.props.entity);
+    this.props.setListToPrint([]);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.entity !== this.props.entity) {
+      this.props.loadAllObjects(this.props.entity);
+      this.props.setListToPrint([]);
+    }
+  }
+
+  setListToPrint(ofEnrollments) {
+    this.props.setListToPrint(ofEnrollments);
   }
 
   render() {
@@ -48,8 +115,8 @@ class SeeAllObjects extends Component {
                         object.data.shift === 2 ? 'Noite' : 'Indefinido'
                       }
                       <br/>
-                      <strong>Vagas</strong>: { object.data.vacancies === 0 ? 'Sem limites': object.data.vacancies }
-                      <br/>
+                      <strong>Vagas</strong>: { object.data.status === 'consolidated' ? object.data.consolidation.vacancies : object.data.vacancies }
+                      <strong>Localização</strong>: { object.data.status === 'consolidated' ? object.data.consolidation.location : 'Não definido ainda'}
                       <p style={{textAlign: 'justify'}}>
                       <strong>Ementa</strong>: { object.data.syllabus }</p>
                       { object.data.ofFields &&
@@ -70,6 +137,9 @@ class SeeAllObjects extends Component {
                           );
                         })
                       }
+                      <span key={object._id}><a className="btn btn-primary" onClick={() => this.setListToPrint(object.data.ofEnrollments)}>
+                        Mostrar lista de presença
+                        </a>{' '}</span>
                     </td>
                     <td>
                       {
@@ -88,5 +158,32 @@ class SeeAllObjects extends Component {
     );
   }
 }
+
+class SeeAllObjects extends Component {
+  render() {
+    console.log(this.props.listOfPresence);
+    if(this.props.listOfPresence.length === 0) {
+      return (<SeeAllObjectsPane loadAllObjects={this.props.loadAllObjects}
+                                setListToPrint={this.props.setListToPrint}
+                                allObjects={this.props.allObjects} />)
+    } else {
+      return (
+        <div>
+          <ListOfPresencePane loadAllObjects={this.props.loadAllObjects}
+                                    setListToPrint={this.props.setListToPrint}
+                                    allObjects={this.props.allObjects}
+                                    listOfPresence={this.props.listOfPresence} 
+                                    ref={el => (this.componentRef = el)}
+          />
+          <ReactToPrint
+            trigger={() => <span><a className="btn btn-primary">Imprimir </a>{' '}</span>}
+            content={() => this.componentRef}
+          />
+        </div>
+      )
+    }
+  }
+
+} 
 
 export default SeeAllObjects;

@@ -7,6 +7,7 @@ const initialActivities = {
   allObjectsToEnroll: [],
   allObjectsUserEnrolled: [],
   listOfEnrolledSessions: [],
+  listOfPresence: [],
 };
 
 const activities = (state = initialActivities, action) => {
@@ -34,6 +35,10 @@ const activities = (state = initialActivities, action) => {
     case Action.SET_ACTIVITIES_ENROLLED_SESSIONS:
       return Object.assign({}, state, {
         listOfEnrolledSessions: action.data,
+      });
+    case Action.SET_ACTIVITIES_LIST_OF_PRESENCE:
+      return Object.assign({}, state, {
+        listOfPresence: action.data,
       });
     default:
       return state;
