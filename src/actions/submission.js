@@ -9,6 +9,13 @@ export function setSubmissionEntity(data) {
   });
 }
 
+export function setSessions(data) {
+  return ({
+    type: Action.SET_SUBMISSIONS_SESSIONS,
+    data,
+  });
+}
+
 export function setUserObjects(data) {
   return ({
     type: Action.SET_SUBMISSION_USER_OBJECTS,
@@ -212,6 +219,125 @@ export function rejectSubmission(objectId, entitySlug) {
           // TODO handle this error
         } else {
           dispatch(loadToApproveSubmission(entitySlug));
+        }
+      });
+  };
+}
+
+export function loadSessions(entitySlug) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/get_sessions`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(setSessions(json.data));
+        }
+      });
+  };
+}
+
+export function createSession(entitySlug, date, shift, hour) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        date,
+        shift,
+        hour,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/create_session`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(loadSessions(entitySlug));
+        }
+      });
+  };
+}
+
+export function scheduleSubmissions(entitySlug, selectedSubmissions, sessions, location) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        selectedSubmissions,
+        sessions,
+        location,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/schedule_submissions`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          console.log(json.data);
+          dispatch(loadAllObjects(entitySlug));
+        }
+      });
+  };
+}
+
+
+export function cancelSubmissionPresentation(entitySlug, submissionId) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        submissionId,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/cancel_submission_presentation`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(loadAllObjects(entitySlug));
         }
       });
   };
