@@ -50,9 +50,10 @@ class ListOfPresencePane extends Component {
           </tbody>
       </table>
       <br/>
-      <span><a className="btn btn-primary" onClick={() => this.setListToPrint([])}>
-                        'Voltar  '   
+      <span><a className="btn btn-primary d-print-none" onClick={() => this.setListToPrint([])}>
+                        Voltar   
                         </a>{' '}</span>
+      <br/>
       </div>
     )
   }
@@ -176,7 +177,7 @@ class SeeAllObjects extends Component {
                                     ref={el => (this.componentRef = el)}
           />
           <ReactToPrint
-            trigger={() => <span><a className="btn btn-primary">Imprimir </a>{' '}</span>}
+            trigger={() => <span><br/><a className="btn btn-primary">Imprimir </a>{' '}</span>}
             content={() => this.componentRef}
           />
         </div>
