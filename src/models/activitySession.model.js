@@ -9,6 +9,10 @@ const activitySessionSchema = new Schema({
   },
   date: Date,
   shift: Number, // 0 - Manhã; 1 - Tarde; 2 - Noite
+  hour: {
+    type: String,
+    default: null,
+  },
 });
 
 const activitySessionModel = mongoose.model('ActivitySession', activitySessionSchema);

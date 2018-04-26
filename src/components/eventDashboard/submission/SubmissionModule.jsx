@@ -3,6 +3,7 @@ import SubmitObjectContainer from './SubmitObjectContainer';
 import SeeToApproveSubmissionsContainer from './SeeToApproveSubmissionsContainer';
 import SeeObjectsContainer from './SeeObjectsContainer';
 import SeeAllObjectsContainer from './SeeAllObjectsContainer';
+import ScheduleSubmissionContainer from './ScheduleSubmissionContainer';
 
 class SubmissionModule extends Component {
   constructor(props) {
@@ -30,6 +31,8 @@ class SubmissionModule extends Component {
         return <SeeObjectsContainer entity={this.props.entity} />;
       case 'see_all_objects':
         return <SeeAllObjectsContainer entity={this.props.entity} />;
+      case 'schedule_object':
+        return <ScheduleSubmissionContainer entity={this.props.entity} />;
       default:
         return null;
     }

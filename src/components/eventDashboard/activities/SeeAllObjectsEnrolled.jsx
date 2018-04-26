@@ -1,28 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 
-class OutOfDateWarning extends Component {
-  render() {
-    moment.locale('pt-BR');
-
-    let message = `Fora do período aceitável para inscrições`;
-
-    if (new Date() < this.props.begin) {
-      message = `Inscrições deste tipo de objeto somente será permitida
-      a partir de ${moment(this.props.begin).format('LL')}`;
-    } else {
-      message = `As inscrições deste tipo de objeto não são mais aceitas desde
-      ${moment(this.props.end).format('LL')}`;
-    }
-
-    return(
-      <div className='alert alert-danger' role='alert'>
-        <h5><strong>Acesso indisponível</strong></h5>
-        {message}
-      </div>
-    );
-  }
-}
 
 class PaymentRequiredWarning extends Component {
   render() {
@@ -48,11 +26,10 @@ class EnrollButton extends Component {
   }  
 }
 
-class SeeAllObjectsToEnrollPane extends Component {
+class SeeAllObjectsEnrolledPane extends Component {
   constructor(props) {
     super(props);
 
-    this.enroll = this.enroll.bind(this);
     this.exit = this.exit.bind(this);
     this.checkEnrollment = this.checkEnrollment.bind(this);
   }
@@ -65,12 +42,6 @@ class SeeAllObjectsToEnrollPane extends Component {
     if (prevProps.entity !== this.props.entity) {
       this.props.loadObjects(this.props.entity, this.props.userSession.logged_user.id);
     }
-  }
-
-  enroll(enrollObject) {
-    if(this.checkEnrollment({sessions: enrollObject.sessions, entity: this.props.entity}) == 0) {
-      this.props.enroll(this.props.entity, enrollObject);
-    }   
   }
 
   exit(enrollObject) {
@@ -106,9 +77,9 @@ class SeeAllObjectsToEnrollPane extends Component {
   render() {      
     return(
       <div>
-        <h5><strong>Todas propostas disponíveis{' '}
-          { this.props.allObjectsToEnroll &&
-            `(${this.props.allObjectsToEnroll.length})`
+        <h5><strong>Todas propostas inscritas{' '}
+          { this.props.allObjectsUserEnrolled &&
+            `(${this.props.allObjectsUserEnrolled.length})`
           }
         </strong></h5>
         <table className='table'>
@@ -120,14 +91,21 @@ class SeeAllObjectsToEnrollPane extends Component {
           </thead>
           <tbody>
             {
-              this.props.allObjectsToEnroll &&
+              this.props.allObjectsUserEnrolled &&
               this.props.listOfEnrolledSessions &&
-              this.props.allObjectsToEnroll.map((object) => {
+              this.props.allObjectsUserEnrolled.map((object) => {
                 return (
                   <tr key={object._id}>
                     <td>
                       <strong>{object.data.title}</strong>
                       <br/>
+                      <strong>Tipo de atividade</strong>
+                      {
+                        object.entity === 'minicourse' ? 'Minicurso':
+                        object.entity === 'workshop' ? 'Oficina':
+                        object.entity === 'conference' ? 'Conferência':
+                        object.entity === 'roundtable' ? 'Mesa-Redonda': ''
+                      }
                       <strong>Horários</strong>:{' '}
                       { object.data.consolidation.sessions &&
                         object.data.consolidation.sessions.map((session) => {
@@ -191,15 +169,13 @@ class SeeAllObjectsToEnrollPane extends Component {
 }
 
 
-class SeeAllObjectsToEnroll extends Component {
+class SeeAllObjectsUserEnrolled extends Component {
   render() {
     if (this.props.activities.entity) {
-      const listOfProposers = Array.from(this.props.allObjectsToEnroll.map(object => object.data.ofProposersUsers.map(user => user._id))).reduce((arr, e) => arr.concat(e), []);
       const entity = this.props.activities.entity;
       // Handle payment requirement
       if (entity.data.requirePayment === true) {
         if (this.props.payment.approved === false) {
-          if(!listOfProposers.includes(this.props.userSession.logged_user.id))
             return (<PaymentRequiredWarning/>);
           }
         }
@@ -208,23 +184,17 @@ class SeeAllObjectsToEnroll extends Component {
       const enrollmentPeriodBegin = new Date(entity.data.enrollmentPeriod.begin);
       const enrollmentPeriodEnd = new Date(entity.data.enrollmentPeriod.end);
 
-      if (enrollmentPeriodBegin < now && now < enrollmentPeriodEnd) {
-          return (<SeeAllObjectsToEnrollPane entity={this.props.entity} 
+          return (<SeeAllObjectsEnrolledPane entity={this.props.entity} 
             userSession={this.props.userSession} 
-            allObjectsToEnroll={this.props.allObjectsToEnroll}
             allObjectsUserEnrolled={this.props.allObjectsUserEnrolled}
             listOfEnrolledSessions={this.props.listOfEnrolledSessions}
             loadObjects={this.props.loadObjects} 
-            enroll={this.props.enroll}
             exit={this.props.exit}
             />);
-        } else {
-        return (<OutOfDateWarning begin={enrollmentPeriodBegin} end={enrollmentPeriodEnd} />);
-      }
     } else {
       return (<div>Desenvolvendo B</div>);
     }
   }
 }
 
-export default SeeAllObjectsToEnroll;
+export default SeeAllObjectsUserEnrolled;

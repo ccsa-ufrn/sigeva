@@ -7,6 +7,8 @@ import FileRequirement from '../fileRequirement/FileRequirement';
 import DateRange from '../../models/dateRange.model';
 import ModuleModel from '../../models/module.model';
 import ThematicGroupModule from './ThematicGroupModule';
+import ActivitySession from '../../models/activitySession.model';
+import ActivityConsolidation from '../../models/activityConsolidation.model';
 import eachOf from 'async/eachOf';
 
 /** @@ Submission Module
@@ -219,6 +221,26 @@ class SubmissionModule extends Module {
     });
   }
 
+  createSession(eventId, entityId, date, shift, hour) {
+    const newSession = new ActivitySession({
+      event: eventId,
+      entity: entityId,
+      date,
+      shift,
+      hour,
+    });
+    return newSession.save();
+  }
+
+  getSessions(eventId, entityId) {
+    return new Promise((resolve, reject) => {
+      ActivitySession.find({ event: eventId, entity: entityId }, (err, res) => {
+        if (!err) resolve(res);
+        reject();
+      });
+    });
+  }
+
   changeObjectState(entitySlug, objectId, newState, userActorId, event) {
     return new Promise((resolve, reject) => {
       this.getToEvaluateSubmission(entitySlug, userActorId, event)
@@ -256,6 +278,41 @@ class SubmissionModule extends Module {
     });
   }
 
+  scheduleSubmissions(submissionsId, sessions, location) {
+    Promise.all(submissionsId.map((submission) => {
+      return new Promise((resolve, reject) => {
+        ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': submission },
+          {
+            $set: {
+              'ofObjects.$.data.consolidation': new ActivityConsolidation({
+                sessions,
+                location,
+              }),
+            },
+          }, (err, doc) => {
+            if (!err) resolve({});
+            reject({});
+          });
+      });
+    }))
+      .then(data => data)
+      .catch(data => data);
+  }
+
+  cancelSubmissionPresentation(submissionId) {
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': submissionId },
+        {
+          $set: {
+            'ofObjects.$.data.consolidation': null,
+          },
+        }, (err, doc) => {
+          if (!err) resolve({});
+          reject({});
+        });
+    });
+  }
+
   /**
    * Runs a action performed by the user
    * @param user logged User instance
@@ -278,10 +335,11 @@ class SubmissionModule extends Module {
     const submitPermission = permissionsOnEntity.find(perm => perm.action === 'submit_object');
     const seePermission = permissionsOnEntity.find(perm => perm.action === 'see_objects');
     const seeAllPermission = permissionsOnEntity.find(perm => perm.action === 'see_all_objects');
+    const schedulePermission = permissionsOnEntity.find(perm => perm.action === 'schedule_object');
 
     switch (subaction) {
       case 'get_entity':
-        if (submitPermission) {
+        if (submitPermission || seePermission || seeAllPermission) {
           return new Promise((resolve) => {
             resolve(this.getEntityBySlug(entitySlug));
           });
@@ -314,6 +372,35 @@ class SubmissionModule extends Module {
           body.newState,
           user.userObject._id,
           event);
+      case 'create_session':
+        if (schedulePermission) {
+          const date = body.date;
+          const shift = body.shift;
+          const hour = body.hour;
+          return this.createSession(this.event.eventObject._id,
+            entityId, date, shift, hour);
+        }
+        break;
+      case 'get_sessions':
+        if (schedulePermission) {
+          return this.getSessions(this.event.eventObject, 
+            entityId);
+        }
+        break;
+      case 'schedule_submissions':
+        if (schedulePermission) {
+          const submissionsId = body.selectedSubmissions;
+          const sessions = body.sessions;
+          const location = body.location;
+          return this.scheduleSubmissions(submissionsId, sessions, location);
+        }
+        break;
+      case 'cancel_submission_presentation':
+        if (schedulePermission) {
+          const submissionId = body.submissionId;
+          return this.cancelSubmissionPresentation(submissionId);
+        }
+        break;
       default:
         // Do nothing
     }
