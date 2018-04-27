@@ -7,7 +7,12 @@ class SeeEnrollments extends Component {
     this.state = {
       filters: [],
       roles: [],
+      selectedRoles: [],
+      selectedPayment: [],
     }
+
+    this.toggleRole = this.toggleRole.bind(this);
+    this.togglePayment = this.togglePayment.bind(this);
   }
 
   componentDidMount() {
@@ -33,15 +38,60 @@ class SeeEnrollments extends Component {
     }
   }
 
+  toggleRole(role) {
+    if (!this.state.selectedRoles.includes(role)) {
+      this.setState((prevState, props) => {
+        return { selectedRoles: [...prevState.selectedRoles, role]}
+      });
+    } else {
+      this.setState((prevState, props) => {
+        return { selectedRoles: prevState.selectedRoles.filter((r) => r !== role)}
+      });
+    }
+  }
+
+  togglePayment(condition) {
+    if (!this.state.selectedPayment.includes(condition)) {
+      this.setState((prevState, props) => {
+        return { selectedPayment: [...prevState.selectedPayment, condition]}
+      });
+    } else {
+      this.setState((prevState, props) => {
+        return { selectedPayment: prevState.selectedPayment.filter((r) => r !== condition)}
+      });
+    }
+  }
+
   render() {
     if (this.props.enrollments) {
+      const filteredUsers = this.props.enrollments.filter((usr) =>{
+        let sum = 0;
+
+        const rolesIntersec = usr.roles.filter((role) => this.state.selectedRoles.includes(role), this);
+        if (rolesIntersec.length > 0) {
+          sum++;
+        }
+
+        if (usr.payment.approved == false && this.state.selectedPayment.includes('not-paid')) sum++;
+
+        if (usr.payment.approved) {
+          const receipts = usr.payment.receipts.filter((r) => r.data.status == 'approved' && r.data.type == 'receipt');
+          if (receipts.length > 0 && this.state.selectedPayment.includes('approved')) sum++;
+
+          const free = usr.payment.receipts.filter((r) => r.data.type == 'free');
+          if (free.length > 0 && this.state.selectedPayment.includes('free')) sum++;
+        }
+        return sum >= 2;
+      });
+
       return (
         <div>
           <h5><strong>Filtros</strong></h5>
           <div>
             Condição de pagamento:{' '}
-            <label><input type="checkbox" /> Pagamento aprovado</label>{' '}
-            <label><input type="checkbox" /> Sem pagamento / não aprovado</label>{' '}
+            <label><input type="checkbox" onChange={()=>{ this.togglePayment('approved') }} /> Pagamento aprovado</label>{' '}
+            <label><input type="checkbox" onChange={()=>{ this.togglePayment('free') }} /> Isento</label>{' '}
+            <label><input type="checkbox" onChange={()=>{ this.togglePayment('not-paid') }} /> Sem pagamento / não aprovado</label>{' '}
           </div>
           { this.state.roles &&
             <div>
@@ -49,17 +99,18 @@ class SeeEnrollments extends Component {
               {
                 this.state.roles.map((role, idx) => {
                   return (
-                    <label key={role.idx}><input className="checkbox" type="checkbox" value="idx" /> {role}{' '}</label>
+                    <label key={idx}><input className="checkbox" type="checkbox" value="idx" onChange={()=> {this.toggleRole(role)}} /> {role}{' '}</label>
                   )
                 })
               }
             </div>
           }
           <h5><strong>Usuários selecionados</strong></h5>
+          <div>Exibindo {filteredUsers.length} registros no total de {this.props.enrollments.length}</div>
           <table className="table">
             <tbody>
               {
-                this.props.enrollments.map((user) => {
+                filteredUsers.map((user) => {
                   return (
                     <tr key={user._id}>
                       <td>

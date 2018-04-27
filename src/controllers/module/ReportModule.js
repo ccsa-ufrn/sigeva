@@ -44,13 +44,21 @@ class ReportModule extends Module {
             roles,
           });
         });
-        resolve(userWithRoles);
 
-        // ModuleModel.populate(users, [{ path: 'user.ofFields.request', model: 'FieldRequest' }],
-        //   (err_, usrsWithFields) => {
-        //     if (err_) reject();
-        //     resolve(usrsWithFields);
-        //   });
+        // Add payment info
+        this.event.getModule('payment')
+          .then((paymentMdle) => {
+            const userWithPayInfo = userWithRoles.map((usr) => {
+              return Object.assign({}, {
+                _id: usr._id,
+                name: usr.name,
+                email: usr.email,
+                roles: usr.roles,
+                payment: paymentMdle.getUserInfo(usr._id),
+              });
+            });
+            resolve(userWithPayInfo);
+          }).catch(() => { resolve(userWithRoles); });
       });
     });
   }
