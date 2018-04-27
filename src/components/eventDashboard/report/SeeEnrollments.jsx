@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import UserReport from './UserReport';
 
 class SeeEnrollments extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class SeeEnrollments extends Component {
 
     this.toggleRole = this.toggleRole.bind(this);
     this.togglePayment = this.togglePayment.bind(this);
+    this.loadUser = this.loadUser.bind(this);
   }
 
   componentDidMount() {
@@ -62,7 +64,15 @@ class SeeEnrollments extends Component {
     }
   }
 
+  loadUser(uId) {
+    this.props.loadUser(uId);
+  }
+
   render() {
+    if (this.props.selectedUser) {
+      return <UserReport user={this.props.selectedUser} clearUser={this.props.clearUser} />
+    }
+
     if (this.props.enrollments) {
       const filteredUsers = this.props.enrollments.filter((usr) =>{
         let sum = 0;
@@ -116,15 +126,15 @@ class SeeEnrollments extends Component {
                       <td>
                         {user.name} ({user.email})
                       </td>
+                      <td>
+                        <a href="#" onClick={() => { this.loadUser(user._id) }} className="btn btn-success">Relatório detalhado</a>
+                      </td>
                     </tr>
                   )
                 })
               }
             </tbody>
           </table>
-
-
-
         </div>
       )
 

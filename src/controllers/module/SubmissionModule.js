@@ -383,7 +383,7 @@ class SubmissionModule extends Module {
         break;
       case 'get_sessions':
         if (schedulePermission) {
-          return this.getSessions(this.event.eventObject, 
+          return this.getSessions(this.event.eventObject,
             entityId);
         }
         break;
