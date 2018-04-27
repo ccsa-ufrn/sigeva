@@ -10,6 +10,7 @@ import thematicGroups from './thematicGroups';
 import submission from './submission';
 import news from './news';
 import activities from './activities';
+import report from './report';
 
 const reducers = combineReducers({
   userSession,
@@ -23,6 +24,7 @@ const reducers = combineReducers({
   submission,
   news,
   activities,
+  report,
 });
 
 export default reducers;

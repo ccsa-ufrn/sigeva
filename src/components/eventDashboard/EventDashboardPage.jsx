@@ -9,6 +9,8 @@ import ThematicGroupsModule from './thematicgroups/ThematicGroupsModule';
 import SubmissionModuleContainer from './submission/SubmissionModuleContainer';
 import NewsModuleContainer from './news/NewsModuleContainer';
 import ActivitiesModuleContainer from './activities/ActivitiesModuleContainer';
+import ReportModule from './report/ReportModule';
+
 import EventDashboardHome from './EventDashboardHome';
 
 class EventDashboardPage extends Component {
@@ -51,7 +53,10 @@ class EventDashboardPage extends Component {
            />
         { this.props.event.context ?
           this.props.event.context.map((mod)=> {
-            if (mod.slug == 'payment' || mod.slug == 'thematicgroups' || mod.slug == 'news') {
+            if (mod.slug == 'payment'
+                || mod.slug == 'thematicgroups'
+                || mod.slug == 'news'
+                || mod.slug == 'report' ) {
               return <EventDashboardMenuItem
                 key={mod.slug}
                 module={{name: mod.name, slug: mod.slug}}
@@ -93,6 +98,8 @@ class EventDashboardPage extends Component {
         return <ActivitiesModuleContainer activitiesContext={this.getModuleContext('activities')} entity={this.state.entity} />
       case 'news':
         return <NewsModuleContainer />
+      case 'report':
+        return <ReportModule reportContext={this.getModuleContext('report')} />
       default:
         return <EventDashboardHome
           event={this.props.event}
