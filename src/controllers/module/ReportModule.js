@@ -1,4 +1,5 @@
 import Module from './Module';
+import User from '../user/User';
 import ModuleObject from '../../models/moduleObject.model';
 import ModuleModel from '../../models/module.model';
 import NewObject from '../../models/newObject.model';
@@ -27,7 +28,7 @@ class ReportModule extends Module {
     const usersIds = this.event.eventObject.ofRelationships.map(r => ({ user: r.user }));
     return new Promise((resolve, reject) => {
       ModuleModel.populate(usersIds, [
-        { path: 'user', select: 'name email ofFields', model: 'User' },
+        { path: 'user', select: 'name email', model: 'User' },
       ], (err, users) => {
         if (err) reject();
 
@@ -63,6 +64,56 @@ class ReportModule extends Module {
     });
   }
 
+  getUserReport(uId) {
+    const user = new User();
+    return new Promise((resolve, reject) => {
+      user.loadById(uId)
+        .then(() => {
+          user.toFormatedUser('cpf institution phone')
+            .then((formatedUser) => {
+              let roles = this.event.getUserRelationships(String(uId));
+              roles = roles.map(role => role.name);
+
+              if (roles.lenght === 0) {
+                reject({});
+              }
+
+              // mount activities
+              this.event.getModule('submission')
+                .then((submissionMdle) => {
+                  submissionMdle.getObjectsByUserId('article', uId)
+                    .then((userArticles) => {
+                      submissionMdle.getObjectsByUserId('poster', uId)
+                        .then((userPosters) => {
+                          submissionMdle.getObjectsByUserId('teachingcases', uId)
+                            .then((userTCases) => {
+                              this.event.getModule('activities')
+                                .then((activitiesMdle) => {
+                                  activitiesMdle.getAllObjectsUserEnrolled(uId)
+                                    .then((userActivities) => {
+                                      resolve({
+                                        _id: formatedUser.id,
+                                        name: formatedUser.name,
+                                        email: formatedUser.email,
+                                        ofFields: formatedUser.fields,
+                                        roles,
+                                        articles: userArticles,
+                                        posters: userPosters,
+                                        teachingcases: userTCases,
+                                        activities: userActivities,
+                                      });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        })
+        .catch(() => { reject({}); });
+    });
+  }
+
   /**
    * Runs a action performed by the user
    * @param user logged User instance
@@ -85,6 +136,11 @@ class ReportModule extends Module {
       case 'get_all_enrollments':
         if (seeAllEnrollments) {
           return this.getAllEnrollments();
+        }
+        break;
+      case 'get_user_report':
+        if (seeAllEnrollments) {
+          return this.getUserReport(body.uId);
         }
         break;
       default:
