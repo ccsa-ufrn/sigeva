@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 class UserReport extends Component {
   render() {
     return (
-      <div>
-        <h5><strong>Relatório de Inscrito</strong></h5>
+      <div id="printable">
+        <h5><strong>Relatório de Inscrito</strong> <a href="#" className="btn btn-success" onClick={this.props.clearUser}>Voltar</a> <a href="#" className="btn btn-success" onClick={window.print}>Imprimir</a></h5>
         <div className="card">
           <div className="card-header"><strong>{this.props.user.name} ({this.props.user.email})</strong></div>
           <div className="card-body">
@@ -93,6 +93,34 @@ class UserReport extends Component {
                         tc.data.state == 'rejected' ? 'Rejeitado' :
                         tc.data.state == 'approved' ? 'Aprovado' : 'Indefinido'
                       }
+                    </div>
+                    <hr/>
+                  </div>
+                )
+              })
+            }
+          </div>
+        </div>
+        <div className="card">
+          <div className="card-header">Atividades inscrito</div>
+          <div className="card-body">
+            { this.props.user.activities &&
+              this.props.user.activities.map((atv) => {
+                return (
+                  <div key={atv._id}>
+                    <h5>{atv.data.title}</h5>
+                    <div>
+                      Tipo de atividade:{' '}
+                      { atv.entity == 'roundtable'  ? 'Mesa-redonda'  :
+                        atv.entity == 'minicourse'  ? 'Minicurso'     :
+                        atv.entity == 'workshop'    ? 'Oficina'       :
+                        atv.entity == 'conference'  ? 'Conferência'   :
+                        'Indefinido'
+                      } <br/>
+                      Propositores da atividade:{' '}
+                      {atv.data.ofProposersUsers.map((proposer, idx) => {
+                        return (<span key={idx}>{proposer.name} ({proposer.email}) { idx == atv.data.ofProposersUsers.length - 1 ? '':','}</span>)
+                      })} <br/>
                     </div>
                     <hr/>
                   </div>

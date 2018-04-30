@@ -95,7 +95,7 @@ class SeeEnrollments extends Component {
       });
 
       return (
-        <div>
+        <div id="printable">
           <h5><strong>Filtros</strong></h5>
           <div>
             Condição de pagamento:{' '}
