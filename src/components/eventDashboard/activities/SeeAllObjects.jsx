@@ -6,6 +6,7 @@ class ListOfPresencePane extends Component {
     super(props);
 
     this.setListToPrint = this.setListToPrint.bind(this);
+    this.setPresence = this.setPresence.bind(this);
   }
   
   componentDidMount() {
@@ -13,14 +14,18 @@ class ListOfPresencePane extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    this.props.setListToPrint([]);
     if (prevProps.entity !== this.props.entity) {
+      this.props.setListToPrint([]);
       this.props.loadAllObjects(this.props.entity);
     }
   }
 
   setListToPrint(ofEnrollments) {
     this.props.setListToPrint(ofEnrollments);
+  }
+
+  setPresence(entitySlug, presence) {
+    this.props.setPresence(entitySlug, presence);
   }
 
   render() {
@@ -30,18 +35,22 @@ class ListOfPresencePane extends Component {
       <table className='table'>
           <thead>
             <tr>
-              <th>Nome</th>
-              <th>Email</th>
+              <th className="d-print-none">Marcar falta</th>
+              <th>Nome/Email</th>
               <th>Assinatura</th>
             </tr>
           </thead>
           <tbody>
           { this.props.listOfPresence &&
-            this.props.listOfPresence.map(user => {
+            this.props.listOfPresence.data.ofEnrollments.map(user => {
               return (
                 <tr key={user._id}>
-                  <td>{user.user.name}</td>
-                  <td>{user.user.email}</td>
+                  { user.present === false ? <td className="d-print-none"><span><a className="btn btn-danger" 
+                    onClick={() => this.setPresence(this.props.entity, {presence: true, enrollmentId: user._id, objId: this.props.listOfPresence._id})}>Marcar falta</a>{' '}</span></td> : 
+                    <td className="d-print-none"><span><a className="btn btn-success"
+                    onClick={() => this.setPresence(this.props.entity, {presence: false, enrollmentId: user._id, objId: this.props.listOfPresence._id})}>Reverter falta</a>{' '}</span></td>
+                  }
+                  <td>{user.user.name}({user.user.email})</td>
                   <td></td>
                 </tr>
               );
@@ -138,7 +147,7 @@ class SeeAllObjectsPane extends Component {
                           );
                         })
                       }
-                      <span key={object._id}><a className="btn btn-primary" onClick={() => this.setListToPrint(object.data.ofEnrollments)}>
+                      <span key={object._id}><a className="btn btn-primary" onClick={() => this.setListToPrint(object)}>
                         Mostrar lista de presença
                         </a>{' '}</span>
                     </td>
@@ -162,16 +171,18 @@ class SeeAllObjectsPane extends Component {
 
 class SeeAllObjects extends Component {
   render() {
-    console.log(this.props.listOfPresence);
     if(this.props.listOfPresence.length === 0) {
-      return (<SeeAllObjectsPane loadAllObjects={this.props.loadAllObjects}
+      return (<SeeAllObjectsPane entity={this.props.entity}
+                                loadAllObjects={this.props.loadAllObjects}
                                 setListToPrint={this.props.setListToPrint}
                                 allObjects={this.props.allObjects} />)
     } else {
       return (
         <div>
           <ListOfPresencePane loadAllObjects={this.props.loadAllObjects}
+                                    entity={this.props.entity}
                                     setListToPrint={this.props.setListToPrint}
+                                    setPresence={this.props.setPresence}
                                     allObjects={this.props.allObjects}
                                     listOfPresence={this.props.listOfPresence} 
                                     ref={el => (this.componentRef = el)}

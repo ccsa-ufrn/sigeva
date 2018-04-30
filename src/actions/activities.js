@@ -364,3 +364,66 @@ export function exit(entitySlug, enrollObject) {
       });
   };
 }
+
+export function getListToPrint(entitySlug, activityId) {
+  console.log(entitySlug);
+  console.log(activityId);
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        activityId,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/get_list_to_print`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          console.log(json.data);
+          dispatch(setListToPrint(json.data));
+        }
+      });
+  };
+}
+
+export function setPresence(entitySlug, presence) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        presence: presence.presence,
+        enrollmentId: presence.enrollmentId,
+        activityId: presence.objId,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/set_presence`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(getListToPrint(entitySlug, presence.objId));
+        }
+      });
+  };
+}
