@@ -161,7 +161,6 @@ class SeeAllObjectsPane extends Component {
 
 class SeeAllObjects extends Component {
   render() {
-    console.log(this.props.listOfPresence);
     if(this.props.listOfPresence.length === 0) {
       return (<SeeAllObjectsPane loadAllObjects={this.props.loadAllObjects}
                                 setListToPrint={this.props.setListToPrint}
