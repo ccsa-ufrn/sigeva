@@ -92,7 +92,6 @@ class SeeAllObjectsToEnrollPane extends Component {
   }
 
   render() {      
-    console.log(this.props.payed);
     return(
       <div>
         <h5><strong>Todas propostas disponíveis{' '}
@@ -120,10 +119,11 @@ class SeeAllObjectsToEnrollPane extends Component {
                       <strong>Horários</strong>:{' '}
                       { object.data.consolidation.sessions &&
                         object.data.consolidation.sessions.map((session) => {
+                          const date = new Date(session.date)
                           return (
-                             session.shift === 0 ? `Manhã do dia ${session.date.toString().substring(0, 10)}` + '\n':
-                             session.shift === 1 ? `Tarde do dia ${session.date.toString().substring(0, 10)}` + '\n' :
-                             session.shift === 2 ? `Noite do dia ${session.date.toString().substring(0, 10)}` + '\n' : 'Indefinido'
+                             session.shift === 0 ? `Manhã do dia ${date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}` + '\n':
+                             session.shift === 1 ? `Tarde do dia ${date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}` + '\n' :
+                             session.shift === 2 ? `Noite do dia ${date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}` + '\n' : 'Indefinido'
                           );
                         }) 
                       }

@@ -99,20 +99,22 @@ class SeeAllObjectsEnrolledPane extends Component {
                     <td>
                       <strong>{object.data.title}</strong>
                       <br/>
-                      <strong>Tipo de atividade</strong>
+                      <strong>Tipo de atividade</strong>{' '}
                       {
                         object.entity === 'minicourse' ? 'Minicurso':
                         object.entity === 'workshop' ? 'Oficina':
                         object.entity === 'conference' ? 'Conferência':
                         object.entity === 'roundtable' ? 'Mesa-Redonda': ''
                       }
+                      <br/>
                       <strong>Horários</strong>:{' '}
                       { object.data.consolidation.sessions &&
                         object.data.consolidation.sessions.map((session) => {
+                          const date = new Date(session.date)
                           return (
-                             session.shift === 0 ? `Manhã do dia ${session.date.toString().substring(0, 10)}` + '\n':
-                             session.shift === 1 ? `Tarde do dia ${session.date.toString().substring(0, 10)}` + '\n' :
-                             session.shift === 2 ? `Noite do dia ${session.date.toString().substring(0, 10)}` + '\n' : 'Indefinido'
+                             session.shift === 0 ? `Manhã do dia ${date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}` + '\n':
+                             session.shift === 1 ? `Tarde do dia ${date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}` + '\n' :
+                             session.shift === 2 ? `Noite do dia ${date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}` + '\n' : 'Indefinido'
                           );
                         }) 
                       }
