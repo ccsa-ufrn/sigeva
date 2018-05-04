@@ -24,18 +24,6 @@ class OutOfDateWarning extends Component {
   }
 }
 
-class PaymentRequiredWarning extends Component {
-  render() {
-    return(
-      <div className='alert alert-danger' role='alert'>
-        <h5><strong>Acesso indisponível</strong></h5>
-        Não é possível efetuar inscrição nesse tipo de atividade pois é exigida aprovação pelo
-          Módulo de Pagamento. Acesse o menu <strong>Pagamento</strong> para ter mais instruções.
-      </div>
-    );
-  }
-}
-
 class EnrollButton extends Component {
   render() {
     return(
@@ -104,6 +92,7 @@ class SeeAllObjectsToEnrollPane extends Component {
   }
 
   render() {      
+    console.log(this.props.payed);
     return(
       <div>
         <h5><strong>Todas propostas disponíveis{' '}
@@ -153,7 +142,8 @@ class SeeAllObjectsToEnrollPane extends Component {
                         })
                       }
                       {     
-                        !object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
+                        !object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) &&
+                        this.props.payed &&  
                         <EnrollButton onClick={() => this.enroll({ activityId: object._id, 
                           userId: this.props.userSession.logged_user.id,
                           sessions: object.data.consolidation.sessions})}
@@ -161,6 +151,7 @@ class SeeAllObjectsToEnrollPane extends Component {
                       }
                       {
                         object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
+                        this.props.payed &&
                         <EnrollButton onClick={() => this.exit({ activityId: object._id, 
                           userId: this.props.userSession.logged_user.id,
                           sessions: object.data.consolidation.sessions})}
@@ -169,7 +160,11 @@ class SeeAllObjectsToEnrollPane extends Component {
                       {
                         this.checkEnrollment({ sessions: object.data.consolidation.sessions, entity: this.props.entity}) != 0 &&
                         !object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
+                        this.props.payed &&
                         <p>Você já está inscrito em uma atividade que conflita com essa em relação a horários</p> 
+                      }
+                      { !this.props.payed &&
+                        <p>É preciso fazer o pagamento da taxa de inscrição para poder ter acesso as atividades do evento</p>
                       }
                     </td>
                     <td>
@@ -194,15 +189,18 @@ class SeeAllObjectsToEnrollPane extends Component {
 class SeeAllObjectsToEnroll extends Component {
   render() {
     if (this.props.activities.entity) {
-      const listOfProposers = Array.from(this.props.allObjectsToEnroll.map(object => object.data.ofProposersUsers.map(user => user._id))).reduce((arr, e) => arr.concat(e), []);
       const entity = this.props.activities.entity;
+      const listOfProposers = Array.from(this.props.allObjectsToEnroll.map(object => object.data.ofProposersUsers.map(user => user._id))).reduce((arr, e) => arr.concat(e), []);
+      let payed = true;
       // Handle payment requirement
       if (entity.data.requirePayment === true) {
         if (this.props.payment.approved === false) {
           if(!listOfProposers.includes(this.props.userSession.logged_user.id))
-            return (<PaymentRequiredWarning/>);
+            payed = false;
+          } else {
+            payed = true;
           }
-        }
+      }
 
       const now = new Date();
       const enrollmentPeriodBegin = new Date(entity.data.enrollmentPeriod.begin);
@@ -217,6 +215,7 @@ class SeeAllObjectsToEnroll extends Component {
             loadObjects={this.props.loadObjects} 
             enroll={this.props.enroll}
             exit={this.props.exit}
+            payed={payed}
             />);
         } else {
         return (<OutOfDateWarning begin={enrollmentPeriodBegin} end={enrollmentPeriodEnd} />);

@@ -201,7 +201,6 @@ class ScheduleSubmission extends Component {
                     <tbody>
                     { this.props.allObjects &&
                       this.props.allObjects.filter((object) => {
-                        console.log(this.props.allObjects);
                         if (object.data.consolidation !== undefined && object.data.consolidation !== null) {
                           return object.data.consolidation.sessions.reduce((previous, currentSess) => {
                             return previous || currentSess == session._id;
