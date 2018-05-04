@@ -138,6 +138,7 @@ class SubmissionModule extends Module {
       ModuleObject.populate(objectsOfUser, [
         { path: 'data.authors', select: 'name', model: 'User' },
         { path: 'data.files', model: 'File' },
+        { path: 'data.consolidation.sessions', select: 'date shift', model: 'ActivitySession' },
       ], (err, docs) => {
         ModuleObject.populate(docs, [
           { path: 'data.files.fileRequirement', model: 'FileRequirement' },
