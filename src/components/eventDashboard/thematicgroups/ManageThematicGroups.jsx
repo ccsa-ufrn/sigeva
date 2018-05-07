@@ -105,7 +105,6 @@ class ListGTs extends Component {
   }
 
   render() {
-    console.log(this.props.thematicGroups);
     return(
       <div>
         <h5><strong>Lista de Grupos Temáticos</strong></h5>

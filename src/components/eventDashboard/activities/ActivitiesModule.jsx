@@ -4,6 +4,7 @@ import ConsolidateObjectContainer from './ConsolidateObjectContainer';
 import SeeAllObjectsContainer from './SeeAllObjectsContainer';
 import SeeAllObjectsToEnrollContainer from './SeeAllObjectsToEnrollContainer';
 import SeeAllObjectsEnrolledContainer from './SeeAllObjectsEnrolledContainer';
+import SeeAllObjectsSubmitedContainer from './SeeAllObjectsSubmitedContainer';
 
 class ActivitiesModule extends Component {
   constructor(props) {
@@ -35,6 +36,8 @@ class ActivitiesModule extends Component {
         return <SeeAllObjectsToEnrollContainer entity={this.props.entity} />;
       case 'see_enrollments':
         return <SeeAllObjectsEnrolledContainer entity={this.props.entity} />;
+      case 'see_objects_submited':
+        return <SeeAllObjectsSubmitedContainer entity={this.props.entity} />;
       default:
         return null;
     }

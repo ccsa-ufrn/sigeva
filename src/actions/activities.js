@@ -17,6 +17,7 @@ export function setAllObjects(data) {
 }
 
 export function setListToPrint(data) {
+  console.log(data);
   return ({
     type: Action.SET_ACTIVITIES_LIST_OF_PRESENCE,
     data,
@@ -40,6 +41,13 @@ export function setAllObjectsToEnroll(data) {
 export function setAllEnrolledObjects(data) {
   return ({
     type: Action.SET_ACTIVITIES_ALL_ENROLLED_OBJECTS,
+    data,
+  });
+}
+
+export function setAllObjectsSubmited(data) {
+  return ({
+    type: Action.SET_ACTIVITIES_ALL_OBJECTS_SUBMITED,
     data,
   });
 }
@@ -305,6 +313,36 @@ export function loadObjects(entitySlug, userId) {
       });
   };
 }
+
+export function loadAllObjectsSubmited(entitySlug, userId) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/get_objects_submited`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(setAllObjectsSubmited(json.data));
+        }
+      });
+  };
+}
+
 export function enroll(entitySlug, enrollObject) {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
@@ -360,6 +398,66 @@ export function exit(entitySlug, enrollObject) {
           // handle this error
         } else {
           dispatch(loadObjects(entitySlug, enrollObject.userId));
+        }
+      });
+  };
+}
+
+export function getListToPrint(entitySlug, activityId) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        activityId,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/get_list_to_print`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(setListToPrint(json.data));
+        }
+      });
+  };
+}
+
+export function setPresence(entitySlug, presence) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        presence: presence.presence,
+        enrollmentId: presence.enrollmentId,
+        activityId: presence.objId,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/set_presence`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(getListToPrint(entitySlug, presence.objId));
         }
       });
   };

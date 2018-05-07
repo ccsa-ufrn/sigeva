@@ -139,6 +139,53 @@ class ActivitiesModule extends Module {
     });
   }
 
+  getAllObjectsSubmited(entitySlug, userId) {
+    const objectsOfEntity = this.moduleObject.ofObjects.filter(obj => obj.entity === entitySlug);
+    const filteredObjects = objectsOfEntity.reduce((filtered, option) => {
+      const listOfProposers = option.data.ofProposersUsers.map(users => users.toString());
+      if (listOfProposers.includes(userId)) {
+        filtered.push(option);
+      }
+      return filtered;
+    }, []);
+    return new Promise((resolve, reject) => {
+      ModuleObject.populate(filteredObjects, [
+        { path: 'data.ofProposersUsers', select: 'name email', model: 'User' },
+        { path: 'data.ofEnrollments.user', select: 'name email', model: 'User' },
+        { path: 'data.ofFiles', model: 'File' },
+        { path: 'data.ofFields.request', model: 'FieldRequest' },
+        { path: 'data.consolidation.sessions', select: 'date shift', model: 'ActivitySession'}
+      ], (err, docs) => {
+        ModuleObject.populate(docs, [
+          { path: 'data.ofFiles.fileRequirement', model: 'FileRequirement' },
+        ], (err_, docs_) => {
+          if (err) reject();
+          resolve(docs_);
+        });
+      });
+    });
+  }
+
+  getOneObject(activityId) {
+    const activityObject = this.moduleObject.ofObjects.filter(obj => obj._id == activityId)[0];
+    return new Promise((resolve, reject) => {
+      ModuleObject.populate(activityObject, [
+        { path: 'data.ofProposersUsers', select: 'name email', model: 'User' },
+        { path: 'data.ofEnrollments.user', select: 'name email', model: 'User' },
+        { path: 'data.ofFiles', model: 'File' },
+        { path: 'data.ofFields.request', model: 'FieldRequest' },
+        { path: 'data.consolidation.sessions', select: 'date shift', model: 'ActivitySession'}
+      ], (err, docs) => {
+        ModuleObject.populate(docs, [
+          { path: 'data.ofFiles.fileRequirement', model: 'FileRequirement' },
+        ], (err_, docs_) => {
+          if (err) reject();
+          resolve(docs_);
+        });
+      });
+    });
+  }
+
   createSession(eventId, entityId, date, shift) {
     const newSession = new ActivitySession({
       event: eventId,
@@ -229,6 +276,30 @@ class ActivitiesModule extends Module {
         }, (err, doc) => {
           if (!err) resolve({});
           reject({});
+        });
+    });
+  }
+
+  setPresence(presence, enrollmentId, activityId) {
+    const wholeObject = this.moduleObject.ofObjects.filter(obj => obj._id == activityId)[0];
+    const newOfEnrollments = wholeObject.data.ofEnrollments.reduce((filtered, option) => {
+      if (option._id == enrollmentId) {
+        const switchedPresence = { _id: option._id, user: option.user, present: presence };
+        filtered.push(switchedPresence);
+      } else {
+        filtered.push(option);
+      }
+      return filtered;
+    }, []);
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': activityId },
+        {
+          $set: {
+            'ofObjects.$.data.ofEnrollments': newOfEnrollments },
+        },
+        { new: true }, (err, doc) => {
+          if (err) reject(doc);
+          resolve(doc);
         });
     });
   }
@@ -329,11 +400,29 @@ class ActivitiesModule extends Module {
           }
         }
         break;
+      case 'get_objects_submited':
+        if (submitPermission) {
+          return this.getAllObjectsSubmited(entitySlug, body.userId);
+        }
+        break;
       case 'exit_object':
         if (enrollInObject) {
           const atvId = body.activityId;
           const userId = body.userId;
           return this.exitObject(atvId, userId);
+        }
+        break;
+      case 'set_presence':
+        if (consolidatePermission) {
+          const enrollmentId = body.enrollmentId;
+          const activityId = body.activityId;
+          const presence = body.presence;
+          return this.setPresence(presence, enrollmentId, activityId);
+        }
+        break;
+      case 'get_list_to_print':
+        if (consolidatePermission) {
+          return this.getOneObject(body.activityId);
         }
         break;
       default:
