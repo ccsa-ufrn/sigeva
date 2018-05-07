@@ -139,6 +139,33 @@ class ActivitiesModule extends Module {
     });
   }
 
+  getAllObjectsSubmited(entitySlug, userId) {
+    const objectsOfEntity = this.moduleObject.ofObjects.filter(obj => obj.entity === entitySlug);
+    const filteredObjects = objectsOfEntity.reduce((filtered, option) => {
+      const listOfProposers = option.data.ofProposersUsers.map(users => users.toString());
+      if (listOfProposers.includes(userId)) {
+        filtered.push(option);
+      }
+      return filtered;
+    }, []);
+    return new Promise((resolve, reject) => {
+      ModuleObject.populate(filteredObjects, [
+        { path: 'data.ofProposersUsers', select: 'name email', model: 'User' },
+        { path: 'data.ofEnrollments.user', select: 'name email', model: 'User' },
+        { path: 'data.ofFiles', model: 'File' },
+        { path: 'data.ofFields.request', model: 'FieldRequest' },
+        { path: 'data.consolidation.sessions', select: 'date shift', model: 'ActivitySession'}
+      ], (err, docs) => {
+        ModuleObject.populate(docs, [
+          { path: 'data.ofFiles.fileRequirement', model: 'FileRequirement' },
+        ], (err_, docs_) => {
+          if (err) reject();
+          resolve(docs_);
+        });
+      });
+    });
+  }
+
   getOneObject(activityId) {
     const activityObject = this.moduleObject.ofObjects.filter(obj => obj._id == activityId)[0];
     return new Promise((resolve, reject) => {
@@ -371,6 +398,11 @@ class ActivitiesModule extends Module {
           if (this.checkVacancies(entitySlug, atvId)) {
             return this.enrollInObject(atvId, userId);
           }
+        }
+        break;
+      case 'get_objects_submited':
+        if (submitPermission) {
+          return this.getAllObjectsSubmited(entitySlug, body.userId);
         }
         break;
       case 'exit_object':

@@ -17,6 +17,7 @@ export function setAllObjects(data) {
 }
 
 export function setListToPrint(data) {
+  console.log(data);
   return ({
     type: Action.SET_ACTIVITIES_LIST_OF_PRESENCE,
     data,
@@ -40,6 +41,13 @@ export function setAllObjectsToEnroll(data) {
 export function setAllEnrolledObjects(data) {
   return ({
     type: Action.SET_ACTIVITIES_ALL_ENROLLED_OBJECTS,
+    data,
+  });
+}
+
+export function setAllObjectsSubmited(data) {
+  return ({
+    type: Action.SET_ACTIVITIES_ALL_OBJECTS_SUBMITED,
     data,
   });
 }
@@ -305,6 +313,36 @@ export function loadObjects(entitySlug, userId) {
       });
   };
 }
+
+export function loadAllObjectsSubmited(entitySlug, userId) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/get_objects_submited`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(setAllObjectsSubmited(json.data));
+        }
+      });
+  };
+}
+
 export function enroll(entitySlug, enrollObject) {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
@@ -366,8 +404,6 @@ export function exit(entitySlug, enrollObject) {
 }
 
 export function getListToPrint(entitySlug, activityId) {
-  console.log(entitySlug);
-  console.log(activityId);
   return (dispatch, getState) => {
     const eventId = getState().event.id;
 
@@ -390,7 +426,6 @@ export function getListToPrint(entitySlug, activityId) {
         if (json.error) {
           // handle this error
         } else {
-          console.log(json.data);
           dispatch(setListToPrint(json.data));
         }
       });
