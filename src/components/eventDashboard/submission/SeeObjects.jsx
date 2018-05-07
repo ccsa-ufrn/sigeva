@@ -32,7 +32,7 @@ class SeeObjects extends Component {
                     <a data-toggle="collapse" href={`#clps-${object.data._id}`} aria-expanded="false" role="button" aria-controls={`#clps-${object.data._id}`}>  Expandir</a>
                       <div className="collapse" id={`clps-${object.data._id}`}>
                         <span>Datas da apresentação:{' '}
-                        { object.data.consolidation.sessions &&
+                        { object.data.consolidation &&
                           object.data.consolidation.sessions.map((session) => {
                             const date = new Date(session.date)
                             return (
@@ -40,11 +40,16 @@ class SeeObjects extends Component {
                             )
                           })
                         }
-                        { !object.data.consolidation.sessions &&
+                        { !object.data.consolidation &&
                             <span>Sem datas de agendamento</span>
                         }
                         <br/></span>
-                        <span>Localização da apresentação - {object.data.consolidation.location}</span>
+                        { object.data.consolidation &&
+                          <span>Localização da apresentação - {object.data.consolidation.location}</span>
+                        }
+                        { !object.data.consolidation &&
+                          <span>Localização da apresentação - Localização ainda não definida</span>
+                        }
                       </div>
                     </td>
                     <td>{object.data.authors.map((author)=> `${author.name} - `)}</td>
