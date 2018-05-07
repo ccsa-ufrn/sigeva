@@ -11,6 +11,7 @@ import ThematicGroupModule from '../module/ThematicGroupModule';
 import SubmissionModule from '../module/SubmissionModule';
 import NewsModule from '../module/NewsModule';
 import ActivitiesModule from '../module/ActivitiesModule';
+import ReportModule from '../module/ReportModule';
 
 import * as EventHelper from './EventHelper';
 
@@ -322,6 +323,9 @@ export default class {
         break;
       case 'news':
         module = new NewsModule(this);
+        break;
+      case 'report':
+        module = new ReportModule(this);
         break;
       default:
         // do nothing

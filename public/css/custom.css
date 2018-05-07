@@ -206,3 +206,48 @@ form .form-error-message {
 h5 strong {
   border-bottom: 3px solid #CF2B38;
 }
+
+@media print {
+  @page {
+    margin: 0.75cm;
+  }
+
+  body {
+    margin: 0px;
+    padding: 0px;
+    padding-bottom: 200px;
+    line-height: 1.4em;
+  }
+
+  * {
+    background:transparent !important;
+    color:#000 !important;
+    text-shadow:none !important;
+    filter:none !important;
+    -ms-filter:none !important;
+  }
+
+  .col-md-3.event-dashboard-top-padding {
+    display: none;
+  }
+  .container-fluid {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #printable, #printable * {
+    visibility: visible;
+  }
+  #printable {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+  }
+}

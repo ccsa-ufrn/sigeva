@@ -197,7 +197,7 @@ class ScheduleSubmission extends Component {
               <div key={session._id} className="card">
                 <div className="card-body">
                   <div className="card-title">{`${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${shift} - ${hour}`}</div>
-                  <table>
+                  <table className="table">
                     <tbody>
                     { this.props.allObjects &&
                       this.props.allObjects.filter((object) => {
@@ -212,7 +212,9 @@ class ScheduleSubmission extends Component {
                         return (
                           <tr key={submission._id}>
                             <td>
-                              <strong>{submission.data.title}</strong><span>    </span><a onClick={() => {this.props.cancelSubmissionPresentation(this.props.entity, submission._id)}}>Cancelar apresentação</a><br/>
+                              <strong>{submission.data.title}</strong> (Local: {submission.data.consolidation.location}) <a style={{float:'right'}} onClick={() => {this.props.cancelSubmissionPresentation(this.props.entity, submission._id)}}>Cancelar apresentação</a><br/>
+                              Grupo Temático: {submission.data.thematicGroup.data.name}
+                              <hr/>
                             </td>
                           </tr>
                         );
@@ -234,7 +236,7 @@ class ScheduleSubmission extends Component {
                           "Noite";
             return (
               <div key={session._id} style={{display: 'inline-block', margin: '5px'}}>
-                <input onChange={(e) => { this.changeSelection(e, session._id) }} type="checkbox" key={session._id} />{`  ${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${shift}`}  
+                <input onChange={(e) => { this.changeSelection(e, session._id) }} type="checkbox" key={session._id} />{`  ${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${shift}`}
               </div>
             );
           })
@@ -256,7 +258,7 @@ class ScheduleSubmission extends Component {
                 return (
                     <tr key={object._id}>
                       <td>
-                        <strong>{object.data.title}</strong>{' '} 
+                        <strong>{object.data.title}</strong>{' '}
                       </td>
                       <td>
                         { !this.checkSubmissionList(object._id) &&

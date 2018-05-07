@@ -138,6 +138,7 @@ class SubmissionModule extends Module {
       ModuleObject.populate(objectsOfUser, [
         { path: 'data.authors', select: 'name', model: 'User' },
         { path: 'data.files', model: 'File' },
+        { path: 'data.consolidation.sessions', select: 'date shift', model: 'ActivitySession' },
       ], (err, docs) => {
         ModuleObject.populate(docs, [
           { path: 'data.files.fileRequirement', model: 'FileRequirement' },
@@ -383,7 +384,7 @@ class SubmissionModule extends Module {
         break;
       case 'get_sessions':
         if (schedulePermission) {
-          return this.getSessions(this.event.eventObject, 
+          return this.getSessions(this.event.eventObject,
             entityId);
         }
         break;

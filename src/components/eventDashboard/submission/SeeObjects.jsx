@@ -28,7 +28,25 @@ class SeeObjects extends Component {
               this.props.submission.userObjects.map((object) => {
                 return (
                   <tr key={object._id}>
-                    <td>{object.data.title}</td>
+                    <td>{object.data.title} - 
+                    <a data-toggle="collapse" href={`#clps-${object.data._id}`} aria-expanded="false" role="button" aria-controls={`#clps-${object.data._id}`}>  Expandir</a>
+                      <div className="collapse" id={`clps-${object.data._id}`}>
+                        <span>Datas da apresentação:{' '}
+                        { object.data.consolidation.sessions &&
+                          object.data.consolidation.sessions.map((session) => {
+                            const date = new Date(session.date)
+                            return (
+                              date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()  + '  \n'
+                            )
+                          })
+                        }
+                        { !object.data.consolidation.sessions &&
+                            <span>Sem datas de agendamento</span>
+                        }
+                        <br/></span>
+                        <span>Localização da apresentação - {object.data.consolidation.location}</span>
+                      </div>
+                    </td>
                     <td>{object.data.authors.map((author)=> `${author.name} - `)}</td>
                     <td>{object.data.files &&
                       object.data.files.map((file) => {
