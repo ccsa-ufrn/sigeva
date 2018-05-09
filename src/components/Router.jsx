@@ -7,6 +7,7 @@ import HomePageContainer from './home/HomePageContainer';
 import RegisterContainer from './register/RegisterContainer';
 import LoginPageContainer from './login/LoginPageContainer';
 import DashboardContainer from './dashboard/DashboardContainer';
+import AccountPageContainer from './account/AccountPageContainer';
 import EventPageContainer from './event/EventPageContainer';
 import EventDashboardPageContainer from './eventDashboard/EventDashboardPageContainer';
 import RecoverPasswordContainer from './recoverPassword/RecoverPasswordContainer';
@@ -20,6 +21,7 @@ const Router = () => (
     <Route exact path='/register' component={RegisterContainer} />
     <Route exact path='/login' component={LoginPageContainer} />
     <Route exact path='/dashboard' component={DashboardContainer} />
+    <Route exact path='/dashboard/account' component={AccountPageContainer} />
     <Route exact path='/recover-password' component={RecoverPasswordContainer} />
     <Route exact path='/new-password/:uid/:code' component={NewPasswordContainer} />
     <Route exact path='/event/:id/dashboard/' component={EventDashboardPageContainer} />
