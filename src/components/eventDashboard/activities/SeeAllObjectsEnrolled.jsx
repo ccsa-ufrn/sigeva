@@ -108,7 +108,7 @@ class SeeAllObjectsEnrolledPane extends Component {
                       }
                       <br/>
                       <strong>Horários</strong>:{' '}
-                      { object.data.consolidation.sessions &&
+                      { object.data.consolidation &&
                         object.data.consolidation.sessions.map((session) => {
                           const date = new Date(session.date)
                           return (
