@@ -107,6 +107,7 @@ class SeeAllObjectsEnrolledPane extends Component {
                         object.entity === 'roundtable' ? 'Mesa-Redonda': ''
                       }
                       <br/>
+                      <strong>Vagas preenchidas</strong>:{object.data.ofEnrollments.length} de { object.data.consolidation ? object.data.consolidation.vacancies : 'Isso não devia estar acontecendo' }
                       <strong>Horários</strong>:{' '}
                       { object.data.consolidation &&
                         object.data.consolidation.sessions.map((session) => {
@@ -119,7 +120,6 @@ class SeeAllObjectsEnrolledPane extends Component {
                         }) 
                       }
                       <br/>
-                      <strong>Vagas preenchidas</strong>:{object.data.ofEnrollments.length} de { object.data.consolidation.vacancies === 0 ? 'Sem limites': object.data.consolidation.vacancies }
                       <br/>
                       <p style={{textAlign: 'justify'}}>
                       <strong>Ementa</strong>: { object.data.syllabus }</p>
@@ -132,21 +132,21 @@ class SeeAllObjectsEnrolledPane extends Component {
                           );
                         })
                       }
-                      {     
+                      { object.data.consolidation && 
                         !object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
                         <EnrollButton onClick={() => this.enroll({ activityId: object._id, 
                           userId: this.props.userSession.logged_user.id,
                           sessions: object.data.consolidation.sessions})}
                           style={'primary'} text={'Inscrever-se'} />
                       }
-                      {
+                      { object.data.consolidation && 
                         object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
                         <EnrollButton onClick={() => this.exit({ activityId: object._id, 
                           userId: this.props.userSession.logged_user.id,
                           sessions: object.data.consolidation.sessions})}
                           style={'danger'} text={'Desfazer inscrição'} />
                       }
-                      {
+                      { object.data.consolidation &&
                         this.checkEnrollment({ sessions: object.data.consolidation.sessions, entity: this.props.entity}) != 0 &&
                         !object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
                         <p>Você já está inscrito em uma atividade que conflita com essa em relação a horários</p> 
