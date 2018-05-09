@@ -132,6 +132,9 @@ class ScheduleSubmission extends Component {
 
   scheduleSubmissions(entity) {
     this.props.scheduleSubmissions(entity, this.state.selectedSubmissions, this.state.selectedSessions, this.state.location);
+    this.setState({
+      selectedSubmissions : [],
+    })
   }
 
   render() {
