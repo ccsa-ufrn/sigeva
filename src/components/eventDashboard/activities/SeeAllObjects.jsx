@@ -30,7 +30,7 @@ class ListOfPresencePane extends Component {
 
   render() {
     return(
-      <div>
+      <div id="printable">
       <h5>Lista de Presença</h5>
       <table className='table'>
           <thead>
@@ -185,11 +185,6 @@ class SeeAllObjects extends Component {
                                     setPresence={this.props.setPresence}
                                     allObjects={this.props.allObjects}
                                     listOfPresence={this.props.listOfPresence} 
-                                    ref={el => (this.componentRef = el)}
-          />
-          <ReactToPrint
-            trigger={() => <span><br/><a className="btn btn-primary">Imprimir </a>{' '}</span>}
-            content={() => this.componentRef}
           />
         </div>
       )

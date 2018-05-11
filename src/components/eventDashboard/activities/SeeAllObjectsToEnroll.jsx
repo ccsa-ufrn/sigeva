@@ -201,8 +201,8 @@ class SeeAllObjectsToEnroll extends Component {
       let payed = true;
       // Handle payment requirement
       if (entity.data.requirePayment === true) {
-        if (this.props.payment.approved === false && !thematicGroupsCoordinators.includes(this.props.userSession.logged_user.id)) {
-          if(!listOfProposers.includes(this.props.userSession.logged_user.id))
+        if (this.props.payment.approved === false) {
+          if(!listOfProposers.includes(this.props.userSession.logged_user.id) && !thematicGroupsCoordinators.includes(this.props.userSession.logged_user.id)) 
             payed = false;
           } else {
             payed = true;
