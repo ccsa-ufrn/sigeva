@@ -187,14 +187,21 @@ class SeeAllObjectsToEnrollPane extends Component {
 
 
 class SeeAllObjectsToEnroll extends Component {
+
+  componentDidMount() {
+    this.props.loadThematicGroups();
+  }
+
   render() {
+    let thematicGroupsCoordinators = this.props.thematicGroups.thematicGroups.map(object => object.data.coordinators);
+    thematicGroupsCoordinators = Array.from(thematicGroupsCoordinators.reduce((arr, e) => arr.concat(e), [])).map(object => object._id);
     if (this.props.activities.entity) {
       const entity = this.props.activities.entity;
       const listOfProposers = Array.from(this.props.allObjectsToEnroll.map(object => object.data.ofProposersUsers.map(user => user._id))).reduce((arr, e) => arr.concat(e), []);
       let payed = true;
       // Handle payment requirement
       if (entity.data.requirePayment === true) {
-        if (this.props.payment.approved === false) {
+        if (this.props.payment.approved === false && !thematicGroupsCoordinators.includes(this.props.userSession.logged_user.id)) {
           if(!listOfProposers.includes(this.props.userSession.logged_user.id))
             payed = false;
           } else {
