@@ -46,6 +46,7 @@ const formatUserOfFields = (userObject_) => {
         const fieldRequestData = fieldRequest.getData(); // Get formated fieldRequest data
 
         fieldRequestData.value = field.value; // Increase value to fieldRequestData
+        fieldRequestData.request = field.request;
         // Can send it to return, by appending to parseds fields
         userOfFieldsParsed.push(fieldRequestData);
 

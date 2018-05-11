@@ -98,3 +98,24 @@ export function logoutUserSession() {
       }); // TODO: Can we get a error?
   };
 }
+
+export function updateUser(data) {
+  return (dispatch) => {
+    const config = {
+      method: 'PUT',
+      mode: 'cors',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(data),
+    };
+
+    fetch(`${application.url}/api/user`, config)
+      .then(response => response.json())
+      .then(() => {
+        // dispatch(reloadUser());
+      });
+  };
+}
