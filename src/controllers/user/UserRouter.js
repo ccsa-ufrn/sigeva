@@ -40,6 +40,22 @@ userRouter.post('/', (req, res) => {
 });
 
 /**
+ * Update user data
+ * @param
+ */
+userRouter.put('/', simpleAuthorization, (req, res) => {
+  const user = new User();
+
+  user.loadById(res.locals.user._id)
+    .then(() => {
+      user.updateData(req.body)
+        .then(() => {
+          res.json(Response(false, {}));
+        });
+    });
+});
+
+/**
  * Authorizes a user generating a access token
  * @param email user email passed by post body
  * @param password user password passed by post body
@@ -85,6 +101,10 @@ userRouter.get('/me', simpleAuthorization, (req, res) => {
       user.toFormatedUser('cpf institution phone')
         .then((formatedUser) => {
           res.json(Response(false, formatedUser));
+        }).catch((e) => {
+          res.json(Response(true, {
+            err: e.toString(),
+          }));
         });
     });
 });

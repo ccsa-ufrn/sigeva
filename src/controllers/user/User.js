@@ -182,6 +182,22 @@ export default class {
     });
   }
 
+  updateData(data) {
+    this.userObject.name = data.name;
+    this.userObject.email = data.email;
+
+    const newOfFields = data.fields.map((field) => {
+      return {
+        _id: field._id,
+        value: field.value,
+        request: field.request,
+      };
+    });
+
+    this.userObject.ofFields = newOfFields;
+    return this.store();
+  }
+
   /**
    * Authorizes a user based on a email and password credential
    * @param email_ user email

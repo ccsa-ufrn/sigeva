@@ -15,6 +15,7 @@ class AccountPage extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.doSubmit = this.doSubmit.bind(this);
   }
 
   handleChange(e) {
@@ -34,6 +35,11 @@ class AccountPage extends Component {
 
       this.setState({fields: newFields});
     }
+  }
+
+  doSubmit(e) {
+    e.preventDefault();
+    this.props.updateUser(this.state);
   }
 
   render() {
@@ -57,7 +63,7 @@ class AccountPage extends Component {
         <MainLayout path={accountPath} >
           <div className='row'>
             <div className='col-md-8'>
-              <form className='form'>
+              <form className='form' onSubmit={this.doSubmit}>
                 <div className='form-group'>
                   <label htmlFor='form-name'>Nome completo</label>
                   <input onChange={this.handleChange} name='name' className='form-control' id='form-name' defaultValue={this.state.name} />
@@ -72,6 +78,7 @@ class AccountPage extends Component {
                     <input onChange={this.handleChange} className='form-control' id={field._id} name={field.name} defaultValue={field.value} />
                   </div>
                 ))}
+                <input value="Atualizar dados" className="btn btn-success" type="submit" />
               </form>
             </div>
           </div>

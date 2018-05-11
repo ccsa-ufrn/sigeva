@@ -2,6 +2,8 @@ import { connect } from 'react-redux';
 
 import AccountPage from './AccountPage';
 
+import { updateUser } from '../../actions/userSession';
+
 const mapStateToProps = (state) => {
   return {
     logged: state.userSession.logged,
@@ -12,6 +14,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    updateUser: (data) => {
+      dispatch(updateUser(data));
+    }
   }
 }
 
