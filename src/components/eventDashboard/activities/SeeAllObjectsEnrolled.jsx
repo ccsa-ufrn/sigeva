@@ -49,26 +49,20 @@ class SeeAllObjectsEnrolledPane extends Component {
   }
 
   checkEnrollment(object) {
-    const roundTables = this.props.listOfEnrolledSessions.filter(obj => obj.entity == "roundtable" || obj.entity == "conference");
+    const roundTables = this.props.listOfEnrolledSessions.filter(obj => obj.entity == "roundtable" || obj.entity == "conference" || obj.entity == "workshop");
     const minicourse = this.props.listOfEnrolledSessions.filter(obj => obj.entity == "minicourse");
-    const workshop = this.props.listOfEnrolledSessions.filter(obj => obj.entity == "workshop");
     const roundTablesSessions = Array.from((roundTables.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
     const minicourseSessions = Array.from((minicourse.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
-    const workshopSessions = Array.from((workshop.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
     const matchingList = object.sessions.reduce((filtered, option) => {
-      if(object.entity == "roundtable" || object.entity == "conference") {
+      if(object.entity == "roundtable" || object.entity == "conference" || object.entity == "workshop") {
         if(roundTablesSessions.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
           filtered.push(1);
         }    
-      } else if(object.entity == "minicourse") {
+      } else {
         if(minicourseSessions.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
           filtered.push(1);
         }
-      } else {
-        if(workshopSessions.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
-          filtered.push(1);
-        }
-      }
+      } 
       return filtered;
     }, []);
     return matchingList;
