@@ -93,6 +93,7 @@ class SeeAllObjectsToEnrollPane extends Component {
             `(${this.props.allObjectsToEnroll.length})`
           }
         </strong></h5>
+        <h6>Os horários detalhados podem ser encontrados no site seminario.ccsa.ufrn.br</h6>
         <table className='table'>
           <thead>
             <tr>

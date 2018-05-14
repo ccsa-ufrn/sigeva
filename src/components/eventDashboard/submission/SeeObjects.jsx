@@ -41,14 +41,14 @@ class SeeObjects extends Component {
                           })
                         }
                         { !object.data.consolidation &&
-                            <span>Sem datas de agendamento</span>
+                            <span>Datas podem ser encontradas em seminario.ccsa.ufrn.br</span>
                         }
                         <br/></span>
                         { object.data.consolidation &&
-                          <span>Localização da apresentação - {object.data.consolidation.location}</span>
+                          <span>Localização da apresentação - Por favor consultar em seminario.ccsa.ufrn.br</span>
                         }
                         { !object.data.consolidation &&
-                          <span>Localização da apresentação - Localização ainda não definida</span>
+                          <span>Localização da apresentação - Por favor consultar em seminario.ccsa.ufrn.br</span>
                         }
                       </div>
                     </td>
