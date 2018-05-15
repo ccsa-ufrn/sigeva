@@ -31,7 +31,11 @@ class ListOfPresencePane extends Component {
   render() {
     return(
       <div id="printable">
-      <h5>Lista de Presença</h5>
+      <h5>Lista de Presença{' '}
+        { this.props.listOfPresence &&
+          `(${this.props.listOfPresence.data.ofEnrollments.length})`
+        }
+      </h5>
       <table className='table'>
           <thead>
             <tr>
