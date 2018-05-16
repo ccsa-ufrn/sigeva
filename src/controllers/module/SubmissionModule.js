@@ -242,7 +242,7 @@ class SubmissionModule extends Module {
     });
   }
 
-  changeObjectState(entitySlug, objectId, newState, userActorId, event) {
+  changeObjectState(entitySlug, objectId, newState, userActorId, event, seeAllPermission) {
     return new Promise((resolve, reject) => {
       this.getToEvaluateSubmission(entitySlug, userActorId, event)
         .then((userTgs) => {
@@ -254,7 +254,7 @@ class SubmissionModule extends Module {
               }
             }, this);
           }, this);
-          if (found) {
+          if (found || seeAllPermission) {
             // if found the object this user can evaluate it!
             const newOfObjects = this.moduleObject.ofObjects.map((obj) => {
               if (String(obj.data._id) === objectId) {
@@ -372,7 +372,8 @@ class SubmissionModule extends Module {
           body.objectId,
           body.newState,
           user.userObject._id,
-          event);
+          event,
+          seeAllPermission);
       case 'create_session':
         if (schedulePermission) {
           const date = body.date;
