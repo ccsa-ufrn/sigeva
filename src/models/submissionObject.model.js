@@ -9,7 +9,7 @@ const submissionObjectSchema = new Schema({
   files: [Schema.Types.ObjectId],
   state: {
     type: String,
-    default: 'waiting_evaluation', // waiting_evaluation, rejected, approved
+    default: 'waiting_evaluation', // waiting_evaluation, rejected, approved, present
   },
 });
 

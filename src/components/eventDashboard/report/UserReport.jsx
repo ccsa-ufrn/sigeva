@@ -39,7 +39,8 @@ class UserReport extends Component {
                       Estado:{' '}
                       { article.data.state == 'waiting_evaluation' ? 'Esperando avaliação' :
                         article.data.state == 'rejected' ? 'Rejeitado' :
-                        article.data.state == 'approved' ? 'Aprovado' : 'Indefinido'
+                        article.data.state == 'approved' ? 'Aprovado' : 
+                        article.data.state == 'present' ? 'Apresentado' : 'Indefinido'
                       }
                     </div>
                     <hr/>
@@ -65,7 +66,8 @@ class UserReport extends Component {
                       Estado:{' '}
                       { poster.data.state == 'waiting_evaluation' ? 'Esperando avaliação' :
                         poster.data.state == 'rejected' ? 'Rejeitado' :
-                        poster.data.state == 'approved' ? 'Aprovado' : 'Indefinido'
+                        poster.data.state == 'approved' ? 'Aprovado' :
+                        poster.data.state == 'present' ? 'Apresentado' : 'Indefinido'
                       }
                     </div>
                     <hr/>
@@ -91,7 +93,8 @@ class UserReport extends Component {
                       Estado:{' '}
                       { tc.data.state == 'waiting_evaluation' ? 'Esperando avaliação' :
                         tc.data.state == 'rejected' ? 'Rejeitado' :
-                        tc.data.state == 'approved' ? 'Aprovado' : 'Indefinido'
+                        tc.data.state == 'approved' ? 'Aprovado' : 
+                        tc.data.state == 'present' ? 'Apresentado' : 'Indefinido'
                       }
                     </div>
                     <hr/>

@@ -17,7 +17,6 @@ export function setAllObjects(data) {
 }
 
 export function setListToPrint(data) {
-  console.log(data);
   return ({
     type: Action.SET_ACTIVITIES_LIST_OF_PRESENCE,
     data,

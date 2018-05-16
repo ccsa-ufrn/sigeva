@@ -63,7 +63,9 @@ class SeeObjects extends Component {
                       'Aguardando avaliação' :
                       object.data.state == 'approved' ?
                       'Aprovado' :
-                      'Rejeitado'
+                      object.data.state == 'present' ?
+                      'Apresentado' :
+                      'Indefinido'
                     }
                     </td>
                   </tr>

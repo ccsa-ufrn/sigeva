@@ -189,6 +189,7 @@ export function changeObjectState(entitySlug, objectId, newState) {
           // TODO handle this error
         } else {
           dispatch(loadObjectsToEvaluate(entitySlug));
+          dispatch(loadAllObjects(entitySlug));
         }
       });
   };
