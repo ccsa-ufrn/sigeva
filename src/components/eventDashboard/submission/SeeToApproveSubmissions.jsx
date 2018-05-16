@@ -74,9 +74,13 @@ class SeeToApproveSubmissions extends Component {
                                           {
                                             obj_.data.state === 'approved' ?
                                               <span className="badge badge-success">Trabalho aprovado</span> :
-                                              <span className="badge badge-danger">Trabalho rejeitado</span>
+                                            obj_.data.state === 'rejected' ?
+                                              <span className="badge badge-danger">Trabalho rejeitado</span> :
+                                              <span className="badge badge-success">Trabalho apresentado</span> 
                                           }{' '}
+                                          { obj_.data.state != 'present' &&
                                           <small><a onClick={()=> this.changeObjectState(obj_.data._id, 'waiting_evaluation')}>Desfazer avaliação</a></small>
+                                          }
                                         </div>
                                       }
                                     </div>

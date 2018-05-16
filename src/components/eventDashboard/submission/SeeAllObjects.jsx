@@ -15,6 +15,10 @@ class SeeAllObjects extends Component {
     }
   }
 
+  changeObjectState(objectId, newState) {
+    this.props.changeObjectState(this.props.entity, objectId, newState);
+  }
+
   render() {
     return(
       <div>
@@ -30,6 +34,7 @@ class SeeAllObjects extends Component {
               <th>Autor(es)</th>
               <th>Grupo Temático</th>
               <th>Avaliação</th>
+              <th>Marcar presença</th>
             </tr>
           </thead>
           <tbody>
@@ -55,10 +60,26 @@ class SeeAllObjects extends Component {
                         {
                           object.data.state === 'approved' ?
                             <span className="badge badge-success">Trabalho aprovado</span> :
-                            <span className="badge badge-danger">Trabalho rejeitado</span>
+                          object.data.state === 'rejected' ? 
+                            <span className="badge badge-danger">Trabalho rejeitado</span> :
+                          object.data.state === 'present' ?
+                            <span className="badge badge-success">Trabalho apresentado</span> :
+                            <span className="badge badge-danger">Indefinido</span> 
                         }
                       </div>
                     }
+                    </td>
+                    <td>
+                      { object.data.state === 'approved' &&
+                        <div>
+                          <span className="btn btn-success"><a onClick={()=> this.changeObjectState(object.data._id, 'present')}>Marcar presença</a></span> 
+                        </div>
+                      }
+                      { object.data.state === 'present' &&
+                        <div>
+                          <span className="btn btn-warning"><a onClick={()=> this.changeObjectState(object.data._id, 'approved')}>Desmarcar presença</a></span> 
+                        </div>
+                      }
                     </td>
                   </tr>
                 );
