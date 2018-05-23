@@ -83,6 +83,7 @@ class ActivitiesModule extends Module {
         { path: 'data.ofEnrollments.user', select: 'name email', model: 'User' },
         { path: 'data.ofFiles', model: 'File' },
         { path: 'data.ofFields.request', model: 'FieldRequest' },
+        { path: 'data.consolidation.sessions', select: 'date shift', model: 'ActivitySession'}
       ], (err, docs) => {
         ModuleObject.populate(docs, [
           { path: 'data.ofFiles.fileRequirement', model: 'FileRequirement' },
@@ -349,7 +350,7 @@ class ActivitiesModule extends Module {
         }
         break;
       case 'get_all_objects':
-        if (seeAllPermission) {
+        if (seeAllPermission || enrollInObject) {
           return this.getAllObjects(entitySlug);
         }
         break;
@@ -392,12 +393,17 @@ class ActivitiesModule extends Module {
         }
         break;
       case 'enroll_in_object':
-        if (enrollInObject) {
+        if (enrollInObject && !seeAllPermission) {
           const atvId = body.activityId;
           const userId = body.userId;
           if (this.checkVacancies(entitySlug, atvId)) {
             return this.enrollInObject(atvId, userId);
           }
+        }
+        if (enrollInObject && seeAllPermission) {
+          const atvId = body.activityId;
+          const userId = body.userId;
+          return this.enrollInObject(atvId, userId);
         }
         break;
       case 'get_objects_submited':

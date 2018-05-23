@@ -134,6 +134,7 @@ export function loadAllObjects(entitySlug) {
           // handle this error
         } else {
           dispatch(setAllObjects(json.data));
+          dispatch(setAllObjectsToEnroll(json.data.filter(obj => obj.data.status === 'consolidated')));
         }
       });
   };
@@ -307,7 +308,7 @@ export function loadObjects(entitySlug, userId) {
         } else {
           dispatch(setAllEnrolledObjects(json.data));
           dispatch(setEnrolledSessions(json.data));
-          dispatch(loadAllObjectsToEnroll(entitySlug));
+          dispatch(loadAllObjects(entitySlug));
         }
       });
   };
@@ -366,6 +367,7 @@ export function enroll(entitySlug, enrollObject) {
         if (json.error) {
           // handle this error
         } else {
+          dispatch(getListToPrint(entitySlug, enrollObject.activityId));
           dispatch(loadObjects(entitySlug, enrollObject.userId));
         }
       });
@@ -396,6 +398,7 @@ export function exit(entitySlug, enrollObject) {
         if (json.error) {
           // handle this error
         } else {
+          dispatch(getListToPrint(entitySlug, enrollObject.activityId));
           dispatch(loadObjects(entitySlug, enrollObject.userId));
         }
       });

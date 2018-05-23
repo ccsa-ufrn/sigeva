@@ -137,7 +137,7 @@ class SeeAllObjectsToEnrollPane extends Component {
                         })
                       }
                       {     
-                        !object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) &&
+                        !object.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(this.props.userSession.logged_user.id) &&
                         this.props.payed &&  
                         <EnrollButton onClick={() => this.enroll({ activityId: object._id, 
                           userId: this.props.userSession.logged_user.id,
@@ -145,7 +145,7 @@ class SeeAllObjectsToEnrollPane extends Component {
                           style={'primary'} text={'Inscrever-se'} />
                       }
                       {
-                        object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
+                        object.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(this.props.userSession.logged_user.id) && 
                         this.props.payed &&
                         <EnrollButton onClick={() => this.exit({ activityId: object._id, 
                           userId: this.props.userSession.logged_user.id,
@@ -154,7 +154,7 @@ class SeeAllObjectsToEnrollPane extends Component {
                       }
                       {
                         this.checkEnrollment({ sessions: object.data.consolidation.sessions, entity: this.props.entity}) != 0 &&
-                        !object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
+                        !object.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(this.props.userSession.logged_user.id) && 
                         this.props.payed &&
                         <p>Você já está inscrito em uma atividade que conflita com essa em relação a horários</p> 
                       }
