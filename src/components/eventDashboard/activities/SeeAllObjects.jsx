@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
 import ReactToPrint from 'react-to-print';
 
+class EnrollButton extends Component {
+  render() {
+    return(
+    <span><a className={"btn btn-" + this.props.style} 
+        onClick={this.props.onClick} 
+        target="blank_">
+        {this.props.text}
+    </a>{' '}</span>
+    )
+  }  
+}
+
 class ListOfPresencePane extends Component {
   constructor(props) {
     super(props);
@@ -63,14 +75,95 @@ class ListOfPresencePane extends Component {
           </tbody>
       </table>
       <br/>
-      <span><a className="btn btn-primary d-print-none" onClick={() => this.setListToPrint([])}>
+      <span><a style={{width: '100%'}} className="btn btn-primary d-print-none" onClick={() => this.setListToPrint([])}>
                         Voltar   
                         </a>{' '}</span>
       <br/>
+      <br/>
+      <ListOfUsers listOfEnrollments={this.props.listOfEnrollments} listOfPresence={this.props.listOfPresence} 
+                   enroll={this.props.enroll} exit={this.props.exit} entity={this.props.entity} />
       </div>
     )
   }
 
+}
+
+class ListOfUsers extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      searchTerm: '',
+      currentlyDisplayed: [], 
+    }
+    this.onSearchBoxChange = this.onSearchBoxChange.bind(this);
+    this.enroll = this.enroll.bind(this);
+    this.exit = this.exit.bind(this);
+
+  }
+
+  onSearchBoxChange(event) {
+    const newlyDisplayed = this.props.listOfEnrollments.filter(enrollment => enrollment.name.toLowerCase().includes(this.state.searchTerm.toLowerCase())); 
+
+    this.setState({
+      searchTerm: event.target.value,
+      currentlyDisplayed: newlyDisplayed
+    });
+  }
+
+  enroll(enrollObject) {
+    this.props.enroll(this.props.entity, enrollObject);
+  }
+
+  exit(enrollObject) {
+    this.props.exit(this.props.entity, enrollObject);
+  }
+
+  render() {
+    return(
+      <div className="d-print-none">
+        <br/>
+        <h5>Adicionar participantes</h5>
+          Nome da pessoa: <input type="text" className="form-control" onChange={this.onSearchBoxChange} />
+        <table className='table'>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Presença</th>
+            </tr>
+          </thead>
+          <tbody>
+            { this.state.searchTerm.length > 2 &&  
+              this.state.currentlyDisplayed.map(person => {
+              return (
+                <tr key={person._id}>
+                <td>{person.name}</td>
+                {     
+                  !this.props.listOfPresence.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(person._id) &&
+                  <td><EnrollButton onClick={() => this.enroll({ activityId: this.props.listOfPresence._id, 
+                    userId: person._id})}
+                    style={'success'} text={'Inscrever'} /></td>
+                }
+                {     
+                  this.props.listOfPresence.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(person._id) &&
+                  <td><EnrollButton onClick={() => this.exit({ activityId: this.props.listOfPresence._id, 
+                    userId: person._id})}
+                    style={'warning'} text={'Desmarcar'} /></td>
+                }
+                </tr>)
+              }) 
+            }
+            { this.state.searchTerm.length <= 2 &&
+              <tr>
+                <td></td>
+                <td></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    )
+  }
 }
 
 class SeeAllObjectsPane extends Component {
@@ -151,7 +244,7 @@ class SeeAllObjectsPane extends Component {
                           );
                         })
                       }
-                      <span key={object._id}><a className="btn btn-primary" onClick={() => this.setListToPrint(object)}>
+                      <span key={object._id}><a className="btn btn-primary" onClick={() => this.setListToPrint(object)} target="blank_">
                         Mostrar lista de presença
                         </a>{' '}</span>
                     </td>
@@ -174,6 +267,11 @@ class SeeAllObjectsPane extends Component {
 }
 
 class SeeAllObjects extends Component {
+
+  componentDidMount() {
+    this.props.loadEnrollments();
+  }
+
   render() {
     if(this.props.listOfPresence.length === 0) {
       return (<SeeAllObjectsPane entity={this.props.entity}
@@ -189,6 +287,9 @@ class SeeAllObjects extends Component {
                                     setPresence={this.props.setPresence}
                                     allObjects={this.props.allObjects}
                                     listOfPresence={this.props.listOfPresence} 
+                                    listOfEnrollments={this.props.listOfEnrollments}
+                                    enroll={this.props.enroll}
+                                    exit={this.props.exit}
           />
         </div>
       )

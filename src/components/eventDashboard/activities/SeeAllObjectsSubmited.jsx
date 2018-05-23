@@ -47,7 +47,7 @@ class ListOfPresencePane extends Component {
           </tbody>
       </table>
       <br/>
-      <span><a className="btn btn-primary d-print-none" onClick={() => this.setListToPrint([])}>
+      <span><a style={{width: '100%'}} className="btn btn-primary d-print-none" onClick={() => this.setListToPrint([])}>
                         Voltar   
                         </a>{' '}</span>
       <br/>
