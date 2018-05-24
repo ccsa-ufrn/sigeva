@@ -60,11 +60,11 @@ class SeeAllObjects extends Component {
                         {
                           object.data.state === 'approved' ?
                             <span className="badge badge-success">Trabalho aprovado</span> :
-                          object.data.state === 'rejected' ? 
+                          object.data.state === 'rejected' ?
                             <span className="badge badge-danger">Trabalho rejeitado</span> :
                           object.data.state === 'present' ?
                             <span className="badge badge-success">Trabalho apresentado</span> :
-                            <span className="badge badge-danger">Indefinido</span> 
+                            <span className="badge badge-danger">Indefinido</span>
                         }
                       </div>
                     }
@@ -72,12 +72,18 @@ class SeeAllObjects extends Component {
                     <td>
                       { object.data.state === 'approved' &&
                         <div>
-                          <span className="btn btn-success"><a onClick={()=> this.changeObjectState(object.data._id, 'present')}>Marcar presença</a></span> 
+                          <a href="#" className="btn btn-sm btn-success" onClick={()=> this.changeObjectState(object.data._id, 'present')}>Marcar presença</a>
                         </div>
                       }
                       { object.data.state === 'present' &&
                         <div>
-                          <span className="btn btn-warning"><a onClick={()=> this.changeObjectState(object.data._id, 'approved')}>Desmarcar presença</a></span> 
+                          <a href="#" className="btn btn-sm btn-warning" onClick={()=> this.changeObjectState(object.data._id, 'approved')}>Desmarcar presença</a>
+                        </div>
+                      }
+                      { object.data.state === 'present' &&
+                        !object.data.cert &&
+                        <div style={{marginTop: '3px'}}>
+                          <a href="#" className="btn btn-sm btn-info">Emitir certificado</a>
                         </div>
                       }
                     </td>
