@@ -296,6 +296,29 @@ eventRouter.post('/:id/module/:slug/:entity/act/:subaction', simpleAuthorization
 });
 
 /**
+ * This is a public route that return certification based on a object (used by submission)
+ * @param type means the kind of cert (example: presentation, participation)
+ */
+eventRouter.get('/:id/module/:slug/:entity/cert/:type/:object', (req, res) => {
+  const eventId = req.params.id;
+  const moduleSlug = req.params.slug;
+  const entity = req.params.entity;
+  const certType = req.params.type;
+  const object = req.params.object;
+
+  const event = new Event();
+  event.loadById(eventId)
+    .then(() => event.getModule(moduleSlug))
+    .then((module) => {
+      return module.getCertificate(entity, certType, object);
+    })
+    .then((response) => {
+      res.json(Response(false, response));
+    })
+    .catch((e) => { res.json(Response(true, {})); });
+});
+
+/**
  * Find a enrolled user with a email
  */
 eventRouter.post('/:id/findUser', simpleAuthorization, (req, res) => {

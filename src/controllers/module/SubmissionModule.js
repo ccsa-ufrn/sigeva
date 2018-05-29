@@ -10,6 +10,7 @@ import ThematicGroupModule from './ThematicGroupModule';
 import ActivitySession from '../../models/activitySession.model';
 import ActivityConsolidation from '../../models/activityConsolidation.model';
 import eachOf from 'async/eachOf';
+import { textReplace } from '../event/EventHelper';
 
 /** @@ Submission Module
  * Subclass of Module, that represents the Submission Module
@@ -103,6 +104,51 @@ class SubmissionModule extends Module {
             });
         });
     });
+  }
+
+  /**
+   * It generates a certificate text based on a entity, type and object
+   * @param entitySlug entity
+   * @param type certificate type 
+   * @param objectId related object
+   */
+  getCertificate(entitySlug, type, objectId) {
+    const entity = this.getEntityBySlug(entitySlug);
+
+    return Promise((resolve, reject) => {
+      // get all objs
+      this.getAllObjects(entitySlug, this.event)
+        .then((objectsOfEntity) => {
+          // find the current
+          const object = objectsOfEntity.find(el => String(el.data._id) == String(objectId));
+          
+          if (object) {
+            switch(type) {
+              case "presentation":
+                // stringfy authors
+                const strAuthors = object.data.authors.reduce((prev, curr, idx) => {
+                  return idx == 0 ? curr.name : (prev + ", " + curr.name);
+                }, "");
+                // mount target object
+                const targetObj = {
+                  objName: object.data.title,
+                  authors: strAuthors,
+                  gtName: object.data.thematicGroup.data.name,
+                };
+                // apply cert transformation
+                const templatedText = textReplace(entity.certTemplate.text, targetObj);
+                // return template images + transformed text
+                resolve({template: entity.certTemplate, resultText: templatedText});
+                break;
+              default: reject({});
+            }
+          } else {
+            reject({});
+          }
+        });
+
+    });
+
   }
 
   submitObject(entity, data) {
