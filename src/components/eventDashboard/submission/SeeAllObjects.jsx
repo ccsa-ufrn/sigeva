@@ -19,6 +19,10 @@ class SeeAllObjects extends Component {
     this.props.changeObjectState(this.props.entity, objectId, newState);
   }
 
+  emitCertificate(objectId, type) {
+    this.props.emitCertificate(this.props.entity, objectId, type);
+  }
+
   render() {
     return(
       <div>
@@ -72,18 +76,18 @@ class SeeAllObjects extends Component {
                     <td>
                       { object.data.state === 'approved' &&
                         <div>
-                          <a href="#" className="btn btn-sm btn-success" onClick={()=> this.changeObjectState(object.data._id, 'present')}>Marcar presença</a>
+                          <a className="btn btn-sm btn-success" onClick={()=> this.changeObjectState(object.data._id, 'present')}>Marcar presença</a>
                         </div>
                       }
                       { object.data.state === 'present' &&
                         <div>
-                          <a href="#" className="btn btn-sm btn-warning" onClick={()=> this.changeObjectState(object.data._id, 'approved')}>Desmarcar presença</a>
+                          <a className="btn btn-sm btn-warning" onClick={()=> this.changeObjectState(object.data._id, 'approved')}>Desmarcar presença</a>
                         </div>
                       }
                       { object.data.state === 'present' &&
                         !object.data.cert &&
                         <div style={{marginTop: '3px'}}>
-                          <a href="#" className="btn btn-sm btn-info">Emitir certificado</a>
+                          <a className="btn btn-sm btn-info" onClick={() => this.emitCertificate(object._id, 'presentation')}>Emitir certificado</a>
                         </div>
                       }
                     </td>

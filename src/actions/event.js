@@ -193,3 +193,18 @@ export function loadContext(eventId) {
       });
   };
 }
+
+export function loadCertificate(code) {
+  const config = {
+    method: 'GET',
+    mode: 'cors',
+    credentials: 'include',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+
+  return fetch(`${application.url}/api/event/cert/${code}`, config)
+    .then(resp => resp.json());
+}

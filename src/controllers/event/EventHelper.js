@@ -130,12 +130,12 @@ const mountDateRange = (dateBegin, dateEnd, errors, errorFieldName) => {
 };
 
 /**
- * This function is util while generating certificates. Receives a text with marks and a object that 
+ * This function is util while generating certificates. Receives a text with marks and a object that
  * contains relationship mark-raplace. The return is the received text with replaces of the object. Ex:
- * 
+ *
  * text: "{tvshow} is the {eval} thing ever made"; object: {tvshow: "Rick and Morty", eval: "best"}
  */
-textReplace = (templateText, targetObj) => {
+const textReplace = (templateText, targetObj) => {
   let text = templateText;
   for (let prop in targetObj) {
     if (targetObj.hasOwnProperty(prop)) {

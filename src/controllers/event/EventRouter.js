@@ -6,6 +6,7 @@ import Response from '../Response';
 import { simpleAuthorization } from '../authorization/Authorization';
 import * as Constants from './constants';
 import ThematicGroupArea from '../thematicGroupArea/ThematicGroupArea';
+import CertConn from '../../models/certConnector.model';
 
 /**
  * @@ Event Express Router
@@ -315,7 +316,39 @@ eventRouter.get('/:id/module/:slug/:entity/cert/:type/:object', (req, res) => {
     .then((response) => {
       res.json(Response(false, response));
     })
-    .catch((e) => { res.json(Response(true, {})); });
+    .catch((e) => { console.error(e); res.json(Response(true, {})); });
+});
+
+eventRouter.get('/cert/:code', (req, res) => {
+  const code = req.params.code;
+
+  CertConn.find({ code }, (err, docs) => {
+    if (err) res.json(Response(true, {}, 'Erro no banco de dados'));
+    if (docs.length > 0) {
+      const our = docs[0];
+      const event = new Event();
+      event.loadById(our.event)
+        .then(() => event.getModule(our.module))
+        .then((module) => {
+          if (our.module === 'submission') {
+            return module.getCertificate(our.entity, our.certType, our.object);
+          }
+          return null;
+        })
+        .then((certResponse) => {
+          res.json(Response(false, certResponse));
+        })
+        .catch((e) => { res.json(Response(true, {}, e)); });
+    } else {
+      res.json(Response(true, {}, 'Certificado não encontrado'));
+    }
+  });
+
+  // carregar de cert conn
+  // decodificar evento
+  // decodificar modulo
+  // chamar a rota do modulo responsável
+
 });
 
 /**

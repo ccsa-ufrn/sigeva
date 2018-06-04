@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import SeeAllObjects from './SeeAllObjects';
-import { loadAllObjects, changeObjectState } from '../../../actions/submission';
+import { loadAllObjects, changeObjectState, emitCertificate } from '../../../actions/submission';
 
 const mapStateToProps = state => {
   return {
@@ -16,6 +16,9 @@ const mapDispatchToProps = dispatch => {
     },
     changeObjectState: (entitySlug, objectId, newState) => {
       dispatch(changeObjectState(entitySlug, objectId, newState));
+    },
+    emitCertificate: (entitySlug, objectId, type) => {
+      dispatch(emitCertificate(entitySlug, objectId, type));
     }
   };
 };

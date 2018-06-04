@@ -1,3 +1,5 @@
+import uid from 'uid';
+import eachOf from 'async/eachOf';
 import Module from './Module';
 import SubmissionEntity from '../../models/submissionEntity.model';
 import SubmissionFileRequirement from '../../models/submissionFileRequirement.model';
@@ -6,10 +8,10 @@ import SubmissionObject from '../../models/submissionObject.model';
 import FileRequirement from '../fileRequirement/FileRequirement';
 import DateRange from '../../models/dateRange.model';
 import ModuleModel from '../../models/module.model';
+import CertConn from '../../models/certConnector.model';
 import ThematicGroupModule from './ThematicGroupModule';
 import ActivitySession from '../../models/activitySession.model';
 import ActivityConsolidation from '../../models/activityConsolidation.model';
-import eachOf from 'async/eachOf';
 import { textReplace } from '../event/EventHelper';
 
 /** @@ Submission Module
@@ -109,22 +111,22 @@ class SubmissionModule extends Module {
   /**
    * It generates a certificate text based on a entity, type and object
    * @param entitySlug entity
-   * @param type certificate type 
+   * @param type certificate type
    * @param objectId related object
    */
   getCertificate(entitySlug, type, objectId) {
     const entity = this.getEntityBySlug(entitySlug);
 
-    return Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       // get all objs
-      this.getAllObjects(entitySlug, this.event)
+      this.getAllObjects(entitySlug)
         .then((objectsOfEntity) => {
           // find the current
-          const object = objectsOfEntity.find(el => String(el.data._id) == String(objectId));
-          
+          const object = objectsOfEntity.find(el => String(el._id) == String(objectId));
+
           if (object) {
-            switch(type) {
-              case "presentation":
+            switch (type) {
+              case 'presentation':
                 // stringfy authors
                 const strAuthors = object.data.authors.reduce((prev, curr, idx) => {
                   return idx == 0 ? curr.name : (prev + ", " + curr.name);
@@ -136,19 +138,65 @@ class SubmissionModule extends Module {
                   gtName: object.data.thematicGroup.data.name,
                 };
                 // apply cert transformation
-                const templatedText = textReplace(entity.certTemplate.text, targetObj);
+                const templatedText = textReplace(entity.data.certTemplate.text, targetObj);
                 // return template images + transformed text
-                resolve({template: entity.certTemplate, resultText: templatedText});
+                resolve({template: entity.data.certTemplate, resultText: templatedText});
                 break;
               default: reject({});
             }
           } else {
+            reject('Objeto não encontrado');
+          }
+        });
+    });
+  }
+
+  emitCertificate(entitySlug, objectId, type) {
+    return new Promise((resolve, reject) => {
+      // get all objs
+      this.getAllObjects(entitySlug)
+        .then((objectsOfEntity) => {
+          // find the current
+          const object = objectsOfEntity.find(el => String(el._id) == String(objectId));
+
+          if (object) {
+            // search a cert conn if already exists
+            CertConn.find({
+              event: this.event.eventObject._id,
+              module: 'submission',
+              entity: entitySlug,
+              certType: type,
+              object: object._id
+            }, (err, res) => {
+              if (err || res) reject({});
+              const newCode = uid(10);
+              const newConn = new CertConn({
+                code: newCode,
+                event: this.event.eventObject._id,
+                module: 'submission',
+                entity: entitySlug,
+                certType: type,
+                object: object._id,
+              });
+
+              newConn.save()
+                .then(() => {
+                  ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': objectId },
+                    {
+                      $set: {
+                        'ofObjects.$.data.cert': newCode,
+                      },
+                    }, (err1) => {
+                      if (!err1) resolve({});
+                      reject({});
+                    });
+                });
+            });
+          } else {
             reject({});
           }
         });
-
     });
-
   }
 
   submitObject(entity, data) {
@@ -198,11 +246,11 @@ class SubmissionModule extends Module {
     });
   }
 
-  getAllObjects(entitySlug, event) {
+  getAllObjects(entitySlug) {
     const objectsOfEntity = this.moduleObject.ofObjects.filter(obj => obj.entity === entitySlug);
 
     return new Promise((resolve, reject) => {
-      event.getModule('thematicgroups')
+      this.event.getModule('thematicgroups')
         .then((tgModule) => {
           tgModule.getThematicGroups()
             .then((thematicGroups) => {
@@ -408,7 +456,7 @@ class SubmissionModule extends Module {
         break;
       case 'get_all_objects':
         if (seeAllPermission) {
-          return this.getAllObjects(entitySlug, event);
+          return this.getAllObjects(entitySlug);
         }
         break;
       case 'get_to_evaluate_submissions':
@@ -447,6 +495,13 @@ class SubmissionModule extends Module {
         if (schedulePermission) {
           const submissionId = body.submissionId;
           return this.cancelSubmissionPresentation(submissionId);
+        }
+        break;
+      case 'emit_certificate':
+        if (seeAllPermission) {
+          const objId = body.objectId;
+          const type = body.type;
+          return this.emitCertificate(entitySlug, objId, type);
         }
         break;
       default:

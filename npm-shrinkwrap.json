@@ -4328,6 +4328,11 @@
       "resolved": "https://registry.npmjs.org/uglifyjs-webpack-plugin/-/uglifyjs-webpack-plugin-0.4.6.tgz",
       "dev": true
     },
+    "uid": {
+      "version": "0.0.2",
+      "from": "uid@latest",
+      "resolved": "https://registry.npmjs.org/uid/-/uid-0.0.2.tgz"
+    },
     "uid-number": {
       "version": "0.0.6",
       "from": "uid-number@>=0.0.6 <0.0.7",
