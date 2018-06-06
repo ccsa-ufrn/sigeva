@@ -293,7 +293,7 @@ eventRouter.post('/:id/module/:slug/:entity/act/:subaction', simpleAuthorization
     .then((response) => {
       res.json(Response(false, response));
     })
-    .catch((e) => { console.log(e); res.json(Response(true, {})); });
+    .catch((e) => { console.error(e); res.json(Response(true, {}, e)); });
 });
 
 /**

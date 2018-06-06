@@ -122,27 +122,26 @@ class SubmissionModule extends Module {
       this.getAllObjects(entitySlug)
         .then((objectsOfEntity) => {
           // find the current
-          const object = objectsOfEntity.find(el => String(el._id) == String(objectId));
+          const object = objectsOfEntity.find(el => String(el._id) === String(objectId));
 
           if (object) {
-            switch (type) {
-              case 'presentation':
-                // stringfy authors
-                const strAuthors = object.data.authors.reduce((prev, curr, idx) => {
-                  return idx == 0 ? curr.name : (prev + ", " + curr.name);
-                }, "");
-                // mount target object
-                const targetObj = {
-                  objName: object.data.title,
-                  authors: strAuthors,
-                  gtName: object.data.thematicGroup.data.name,
-                };
-                // apply cert transformation
-                const templatedText = textReplace(entity.data.certTemplate.text, targetObj);
-                // return template images + transformed text
-                resolve({template: entity.data.certTemplate, resultText: templatedText});
-                break;
-              default: reject({});
+            if (type === 'presentation') {
+              // stringfy authors
+              const strAuthors = object.data.authors.reduce((prev, curr, idx) =>
+                (idx === 0 ? curr.name : `${prev}, ${curr.name}`), '');
+              // mount target object
+              const targetObj = {
+                objName: object.data.title,
+                authors: strAuthors,
+                gtName: object.data.thematicGroup.data.name,
+              };
+              // apply cert transformation
+              const templatedText = textReplace(entity.data.certTemplate.text, targetObj);
+              // return template images + transformed text
+              resolve({
+                template: entity.data.certTemplate,
+                resultText: templatedText,
+              });
             }
           } else {
             reject('Objeto não encontrado');
@@ -168,32 +167,35 @@ class SubmissionModule extends Module {
               certType: type,
               object: object._id
             }, (err, res) => {
-              if (err || res) reject({});
-              const newCode = uid(10);
-              const newConn = new CertConn({
-                code: newCode,
-                event: this.event.eventObject._id,
-                module: 'submission',
-                entity: entitySlug,
-                certType: type,
-                object: object._id,
-              });
-
-              newConn.save()
-                .then(() => {
-                  ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': objectId },
-                    {
-                      $set: {
-                        'ofObjects.$.data.cert': newCode,
-                      },
-                    }, (err1) => {
-                      if (!err1) resolve({});
-                      reject({});
-                    });
+              if (res.length === 0) {
+                const newCode = uid(10);
+                const newConn = new CertConn({
+                  code: newCode,
+                  event: this.event.eventObject._id,
+                  module: 'submission',
+                  entity: entitySlug,
+                  certType: type,
+                  object: object._id,
                 });
+
+                newConn.save()
+                  .then(() => {
+                    ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': objectId },
+                      {
+                        $set: {
+                          'ofObjects.$.data.cert': newCode,
+                        },
+                      }, (err1) => {
+                        if (!err1) resolve({});
+                        reject('Error while creating new connection');
+                      });
+                  });
+              } else {
+                reject('Object already has certification');
+              }
             });
           } else {
-            reject({});
+            reject('Object doesn\'t exists');
           }
         });
     });

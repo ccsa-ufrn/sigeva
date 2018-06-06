@@ -17,7 +17,7 @@ class CertificateBoard extends Component {
 
     return (
       <div>
-        <div id='printable' style={{ width: '20cm', height: '15cm', backgroundColor: '#f6f6f6', position: 'absolute'}}>
+        <div id='printable' style={{ width: '20cm', height: '15cm', position: 'absolute'}}>
           <img src={this.props.topImage} style={{width: '100%'}} />
           <div style={{display: 'table', margin: '0 auto', marginTop:'1cm', width: '18cm', textAlign: 'justify', verticalAlign:'center'}}>
           {this.props.text}
@@ -26,7 +26,7 @@ class CertificateBoard extends Component {
           </div>
           <div style={{width: '100%', left: '0px', bottom: '0px', position: 'absolute'}}>
             <img src={this.props.bottomImage} style={{width:'100%'}} />
-            <small>Para verificar a validade do certificado entre em www.sigeva.ccsa.ufrn.br/certificado/{this.props.code}</small>
+            <small>Para verificar a validade do certificado acesse http://sigeva.ccsa.ufrn.br/certificado/{this.props.code}</small>
           </div>
         </div>
       </div>

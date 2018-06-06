@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class SeeAllObjects extends Component {
   constructor(props) {
@@ -88,6 +89,12 @@ class SeeAllObjects extends Component {
                         !object.data.cert &&
                         <div style={{marginTop: '3px'}}>
                           <a className="btn btn-sm btn-info" onClick={() => this.emitCertificate(object._id, 'presentation')}>Emitir certificado</a>
+                        </div>
+                      }
+                      { object.data.state === 'present' &&
+                        object.data.cert &&
+                        <div style={{marginTop: '3px'}}>
+                          <a href={`/certificado/${object.data.cert}`} target="_blank" className="btn btn-sm btn-info">Certificado</a>
                         </div>
                       }
                     </td>
