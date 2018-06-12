@@ -42,7 +42,13 @@ class SeeAllObjects extends Component {
               this.props.allObjects.map((object) => {
                 return (
                   <tr key={object._id}>
-                    <td><strong>{object.data.title}</strong><br/></td>
+                    <td><strong>{object.data.title}</strong><br/>
+                      {
+                        object.data.files.map((file, idx) => {
+                          return (<a href={`/file/download/${file}`}>Arquivo {idx}<br/></a>);
+                        })
+                      }
+                    </td>
                     <td>
                       {
                         object.data.authors.map((author) => {
