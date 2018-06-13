@@ -28,7 +28,7 @@ class SeeObjects extends Component {
               this.props.submission.userObjects.map((object) => {
                 return (
                   <tr key={object._id}>
-                    <td>{object.data.title} - 
+                    <td>{object.data.title} -
                     <a data-toggle="collapse" href={`#clps-${object.data._id}`} aria-expanded="false" role="button" aria-controls={`#clps-${object.data._id}`}>  Expandir</a>
                       <div className="collapse" id={`clps-${object.data._id}`}>
                         <span>Datas da apresentação:{' '}
@@ -66,6 +66,12 @@ class SeeObjects extends Component {
                       object.data.state == 'present' ?
                       'Apresentado' :
                       'Indefinido'
+                    }
+                    { object.data.state === 'present' &&
+                      object.data.cert &&
+                      <div style={{marginTop: '3px'}}>
+                        <a href={`/certificado/${object.data.cert}`} target="_blank" className="btn btn-sm btn-info">Certificado</a>
+                      </div>
                     }
                     </td>
                   </tr>
