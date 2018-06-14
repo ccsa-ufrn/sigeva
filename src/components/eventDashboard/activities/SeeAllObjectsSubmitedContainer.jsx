@@ -6,7 +6,7 @@ import { loadAllObjectsSubmited, setListToPrint } from '../../../actions/activit
 const mapStateToProps = state => {
   return {
     userSession: state.userSession,
-    allObjectsSubmited: state.activities.allObjectsSubmited, 
+    allObjectsSubmited: state.activities.allObjectsSubmited,
     listOfPresence: state.activities.listOfPresence,
   };
 };

@@ -333,6 +333,9 @@ eventRouter.get('/cert/:code', (req, res) => {
           if (our.module === 'submission') {
             return module.getCertificate(our.entity, our.certType, our.object);
           }
+          if (our.module === 'activities') {
+            return module.getCertificate(our.entity, our.certType, our.object, our.user);
+          }
           return null;
         })
         .then((certResponse) => {
@@ -348,7 +351,6 @@ eventRouter.get('/cert/:code', (req, res) => {
   // decodificar evento
   // decodificar modulo
   // chamar a rota do modulo responsável
-
 });
 
 /**

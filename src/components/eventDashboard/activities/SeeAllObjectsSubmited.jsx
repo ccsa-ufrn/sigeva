@@ -6,7 +6,7 @@ class ListOfPresencePane extends Component {
 
     this.setListToPrint = this.setListToPrint.bind(this);
   }
-  
+
   componentDidMount() {
     this.props.loadAllObjectsSubmited(this.props.entity, this.props.userId);
   }
@@ -48,7 +48,7 @@ class ListOfPresencePane extends Component {
       </table>
       <br/>
       <span><a style={{width: '100%'}} className="btn btn-primary d-print-none" onClick={() => this.setListToPrint([])}>
-                        Voltar   
+                        Voltar
                         </a>{' '}</span>
       <br/>
       </div>
@@ -164,13 +164,13 @@ class SeeAllObjectsSubmited extends Component {
                                 userId={this.props.userSession.logged_user.id}
                                 setListToPrint={this.props.setListToPrint}
                                 allObjectsSubmited={this.props.allObjectsSubmited} />)
-                                
+
     } else {
       return (
           <ListOfPresencePane loadAllObjectsSubmited={this.props.loadAllObjectsSubmited}
                                     entity={this.props.entity}
                                     setListToPrint={this.props.setListToPrint}
-                                    listOfPresence={this.props.listOfPresence} 
+                                    listOfPresence={this.props.listOfPresence}
                                     userId={this.props.userSession.logged_user.id}
                                     allObjectsSubmited={this.props.allObjectsSubmited}
           />
@@ -178,6 +178,6 @@ class SeeAllObjectsSubmited extends Component {
     }
   }
 
-} 
+}
 
 export default SeeAllObjectsSubmited;
