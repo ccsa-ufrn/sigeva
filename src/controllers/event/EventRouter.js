@@ -267,6 +267,32 @@ eventRouter.get('/:id/gts/all', (req, res) => {
     })
     .catch(() => { res.json(Response(true, {})); });
 });
+
+/**
+ * Emit certificates
+ */
+eventRouter.post('/:id/emitCertificates/:type', simpleAuthorization, (req, res) => {
+  const event = new Event();
+  const user = new User();
+  user.loadById(res.locals.user._id)
+    .then(() => event.loadById(req.params.id))
+    .then(() => {
+      const roles = event.getUserRelationships(res.locals.user._id).roles;
+      const isCoordinator = roles.reduce((prev, curr) => (prev || curr.name === 'Coordenador'), false);
+
+      if (isCoordinator) {
+        event.emitCertificates(req.params.type)
+          .then((response) => {
+            res.json(Response(false, response));
+          }).catch((errMsg) => {
+            res.json(Response(true, {}, errMsg));
+          });
+      } else {
+        res.json(Response(true, {}, 'Permissão Negada'));
+      }
+    });
+});
+
 /**
  * Executes a action in a module of the event
  * @param id event's id
@@ -287,7 +313,7 @@ eventRouter.post('/:id/module/:slug/:entity/act/:subaction', simpleAuthorization
     .then(() => event.loadById(eventId))
     .then(() => event.getModule(moduleSlug))
     .then((module) => {
-      const roles = event.getUserRelationships(String(user.userObject._id));
+      const roles = event.getUserRelationships(String(user.userObject._id)).roles;
       return module.act(user, roles, body, entity, subaction, event);
     })
     .then((response) => {
@@ -328,20 +354,32 @@ eventRouter.get('/cert/:code', (req, res) => {
       const our = docs[0];
       const event = new Event();
       event.loadById(our.event)
-        .then(() => event.getModule(our.module))
-        .then((module) => {
-          if (our.module === 'submission') {
-            return module.getCertificate(our.entity, our.certType, our.object);
+        .then(() => {
+          if (our.module) {
+            // its a module managed cert
+            event.getModule(our.module)
+              .then((module) => {
+                if (our.module === 'submission') {
+                  return module.getCertificate(our.entity, our.certType, our.object);
+                }
+                if (our.module === 'activities') {
+                  return module.getCertificate(our.entity, our.certType, our.object, our.user);
+                }
+                return null;
+              })
+              .then((certResponse) => {
+                res.json(Response(false, certResponse));
+              })
+              .catch((e) => { res.json(Response(true, {}, e)); });
+          } else {
+            // its a event cert
+            event.getCertificate(our.user, our.certType)
+              .then((certResponse) => {
+                res.json(Response(false, certResponse));
+              })
+              .catch((e) => { res.json(Response(true, {}, e)); });
           }
-          if (our.module === 'activities') {
-            return module.getCertificate(our.entity, our.certType, our.object, our.user);
-          }
-          return null;
-        })
-        .then((certResponse) => {
-          res.json(Response(false, certResponse));
-        })
-        .catch((e) => { res.json(Response(true, {}, e)); });
+        });
     } else {
       res.json(Response(true, {}, 'Certificado não encontrado'));
     }
@@ -366,7 +404,7 @@ eventRouter.post('/:id/findUser', simpleAuthorization, (req, res) => {
     .then(() => event.loadById(eventId))
     .then(() =>
       new Promise((resolve, reject) => {
-        const roles = event.getUserRelationships(String(user.userObject._id));
+        const roles = event.getUserRelationships(String(user.userObject._id)).roles;
         if (roles.length > 0) {
           resolve({
             name: user.userObject.name,

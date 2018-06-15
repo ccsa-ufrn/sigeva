@@ -36,6 +36,13 @@ export function setRelationship(data) {
   });
 }
 
+export function setCertificate(data) {
+  return ({
+    type: Action.SET_EVENT_CERT,
+    data,
+  });
+}
+
 export function setContext(data) {
   return ({
     type: Action.SET_EVENT_CONTEXT,
@@ -87,7 +94,8 @@ export function loadRelationship(id) {
       })
       .then((json) => {
         if (!json.error) {
-          dispatch(setRelationship(json.data));
+          dispatch(setRelationship(json.data.roles));
+          dispatch(setCertificate(json.data.cert));
         }
       });
   };

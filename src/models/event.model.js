@@ -2,6 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import { dateRangeSchema } from './dateRange.model';
 import { roleSchema } from './role.model';
 import { relationshipSchema } from './relationship.model';
+import { certTemplateSchema } from '../models/certTemplate.model';
 
 /* @@ Event Model
  *
@@ -57,6 +58,7 @@ const eventSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  certTemplate: certTemplateSchema,
 });
 
 const eventModel = mongoose.model('Event', eventSchema);

@@ -18,6 +18,10 @@ const relationshipSchema = new Schema({
     type: [Schema.Types.ObjectId],
     required: true,
   },
+  cert: {
+    type: String,
+    default: null,
+  },
 });
 
 const relationshipModel = mongoose.model('Relationship', relationshipSchema);
