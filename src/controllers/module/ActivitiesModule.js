@@ -374,7 +374,7 @@ class ActivitiesModule extends Module {
             // look for the enrollment
             const enroll = object.data.ofEnrollments.find(
               el => String(el.user._id) === String(userId));
-            if (enroll.present === true) {
+            if (enroll.present === false) {
               if (entitySlug === 'roundtable' || entitySlug === 'conference') {
                 // discover the date
                 const date = object.data.consolidation.sessions[0].date;
