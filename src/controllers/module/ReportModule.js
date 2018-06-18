@@ -71,8 +71,11 @@ class ReportModule extends Module {
         .then(() => {
           user.toFormatedUser('cpf institution phone')
             .then((formatedUser) => {
+              console.log(uId);
               let roles = this.event.getUserRelationships(String(uId)).roles;
+              console.log('a', roles);
               roles = roles.map(role => role.name);
+              console.log('b', roles);
 
               if (roles.lenght === 0) {
                 reject({});
