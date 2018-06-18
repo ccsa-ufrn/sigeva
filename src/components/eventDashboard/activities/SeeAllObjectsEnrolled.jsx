@@ -89,6 +89,7 @@ class SeeAllObjectsEnrolledPane extends Component {
               this.props.listOfEnrolledSessions &&
               this.props.allObjectsUserEnrolled.map((object) => {
                 const userEnrollment = object.data.ofEnrollments.find(enrollment => enrollment.user._id == this.props.userSession.logged_user.id);
+                console.log(userEnrollment);
                 return (
                   <tr key={object._id}>
                     <td>
@@ -142,7 +143,7 @@ class SeeAllObjectsEnrolledPane extends Component {
                           style={'danger'} text={'Desfazer inscrição'} />
                       }
                       {
-                        object.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(this.props.userSession.logged_user.id) &&
+                        object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) &&
                         userEnrollment &&
                         userEnrollment.cert &&
                         this.props.payed &&
