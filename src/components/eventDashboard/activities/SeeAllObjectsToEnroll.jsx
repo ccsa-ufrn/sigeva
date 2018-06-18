@@ -106,7 +106,6 @@ class SeeAllObjectsToEnrollPane extends Component {
               this.props.allObjectsToEnroll &&
               this.props.listOfEnrolledSessions &&
               this.props.allObjectsToEnroll.map((object) => {
-                const userEnrollment = object.data.ofEnrollments.find(enrollment => enrollment.user._id == this.props.userSession.logged_user.id);
                 return (
                   <tr key={object._id}>
                     <td>
@@ -152,13 +151,6 @@ class SeeAllObjectsToEnrollPane extends Component {
                           userId: this.props.userSession.logged_user.id,
                           sessions: object.data.consolidation.sessions})}
                           style={'danger'} text={'Desfazer inscrição'} />
-                      }
-                      {
-                        object.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(this.props.userSession.logged_user.id) &&
-                        userEnrollment &&
-                        userEnrollment.cert &&
-                        this.props.payed &&
-                        <a target='_blank' href={`/certificado/${userEnrollment.cert}`} className='btn btn-primary'>Certificado</a>
                       }
                       {
                         this.checkEnrollment({ sessions: object.data.consolidation.sessions, entity: this.props.entity}) != 0 &&

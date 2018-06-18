@@ -17,13 +17,13 @@ class PaymentRequiredWarning extends Component {
 class EnrollButton extends Component {
   render() {
     return(
-    <span><a className={"btn btn-" + this.props.style} 
-        onClick={this.props.onClick} 
+    <span><a className={"btn btn-" + this.props.style}
+        onClick={this.props.onClick}
         target="blank_">
         {this.props.text}
     </a>{' '}</span>
     )
-  }  
+  }
 }
 
 class SeeAllObjectsEnrolledPane extends Component {
@@ -57,18 +57,18 @@ class SeeAllObjectsEnrolledPane extends Component {
       if(object.entity == "roundtable" || object.entity == "conference" || object.entity == "workshop") {
         if(roundTablesSessions.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
           filtered.push(1);
-        }    
+        }
       } else {
         if(minicourseSessions.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
           filtered.push(1);
         }
-      } 
+      }
       return filtered;
     }, []);
     return matchingList;
   }
 
-  render() {      
+  render() {
     return(
       <div>
         <h5><strong>Todas propostas inscritas{' '}
@@ -88,6 +88,7 @@ class SeeAllObjectsEnrolledPane extends Component {
               this.props.allObjectsUserEnrolled &&
               this.props.listOfEnrolledSessions &&
               this.props.allObjectsUserEnrolled.map((object) => {
+                const userEnrollment = object.data.ofEnrollments.find(enrollment => enrollment.user._id == this.props.userSession.logged_user.id);
                 return (
                   <tr key={object._id}>
                     <td>
@@ -111,7 +112,7 @@ class SeeAllObjectsEnrolledPane extends Component {
                              session.shift === 1 ? `Tarde do dia ${date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}` + '\n' :
                              session.shift === 2 ? `Noite do dia ${date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}` + '\n' : 'Indefinido'
                           );
-                        }) 
+                        })
                       }
                       <br/>
                       <br/>
@@ -126,24 +127,31 @@ class SeeAllObjectsEnrolledPane extends Component {
                           );
                         })
                       }
-                      { object.data.consolidation && 
-                        !object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
-                        <EnrollButton onClick={() => this.enroll({ activityId: object._id, 
+                      { object.data.consolidation &&
+                        !object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) &&
+                        <EnrollButton onClick={() => this.enroll({ activityId: object._id,
                           userId: this.props.userSession.logged_user.id,
                           sessions: object.data.consolidation.sessions})}
                           style={'primary'} text={'Inscrever-se'} />
                       }
-                      { object.data.consolidation && 
-                        object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
-                        <EnrollButton onClick={() => this.exit({ activityId: object._id, 
+                      { object.data.consolidation &&
+                        object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) &&
+                        <EnrollButton onClick={() => this.exit({ activityId: object._id,
                           userId: this.props.userSession.logged_user.id,
                           sessions: object.data.consolidation.sessions})}
                           style={'danger'} text={'Desfazer inscrição'} />
                       }
+                      {
+                        object.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(this.props.userSession.logged_user.id) &&
+                        userEnrollment &&
+                        userEnrollment.cert &&
+                        this.props.payed &&
+                        <a target='_blank' href={`/certificado/${userEnrollment.cert}`} className='btn btn-primary'>Certificado</a>
+                      }
                       { object.data.consolidation &&
                         this.checkEnrollment({ sessions: object.data.consolidation.sessions, entity: this.props.entity}) != 0 &&
-                        !object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) && 
-                        <p>Você já está inscrito em uma atividade que conflita com essa em relação a horários</p> 
+                        !object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) &&
+                        <p>Você já está inscrito em uma atividade que conflita com essa em relação a horários</p>
                       }
                     </td>
                     <td>
@@ -180,11 +188,11 @@ class SeeAllObjectsUserEnrolled extends Component {
       const enrollmentPeriodBegin = new Date(entity.data.enrollmentPeriod.begin);
       const enrollmentPeriodEnd = new Date(entity.data.enrollmentPeriod.end);
 
-          return (<SeeAllObjectsEnrolledPane entity={this.props.entity} 
-            userSession={this.props.userSession} 
+          return (<SeeAllObjectsEnrolledPane entity={this.props.entity}
+            userSession={this.props.userSession}
             allObjectsUserEnrolled={this.props.allObjectsUserEnrolled}
             listOfEnrolledSessions={this.props.listOfEnrolledSessions}
-            loadObjects={this.props.loadObjects} 
+            loadObjects={this.props.loadObjects}
             exit={this.props.exit}
             />);
     } else {
