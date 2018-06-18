@@ -13,6 +13,13 @@ class EventDashboardHome extends Component {
             }
             </strong>
           </div>
+          { this.props.event.cert &&
+            <div>
+              <a className='btn btn-primary' href={`/certificado/${this.props.event.cert}`} target='blank_'>Certificado de participação no evento</a><br/><br/>
+              <strong>Observação:</strong> os certificados de apresentações de trabalhos e participação em atividades ficam localizados no módulo de cada tipo de
+              ação.
+            </div>
+          }
         </div>
 
       </div>

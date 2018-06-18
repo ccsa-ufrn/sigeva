@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { submissionFileRequirementSchema } from '../models/submissionFileRequirement.model';
 import { dateRangeSchema } from '../models/dateRange.model';
+import { certTemplateSchema } from '../models/certTemplate.model';
 
 /** @@ Submission entity data
  * @ Description: Data of a Submission module entity
@@ -25,6 +26,7 @@ const submissionEntitySchema = new Schema({
     required: true,
     default: 5,
   },
+  certTemplate: certTemplateSchema,
 });
 
 const submissionEntityModel = mongoose.model('SubmissionEntity', submissionEntitySchema);

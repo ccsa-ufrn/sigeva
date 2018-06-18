@@ -119,7 +119,7 @@ class PaymentModule extends Module {
             const parsedDoc = new Object();
             parsedDoc.data = doc.data;
             parsedDoc._id = doc._id;
-            parsedDoc.roles = this.event.getUserRelationships(String(doc.data.user._id));
+            parsedDoc.roles = this.event.getUserRelationships(String(doc.data.user._id).roles);
 
             return parsedDoc;
           });

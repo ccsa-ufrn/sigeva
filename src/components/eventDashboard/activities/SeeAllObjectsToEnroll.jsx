@@ -27,13 +27,13 @@ class OutOfDateWarning extends Component {
 class EnrollButton extends Component {
   render() {
     return(
-    <span><a className={"btn btn-" + this.props.style} 
-        onClick={this.props.onClick} 
+    <span><a className={"btn btn-" + this.props.style}
+        onClick={this.props.onClick}
         target="blank_">
         {this.props.text}
     </a>{' '}</span>
     )
-  }  
+  }
 }
 
 class SeeAllObjectsToEnrollPane extends Component {
@@ -58,7 +58,7 @@ class SeeAllObjectsToEnrollPane extends Component {
   enroll(enrollObject) {
     if(this.checkEnrollment({sessions: enrollObject.sessions, entity: this.props.entity}) == 0) {
       this.props.enroll(this.props.entity, enrollObject);
-    }   
+    }
   }
 
   exit(enrollObject) {
@@ -74,18 +74,18 @@ class SeeAllObjectsToEnrollPane extends Component {
       if(object.entity == "roundtable" || object.entity == "conference" || object.entity == "workshop") {
         if(roundTablesSessions.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
           filtered.push(1);
-        }    
+        }
       } else {
         if(minicourseSessions.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
           filtered.push(1);
         }
-      } 
+      }
       return filtered;
     }, []);
     return matchingList;
   }
 
-  render() {      
+  render() {
     return(
       <div>
         <h5><strong>Todas propostas disponíveis{' '}
@@ -106,6 +106,7 @@ class SeeAllObjectsToEnrollPane extends Component {
               this.props.allObjectsToEnroll &&
               this.props.listOfEnrolledSessions &&
               this.props.allObjectsToEnroll.map((object) => {
+                const userEnrollment = object.data.ofEnrollments.find(enrollment => enrollment.user._id == this.props.userSession.logged_user.id);
                 return (
                   <tr key={object._id}>
                     <td>
@@ -120,7 +121,7 @@ class SeeAllObjectsToEnrollPane extends Component {
                              session.shift === 1 ? `Tarde do dia ${date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}` + '\n' :
                              session.shift === 2 ? `Noite do dia ${date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}` + '\n' : 'Indefinido'
                           );
-                        }) 
+                        })
                       }
                       <br/>
                       <strong>Vagas preenchidas</strong>:{object.data.ofEnrollments.length} de { object.data.consolidation.vacancies === 0 ? 'Sem limites': object.data.consolidation.vacancies }
@@ -136,27 +137,34 @@ class SeeAllObjectsToEnrollPane extends Component {
                           );
                         })
                       }
-                      {     
+                      {
                         !object.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(this.props.userSession.logged_user.id) &&
-                        this.props.payed &&  
-                        <EnrollButton onClick={() => this.enroll({ activityId: object._id, 
+                        this.props.payed &&
+                        <EnrollButton onClick={() => this.enroll({ activityId: object._id,
                           userId: this.props.userSession.logged_user.id,
                           sessions: object.data.consolidation.sessions})}
                           style={'primary'} text={'Inscrever-se'} />
                       }
                       {
-                        object.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(this.props.userSession.logged_user.id) && 
+                        object.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(this.props.userSession.logged_user.id) &&
                         this.props.payed &&
-                        <EnrollButton onClick={() => this.exit({ activityId: object._id, 
+                        <EnrollButton onClick={() => this.exit({ activityId: object._id,
                           userId: this.props.userSession.logged_user.id,
                           sessions: object.data.consolidation.sessions})}
                           style={'danger'} text={'Desfazer inscrição'} />
                       }
                       {
-                        this.checkEnrollment({ sessions: object.data.consolidation.sessions, entity: this.props.entity}) != 0 &&
-                        !object.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(this.props.userSession.logged_user.id) && 
+                        object.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(this.props.userSession.logged_user.id) &&
+                        userEnrollment &&
+                        userEnrollment.cert &&
                         this.props.payed &&
-                        <p>Você já está inscrito em uma atividade que conflita com essa em relação a horários</p> 
+                        <a target='_blank' href={`/certificado/${userEnrollment.cert}`} className='btn btn-primary'>Certificado</a>
+                      }
+                      {
+                        this.checkEnrollment({ sessions: object.data.consolidation.sessions, entity: this.props.entity}) != 0 &&
+                        !object.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(this.props.userSession.logged_user.id) &&
+                        this.props.payed &&
+                        <p>Você já está inscrito em uma atividade que conflita com essa em relação a horários</p>
                       }
                       { !this.props.payed &&
                         <p>É preciso fazer o pagamento da taxa de inscrição para poder ter acesso as atividades do evento</p>
@@ -197,7 +205,7 @@ class SeeAllObjectsToEnroll extends Component {
       // Handle payment requirement
       if (entity.data.requirePayment === true) {
         if (this.props.payment.approved === false) {
-          if(!listOfProposers.includes(this.props.userSession.logged_user.id) && !thematicGroupsCoordinators.includes(this.props.userSession.logged_user.id)) 
+          if(!listOfProposers.includes(this.props.userSession.logged_user.id) && !thematicGroupsCoordinators.includes(this.props.userSession.logged_user.id))
             payed = false;
           } else {
             payed = true;
@@ -209,12 +217,12 @@ class SeeAllObjectsToEnroll extends Component {
       const enrollmentPeriodEnd = new Date(entity.data.enrollmentPeriod.end);
 
       if (enrollmentPeriodBegin < now && now < enrollmentPeriodEnd) {
-          return (<SeeAllObjectsToEnrollPane entity={this.props.entity} 
-            userSession={this.props.userSession} 
+          return (<SeeAllObjectsToEnrollPane entity={this.props.entity}
+            userSession={this.props.userSession}
             allObjectsToEnroll={this.props.allObjectsToEnroll}
             allObjectsUserEnrolled={this.props.allObjectsUserEnrolled}
             listOfEnrolledSessions={this.props.listOfEnrolledSessions}
-            loadObjects={this.props.loadObjects} 
+            loadObjects={this.props.loadObjects}
             enroll={this.props.enroll}
             exit={this.props.exit}
             payed={payed}

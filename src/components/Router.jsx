@@ -13,6 +13,7 @@ import EventDashboardPageContainer from './eventDashboard/EventDashboardPageCont
 import RecoverPasswordContainer from './recoverPassword/RecoverPasswordContainer';
 import NewPasswordContainer from './recoverPassword/NewPasswordContainer';
 import DropzoneTest from './dropzone/DropzoneTest';
+import Certificate from './cert/Certificate';
 import Error404 from './error/Error404';
 
 const Router = () => (
@@ -29,6 +30,7 @@ const Router = () => (
     <Route exact path='/event/:id/dashboard/:module/:entity' component={EventDashboardPageContainer} />
     <Route exact path='/event/:id' component={EventPageContainer} />
     <Route exact path='/dropzone/:id' component={DropzoneTest} />
+    <Route exact path='/certificado/:code' component={Certificate} />
     <Route component={Error404} />
   </Switch>
 );

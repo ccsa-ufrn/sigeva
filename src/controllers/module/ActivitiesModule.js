@@ -1,3 +1,7 @@
+import eachOf from 'async/eachOf';
+import uid from 'uid';
+import moment from 'moment';
+import 'moment/locale/pt-br';
 import Module from './Module';
 import ModuleModel from '../../models/module.model';
 import ModuleObject from '../../models/moduleObject.model';
@@ -9,6 +13,9 @@ import ActivityEntity from '../../models/activityEntity.model';
 import ActivitySession from '../../models/activitySession.model';
 import ActivityConsolidation from '../../models/activityConsolidation.model';
 import Enrollment from '../../models/enrollment.model';
+import CertConn from '../../models/certConnector.model';
+import { textReplace } from '../event/EventHelper';
+
 
 /** @@ Activities Module
  * Subclass of Module, that represents the Activities Module
@@ -305,6 +312,156 @@ class ActivitiesModule extends Module {
     });
   }
 
+  emitCertificate(entitySlug, objectId, type) {
+    return new Promise((resolve, reject) => {
+      // get all objs
+      this.getAllObjects(entitySlug)
+        .then((objectsOfEntity) => {
+          // find the current
+          const object = objectsOfEntity.find(el => String(el._id) == String(objectId));
+
+          if (object) {
+            const enrollments = object.data.ofEnrollments;
+
+            eachOf(enrollments, (enroll, key, callback) => {
+              if (enroll.present) {
+                const certCode = uid(10);
+                const newConn = new CertConn({
+                  code: certCode,
+                  event: this.event.eventObject._id,
+                  module: 'activities',
+                  entity: entitySlug,
+                  certType: type,
+                  object: object._id,
+                  user: enroll.user,
+                });
+
+                enrollments[key].cert = certCode;
+
+                newConn.save()
+                  .then(() => { callback(); });
+              } else {
+                callback();
+              }
+            },
+            () => {
+              ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': objectId },
+                {
+                  $set: {
+                    'ofObjects.$.data.ofEnrollments': enrollments,
+                  },
+                }, (err) => {
+                  if (!err) resolve({});
+                  reject('Error while saving new connections');
+                });
+            });
+          } else {
+            reject('Object doesn\'t exists');
+          }
+        });
+    });
+  }
+
+  getCertificate(entitySlug, type, objectId, userId) {
+    const entity = this.getEntityBySlug(entitySlug);
+
+    return new Promise((resolve, reject) => {
+      this.getAllObjects(entitySlug)
+        .then((objectsOfEntity) => {
+          const object = objectsOfEntity.find(el => String(el._id) === String(objectId));
+
+          if (object) {
+            // look for the enrollment
+            const enroll = object.data.ofEnrollments.find(
+              el => String(el.user._id) === String(userId));
+            if (enroll.present === true) {
+              if (entitySlug === 'roundtable' || entitySlug === 'conference') {
+                // discover the date
+                const date = object.data.consolidation.sessions[0].date;
+                const day = moment(date).format('DD');
+                const month = moment(date).format('MMMM');
+                const year = moment(date).format('YYYY');
+                const dateStr = `${day} de ${month} de ${year}`;
+
+                const targetObj = {
+                  objName: object.data.title,
+                  user: enroll.user.name,
+                  date: dateStr,
+                };
+
+                const templatedText = textReplace(entity.data.certTemplate.text, targetObj);
+
+                resolve({
+                  template: entity.data.certTemplate,
+                  resultText: templatedText,
+                });
+              } else if (entitySlug === 'minicourse') {
+                const proposersUsers = object.data.ofProposersUsers.reduce((prev, curr, idx) =>
+                  (idx === 0 ? curr.name : `${prev}, ${curr.name}`), '');
+
+                const targetObj = {
+                  objName: object.data.title,
+                  user: enroll.user.name,
+                  proposers: proposersUsers,
+                };
+
+                const templatedText = textReplace(entity.data.certTemplate.text, targetObj);
+
+                resolve({
+                  template: entity.data.certTemplate,
+                  resultText: templatedText,
+                });
+              } else if (entitySlug === 'workshop') {
+                // discover the date
+                const date = object.data.consolidation.sessions[0].date;
+                const day = moment(date).format('DD');
+                const month = moment(date).format('MMMM');
+                const year = moment(date).format('YYYY');
+                const dateStr = `${day} de ${month} de ${year}`;
+
+                // h/aula
+                const numSessions = object.data.consolidation.sessions.length;
+                const hAula = 2 * numSessions; // 1 aula = 2h/aula
+
+                const targetObj = {
+                  objName: object.data.title,
+                  user: enroll.user.name,
+                  date: dateStr,
+                  workload: hAula,
+                };
+
+                const templatedText = textReplace(entity.data.certTemplate.text, targetObj);
+
+                resolve({
+                  template: entity.data.certTemplate,
+                  resultText: templatedText,
+                });
+              }
+
+
+              // const proposersUsers = object.data.ofProposersUsers.reduce((prev, curr, idx) =>
+              //   (idx === 0 ? curr.name : `${prev}, ${curr.name}`), '');
+
+              // const targetObj = {
+              //   objName: object.data.title,
+              //   user: enroll.user.name,
+              //   proposers: proposersUsers,
+              // };
+
+              // const templatedText = textReplace(entity.data.certTemplate.text, targetObj);
+
+              // resolve({
+              //   template: entity.data.certTemplate,
+              //   resultText: templatedText,
+              // });
+            } else {
+              reject('User enrolled, but not present');
+            }
+          }
+        });
+    });
+  }
+
   /**
    * Runs a action performed by the user
    * @param user logged User instance
@@ -429,6 +586,13 @@ class ActivitiesModule extends Module {
       case 'get_list_to_print':
         if (consolidatePermission) {
           return this.getOneObject(body.activityId);
+        }
+        break;
+      case 'emit_certificate':
+        if (seeAllPermission) {
+          const objId = body.objectId;
+          const type = body.type;
+          return this.emitCertificate(entitySlug, objId, type);
         }
         break;
       default:

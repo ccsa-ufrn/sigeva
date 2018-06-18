@@ -11,6 +11,10 @@ const submissionObjectSchema = new Schema({
     type: String,
     default: 'waiting_evaluation', // waiting_evaluation, rejected, approved, present
   },
+  cert: {
+    type: String,
+    default: null,
+  },
 });
 
 const submissionObjectModel = mongoose.model('SubmissionObject', submissionObjectSchema);

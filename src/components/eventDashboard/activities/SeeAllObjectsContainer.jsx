@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import SeeAllObjects from './SeeAllObjects';
-import { loadAllObjects, setListToPrint, setPresence, enroll, exit } from '../../../actions/activities';
+import { loadAllObjects, setListToPrint, setPresence, enroll, exit, emitCertificate } from '../../../actions/activities';
 import { loadEnrollments } from '../../../actions/report';
 
 const mapStateToProps = state => {
@@ -19,6 +19,9 @@ const mapDispatchToProps = dispatch => {
     },
     setListToPrint: (ofEnrollments) => {
       dispatch(setListToPrint(ofEnrollments));
+    },
+    emitCertificate: (entitySlug, objectId, type) => {
+      dispatch(emitCertificate(entitySlug, objectId, type));
     },
     setPresence: (entitySlug, presence) => {
       dispatch(setPresence(entitySlug, presence));

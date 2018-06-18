@@ -1,11 +1,16 @@
+import eachOf from 'async/eachOf';
+import uid from 'uid';
+
 import EventDAO from './EventDAO';
 import EventModel from '../../models/event.model';
 import FieldError from '../FieldError';
 
 import RoleModel from '../../models/role.model';
 import RelationshipModel from '../../models/relationship.model';
+import CertConn from '../../models/certConnector.model';
 
 import Module from '../module/Module';
+import User from '../user/User';
 import PaymentModule from '../module/PaymentModule';
 import ThematicGroupModule from '../module/ThematicGroupModule';
 import SubmissionModule from '../module/SubmissionModule';
@@ -207,12 +212,14 @@ export default class {
    * @param userId_ user id
    */
   getUserRelationships(userId_) {
+    // mount roles
     const userRelationship = this.eventObject.ofRelationships.find((relationship) => {
       return relationship.user == userId_;
     });
 
     if (userRelationship === undefined) {
-      return [];
+      // return [];
+      return { roles: [], cert: null };
     }
 
     const roles = this.eventObject.ofRoles.filter((role) => {
@@ -225,7 +232,11 @@ export default class {
       return flag;
     });
 
-    return roles;
+    // mount cert
+    const cert = userRelationship.cert ? userRelationship.cert : null;
+    return { roles, cert };
+
+    // return roles;
   }
 
   /**
@@ -284,7 +295,7 @@ export default class {
 
   getUserContext(user) {
     const userId = user.userObject._id;
-    const userRoles = this.getUserRelationships(String(userId));
+    const userRoles = this.getUserRelationships(String(userId)).roles;
 
     return new Promise((resolve, reject) => {
       Module.getAllModules(this.eventObject._id)
@@ -398,6 +409,78 @@ export default class {
             reject();
           }
         }).catch(reject);
+    });
+  }
+
+  /**
+   * Emit certificates
+   */
+  emitCertificates(type) {
+    return new Promise((resolve, reject) => {
+      if (type === 'enrollment') {
+        this.getModule('payment')
+          .then((paymentModule) => {
+            const relationships = this.eventObject.ofRelationships;
+            eachOf(relationships, (rel, key, callback) => {
+              const userInfo = paymentModule.getUserInfo(rel.user);
+              if (userInfo.approved) {
+                // create cert
+                const certCode = uid(10);
+                const newConn = new CertConn({
+                  code: certCode,
+                  event: this.eventObject._id,
+                  module: null,
+                  entity: null,
+                  certType: type,
+                  object: null,
+                  user: rel.user,
+                });
+
+                relationships[key].cert = certCode;
+                newConn.save()
+                  .then(() => { callback(); })
+                  .catch(() => { reject('Error while saving connection'); });
+              } else {
+                callback();
+              }
+            }, () => {
+              this.eventObject.ofRelationships = relationships;
+              this.store()
+                .then(() => { resolve({}); })
+                .catch(() => { reject('Error while saving event'); });
+            });
+          }).catch(() => { reject('Error while loading module'); });
+      } else {
+        reject('Unknow certificate type');
+      }
+    });
+  }
+
+  /**
+   * Get certificate
+   */
+  getCertificate(userId, type) {
+    return new Promise((resolve, reject) => {
+      const relationship =
+        this.eventObject.ofRelationships.find(rel => String(rel.user) === String(userId));
+      if (relationship) {
+        if (type === 'enrollment') {
+          const userObj = new User();
+          userObj.loadById(userId)
+            .then(() => {
+              const templatedText = EventHelper.textReplace(this.eventObject.certTemplate.text, {
+                user: userObj.userObject.name,
+              });
+
+              resolve({
+                template: this.eventObject.certTemplate,
+                resultText: templatedText,
+              });
+            }).catch(() => { reject('User not found'); });
+        }
+      } else {
+        reject('User doesn\'t is enrolled');
+      }
     });
   }
 
