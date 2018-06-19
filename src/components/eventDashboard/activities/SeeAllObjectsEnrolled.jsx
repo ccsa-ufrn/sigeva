@@ -89,7 +89,6 @@ class SeeAllObjectsEnrolledPane extends Component {
               this.props.listOfEnrolledSessions &&
               this.props.allObjectsUserEnrolled.map((object) => {
                 const userEnrollment = object.data.ofEnrollments.find(enrollment => enrollment.user == this.props.userSession.logged_user.id);
-                console.log(this.props.payed);
                 return (
                   <tr key={object._id}>
                     <td>
