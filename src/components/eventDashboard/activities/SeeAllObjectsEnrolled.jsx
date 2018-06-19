@@ -89,7 +89,7 @@ class SeeAllObjectsEnrolledPane extends Component {
               this.props.listOfEnrolledSessions &&
               this.props.allObjectsUserEnrolled.map((object) => {
                 const userEnrollment = object.data.ofEnrollments.find(enrollment => enrollment.user == this.props.userSession.logged_user.id);
-                console.log(userEnrollment);
+                console.log(this.props.payed);
                 return (
                   <tr key={object._id}>
                     <td>
@@ -175,15 +175,27 @@ class SeeAllObjectsEnrolledPane extends Component {
 
 
 class SeeAllObjectsUserEnrolled extends Component {
+
+  componentDidMount() {
+    this.props.loadThematicGroups();
+  }
+
   render() {
     if (this.props.activities.entity) {
+      let thematicGroupsCoordinators = this.props.thematicGroups.thematicGroups.map(object => object.data.coordinators);
+      thematicGroupsCoordinators = Array.from(thematicGroupsCoordinators.reduce((arr, e) => arr.concat(e), [])).map(object => object._id);
       const entity = this.props.activities.entity;
+      const listOfProposers = Array.from(this.props.allObjectsToEnroll.map(object => object.data.ofProposersUsers.map(user => user._id))).reduce((arr, e) => arr.concat(e), []);
+      let payed = true;
       // Handle payment requirement
       if (entity.data.requirePayment === true) {
         if (this.props.payment.approved === false) {
-            return (<PaymentRequiredWarning/>);
+          if(!listOfProposers.includes(this.props.userSession.logged_user.id) && !thematicGroupsCoordinators.includes(this.props.userSession.logged_user.id))
+            payed = false;
+          } else {
+            payed = true;
           }
-        }
+      }
 
       const now = new Date();
       const enrollmentPeriodBegin = new Date(entity.data.enrollmentPeriod.begin);
@@ -194,6 +206,7 @@ class SeeAllObjectsUserEnrolled extends Component {
             allObjectsUserEnrolled={this.props.allObjectsUserEnrolled}
             listOfEnrolledSessions={this.props.listOfEnrolledSessions}
             loadObjects={this.props.loadObjects}
+            payed={payed}
             exit={this.props.exit}
             />);
     } else {

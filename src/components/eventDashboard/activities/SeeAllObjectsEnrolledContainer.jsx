@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
 import SeeAllObjectsEnrolled from './SeeAllObjectsEnrolled';
+import { loadThematicGroups } from '../../../actions/thematicGroups';
 import { loadObjects, exit } from '../../../actions/activities';
 
 const mapStateToProps = state => {
@@ -9,6 +10,7 @@ const mapStateToProps = state => {
     allObjectsToEnroll: state.activities.allObjectsToEnroll,
     userSession: state.userSession,
     activities: state.activities,
+    thematicGroups: state.thematicGroups,
     listOfEnrolledSessions: state.activities.listOfEnrolledSessions,
     payment: state.payment,
   };
@@ -21,7 +23,10 @@ const mapDispatchToProps = dispatch => {
     },
     exit: (entitySlug, objectId) => {
       dispatch(exit(entitySlug, objectId));
-    }
+    },
+    loadThematicGroups: () => {
+      dispatch(loadThematicGroups());
+    },
   };
 };
 

@@ -324,7 +324,7 @@ class ActivitiesModule extends Module {
             const enrollments = object.data.ofEnrollments;
 
             eachOf(enrollments, (enroll, key, callback) => {
-              if (enroll.present) {
+              if (!enroll.present) {
                 const certCode = uid(10);
                 const newConn = new CertConn({
                   code: certCode,
