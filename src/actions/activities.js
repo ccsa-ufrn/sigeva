@@ -398,6 +398,7 @@ export function emitCertificate(entitySlug, objectId, type) {
         if (json.error) {
           // handle this error
         } else {
+          dispatch(getListToPrint(entitySlug, objectId));
           dispatch(loadAllObjects(entitySlug));
         }
       });
