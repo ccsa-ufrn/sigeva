@@ -40,6 +40,10 @@ class ListOfPresencePane extends Component {
     this.props.setPresence(entitySlug, presence);
   }
 
+  emitCertificate(objectId, type) {
+    this.props.emitCertificate(this.props.entity, objectId, type);
+  }
+
   render() {
     return(
       <div id="printable">
@@ -52,6 +56,7 @@ class ListOfPresencePane extends Component {
           <thead>
             <tr>
               <th className="d-print-none">Marcar falta</th>
+              <th className="d-print-none">Status certificado</th>
               <th>Nome/Email</th>
               <th>Assinatura</th>
             </tr>
@@ -66,6 +71,10 @@ class ListOfPresencePane extends Component {
                     <td className="d-print-none"><span><a className="btn btn-success"
                     onClick={() => this.setPresence(this.props.entity, {presence: false, enrollmentId: user._id, objId: this.props.listOfPresence._id})}>Reverter falta</a>{' '}</span></td>
                   }
+                  { user.present === true && !user.cert ? <td>Não compareceu</td> :
+                    user.present === false && !user.cert ? <td>Certificado faltando</td> :
+                    <td>Certificado emitido</td>
+                  }
                   <td>{user.user.name}({user.user.email})</td>
                   <td></td>
                 </tr>
@@ -74,6 +83,11 @@ class ListOfPresencePane extends Component {
           }
           </tbody>
       </table>
+      { this.props.listOfPresence.data.status === 'consolidated' &&
+        <span><a style={{width: '100%'}} className="btn btn-warning d-print-none" onClick={() => {this.emitCertificate(this.props.listOfPresence._id, 'enrollment');}}>
+                        Emitir certificados
+                        </a>{' '}</span>
+      }
       <br/>
       <span><a style={{width: '100%'}} className="btn btn-primary d-print-none" onClick={() => this.setListToPrint([])}>
                         Voltar
@@ -303,6 +317,7 @@ class SeeAllObjects extends Component {
                                     allObjects={this.props.allObjects}
                                     listOfPresence={this.props.listOfPresence}
                                     listOfEnrollments={this.props.listOfEnrollments}
+                                    emitCertificate={this.props.emitCertificate}
                                     enroll={this.props.enroll}
                                     exit={this.props.exit}
           />

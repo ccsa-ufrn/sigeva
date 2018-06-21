@@ -128,6 +128,7 @@ class SeeAllObjectsEnrolledPane extends Component {
                         })
                       }
                       { object.data.consolidation &&
+                        !this.props.enrollmentePeriodEnd &&
                         !object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) &&
                         <EnrollButton onClick={() => this.enroll({ activityId: object._id,
                           userId: this.props.userSession.logged_user.id,
@@ -135,6 +136,7 @@ class SeeAllObjectsEnrolledPane extends Component {
                           style={'primary'} text={'Inscrever-se'} />
                       }
                       { object.data.consolidation &&
+                        !this.props.enrollmentePeriodEnd &&
                         object.data.ofEnrollments.map(enrollment => enrollment.user).includes(this.props.userSession.logged_user.id) &&
                         <EnrollButton onClick={() => this.exit({ activityId: object._id,
                           userId: this.props.userSession.logged_user.id,
@@ -199,6 +201,11 @@ class SeeAllObjectsUserEnrolled extends Component {
       const now = new Date();
       const enrollmentPeriodBegin = new Date(entity.data.enrollmentPeriod.begin);
       const enrollmentPeriodEnd = new Date(entity.data.enrollmentPeriod.end);
+      let enrollmentePeriodEnd = true;
+      if (enrollmentPeriodBegin < now && now < enrollmentPeriodEnd) {
+        enrollmentePeriodEnd = false;
+      }
+
 
           return (<SeeAllObjectsEnrolledPane entity={this.props.entity}
             userSession={this.props.userSession}
@@ -206,6 +213,7 @@ class SeeAllObjectsUserEnrolled extends Component {
             listOfEnrolledSessions={this.props.listOfEnrolledSessions}
             loadObjects={this.props.loadObjects}
             payed={payed}
+            enrollmentePeriodEnd={enrollmentePeriodEnd}
             exit={this.props.exit}
             />);
     } else {
