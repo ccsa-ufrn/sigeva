@@ -6,7 +6,7 @@ const react = {
   output: {
     path: path.join(__dirname, '/public/js'),
     // filename: 'bundle.js',
-    filename: 'bundle.[chunkhash].js',
+    filename: 'bundle.js',
   },
   module: {
     loaders: [

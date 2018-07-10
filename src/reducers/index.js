@@ -11,6 +11,7 @@ import submission from './submission';
 import news from './news';
 import activities from './activities';
 import report from './report';
+import customcert from './customcert';
 
 const reducers = combineReducers({
   userSession,
@@ -25,6 +26,7 @@ const reducers = combineReducers({
   news,
   activities,
   report,
+  customcert,
 });
 
 export default reducers;

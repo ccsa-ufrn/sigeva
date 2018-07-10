@@ -10,6 +10,7 @@ import SubmissionModuleContainer from './submission/SubmissionModuleContainer';
 import NewsModuleContainer from './news/NewsModuleContainer';
 import ActivitiesModuleContainer from './activities/ActivitiesModuleContainer';
 import ReportModule from './report/ReportModule';
+import CustomCertContainer from './customcert/CustomCertContainer';
 
 import EventDashboardHome from './EventDashboardHome';
 
@@ -56,7 +57,8 @@ class EventDashboardPage extends Component {
             if (mod.slug == 'payment'
                 || mod.slug == 'thematicgroups'
                 || mod.slug == 'news'
-                || mod.slug == 'report' ) {
+                || mod.slug == 'report'
+                || mod.slug == 'customcert' ) {
               return <EventDashboardMenuItem
                 key={mod.slug}
                 module={{name: mod.name, slug: mod.slug}}
@@ -99,7 +101,9 @@ class EventDashboardPage extends Component {
       case 'news':
         return <NewsModuleContainer />
       case 'report':
-        return <ReportModule reportContext={this.getModuleContext('report')} />
+        return <ReportModule reportContext={this.getModuleContext('report')} />;
+      case 'customcert':
+        return <CustomCertContainer />;
       default:
         return <EventDashboardHome
           event={this.props.event}
