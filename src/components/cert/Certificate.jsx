@@ -24,7 +24,8 @@ class CertificateBoard extends Component {
           <br/>
           <span style={{float:'right'}}>Natal, {`${day} de ${month} de ${year}`}.</span>
           </div>
-          <div style={{width: '100%', left: '0px', bottom: '0px', position: 'absolute'}}>
+          <br/>
+          <div style={{marginBottom: '-50px', width: '100%', left: '0px', bottom: '0px', position: 'absolute'}}>
             <img src={this.props.bottomImage} style={{width:'100%'}} />
             <small>Para verificar a validade do certificado acesse http://sigeva.ccsa.ufrn.br/certificado/{this.props.code}</small>
           </div>
