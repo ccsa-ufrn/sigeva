@@ -17,6 +17,7 @@ import SubmissionModule from '../module/SubmissionModule';
 import NewsModule from '../module/NewsModule';
 import ActivitiesModule from '../module/ActivitiesModule';
 import ReportModule from '../module/ReportModule';
+import CustomCertModule from '../module/CustomCertModule';
 
 import * as EventHelper from './EventHelper';
 
@@ -337,6 +338,9 @@ export default class {
         break;
       case 'report':
         module = new ReportModule(this);
+        break;
+      case 'cert':
+        module = new CustomCertModule(this);
         break;
       default:
         // do nothing

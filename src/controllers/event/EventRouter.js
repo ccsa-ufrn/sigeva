@@ -365,6 +365,9 @@ eventRouter.get('/cert/:code', (req, res) => {
                 if (our.module === 'activities') {
                   return module.getCertificate(our.entity, our.certType, our.object, our.user);
                 }
+                if (our.module === 'cert') {
+                  return module.getCertificate(our.object);
+                }
                 return null;
               })
               .then((certResponse) => {
