@@ -462,6 +462,26 @@ class ActivitiesModule extends Module {
     });
   }
 
+  editEntity(entitySlug, stateObject) {
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofEntities.slug': entitySlug },
+        {
+          $set: {
+            'ofEntities.$.name': stateObject.name,
+            'ofEntities.$.data.maxProposersUsers': stateObject.maxProposersUsers,
+            'ofEntities.$.data.requirePayment': stateObject.requirePayment,
+            'ofEntities.$.data.proposalPeriod.begin': new Date(stateObject.startProposalPeriod),
+            'ofEntities.$.data.proposalPeriod.end': new Date(stateObject.endProposalPeriod),
+            'ofEntities.$.data.enrollmentPeriod.begin': new Date(stateObject.startEnrollmentPeriod),
+            'ofEntities.$.data.enrollmentPeriod.end': new Date(stateObject.endEnrollmentPeriod),
+          },
+        }, (err, doc) => {
+          if (!err) resolve({});
+          reject({});
+        });
+    });
+  }
+
   /**
    * Runs a action performed by the user
    * @param user logged User instance
@@ -593,6 +613,11 @@ class ActivitiesModule extends Module {
           const objId = body.objectId;
           const type = body.type;
           return this.emitCertificate(entitySlug, objId, type);
+        }
+        break;
+      case 'edit_entity':
+        if (seeAllPermission) {
+          return this.editEntity(entitySlug, body);
         }
         break;
       default:

@@ -5,9 +5,13 @@ class UserPicker extends Component {
   constructor(props) {
     super(props);
     // { name: ---, email: id, deletable }
+    let users = [];
+    if(this.props.users) {
+      users = this.props.users.map(user => { user.deletable = true; return user});
+    }
 
     this.state = {
-      users: [],
+      users: users,
       query: '',
       notFound: false,
     };

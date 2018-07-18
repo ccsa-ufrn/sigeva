@@ -1,17 +1,195 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import UserPicker from '../../userPicker/userPicker';
 
-class SeeAllObjects extends Component {
+class EditSubmission extends Component {
   constructor(props) {
     super(props);
+
+    let thematicGroups = [];
+    if (this.props.entity.slug == 'teachingcases') {
+      thematicGroups = this.props.thematicGroups.filter((el => el.data.name === 'Casos para Ensino'));
+    } else {
+      thematicGroups = this.props.thematicGroups.filter((el => el.data.name !== 'Casos para Ensino'));
+    }
+
+    let thematicGroup = null;
+    if (thematicGroups.length > 0) {
+      thematicGroup = this.props.objectToEdit.data.thematicGroup.data._id;
+    }
+    
+    let authors = null;
+    if (this.props.objectToEdit.data.authors.length > 0) {
+      authors = this.props.objectToEdit.data.authors;
+    }
+
+    this.state = {
+      title: "",
+      _id: "",
+      abstract: "",
+      keywords: "",
+      thematicGroup: thematicGroup,
+      users: authors,
+      files: [],
+      thematicGroups: thematicGroups,
+    }
+
+    this.changeUsers = this.changeUsers.bind(this);
+    this.changeTitle = this.changeTitle.bind(this);
+    this.changeAbstract = this.changeAbstract.bind(this);
+    this.changeKeywords = this.changeKeywords.bind(this);
+    this.changeTG = this.changeTG.bind(this);
+    this.addFile = this.addFile.bind(this);
+    this.doSubmitObject = this.doSubmitObject.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.objectToEdit.length !== 0) {
+      this.setState({
+        title: this.props.objectToEdit.data.title,
+        abstract: this.props.objectToEdit.data.abstract,
+        keywords: this.props.objectToEdit.data.keywords,
+        thematicGroup: this.props.objectToEdit.data.thematicGroup.data._id,
+        users: this.props.objectToEdit.data.authors.map(authors => authors._id),
+        _id: this.props.objectToEdit._id,
+        files: [],
+      })
+    }
+  }
+
+  changeTitle(e) {
+    const target = e.nativeEvent.target;
+    this.setState({
+      title: target.value,
+    });
+  }
+
+  changeAbstract(e) {
+    const target = e.nativeEvent.target;
+    this.setState({
+      abstract: target.value,
+    });
+  }
+
+  changeKeywords(e) {
+    const target = e.nativeEvent.target;
+    this.setState({
+      keywords: target.value,
+    });
+  }
+
+  changeTG(e) {
+    const target = e.nativeEvent.target;
+    this.setState({
+      thematicGroup: target.value,
+    });
+  }
+
+  changeUsers(users_) {
+    this.setState({
+      users: users_,
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    let thematicGroups = [];
+
+    if (this.props.entity.slug == 'teachingcases') {
+      thematicGroups = this.props.thematicGroups.filter((el => el.data.name === 'Casos para Ensino'));
+    } else {
+      thematicGroups = this.props.thematicGroups.filter((el => el.data.name !== 'Casos para Ensino'));
+    }
+
+    if (this.state.thematicGroups.length != thematicGroups.length) {
+      this.setState({
+        thematicGroups: thematicGroups,
+      });
+    }
+
+    if (this.state.thematicGroup == null) {
+      if (thematicGroups.length > 0) {
+        this.setState({
+          thematicGroup: this.props.objectToEdit.data.thematicGroup.data._id,
+        });
+      }
+    }
+  }
+
+  addFile(file) {
+    const newFiles = this.state.files;
+    newFiles.push(file._id);
+    this.setState({
+      files: newFiles
+    });
+  }
+
+  doSubmitObject() {
+    this.props.submitObject(this.props.entity.slug, this.state);
+  }
+
+  render() {
+    return (
+      <div>
+        <h5><strong>Submissão do tipo "{this.props.entity.name}"</strong></h5>
+        <div className="form-group">
+          <label htmlFor="form-title">Título do trabalho</label>
+          <input value={this.state.title} id="form-title" className="form-control" onChange={this.changeTitle} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="form-abstract">Resumo</label>
+          <textarea value={this.state.abstract} id="form-abstract" className="form-control" onChange={this.changeAbstract}></textarea>
+        </div>
+        <div className="form-group">
+          <label htmlFor="form-keywords">Palavras-chave</label>
+          <input value={this.state.keywords} id="form-keywords" className="form-control" onChange={this.changeKeywords} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="form-tgs">Grupo temático</label>
+          <select defaultValue={this.state.thematicGroup} id="form-tgs" className="form-control" onChange={this.changeTG}>
+            { this.state.thematicGroups &&
+              this.state.thematicGroups.map((tg) => {
+                return (<option key={tg.data._id} value={tg.data._id}>{tg.data.name}</option>);
+              })
+            }
+          </select><br/>
+          <strong>Seleção de co-autores</strong><br/>
+          <UserPicker
+            eventId={this.props.eventId}
+            maxAuthors={this.props.entity.data.maxAuthors}
+            initialUserEmail={this.props.userEmail}
+            onChange={this.changeUsers}
+            users={this.state.users}
+          />
+          <div className="form-group">
+            <button style={{width: '100%'}} className="btn btn-warning" onClick={() => this.props.setObjectToEdit([])}>Voltar</button>
+          </div>
+          <div className="form-group">
+            <button style={{width: '100%'}} className="btn btn-success" onClick={() => this.props.editObject(this.props.entity.slug, this.state)}>Salvar alterações</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+class SeeAllObjectsPane extends Component {
+  constructor(props) {
+    super(props);
+    this.setObjectToEdit = this.setObjectToEdit.bind(this);
+  }
+
+  setObjectToEdit(object) {
+    this.props.setObjectToEdit(object);
   }
 
   componentDidMount() {
     this.props.loadAllObjects(this.props.entity);
+    this.props.setObjectToEdit([]);
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.entity !== this.props.entity) {
+      console.log('x');
       this.props.loadAllObjects(this.props.entity);
     }
   }
@@ -103,6 +281,7 @@ class SeeAllObjects extends Component {
                           <a href={`/certificado/${object.data.cert}`} target="_blank" className="btn btn-sm btn-info">Certificado</a>
                         </div>
                       }
+                      <button className="btn btn-sm btn-dark" onClick={() => this.setObjectToEdit(object)}>Editar submissão</button>
                     </td>
                   </tr>
                 );
@@ -112,6 +291,26 @@ class SeeAllObjects extends Component {
         </table>
       </div>
     );
+  }
+}
+
+class SeeAllObjects extends Component {
+
+  render() {
+    if(this.props.objectToEdit.length !== 0) {
+      return (<EditSubmission entity={this.props.submission.entity} 
+                              thematicGroups={this.props.thematicGroups}
+                              objectToEdit={this.props.objectToEdit} 
+                              setObjectToEdit={this.props.setObjectToEdit} 
+                              editObject={this.props.editObject} />)
+    } else {
+      return (
+        <SeeAllObjectsPane allObjects={this.props.allObjects} 
+                           loadAllObjects={this.props.loadAllObjects} 
+                           changeObjectState={this.props.changeObjectState}
+                           setObjectToEdit={this.props.setObjectToEdit} />
+      )
+    }
   }
 }
 

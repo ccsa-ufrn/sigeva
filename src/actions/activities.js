@@ -495,3 +495,32 @@ export function setPresence(entitySlug, presence) {
       });
   };
 }
+
+// Actions related to administering entities
+
+export function editEntity(entitySlug, stateObject) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(stateObject),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/edit_entity`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(loadActivitiesEntity(entitySlug));
+        }
+      });
+  };
+}
