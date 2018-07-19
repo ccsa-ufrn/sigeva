@@ -420,7 +420,7 @@ class SubmissionModule extends Module {
             'ofObjects.$.data.abstract': objectToEdit.abstract,
             'ofObjects.$.data.keywords': objectToEdit.keywords,
             'ofObjects.$.data.thematicGroup': mongoose.Types.ObjectId(objectToEdit.thematicGroup),
-            'ofObjects.$.data.authors': objectToEdit.users.map(user => mongoose.Types.ObjectId(user)),
+            'ofObjects.$.data.authors': objectToEdit.users.map(user => mongoose.Types.ObjectId(user._id)),
           },
         }, { new: true }, (err, doc) => {
           if (!err) resolve(doc);

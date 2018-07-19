@@ -6,11 +6,10 @@ import { loadAllObjects, changeObjectState, emitCertificate, setObjectToEdit, ed
 
 const mapStateToProps = state => {
   return {
-    allObjects: state.submission.allObjects,
-    objectToEdit: state.submission.objectToEdit,
     userSession: state.userSession,
     thematicGroups: state.thematicGroups.thematicGroups,
     submission: state.submission,
+    eventId: state.event.id,
   };
 };
 

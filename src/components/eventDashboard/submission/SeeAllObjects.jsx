@@ -189,7 +189,6 @@ class SeeAllObjectsPane extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.entity !== this.props.entity) {
-      console.log('x');
       this.props.loadAllObjects(this.props.entity);
     }
   }
@@ -297,18 +296,20 @@ class SeeAllObjectsPane extends Component {
 class SeeAllObjects extends Component {
 
   render() {
-    if(this.props.objectToEdit.length !== 0) {
+    if(this.props.submission.objectToEdit.length !== 0) {
       return (<EditSubmission entity={this.props.submission.entity} 
                               thematicGroups={this.props.thematicGroups}
-                              objectToEdit={this.props.objectToEdit} 
+                              objectToEdit={this.props.submission.objectToEdit} 
                               setObjectToEdit={this.props.setObjectToEdit} 
-                              editObject={this.props.editObject} />)
+                              editObject={this.props.editObject} 
+                              eventId={this.props.eventId} />)
     } else {
       return (
-        <SeeAllObjectsPane allObjects={this.props.allObjects} 
+        <SeeAllObjectsPane allObjects={this.props.submission.allObjects} 
                            loadAllObjects={this.props.loadAllObjects} 
                            changeObjectState={this.props.changeObjectState}
-                           setObjectToEdit={this.props.setObjectToEdit} />
+                           setObjectToEdit={this.props.setObjectToEdit} 
+                           entity={this.props.entity}/>
       )
     }
   }
