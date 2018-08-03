@@ -30,6 +30,13 @@ export function setSessions(data) {
   });
 }
 
+export function setObjectToEdit(data) {
+  return ({
+    type: Action.SET_ACTIVITIES_OBJECT_TO_EDIT,
+    data,
+  });
+}
+
 export function setAllObjectsToEnroll(data) {
   return ({
     type: Action.SET_ACTIVITIES_ALL_OBJECTS_TO_ENROLL,
@@ -491,6 +498,63 @@ export function setPresence(entitySlug, presence) {
           // handle this error
         } else {
           dispatch(getListToPrint(entitySlug, presence.objId));
+        }
+      });
+  };
+}
+
+export function editObject(entitySlug, data) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/edit_object`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // TODO handle this error
+        } else {
+          const newObject = json.data.ofObjects.filter(object => object._id == data._id)[0];
+          dispatch(setObjectToEdit(newObject));
+        }
+      });
+  };
+}
+
+// Actions related to administering entities
+
+export function editEntity(entitySlug, stateObject) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(stateObject),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/edit_entity`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(loadActivitiesEntity(entitySlug));
         }
       });
   };

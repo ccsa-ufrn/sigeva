@@ -1,4 +1,5 @@
 import eachOf from 'async/eachOf';
+import mongoose from 'mongoose';
 import uid from 'uid';
 import moment from 'moment';
 import 'moment/locale/pt-br';
@@ -362,6 +363,25 @@ class ActivitiesModule extends Module {
     });
   }
 
+  editObject(objectToEdit) {
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': objectToEdit._id },
+        {
+          $set: {
+            'ofObjects.$.data.title': objectToEdit.title,
+            'ofObjects.$.data.syllabus': objectToEdit.syllabus,
+            'ofObjects.$.data.shift': parseInt(objectToEdit.shift, 10),
+            'ofObjects.$.data.vacancies': parseInt(objectToEdit.vacancies, 10),
+            'ofObjects.$.data.thematicGroup': mongoose.Types.ObjectId(objectToEdit.thematicGroup),
+            'ofObjects.$.data.ofProposersUsers': objectToEdit.ofProposersUsers.map(user => mongoose.Types.ObjectId(user._id)),
+          },
+        }, { new: true }, (err, doc) => {
+          if (!err) resolve(doc);
+          reject({});
+        });
+    });
+  }
+
   getCertificate(entitySlug, type, objectId, userId) {
     const entity = this.getEntityBySlug(entitySlug);
 
@@ -458,6 +478,26 @@ class ActivitiesModule extends Module {
               reject('User enrolled, but not present');
             }
           }
+        });
+    });
+  }
+
+  editEntity(entitySlug, stateObject) {
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofEntities.slug': entitySlug },
+        {
+          $set: {
+            'ofEntities.$.name': stateObject.name,
+            'ofEntities.$.data.maxProposersUsers': stateObject.maxProposersUsers,
+            'ofEntities.$.data.requirePayment': stateObject.requirePayment,
+            'ofEntities.$.data.proposalPeriod.begin': new Date(stateObject.startProposalPeriod),
+            'ofEntities.$.data.proposalPeriod.end': new Date(stateObject.endProposalPeriod),
+            'ofEntities.$.data.enrollmentPeriod.begin': new Date(stateObject.startEnrollmentPeriod),
+            'ofEntities.$.data.enrollmentPeriod.end': new Date(stateObject.endEnrollmentPeriod),
+          },
+        }, (err, doc) => {
+          if (!err) resolve({});
+          reject({});
         });
     });
   }
@@ -593,6 +633,16 @@ class ActivitiesModule extends Module {
           const objId = body.objectId;
           const type = body.type;
           return this.emitCertificate(entitySlug, objId, type);
+        }
+        break;
+      case 'edit_entity':
+        if (seeAllPermission) {
+          return this.editEntity(entitySlug, body);
+        }
+        break;
+      case 'edit_object':
+        if (seeAllPermission) {
+          return this.editObject(body);
         }
         break;
       default:

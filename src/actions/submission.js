@@ -37,6 +37,13 @@ export function setToApproveSubmission(data) {
   });
 }
 
+export function setObjectToEdit(data) {
+  return ({
+    type: Action.SET_SUBMISSION_OBJECT_TO_EDIT,
+    data,
+  });
+}
+
 export function loadSubmissionEntity(entitySlug) {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
@@ -137,6 +144,35 @@ export function submitObject(entitySlug, data) {
           // TODO handle this error
         } else {
           dispatch(loadUserObjects(entitySlug));
+        }
+      });
+  };
+}
+
+export function editObject(entitySlug, data) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/edit_object`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // TODO handle this error
+        } else {
+          const newObject = json.data.ofObjects.filter(object => object._id == data._id)[0];
+          dispatch(loadUserObjects(entitySlug));
+          dispatch(setObjectToEdit(newObject));
         }
       });
   };
@@ -337,7 +373,6 @@ export function scheduleSubmissions(entitySlug, selectedSubmissions, sessions, l
         if (json.error) {
           // handle this error
         } else {
-          console.log(json.data);
           dispatch(loadAllObjects(entitySlug));
         }
       });
@@ -369,6 +404,35 @@ export function cancelSubmissionPresentation(entitySlug, submissionId) {
           // handle this error
         } else {
           dispatch(loadAllObjects(entitySlug));
+        }
+      });
+  };
+}
+
+// Actions related to administering entities
+
+export function editEntity(entitySlug, stateObject) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(stateObject),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/edit_entity`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(loadSubmissionEntity(entitySlug));
         }
       });
   };

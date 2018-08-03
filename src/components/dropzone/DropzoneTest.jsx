@@ -7,7 +7,6 @@ export default class DropzoneTest extends Component {
     const requirementId = this.props.match.params.id;
     const formData = new FormData();
     acceptedFiles.forEach((file) => {
-      console.log(file);
       formData.append('file', file);
     });
 

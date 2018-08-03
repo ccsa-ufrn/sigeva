@@ -9,6 +9,7 @@ const initialActivities = {
   allObjectsSubmited: [],
   listOfEnrolledSessions: [],
   listOfPresence: [],
+  objectToEdit: [],
 };
 
 const activities = (state = initialActivities, action) => {
@@ -44,6 +45,10 @@ const activities = (state = initialActivities, action) => {
     case Action.SET_ACTIVITIES_ALL_OBJECTS_SUBMITED:
       return Object.assign({}, state, {
         allObjectsSubmited: action.data,
+      });
+    case Action.SET_ACTIVITIES_OBJECT_TO_EDIT:
+      return Object.assign({}, state, {
+        objectToEdit: action.data,
       });
     default:
       return state;
