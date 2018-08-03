@@ -1,4 +1,5 @@
 import eachOf from 'async/eachOf';
+import mongoose from 'mongoose';
 import uid from 'uid';
 import moment from 'moment';
 import 'moment/locale/pt-br';
@@ -362,6 +363,25 @@ class ActivitiesModule extends Module {
     });
   }
 
+  editObject(objectToEdit) {
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': objectToEdit._id },
+        {
+          $set: {
+            'ofObjects.$.data.title': objectToEdit.title,
+            'ofObjects.$.data.syllabus': objectToEdit.syllabus,
+            'ofObjects.$.data.shift': parseInt(objectToEdit.shift, 10),
+            'ofObjects.$.data.vacancies': parseInt(objectToEdit.vacancies, 10),
+            'ofObjects.$.data.thematicGroup': mongoose.Types.ObjectId(objectToEdit.thematicGroup),
+            'ofObjects.$.data.ofProposersUsers': objectToEdit.ofProposersUsers.map(user => mongoose.Types.ObjectId(user._id)),
+          },
+        }, { new: true }, (err, doc) => {
+          if (!err) resolve(doc);
+          reject({});
+        });
+    });
+  }
+
   getCertificate(entitySlug, type, objectId, userId) {
     const entity = this.getEntityBySlug(entitySlug);
 
@@ -618,6 +638,11 @@ class ActivitiesModule extends Module {
       case 'edit_entity':
         if (seeAllPermission) {
           return this.editEntity(entitySlug, body);
+        }
+        break;
+      case 'edit_object':
+        if (seeAllPermission) {
+          return this.editObject(body);
         }
         break;
       default:

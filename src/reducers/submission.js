@@ -31,7 +31,7 @@ const submission = (state = initialSubmission, action) => {
       return Object.assign({}, state, {
         sessions: action.data,
       });
-    case Action.SET_OBJECT_TO_EDIT:
+    case Action.SET_SUBMISSION_OBJECT_TO_EDIT:
       return Object.assign({}, state, {
         objectToEdit: action.data,
       });

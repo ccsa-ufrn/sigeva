@@ -1,14 +1,17 @@
 import { connect } from 'react-redux';
 
 import SeeAllObjects from './SeeAllObjects';
-import { loadAllObjects, setListToPrint, setPresence, enroll, exit, emitCertificate, emitOneCertificate } from '../../../actions/activities';
+import { loadAllObjects, setListToPrint, setObjectToEdit, setPresence, enroll, exit, emitCertificate, emitOneCertificate, editObject } from '../../../actions/activities';
 import { loadEnrollments } from '../../../actions/report';
 
 const mapStateToProps = state => {
   return {
+    activities: state.activities,
     allObjects: state.activities.allObjects,
     listOfPresence: state.activities.listOfPresence,
     listOfEnrollments: state.report.enrollments,
+    objectToEdit: state.activities.objectToEdit,
+    eventId: state.event.id,
   };
 };
 
@@ -35,6 +38,12 @@ const mapDispatchToProps = dispatch => {
     exit: (entitySlug, objectId) => {
       dispatch(exit(entitySlug, objectId));
     },
+    setObjectToEdit: (objectToEdit) => {
+      dispatch(setObjectToEdit(objectToEdit));
+    },
+    editObject: (entitySlug, objectToEdit) => {
+      dispatch(editObject(entitySlug, objectToEdit));
+    }
   };
 };
 
