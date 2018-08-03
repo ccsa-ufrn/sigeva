@@ -39,7 +39,7 @@ export function setToApproveSubmission(data) {
 
 export function setObjectToEdit(data) {
   return ({
-    type: Action.SET_OBJECT_TO_EDIT,
+    type: Action.SET_SUBMISSION_OBJECT_TO_EDIT,
     data,
   });
 }

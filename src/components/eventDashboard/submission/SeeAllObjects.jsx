@@ -280,7 +280,7 @@ class SeeAllObjectsPane extends Component {
                           <a href={`/certificado/${object.data.cert}`} target="_blank" className="btn btn-sm btn-info">Certificado</a>
                         </div>
                       }
-                      <button className="btn btn-sm btn-dark" onClick={() => this.setObjectToEdit(object)}>Editar submissão</button>
+                      <button className="btn btn-sm btn-dark" onClick={() => this.props.setObjectToEdit(object)}>Editar submissão</button>
                     </td>
                   </tr>
                 );
