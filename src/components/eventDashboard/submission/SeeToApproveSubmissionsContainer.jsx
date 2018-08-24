@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import SeeToApproveSubmissions from './SeeToApproveSubmissions';
-import { loadObjectsToEvaluate, loadSubmissionEntity, changeObjectState } from '../../../actions/submission';
+import { loadObjectsToEvaluate, loadSubmissionEntity, changeObjectState, saveComment } from '../../../actions/submission';
 
 const mapStateToProps = state => {
   return {
@@ -19,7 +19,10 @@ const mapDispatchToProps = dispatch => {
     },
     changeObjectState: (entitySlug, objectId, newState) => {
       dispatch(changeObjectState(entitySlug, objectId, newState));
-    }
+    },
+    saveComment: (entitySlug, objectId, newComment) => {
+      dispatch(saveComment(entitySlug, objectId, newComment));
+    },
   };
 }
 

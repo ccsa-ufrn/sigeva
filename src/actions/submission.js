@@ -195,7 +195,17 @@ export function loadObjectsToEvaluate(entitySlug) {
     fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/get_to_evaluate_submissions`, config)
       .then(response => response.json())
       .then((json) => {
-        dispatch(setToApproveSubmission(json.data));
+        const newObjects = { thematicGroups: json.data.thematicGroups.map((tg_) => {
+          return { _id: tg_._id, name: tg_.name, objects: tg_.objects.map((object) => {
+            if (!object.data.comment) {
+              object.data.comment = '';
+              return object;
+            }
+            return object;
+          }),
+          };
+        }) };
+        dispatch(setToApproveSubmission(newObjects));
       });
   };
 }
@@ -219,6 +229,37 @@ export function changeObjectState(entitySlug, objectId, newState) {
     };
 
     fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/change_object_state`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // TODO handle this error
+        } else {
+          dispatch(loadObjectsToEvaluate(entitySlug));
+          dispatch(loadAllObjects(entitySlug));
+        }
+      });
+  };
+}
+
+export function saveComment(entitySlug, objectId, newComment) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        objectId,
+        newComment,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/change_comment`, config)
       .then(response => response.json())
       .then((json) => {
         if (json.error) {
