@@ -37,6 +37,13 @@ export function setToApproveSubmission(data) {
   });
 }
 
+export function setObjectToEdit(data) {
+  return ({
+    type: Action.SET_SUBMISSION_OBJECT_TO_EDIT,
+    data,
+  });
+}
+
 export function loadSubmissionEntity(entitySlug) {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
@@ -142,6 +149,35 @@ export function submitObject(entitySlug, data) {
   };
 }
 
+export function editObject(entitySlug, data) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/edit_object`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // TODO handle this error
+        } else {
+          const newObject = json.data.ofObjects.filter(object => object._id == data._id)[0];
+          dispatch(loadUserObjects(entitySlug));
+          dispatch(setObjectToEdit(newObject));
+        }
+      });
+  };
+}
+
 export function loadObjectsToEvaluate(entitySlug) {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
@@ -159,7 +195,17 @@ export function loadObjectsToEvaluate(entitySlug) {
     fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/get_to_evaluate_submissions`, config)
       .then(response => response.json())
       .then((json) => {
-        dispatch(setToApproveSubmission(json.data));
+        const newObjects = { thematicGroups: json.data.thematicGroups.map((tg_) => {
+          return { _id: tg_._id, name: tg_.name, objects: tg_.objects.map((object) => {
+            if (!object.data.comment) {
+              object.data.comment = '';
+              return object;
+            }
+            return object;
+          }),
+          };
+        }) };
+        dispatch(setToApproveSubmission(newObjects));
       });
   };
 }
@@ -183,6 +229,37 @@ export function changeObjectState(entitySlug, objectId, newState) {
     };
 
     fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/change_object_state`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // TODO handle this error
+        } else {
+          dispatch(loadObjectsToEvaluate(entitySlug));
+          dispatch(loadAllObjects(entitySlug));
+        }
+      });
+  };
+}
+
+export function saveComment(entitySlug, objectId, newComment) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        objectId,
+        newComment,
+      }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/change_comment`, config)
       .then(response => response.json())
       .then((json) => {
         if (json.error) {
@@ -337,7 +414,6 @@ export function scheduleSubmissions(entitySlug, selectedSubmissions, sessions, l
         if (json.error) {
           // handle this error
         } else {
-          console.log(json.data);
           dispatch(loadAllObjects(entitySlug));
         }
       });
@@ -369,6 +445,35 @@ export function cancelSubmissionPresentation(entitySlug, submissionId) {
           // handle this error
         } else {
           dispatch(loadAllObjects(entitySlug));
+        }
+      });
+  };
+}
+
+// Actions related to administering entities
+
+export function editEntity(entitySlug, stateObject) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(stateObject),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/submission/${entitySlug}/act/edit_entity`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.error) {
+          // handle this error
+        } else {
+          dispatch(loadSubmissionEntity(entitySlug));
         }
       });
   };

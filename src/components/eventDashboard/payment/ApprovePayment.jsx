@@ -29,6 +29,7 @@ class ReceiptsTable extends Component {
           <tbody>
             { this.props.payments !== null &&
               this.props.payments.map((payment) => {
+                console.log(this.props.payment);
                 return (
                   <tr key={payment._id}>
                     <td><p style={style}>{payment.data.user.name}{' '}

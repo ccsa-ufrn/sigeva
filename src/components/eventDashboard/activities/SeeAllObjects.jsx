@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactToPrint from 'react-to-print';
+import UserPicker from '../../userPicker/userPicker';
 
 class EnrollButton extends Component {
   render() {
@@ -10,6 +11,132 @@ class EnrollButton extends Component {
         {this.props.text}
     </a>{' '}</span>
     )
+  }
+}
+
+class EditActivity extends Component {
+  constructor(props) {
+    super(props);
+
+    let ofProposersUsers = null;
+    if (this.props.objectToEdit.data.ofProposersUsers.length > 0) {
+      ofProposersUsers = this.props.objectToEdit.data.ofProposersUsers;
+    }
+
+    this.state = {
+      title: "",
+      shift: 0,
+      syllabus: "",
+      vacancies: 0,
+      ofProposersUsers: ofProposersUsers,
+    }
+
+    this.changeTitle = this.changeTitle.bind(this);
+    this.changeShift = this.changeShift.bind(this);
+    this.changeSyllabus = this.changeSyllabus.bind(this);
+    this.changeVacancies = this.changeVacancies.bind(this);
+    this.changeOfProposersUsers = this.changeOfProposersUsers.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.objectToEdit.length !== 0) {
+      this.setState({
+        title: this.props.objectToEdit.data.title,
+        syllabus: this.props.objectToEdit.data.syllabus,
+        shift: parseInt(this.props.objectToEdit.data.shift),
+        vacancies: parseInt(this.props.objectToEdit.data.vacancies),
+        ofProposersUsers: this.props.objectToEdit.data.ofProposersUsers.map(author => author._id),
+        _id: this.props.objectToEdit._id,
+      })
+    }
+  }
+
+  changeTitle(e) {
+    const target = e.nativeEvent.target;
+    this.setState({
+      title: target.value,
+    });
+  }
+
+  changeShift(e) {
+    const target = e.nativeEvent.target;
+    this.setState({
+      shift: parseInt(target.value),
+    });
+  }
+
+  changeSyllabus(e) {
+    const target = e.nativeEvent.target;
+    this.setState({
+      syllabus: target.value,
+    });
+  }
+
+  changeVacancies(e) {
+    const target = e.nativeEvent.target;
+    this.setState({
+      vacancies: parseInt(target.value),
+    });
+  }
+
+  changeOfProposersUsers(users_) {
+    this.setState({
+      ofProposersUsers: users_,
+    });
+  }
+
+  render() {
+    return(
+      <div>
+        <h5><strong>Edição de proposta {this.props.entity.name}</strong></h5>
+        <div className="form-group">
+          <label htmlFor="form-title">Título da proposta</label>
+          <input value={this.state.title} id="form-title" className="form-control" onChange={this.changeTitle} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="form-shift">Turno de preferência</label>
+          <select defaultValue={this.state.shift} id="form-shift" className="form-control" onChange={this.changeShift}>
+            <option value={0}>Manhã</option>
+            <option value={1}>Tarde</option>
+            <option value={2}>Noite</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="form-syllabus">
+          { this.props.entity.slug == 'roundtable' ?
+            'Proposta' :
+            'Ementa'
+          }
+          </label>
+          <textarea value={this.state.syllabus} onChange={this.changeSyllabus} className="form-control" id="form-syllabus"></textarea>
+        </div>
+        { this.props.entity.slug != 'roundtable' &&
+          <div className="form-group">
+            <label htmlFor="form-vacancies">Vagas ofertadas</label>
+            <input value={this.state.vacancies} type="number" className="form-control" onChange={this.changeVacancies} />
+          </div>}
+        <br/>
+        <strong>Seleção de{' '}
+        { this.props.entity.slug == 'roundtable' ?
+          'coordenadores' :
+          'expositores'
+        }
+        <UserPicker
+          eventId={this.props.eventId}
+          maxAuthors={this.props.entity.data.maxProposersUsers}
+          initialUserEmail={this.props.userEmail}
+          onChange={this.changeOfProposersUsers}
+          users={this.state.ofProposersUsers}
+        />
+        </strong>
+        <div className="form-group">
+          <button style={{width: '100%'}} className="btn btn-warning" onClick={() => this.props.setObjectToEdit([])}>Voltar</button>
+        </div>
+        <div className="form-group">
+          <button style={{width: '100%'}} className="btn btn-success" onClick={() => this.props.editObject(this.props.entity.slug, this.state)}>Salvar alterações</button>
+        </div>
+      </div>
+    );
   }
 }
 
@@ -269,6 +396,9 @@ class SeeAllObjectsPane extends Component {
                       <span key={object._id}><a className="btn btn-primary" onClick={() => this.setListToPrint(object)} target="blank_">
                         Mostrar lista de presença
                         </a>{' '}</span>
+                      <span><a className="btn btn-primary" onClick={() => this.props.setObjectToEdit(object)} target="blank_">
+                        Editar
+                        </a>{' '}</span>
                       { object.data.status === 'consolidated' && !certEmitted &&
                         <a className='btn btn-primary' onClick={() => {this.emitCertificate(object._id, 'enrollment');}}>Emitir certificados</a>
                       }
@@ -301,13 +431,14 @@ class SeeAllObjects extends Component {
   }
 
   render() {
-    if(this.props.listOfPresence.length === 0) {
+    if(this.props.listOfPresence.length === 0 && this.props.objectToEdit.length === 0) {
       return (<SeeAllObjectsPane entity={this.props.entity}
                                 loadAllObjects={this.props.loadAllObjects}
                                 setListToPrint={this.props.setListToPrint}
                                 emitCertificate={this.props.emitCertificate}
+                                setObjectToEdit={this.props.setObjectToEdit} 
                                 allObjects={this.props.allObjects} />)
-    } else {
+    } else if(this.props.listOfPresence.length !== 0 && this.props.objectToEdit.length === 0) {
       return (
         <div>
           <ListOfPresencePane loadAllObjects={this.props.loadAllObjects}
@@ -323,6 +454,12 @@ class SeeAllObjects extends Component {
           />
         </div>
       )
+    } else {
+      return (<EditActivity entity={this.props.activities.entity} 
+                              objectToEdit={this.props.objectToEdit} 
+                              setObjectToEdit={this.props.setObjectToEdit} 
+                              editObject={this.props.editObject} 
+                              eventId={this.props.eventId} />)
     }
   }
 

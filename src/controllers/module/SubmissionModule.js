@@ -1,4 +1,5 @@
 import uid from 'uid';
+import mongoose from 'mongoose';
 import eachOf from 'async/eachOf';
 import Module from './Module';
 import SubmissionEntity from '../../models/submissionEntity.model';
@@ -410,6 +411,60 @@ class SubmissionModule extends Module {
     });
   }
 
+  editObject(objectToEdit) {
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': objectToEdit._id },
+        {
+          $set: {
+            'ofObjects.$.data.title': objectToEdit.title,
+            'ofObjects.$.data.abstract': objectToEdit.abstract,
+            'ofObjects.$.data.keywords': objectToEdit.keywords,
+            'ofObjects.$.data.thematicGroup': mongoose.Types.ObjectId(objectToEdit.thematicGroup),
+            'ofObjects.$.data.authors': objectToEdit.users.map(user => mongoose.Types.ObjectId(user._id)),
+          },
+        }, { new: true }, (err, doc) => {
+          if (!err) resolve(doc);
+          reject({});
+        });
+    });
+  }
+
+  saveComment(objectId, newComment) {
+    console.log(objectId);
+    console.log(newComment);
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': objectId },
+        {
+          $set: {
+            'ofObjects.$.data.comment': newComment,
+          },
+        }, { new: true }, (err, doc) => {
+          if (!err) resolve(doc);
+          reject({});
+        });
+    });
+  }
+
+  editEntity(entitySlug, stateObject) {
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofEntities.slug': entitySlug },
+        {
+          $set: {
+            'ofEntities.$.name': stateObject.name,
+            'ofEntities.$.data.maxAuthors': stateObject.maxAuthors,
+            'ofEntities.$.data.requirePayment': stateObject.requirePayment,
+            'ofEntities.$.data.submissionPeriod.begin': new Date(stateObject.startSubmissionPeriod),
+            'ofEntities.$.data.submissionPeriod.end': new Date(stateObject.endSubmissionPeriod),
+            'ofEntities.$.data.evaluationPeriod.begin': new Date(stateObject.startEvaluationPeriod),
+            'ofEntities.$.data.evaluationPeriod.end': new Date(stateObject.endEvaluationPeriod),
+          },
+        }, (err, doc) => {
+          if (!err) resolve({});
+          reject({});
+        });
+    });
+  }
+
   /**
    * Runs a action performed by the user
    * @param user logged User instance
@@ -470,6 +525,8 @@ class SubmissionModule extends Module {
           user.userObject._id,
           event,
           seeAllPermission);
+      case 'change_comment':
+        return this.saveComment(body.objectId, body.newComment);
       case 'create_session':
         if (schedulePermission) {
           const date = body.date;
@@ -504,6 +561,16 @@ class SubmissionModule extends Module {
           const objId = body.objectId;
           const type = body.type;
           return this.emitCertificate(entitySlug, objId, type);
+        }
+        break;
+      case 'edit_entity':
+        if (seeAllPermission) {
+          return this.editEntity(entitySlug, body);
+        }
+        break;
+      case 'edit_object':
+        if (seeAllPermission) {
+          return this.editObject(body);
         }
         break;
       default:

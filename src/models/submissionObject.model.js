@@ -4,6 +4,10 @@ const submissionObjectSchema = new Schema({
   title: String,
   abstract: String,
   keywords: String,
+  comment: {
+    type: String,
+    default: '',
+  },
   thematicGroup: Schema.Types.ObjectId,
   authors: [Schema.Types.ObjectId],
   files: [Schema.Types.ObjectId],
