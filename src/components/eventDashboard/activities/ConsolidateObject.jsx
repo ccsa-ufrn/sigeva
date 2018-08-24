@@ -216,7 +216,7 @@ class ConsolidateObject extends Component {
                       this.props.allObjects.filter( obj=>obj.data.status !== "waiting" ).filter((object) => {
                         if (object.data.consolidation !== undefined) {
                           return object.data.consolidation.sessions.reduce((previous, currentSess) => {
-                            return previous || currentSess == session._id;
+                            return previous || currentSess._id == session._id;
                           }, false);
                         } else {
                           return false;

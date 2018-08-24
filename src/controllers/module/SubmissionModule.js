@@ -429,6 +429,22 @@ class SubmissionModule extends Module {
     });
   }
 
+  saveComment(objectId, newComment) {
+    console.log(objectId);
+    console.log(newComment);
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': objectId },
+        {
+          $set: {
+            'ofObjects.$.data.comment': newComment,
+          },
+        }, { new: true }, (err, doc) => {
+          if (!err) resolve(doc);
+          reject({});
+        });
+    });
+  }
+
   editEntity(entitySlug, stateObject) {
     return new Promise((resolve, reject) => {
       ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofEntities.slug': entitySlug },
@@ -509,6 +525,8 @@ class SubmissionModule extends Module {
           user.userObject._id,
           event,
           seeAllPermission);
+      case 'change_comment':
+        return this.saveComment(body.objectId, body.newComment);
       case 'create_session':
         if (schedulePermission) {
           const date = body.date;

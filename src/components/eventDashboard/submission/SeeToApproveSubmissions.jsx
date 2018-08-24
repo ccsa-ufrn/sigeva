@@ -3,17 +3,63 @@ import React, { Component } from 'react';
 class SeeToApproveSubmissions extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      comments : [], 
+    }
 
     this.changeObjectState = this.changeObjectState.bind(this);
+    this.changeComments = this.changeComments.bind(this);
+    this.saveComment = this.saveComment.bind(this);
   }
 
   changeObjectState(objectId, newState) {
     this.props.changeObjectState(this.props.entity, objectId, newState);
   }
 
+  saveComment(objectId) {
+    const newComment = this.state.comments.filter(comment => comment._id == objectId)[0].comment
+    this.props.saveComment(this.props.entity, objectId, newComment);
+  }
+
+  changeComments(objectId, e) {
+    const target = e.nativeEvent.target;
+    const objects = this.props.submission.objectsToEvaluate.thematicGroups.map((tg_) => {
+        return tg_.objects.map((object) => {
+          if(object._id == objectId) {
+            return({ '_id' : object._id, 'comment' : target.value })
+          }
+          return({'_id': object._id, 'comment': object.data.comment})
+        })
+    })[0]
+    this.setState({ 
+      comments: objects,
+    });
+  }
+
   componentDidMount() {
     this.props.loadObjectsToEvaluate(this.props.entity);
     this.props.loadSubmissionEntity(this.props.entity);
+    const objects = this.props.submission.objectsToEvaluate.thematicGroups.map((tg_) => {
+        return tg_.objects.map((object) => {
+            return({ '_id' : object._id, 'comment' : object.data.comment })
+        })
+    })[0]
+    this.setState({
+      comments: objects,
+    })
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.submission.objectsToEvaluate != this.props.submission.objectsToEvaluate) {
+      const objects = this.props.submission.objectsToEvaluate.thematicGroups.map((tg_) => {
+          return tg_.objects.map((object) => {
+              return({ '_id' : object._id, 'comment' : object.data.comment })
+          })
+      })[0]
+      this.setState({
+        comments: objects,
+      })
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -21,13 +67,13 @@ class SeeToApproveSubmissions extends Component {
       this.props.loadObjectsToEvaluate(nextProps.entity);
     }
   }
-
+  
   render() {
     return(
       <div>
         <h5><strong>Trabalhos para avaliação</strong></h5>
         {
-          this.props.submission.objectsToEvaluate.thematicGroups &&
+          this.props.submission.objectsToEvaluate &&
           this.props.submission.objectsToEvaluate.thematicGroups.map((tg_) => {
             return (
               <div key={tg_._id}>
@@ -50,6 +96,10 @@ class SeeToApproveSubmissions extends Component {
                                         <br/><br/>
                                         <span style={{fontSize: '11pt'}}>Palavras-chave: {obj_.data.keywords}</span>
                                         <br/><br/>
+                                        <div>
+                                        <textarea onChange={(e) => this.changeComments(obj_._id, e)} defaultValue={ obj_.data.comment } className="form-control" style={{fontSize: '11pt', height: '100px'}} ></textarea>
+                                        <button onClick={() => this.saveComment(obj_._id) } style={{width: '100%'}} className='btn btn-outline-primary btn-sm'>Salvar comentário</button>
+                                        </div>
                                         {
                                           obj_.data.files.map((file) => {
                                             const hiddenRequiredFile = this.props.submission.entity.data.ofRequiredFiles.find(fl => fl.fileType == "hidden");

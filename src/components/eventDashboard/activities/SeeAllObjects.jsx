@@ -86,7 +86,6 @@ class EditActivity extends Component {
   }
 
   render() {
-    console.log(this.state);
     return(
       <div>
         <h5><strong>Edição de proposta {this.props.entity.name}</strong></h5>
