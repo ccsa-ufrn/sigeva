@@ -38,7 +38,9 @@ class ReceiptsTable extends Component {
                         }
                       }) }
                     </p></td>
-                    <td>{payment.roles.map(role => role.name)}</td>
+                    { payment.roles &&
+                      <td>{payment.roles.roles.map(role => role.name)}</td>
+                    }
                     <td>
                       <a href={`/file/download/${payment.data.file._id}`} target='_blank'>
                         {payment._id}
