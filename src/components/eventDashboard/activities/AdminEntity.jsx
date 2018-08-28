@@ -98,19 +98,19 @@ class AdminEntityPane extends Component {
       </div>
       <br/>
       <h6>Datas de proposição das atividades</h6>
-      <div>
+      <div className="form-group">
           <label className="form-title">Começo das proposições: </label>
-          <DatePicker selected={this.state.startProposalPeriod} onChange={this.changeStartProposalPeriod} />
+          <DatePicker className="form-control" selected={this.state.startProposalPeriod} onChange={this.changeStartProposalPeriod} />
           <label className="form-title">Fim das proposições: </label>
-          <DatePicker selected={this.state.endProposalPeriod} onChange={this.changeEndProposalPeriod} />
+          <DatePicker className="form-control" selected={this.state.endProposalPeriod} onChange={this.changeEndProposalPeriod} />
       </div>
       <br/>
       <h6>Datas de inscrição das atividades</h6>
       <div>
           <label className="form-title">Começo das inscrições: </label>
-          <DatePicker selected={this.state.startEnrollmentPeriod} onChange={this.changeStartEnrollmentPeriod} />
+          <DatePicker className="form-control" selected={this.state.startEnrollmentPeriod} onChange={this.changeStartEnrollmentPeriod} />
           <label className="form-title">Fim das inscrições: </label>
-          <DatePicker selected={this.state.endEnrollmentPeriod} onChange={this.changeEndEnrollmentPeriod} />
+          <DatePicker className="form-control" selected={this.state.endEnrollmentPeriod} onChange={this.changeEndEnrollmentPeriod} />
       </div>
       <br/>
       <div className="form-group">

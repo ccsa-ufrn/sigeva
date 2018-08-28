@@ -66,19 +66,10 @@ class SeeAllObjectsToEnrollPane extends Component {
   }
 
   checkEnrollment(object) {
-    const roundTables = this.props.listOfEnrolledSessions.filter(obj => obj.entity == "roundtable" || obj.entity == "conference" || obj.entity == "workshop");
-    const minicourse = this.props.listOfEnrolledSessions.filter(obj => obj.entity == "minicourse");
-    const roundTablesSessions = Array.from((roundTables.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
-    const minicourseSessions = Array.from((minicourse.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
+    const sessions = Array.from((this.props.listOfEnrolledSessions.map(obj => obj.sessions)).reduce((arr, e) => arr.concat(e), []));
     const matchingList = object.sessions.reduce((filtered, option) => {
-      if(object.entity == "roundtable" || object.entity == "conference" || object.entity == "workshop") {
-        if(roundTablesSessions.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
-          filtered.push(1);
-        }
-      } else {
-        if(minicourseSessions.filter(obj => obj.date == option.date && obj.shift == option.shift).length !== 0) {
-          filtered.push(1);
-        }
+      if(sessions.filter(obj => !(obj.finalDate < option.initialDate || obj.initialDate >= option.finalDate)).length !== 0) {
+        filtered.push(1);
       }
       return filtered;
     }, []);
@@ -93,7 +84,6 @@ class SeeAllObjectsToEnrollPane extends Component {
             `(${this.props.allObjectsToEnroll.length})`
           }
         </strong></h5>
-        <h6>Os horários detalhados podem ser encontrados no site seminario.ccsa.ufrn.br</h6>
         <table className='table'>
           <thead>
             <tr>
@@ -114,11 +104,10 @@ class SeeAllObjectsToEnrollPane extends Component {
                       <strong>Horários</strong>:{' '}
                       { object.data.consolidation.sessions &&
                         object.data.consolidation.sessions.map((session) => {
-                          const date = new Date(session.date)
+                          const initialDate = new Date(session.initialDate)
+                          const finalDate = new Date(session.finalDate)
                           return (
-                             session.shift === 0 ? `Manhã do dia ${date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}` + '\n':
-                             session.shift === 1 ? `Tarde do dia ${date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}` + '\n' :
-                             session.shift === 2 ? `Noite do dia ${date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}` + '\n' : 'Indefinido'
+                             `${initialDate.getDate()}/${initialDate.getMonth()+1}/${initialDate.getFullYear()} a partir de ${initialDate.getHours()}:${initialDate.getMinutes()} até ${finalDate.getHours()}:${finalDate.getMinutes()}` + '\n'
                           );
                         })
                       }

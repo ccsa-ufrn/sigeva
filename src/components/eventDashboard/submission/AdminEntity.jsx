@@ -100,17 +100,17 @@ class AdminEntityPane extends Component {
       <h6>Datas de submissão dos trabalhos</h6>
       <div>
           <label className="form-title">Começo das submissões: </label>
-          <DatePicker selected={this.state.startSubmissionPeriod} onChange={this.changeStartSubmissionPeriod} />
+          <DatePicker className="form-control" selected={this.state.startSubmissionPeriod} onChange={this.changeStartSubmissionPeriod} />
           <label className="form-title">Fim das submissões: </label>
-          <DatePicker selected={this.state.endSubmissionPeriod} onChange={this.changeEndSubmissionPeriod} />
+          <DatePicker className="form-control" selected={this.state.endSubmissionPeriod} onChange={this.changeEndSubmissionPeriod} />
       </div>
       <br/>
       <h6>Datas de avaliação dos trabalhos</h6>
       <div>
           <label className="form-title">Começo das avaliações: </label>
-          <DatePicker selected={this.state.startEvaluationPeriod} onChange={this.changeStartEvaluationPeriod} />
+          <DatePicker className="form-control" selected={this.state.startEvaluationPeriod} onChange={this.changeStartEvaluationPeriod} />
           <label className="form-title">Fim das avaliações: </label>
-          <DatePicker selected={this.state.endEvaluationPeriod} onChange={this.changeEndEvaluationPeriod} />
+          <DatePicker className="form-control" selected={this.state.endEvaluationPeriod} onChange={this.changeEndEvaluationPeriod} />
       </div>
       <br/>
       <div className="form-group">

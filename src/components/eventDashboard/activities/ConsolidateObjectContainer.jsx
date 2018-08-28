@@ -15,8 +15,8 @@ const mapDispatchToProps = (dispatch) => {
         loadSessions: (entity) => {
           dispatch(loadSessions(entity));
         },
-        createSession: (entity, date, shift) => {
-          dispatch(createSession(entity, date, shift));
+        createSession: (entity, initialDate, finalDate) => {
+          dispatch(createSession(entity, initialDate, finalDate));
         },
         loadAllObjects: (entity) => {
           dispatch(loadAllObjects(entity));
