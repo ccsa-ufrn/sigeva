@@ -147,7 +147,8 @@ export function loadAllObjects(entitySlug) {
   };
 }
 
-export function createSession(entitySlug, date, shift) {
+export function createSession(entitySlug, initialDate, finalDate) {
+  console.log(initialDate);
   return (dispatch, getState) => {
     const eventId = getState().event.id;
 
@@ -160,8 +161,8 @@ export function createSession(entitySlug, date, shift) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        date,
-        shift,
+        initialDate,
+        finalDate,
       }),
     };
 

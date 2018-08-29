@@ -1,73 +1,37 @@
 import React, { Component } from 'react';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
 
 class ScheduleSubmission extends Component {
 
   constructor(props) {
     super(props);
 
-    const initialDate = new Date((new Date().getFullYear()), 0, (new Date().getDate()));
-
     this.state = {
-      date: initialDate,
-      shift: 0,
-      hour: "",
-      selectedSessions: "",
+      initialDate: moment(),
+      finalDate: moment(),
+      selectedSessions: [],
       location: "",
       selectedSubmissions: [],
     };
 
-    this.changeDay = this.changeDay.bind(this);
-    this.changeMonth = this.changeMonth.bind(this);
-    this.changeYear = this.changeYear.bind(this);
-    this.changeShift = this.changeShift.bind(this);
-    this.changeHour = this.changeHour.bind(this);
-    this.createSession = this.createSession.bind(this);
+    this.changeInitialDate = this.changeInitialDate.bind(this);
+    this.changeFinalDate = this.changeFinalDate.bind(this);
     this.changeSelection = this.changeSelection.bind(this);
     this.changeLocation = this.changeLocation.bind(this);
     this.changeSubmissionList = this.changeSubmissionList.bind(this);
   }
 
-  changeDay(e) {
-    const target = e.nativeEvent.target;
-    const newDate = new Date(this.state.date.getFullYear(),
-                             this.state.date.getMonth(),
-                             target.value);
-    this.setState({
-      date: newDate,
-    });
-  }
 
-  changeMonth(e) {
-    const target = e.nativeEvent.target;
-    const newDate = new Date(this.state.date.getFullYear(),
-                             target.value - 1,
-                             this.state.date.getDate());
+  changeInitialDate(date) {
     this.setState({
-      date: newDate,
-    });
-  }
-
-  changeYear(e) {
-    const target = e.nativeEvent.target;
-    const newDate = new Date(target.value,
-                             this.state.date.getMonth(),
-                             this.state.date.getDate());
-    this.setState({
-      date: newDate,
-    });
-  }
-
-  changeShift(e) {
-    const target = e.nativeEvent.target;
-    this.setState({
-      shift: parseInt(target.value),
+      initialDate: date
     })
   }
 
-  changeHour(e) {
-    const target = e.nativeEvent.target;
+  changeFinalDate(date) {
     this.setState({
-      hour: target.value,
+      finalDate: date
     })
   }
 
@@ -126,10 +90,6 @@ class ScheduleSubmission extends Component {
     }
   }
 
-  createSession() {
-    this.props.createSession(this.props.entity, this.state.date, this.state.shift, this.state.hour);
-  }
-
   scheduleSubmissions(entity) {
     this.props.scheduleSubmissions(entity, this.state.selectedSubmissions, this.state.selectedSessions, this.state.location);
     this.setState({
@@ -142,64 +102,35 @@ class ScheduleSubmission extends Component {
       <div>
         <h5><strong>Criar bloco de apresentações</strong></h5>
         <div className="form-group row">
-          <div className="col-md-6">
-            <label htmlFor="form-day">Dia</label>
-            <input type="number" id="form-day" className="form-control" min="1" max="31" value={this.state.date.getDate()} onChange={this.changeDay}/>
-          </div>
-          <div className="col-md-6">
-            <label htmlFor="form-month">Mês</label>
-            <select id="form-month" className="form-control" onChange={this.changeMonth}>
-              <option value="1">Janeiro</option>
-              <option value="2">Fevereiro</option>
-              <option value="3">Março</option>
-              <option value="4">Abril</option>
-              <option value="5">Maio</option>
-              <option value="6">Junho</option>
-              <option value="7">Julho</option>
-              <option value="8">Agosto</option>
-              <option value="9">Setembro</option>
-              <option value="10">Outubro</option>
-              <option value="11">Novembro</option>
-              <option value="12">Dezembro</option>
-            </select>
-          </div>
-          <div className="col-md-6">
-            <label htmlFor="form-year">Ano</label>
-            <input value={this.state.date.getFullYear()} type="number" id="form-year" className="form-control" onChange={this.changeYear} />
-          </div>
-          <div className="col-md-6">
-            <label htmlFor="form-hour">Hora</label>
-            <input value={this.state.hour} id="form-hour" className="form-control" onChange={this.changeHour} />
-          </div>
         </div>
         <div className="form-group row">
-          <div className="col-md-12">
-            <label htmlFor="form-shift">Turno</label>
-            <select id="form-shift" className="form-control" onChange={this.changeShift}>
-              <option value={0}>Manhã</option>
-              <option value={1}>Tarde</option>
-              <option value={2}>Noite</option>
-            </select>
+          <div className="col-md-6">
+            <br/>
+            <label htmlFor="form-intialDate">Horário de começar</label>
+            <DatePicker className="form-control" showTimeSelect timeFormat="HH:mm" timeIntervals={5} dateFormat="LLL" timeCaption="Hora" selected={this.state.initialDate} onChange={this.changeInitialDate} />
           </div>
-        </div>
-        <div className="form-group row">
+          <div className="col-md-6">
+            <br/>
+            <label htmlFor="form-intialDate">Horário de terminar</label>
+            <DatePicker className="form-control" showTimeSelect timeFormat="HH:mm" timeIntervals={5} dateFormat="LLL" timeCaption="Hora" selected={this.state.finalDate} onChange={this.changeFinalDate} />
+          </div>
           <div className="col-md-12">
-            <a onClick={this.createSession} className="form-control btn btn-success">Adicionar bloco de apresentações</a>
+            <br/>
+          </div>
+          <div className="col-md-12">
+            <a onClick={() => this.props.createSession(this.props.entity, this.state.initialDate, this.state.finalDate)} className="form-control btn btn-success">Adicionar bloco de apresentações</a>
           </div>
         </div><br/>
         <h5><strong>Blocos de apresentações</strong></h5>
         { this.props.sessions &&
           this.props.sessions.map((session) => {
-            const date = new Date(session.date);
-            const shift = session.shift == 0 ? "Manhã" :
-                          session.shift == 1 ? "Tarde" :
-                          "Noite";
-            const hour = session.hour;
+            const initialDate = new Date(session.initialDate);
+            const finalDate = new Date(session.finalDate);
 
             return(
               <div key={session._id} className="card">
                 <div className="card-body">
-                  <div className="card-title">{`${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${shift} - ${hour}`}</div>
+                  <div className="card-title">{`${initialDate.getDate()}/${initialDate.getMonth()+1}/${initialDate.getFullYear()} a partir de ${initialDate.getHours()}:${initialDate.getMinutes()} até ${finalDate.getHours()}:${finalDate.getMinutes()}`}</div>
                   <table className="table">
                     <tbody>
                     { this.props.allObjects &&
@@ -233,13 +164,11 @@ class ScheduleSubmission extends Component {
         <br/><h5>Selecione o horário em que as apresentações serão feitas</h5>
         { this.props.sessions &&
           this.props.sessions.map((session) => {
-            const date = new Date(session.date);
-            const shift = session.shift == 0 ? "Manhã" :
-                          session.shift == 1 ? "Tarde" :
-                          "Noite";
+            const initialDate = new Date(session.initialDate);
+            const finalDate = new Date(session.finalDate);
             return (
               <div key={session._id} style={{display: 'inline-block', margin: '5px'}}>
-                <input onChange={(e) => { this.changeSelection(e, session._id) }} type="checkbox" key={session._id} />{`  ${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${shift}`}
+                <input onChange={(e) => { this.changeSelection(e, session._id) }} type="checkbox" key={session._id} />{`${initialDate.getDate()}/${initialDate.getMonth()+1}/${initialDate.getFullYear()} a partir de ${initialDate.getHours()}:${initialDate.getMinutes()} até ${finalDate.getHours()}:${finalDate.getMinutes()}`}
               </div>
             );
           })

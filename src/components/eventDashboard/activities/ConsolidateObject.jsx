@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
 
 class ObjectConsolidation extends Component {
   constructor(props) {
@@ -58,20 +60,18 @@ class ObjectConsolidation extends Component {
             <div className="form-group">
             { this.props.sessions &&
               this.props.sessions.map((session) => {
-                const date = new Date(session.date);
-                const shift = session.shift == 0 ? "Manhã" :
-                              session.shift == 1 ? "Tarde" :
-                              "Noite";
+              const initialDate = new Date(session.initialDate);
+              const finalDate = new Date(session.finalDate);
                 return (
                   <div key={session._id}>
-                    <input onChange={(e) => { this.changeSelection(e, session._id); }} type="checkbox" key={session._id} /> {`${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${shift}`}
+                    <input onChange={(e) => { this.changeSelection(e, session._id); }} type="checkbox" key={session._id} /> {`${initialDate.getDate()}/${initialDate.getMonth()+1}/${initialDate.getFullYear()} a partir de ${initialDate.getHours()}:${initialDate.getMinutes()} até ${finalDate.getHours()}:${finalDate.getMinutes()}`}
                   </div>
                 );
               })
-            }
-            Local da atividade: <input type="text" onChange={this.changeLocation} />{' '}
-            Vagas ofertadas: <input type="number" defaultValue={this.props.object.data.vacancies} onChange={this.changeVacancies} />
-            <a className="btn btn-success" onClick={this.consolidateActivity}>Consolidar atividade</a>
+              }
+              Local da atividade: <input type="text" onChange={this.changeLocation} />{' '}
+              Vagas ofertadas: <input type="number" defaultValue={this.props.object.data.vacancies} onChange={this.changeVacancies} />
+              <a className="btn btn-success" onClick={this.consolidateActivity}>Consolidar atividade</a>
             </div>
           </div>
         </td>
@@ -85,59 +85,25 @@ class ConsolidateObject extends Component {
   constructor(props) {
     super(props);
 
-    const initialDate = new Date((new Date().getFullYear()), 0, (new Date().getDate()));
-
     this.state = {
-      date: initialDate,
-      shift: 0,
+      initialDate: moment(),
+      finalDate: moment(),
     };
 
-    this.changeDay = this.changeDay.bind(this);
-    this.changeMonth = this.changeMonth.bind(this);
-    this.changeYear = this.changeYear.bind(this);
-    this.changeShift = this.changeShift.bind(this);
-    this.createSession = this.createSession.bind(this);
+    this.changeInitialDate = this.changeInitialDate.bind(this);
+    this.changeFinalDate = this.changeFinalDate.bind(this);
   }
 
-  changeDay(e) {
-    const target = e.nativeEvent.target;
-    const newDate = new Date(this.state.date.getFullYear(),
-                             this.state.date.getMonth(),
-                             target.value);
+  changeInitialDate(date) {
     this.setState({
-      date: newDate,
-    });
-  }
-
-  changeMonth(e) {
-    const target = e.nativeEvent.target;
-    const newDate = new Date(this.state.date.getFullYear(),
-                             target.value - 1,
-                             this.state.date.getDate());
-    this.setState({
-      date: newDate,
-    });
-  }
-
-  changeYear(e) {
-    const target = e.nativeEvent.target;
-    const newDate = new Date(target.value,
-                             this.state.date.getMonth(),
-                             this.state.date.getDate());
-    this.setState({
-      date: newDate,
-    });
-  }
-
-  changeShift(e) {
-    const target = e.nativeEvent.target;
-    this.setState({
-      shift: parseInt(target.value),
+      initialDate: date
     })
   }
 
-  createSession() {
-    this.props.createSession(this.props.entity, this.state.date, this.state.shift);
+  changeFinalDate(date) {
+    this.setState({
+      finalDate: date
+    })
   }
 
   componentDidMount() {
@@ -157,59 +123,31 @@ class ConsolidateObject extends Component {
       <div>
         <h5><strong>Criar bloco de atividades</strong></h5>
         <div className="form-group row">
-          <div className="col-md-4">
-            <label htmlFor="form-day">Dia</label>
-            <input type="number" id="form-day" className="form-control" min="1" max="31" value={this.state.date.getDate()} onChange={this.changeDay}/>
+          <div className="col-md-6">
+            <br/>
+            <label htmlFor="form-intialDate">Horário de começar</label>
+            <DatePicker className="form-control" showTimeSelect timeFormat="HH:mm" timeIntervals={15} dateFormat="LLL" timeCaption="Hora" selected={this.state.initialDate} onChange={this.changeInitialDate} />
           </div>
-          <div className="col-md-4">
-            <label htmlFor="form-month">Mês</label>
-            <select id="form-month" className="form-control" onChange={this.changeMonth}>
-              <option value="1">Janeiro</option>
-              <option value="2">Fevereiro</option>
-              <option value="3">Março</option>
-              <option value="4">Abril</option>
-              <option value="5">Maio</option>
-              <option value="6">Junho</option>
-              <option value="7">Julho</option>
-              <option value="8">Agosto</option>
-              <option value="9">Setembro</option>
-              <option value="10">Outubro</option>
-              <option value="11">Novembro</option>
-              <option value="12">Dezembro</option>
-            </select>
+          <div className="col-md-6">
+            <br/>
+            <label htmlFor="form-intialDate">Horário de terminar</label>
+            <DatePicker className="form-control" showTimeSelect timeFormat="HH:mm" timeIntervals={15} dateFormat="LLL" timeCaption="Hora" selected={this.state.finalDate} onChange={this.changeFinalDate} />
           </div>
-          <div className="col-md-4">
-            <label htmlFor="form-year">Ano</label>
-            <input value={this.state.date.getFullYear()} type="number" id="form-year" className="form-control" onChange={this.changeYear} />
-          </div>
-        </div>
-        <div className="form-group row">
           <div className="col-md-12">
-            <label htmlFor="form-shift">Turno</label>
-            <select id="form-shift" className="form-control" onChange={this.changeShift}>
-              <option value={0}>Manhã</option>
-              <option value={1}>Tarde</option>
-              <option value={2}>Noite</option>
-            </select>
+            <br/>
           </div>
-        </div>
-        <div className="form-group row">
-          <div className="col-md-12">
-            <a onClick={this.createSession} className="form-control btn btn-success">Adicionar bloco de atividades</a>
-          </div>
+            <a onClick={() => this.props.createSession(this.props.entity, this.state.initialDate, this.state.finalDate)} className="form-control btn btn-success">Adicionar bloco de atividades</a>
         </div><br/>
         <h5><strong>Blocos de atividades</strong></h5>
         { this.props.sessions &&
           this.props.sessions.map((session) => {
-            const date = new Date(session.date);
-            const shift = session.shift == 0 ? "Manhã" :
-                          session.shift == 1 ? "Tarde" :
-                          "Noite";
+            const initialDate = new Date(session.initialDate);
+            const finalDate = new Date(session.finalDate);
 
             return(
               <div key={session._id} className="card">
                 <div className="card-body">
-                  <div className="card-title">{`${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${shift}`}</div>
+                  <div className="card-title">{`${initialDate.getDate()}/${initialDate.getMonth()+1}/${initialDate.getFullYear()} a partir de ${initialDate.getHours()}:${initialDate.getMinutes()} até ${finalDate.getHours()}:${finalDate.getMinutes()}`}</div>
                   <table>
                     <tbody>
                     { this.props.allObjects &&

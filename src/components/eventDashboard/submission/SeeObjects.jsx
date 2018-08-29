@@ -34,9 +34,10 @@ class SeeObjects extends Component {
                         <span>Datas da apresentação:{' '}
                         { object.data.consolidation &&
                           object.data.consolidation.sessions.map((session) => {
-                            const date = new Date(session.date)
+                            const initialDate = new Date(session.initialDate);
+                            const finalDate = new Date(session.finalDate);
                             return (
-                              date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()  + '  \n'
+                              <span key={session._id}>{`${initialDate.getDate()}/${initialDate.getMonth()+1}/${initialDate.getFullYear()} a partir de ${initialDate.getHours()}:${initialDate.getMinutes()}`}</span>
                             )
                           })
                         }
@@ -45,7 +46,7 @@ class SeeObjects extends Component {
                         }
                         <br/></span>
                         { object.data.consolidation &&
-                          <span>Localização da apresentação - Por favor consultar em seminario.ccsa.ufrn.br</span>
+                          <span>{object.data.consolidation.location}</span>
                         }
                         { !object.data.consolidation &&
                           <span>Localização da apresentação - Por favor consultar em seminario.ccsa.ufrn.br</span>
