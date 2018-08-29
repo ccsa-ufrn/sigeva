@@ -148,6 +148,7 @@ export function loadAllObjects(entitySlug) {
 }
 
 export function createSession(entitySlug, initialDate, finalDate) {
+  console.log(initialDate);
   return (dispatch, getState) => {
     const eventId = getState().event.id;
 

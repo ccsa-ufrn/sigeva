@@ -235,7 +235,7 @@ class SubmissionModule extends Module {
       ModuleObject.populate(objectsOfUser, [
         { path: 'data.authors', select: 'name', model: 'User' },
         { path: 'data.files', model: 'File' },
-        { path: 'data.consolidation.sessions', select: 'date shift', model: 'ActivitySession' },
+        { path: 'data.consolidation.sessions', select: 'initialDate finalDate', model: 'ActivitySession' },
       ], (err, docs) => {
         ModuleObject.populate(docs, [
           { path: 'data.files.fileRequirement', model: 'FileRequirement' },
@@ -319,13 +319,12 @@ class SubmissionModule extends Module {
     });
   }
 
-  createSession(eventId, entityId, date, shift, hour) {
+  createSession(eventId, entityId, initialDate, finalDate) {
     const newSession = new ActivitySession({
       event: eventId,
       entity: entityId,
-      date,
-      shift,
-      hour,
+      initialDate,
+      finalDate,
     });
     return newSession.save();
   }
@@ -430,8 +429,6 @@ class SubmissionModule extends Module {
   }
 
   saveComment(objectId, newComment) {
-    console.log(objectId);
-    console.log(newComment);
     return new Promise((resolve, reject) => {
       ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': objectId },
         {
@@ -529,11 +526,10 @@ class SubmissionModule extends Module {
         return this.saveComment(body.objectId, body.newComment);
       case 'create_session':
         if (schedulePermission) {
-          const date = body.date;
-          const shift = body.shift;
-          const hour = body.hour;
+          const initialDate = body.initialDate;
+          const finalDate = body.finalDate;
           return this.createSession(this.event.eventObject._id,
-            entityId, date, shift, hour);
+            entityId, initialDate, finalDate);
         }
         break;
       case 'get_sessions':
