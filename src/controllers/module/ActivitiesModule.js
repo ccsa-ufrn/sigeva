@@ -489,7 +489,7 @@ class ActivitiesModule extends Module {
           $set: {
             'ofEntities.$.name': stateObject.name,
             'ofEntities.$.data.maxProposersUsers': stateObject.maxProposersUsers,
-            'ofEntities.$.data.requirePayment': stateObject.requirePayment,
+            'ofEntities.$.data.requirePayment': (stateObject.requirePayment === 'true'),
             'ofEntities.$.data.proposalPeriod.begin': new Date(stateObject.startProposalPeriod),
             'ofEntities.$.data.proposalPeriod.end': new Date(stateObject.endProposalPeriod),
             'ofEntities.$.data.enrollmentPeriod.begin': new Date(stateObject.startEnrollmentPeriod),

@@ -119,10 +119,12 @@ class AdminEntityPane extends Component {
       </div>
       <div className="form-group">
         <label htmlFor="form-payment">Pagamento é requerido para o acesso</label>
-        <select defaultValue={this.state.requirePayment} id="form-payment" className="form-control" onChange={this.changeRequirePayment}>
-          <option value={true}>Verdadeiro</option>
-          <option value={false}>Falso</option>
-        </select>
+        { this.props.entity &&
+          <select defaultValue={this.props.entity.data.requirePayment} id="form-payment" className="form-control" onChange={this.changeRequirePayment}>
+            <option value={true}>Verdadeiro</option>
+            <option value={false}>Falso</option>
+          </select>
+        }
       </div>
       <br/>
       <span><a style={{width: '100%'}} className="btn btn-primary d-print-none" onClick={() => this.props.editEntity(this.props.entity.slug, this.state)}>
