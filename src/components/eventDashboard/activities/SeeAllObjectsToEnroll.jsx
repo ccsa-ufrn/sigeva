@@ -183,6 +183,8 @@ class SeeAllObjectsToEnroll extends Component {
       const entity = this.props.activities.entity;
       const listOfProposers = Array.from(this.props.allObjectsToEnroll.map(object => object.data.ofProposersUsers.map(user => user._id))).reduce((arr, e) => arr.concat(e), []);
       let payed = true;
+      console.log(entity.data);
+      console.log(this.props.payment);
       // Handle payment requirement
       if (entity.data.requirePayment === true) {
         if (this.props.payment.approved === false) {
