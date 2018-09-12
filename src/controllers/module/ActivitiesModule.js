@@ -91,7 +91,7 @@ class ActivitiesModule extends Module {
         { path: 'data.ofEnrollments.user', select: 'name email', model: 'User' },
         { path: 'data.ofFiles', model: 'File' },
         { path: 'data.ofFields.request', model: 'FieldRequest' },
-        { path: 'data.consolidation.sessions', select: 'initialDate finalDate', model: 'ActivitySession'}
+        { path: 'data.consolidation.sessions', select: 'initialDate finalDate date shift', model: 'ActivitySession'}
       ], (err, docs) => {
         ModuleObject.populate(docs, [
           { path: 'data.ofFiles.fileRequirement', model: 'FileRequirement' },
@@ -111,7 +111,7 @@ class ActivitiesModule extends Module {
         { path: 'data.ofProposersUsers', select: 'name email', model: 'User' },
         { path: 'data.ofFiles', model: 'File' },
         { path: 'data.ofFields.request', model: 'FieldRequest' },
-        { path: 'data.consolidation.sessions', select: 'initialDate finalDate', model: 'ActivitySession'}
+        { path: 'data.consolidation.sessions', select: 'initialDate finalDate date shift', model: 'ActivitySession'}
       ], (err, docs) => {
         ModuleObject.populate(docs, [
           { path: 'data.ofFiles.fileRequirement', model: 'FileRequirement' },
@@ -136,7 +136,7 @@ class ActivitiesModule extends Module {
         { path: 'data.ofProposersUsers', select: 'name email', model: 'User' },
         { path: 'data.ofFiles', model: 'File' },
         { path: 'data.ofFields.request', model: 'FieldRequest' },
-        { path: 'data.consolidation.sessions', select: 'initialDate finalDate', model: 'ActivitySession'}
+        { path: 'data.consolidation.sessions', select: 'initialDate finalDate date shift', model: 'ActivitySession'}
       ], (err, docs) => {
         ModuleObject.populate(docs, [
           { path: 'data.ofFiles.fileRequirement', model: 'FileRequirement' },
@@ -163,7 +163,7 @@ class ActivitiesModule extends Module {
         { path: 'data.ofEnrollments.user', select: 'name email', model: 'User' },
         { path: 'data.ofFiles', model: 'File' },
         { path: 'data.ofFields.request', model: 'FieldRequest' },
-        { path: 'data.consolidation.sessions', select: 'initialDate finalDate', model: 'ActivitySession'}
+        { path: 'data.consolidation.sessions', select: 'initialDate finalDate date shift', model: 'ActivitySession'}
       ], (err, docs) => {
         ModuleObject.populate(docs, [
           { path: 'data.ofFiles.fileRequirement', model: 'FileRequirement' },
@@ -183,7 +183,7 @@ class ActivitiesModule extends Module {
         { path: 'data.ofEnrollments.user', select: 'name email', model: 'User' },
         { path: 'data.ofFiles', model: 'File' },
         { path: 'data.ofFields.request', model: 'FieldRequest' },
-        { path: 'data.consolidation.sessions', select: 'initialDate finalDate', model: 'ActivitySession'}
+        { path: 'data.consolidation.sessions', select: 'initialDate finalDate date shift', model: 'ActivitySession'}
       ], (err, docs) => {
         ModuleObject.populate(docs, [
           { path: 'data.ofFiles.fileRequirement', model: 'FileRequirement' },

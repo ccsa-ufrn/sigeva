@@ -28,7 +28,6 @@ class AdminEntityPane extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.entity !== prevProps.entity) {
-      console.log(this.props.entity);
       this.setState({
         name: this.props.entity.name,
         startSubmissionPeriod: moment(new Date(this.props.entity.data.submissionPeriod.begin)),
