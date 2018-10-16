@@ -207,9 +207,19 @@ h5 strong {
   border-bottom: 3px solid #CF2B38;
 }
 
+.table-print{
+  width: 100vw!important;
+}
+.left-th{
+   width:50vw!important;
+   border-right:1px solid black;
+  }
+.right-th{
+  width:50vw!important;
+}
 @media print {
   @page {
-    margin: 0.75cm;
+    margin: 0cm;
   }
 
   body {
@@ -244,10 +254,22 @@ h5 strong {
     visibility: visible;
   }
   #printable {
+
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
     right: 0;
+    /* margin-top:20px; */
   }
+
+.only-print-style thead th{
+  font-weight: 300;
+  border:1px solid #676666;
+}
+.only-print-style tr td{
+  padding:15px;
+  border:1px solid #676666;
+
+}
 }

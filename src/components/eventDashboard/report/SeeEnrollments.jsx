@@ -95,7 +95,7 @@ class SeeEnrollments extends Component {
       });
 
       return (
-        <div id="printable">
+        <div id="">
           <h5><strong>Filtros</strong></h5>
           <div>
             Condição de pagamento:{' '}
@@ -117,10 +117,10 @@ class SeeEnrollments extends Component {
           }
           <h5><strong>Usuários selecionados</strong></h5>
           <div>Exibindo {filteredUsers.length} registros no total de {this.props.enrollments.length}</div>
-          <table className="table">
+          <table className="">
             <tbody>
               {
-                filteredUsers.map((user) => {
+                filteredUsers.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)).map((user) => {
                   return (
                     <tr key={user._id}>
                       <td>
@@ -135,7 +135,31 @@ class SeeEnrollments extends Component {
               }
             </tbody>
           </table>
+           {/* report only to print */}
+        <table className='table d-print-block table-print only-print-style' id="printable" >
+        <thead>
+          <tr>
+            <th className="left-th">Nome</th>
+            <th className="right-th">Assinatura</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {filteredUsers.map((user) => {
+              return (
+                <tr key={user._id} >
+                  <td>{user.name}</td>
+                  <td>{''}</td>
+                </tr>
+              );
+
+
+            })
+          }
+        </tbody>
+      </table>
         </div>
+
       )
 
     } else {
