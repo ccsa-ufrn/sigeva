@@ -4,12 +4,12 @@ import UserPicker from '../../userPicker/userPicker';
 
 class EnrollButton extends Component {
   render() {
-    return(
-    <span><a className={"btn btn-" + this.props.style}
+    return (
+      <span><a className={"btn btn-" + this.props.style}
         onClick={this.props.onClick}
         target="blank_">
         {this.props.text}
-    </a>{' '}</span>
+      </a>{' '}</span>
     )
   }
 }
@@ -86,7 +86,7 @@ class EditActivity extends Component {
   }
 
   render() {
-    return(
+    return (
       <div>
         <h5><strong>Edição de proposta {this.props.entity.name}</strong></h5>
         <div className="form-group">
@@ -103,37 +103,37 @@ class EditActivity extends Component {
         </div>
         <div className="form-group">
           <label htmlFor="form-syllabus">
-          { this.props.entity.slug == 'roundtable' ?
-            'Proposta' :
-            'Ementa'
-          }
+            {this.props.entity.slug == 'roundtable' ?
+              'Proposta' :
+              'Ementa'
+            }
           </label>
           <textarea value={this.state.syllabus} onChange={this.changeSyllabus} className="form-control" id="form-syllabus"></textarea>
         </div>
-        { this.props.entity.slug != 'roundtable' &&
+        {this.props.entity.slug != 'roundtable' &&
           <div className="form-group">
             <label htmlFor="form-vacancies">Vagas ofertadas</label>
             <input value={this.state.vacancies} type="number" className="form-control" onChange={this.changeVacancies} />
           </div>}
-        <br/>
+        <br />
         <strong>Seleção de{' '}
-        { this.props.entity.slug == 'roundtable' ?
-          'coordenadores' :
-          'expositores'
-        }
-        <UserPicker
-          eventId={this.props.eventId}
-          maxAuthors={this.props.entity.data.maxProposersUsers}
-          initialUserEmail={this.props.userEmail}
-          onChange={this.changeOfProposersUsers}
-          users={this.state.ofProposersUsers}
-        />
+          {this.props.entity.slug == 'roundtable' ?
+            'coordenadores' :
+            'expositores'
+          }
+          <UserPicker
+            eventId={this.props.eventId}
+            maxAuthors={this.props.entity.data.maxProposersUsers}
+            initialUserEmail={this.props.userEmail}
+            onChange={this.changeOfProposersUsers}
+            users={this.state.ofProposersUsers}
+          />
         </strong>
         <div className="form-group">
-          <button style={{width: '100%'}} className="btn btn-warning" onClick={() => this.props.setObjectToEdit([])}>Voltar</button>
+          <button style={{ width: '100%' }} className="btn btn-warning" onClick={() => this.props.setObjectToEdit([])}>Voltar</button>
         </div>
         <div className="form-group">
-          <button style={{width: '100%'}} className="btn btn-success" onClick={() => this.props.editObject(this.props.entity.slug, this.state)}>Salvar alterações</button>
+          <button style={{ width: '100%' }} className="btn btn-success" onClick={() => this.props.editObject(this.props.entity.slug, this.state)}>Salvar alterações</button>
         </div>
       </div>
     );
@@ -172,14 +172,14 @@ class ListOfPresencePane extends Component {
   }
 
   render() {
-    return(
+    return (
       <div id="printable">
-      <h5>Lista de Presença{' '}
-        { this.props.listOfPresence &&
-          `(${this.props.listOfPresence.data.ofEnrollments.length})`
-        }
-      </h5>
-      <table className='table'>
+        <h5>Lista de Presença{' '}
+          {this.props.listOfPresence &&
+            `(${this.props.listOfPresence.data.ofEnrollments.length})`
+          }
+        </h5>
+        <table className='table d-print-none'>
           <thead>
             <tr>
               <th className="d-print-none">Marcar falta</th>
@@ -189,42 +189,70 @@ class ListOfPresencePane extends Component {
             </tr>
           </thead>
           <tbody>
-          { this.props.listOfPresence &&
-            this.props.listOfPresence.data.ofEnrollments.map(user => {
-              return (
-                <tr key={user._id}>
-                  { user.present === false ? <td className="d-print-none"><span><a className="btn btn-danger"
-                    onClick={() => this.setPresence(this.props.entity, {presence: true, enrollmentId: user._id, objId: this.props.listOfPresence._id})}>Marcar falta</a>{' '}</span></td> :
-                    <td className="d-print-none"><span><a className="btn btn-success"
-                    onClick={() => this.setPresence(this.props.entity, {presence: false, enrollmentId: user._id, objId: this.props.listOfPresence._id})}>Reverter falta</a>{' '}</span></td>
-                  }
-                  { user.present === true && !user.cert ? <td>Não compareceu</td> :
-                    user.present === false && !user.cert ? <td>Certificado faltando</td> :
-                    <td>Certificado emitido</td>
-                  }
-                  <td>{user.user.name}({user.user.email})</td>
-                  <td></td>
-                </tr>
-              );
-            })
-          }
+            {this.props.listOfPresence &&
+              this.props.listOfPresence.data.ofEnrollments.sort((a, b) => (a.user.name > b.user.name) ? 1 : ((b.user.name > a.user.name) ? -1 : 0)).map(user => {
+                return (
+                  <tr key={user._id}>
+                    {user.present === false ? <td className="d-print-none"><span><a className="btn btn-danger"
+                      onClick={() => this.setPresence(this.props.entity, { presence: true, enrollmentId: user._id, objId: this.props.listOfPresence._id })}>Marcar falta</a>{' '}</span></td> :
+                      <td className="d-print-none"><span><a className="btn btn-success"
+                        onClick={() => this.setPresence(this.props.entity, { presence: false, enrollmentId: user._id, objId: this.props.listOfPresence._id })}>Reverter falta</a>{' '}</span></td>
+                    }
+                    {user.present === true && !user.cert ? <td>Não compareceu</td> :
+                      user.present === false && !user.cert ? <td>Certificado faltando</td> :
+                        <td>Certificado emitido</td>
+                    }
+                    <td>{user.user.name}({user.user.email})</td>
+                    <td></td>
+                  </tr>
+                );
+              })
+            }
           </tbody>
-      </table>
-      { this.props.listOfPresence.data.status === 'consolidated' &&
-        <span><a style={{width: '100%'}} className="btn btn-warning d-print-none" onClick={() => {this.emitCertificate(this.props.listOfPresence._id, 'enrollment');}}>
-                        Emitir certificados
+        </table>
+        {this.props.listOfPresence.data.status === 'consolidated' &&
+          <span><a style={{ width: '100%' }} className="btn btn-warning d-print-none" onClick={() => { this.emitCertificate(this.props.listOfPresence._id, 'enrollment'); }}>
+            Emitir certificados
                         </a>{' '}</span>
-      }
-      <br/>
-      <span><a style={{width: '100%'}} className="btn btn-primary d-print-none" onClick={() => this.setListToPrint([])}>
-                        Voltar
+        }
+        <br />
+        <span><a style={{ width: '100%' }} className="btn btn-primary d-print-none" onClick={() => this.setListToPrint([])}>
+          Voltar
                         </a>{' '}</span>
-      <br/>
-      <br/>
-      <ListOfUsers listOfEnrollments={this.props.listOfEnrollments} listOfPresence={this.props.listOfPresence}
-                   enroll={this.props.enroll} exit={this.props.exit} entity={this.props.entity} />
+        <br />
+        <br />
+        <ListOfUsers listOfEnrollments={this.props.listOfEnrollments} listOfPresence={this.props.listOfPresence}
+          enroll={this.props.enroll} exit={this.props.exit} entity={this.props.entity} />
+
+        {/*  table to print */}
+        <table className='table d-print-block table-print only-print-style' id="printable" >
+          <thead>
+            <tr>
+              <th className="left-th">Nome</th>
+              <th className="right-th">Assinatura</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {this.props.listOfPresence &&
+              this.props.listOfPresence.data.ofEnrollments.map((user, index) => {
+                return (
+                  <tr key={user._id} >
+                    <td>{user.user.name}</td>
+                    <td>{''}</td>
+                  </tr>
+                );
+
+
+              })
+            }
+          </tbody>
+        </table>
       </div>
     )
+
+
+    //end of temprary talbe
   }
 
 }
@@ -261,11 +289,11 @@ class ListOfUsers extends Component {
   }
 
   render() {
-    return(
+    return (
       <div className="d-print-none">
-        <br/>
+        <br />
         <h5>Adicionar participantes</h5>
-          Nome da pessoa: <input type="text" className="form-control" onChange={this.onSearchBoxChange} />
+        Nome da pessoa: <input type="text" className="form-control" onChange={this.onSearchBoxChange} />
         <table className='table'>
           <thead>
             <tr>
@@ -274,27 +302,31 @@ class ListOfUsers extends Component {
             </tr>
           </thead>
           <tbody>
-            { this.state.searchTerm.length > 2 &&
+            {this.state.searchTerm.length > 2 &&
               this.state.currentlyDisplayed.map(person => {
-              return (
-                <tr key={person._id}>
-                <td>{person.name}</td>
-                {
-                  !this.props.listOfPresence.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(person._id) &&
-                  <td><EnrollButton onClick={() => this.enroll({ activityId: this.props.listOfPresence._id,
-                    userId: person._id})}
-                    style={'success'} text={'Inscrever'} /></td>
-                }
-                {
-                  this.props.listOfPresence.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(person._id) &&
-                  <td><EnrollButton onClick={() => this.exit({ activityId: this.props.listOfPresence._id,
-                    userId: person._id})}
-                    style={'warning'} text={'Desmarcar'} /></td>
-                }
-                </tr>)
+                return (
+                  <tr key={person._id}>
+                    <td>{person.name}</td>
+                    {
+                      !this.props.listOfPresence.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(person._id) &&
+                      <td><EnrollButton onClick={() => this.enroll({
+                        activityId: this.props.listOfPresence._id,
+                        userId: person._id
+                      })}
+                        style={'success'} text={'Inscrever'} /></td>
+                    }
+                    {
+                      this.props.listOfPresence.data.ofEnrollments.map(enrollment => enrollment.user._id).includes(person._id) &&
+                      <td><EnrollButton onClick={() => this.exit({
+                        activityId: this.props.listOfPresence._id,
+                        userId: person._id
+                      })}
+                        style={'warning'} text={'Desmarcar'} /></td>
+                    }
+                  </tr>)
               })
             }
-            { this.state.searchTerm.length <= 2 &&
+            {this.state.searchTerm.length <= 2 &&
               <tr>
                 <td></td>
                 <td></td>
@@ -336,10 +368,10 @@ class SeeAllObjectsPane extends Component {
   }
 
   render() {
-    return(
+    return (
       <div>
         <h5><strong>Todas propostas realizadas{' '}
-          { this.props.allObjects &&
+          {this.props.allObjects &&
             `(${this.props.allObjects.length})`
           }
         </strong></h5>
@@ -355,36 +387,36 @@ class SeeAllObjectsPane extends Component {
               this.props.allObjects &&
               this.props.allObjects.map((object) => {
                 const certEmitted = object.data.ofEnrollments.reduce((prev, curr) => {
-                  return (prev || curr.cert );
+                  return (prev || curr.cert);
                 }, false);
                 return (
                   <tr key={object._id}>
                     <td>
                       <strong>{object.data.title}</strong>{' '}
-                      { object.data.status === 'consolidated' ?
+                      {object.data.status === 'consolidated' ?
                         <span className="badge badge-success">Consolidado</span>
-                      : <span className="badge badge-info">Aguardando consolidação</span>}
-                      <br/>
+                        : <span className="badge badge-info">Aguardando consolidação</span>}
+                      <br />
                       <strong>Turno de preferência</strong>:{' '}
-                      { object.data.shift === 0 ? 'Manhã' :
+                      {object.data.shift === 0 ? 'Manhã' :
                         object.data.shift === 1 ? 'Tarde' :
-                        object.data.shift === 2 ? 'Noite' : 'Indefinido'
+                          object.data.shift === 2 ? 'Noite' : 'Indefinido'
                       }
-                      <br/>
-                      <strong>Vagas</strong>: { object.data.status === 'consolidated' ? object.data.consolidation.vacancies : object.data.vacancies }
-                      <strong>Localização</strong>: { object.data.status === 'consolidated' ? object.data.consolidation.location : 'Não definido ainda'}
-                      <p style={{textAlign: 'justify'}}>
-                      <strong>Ementa</strong>: { object.data.syllabus }</p>
-                      { object.data.ofFields &&
+                      <br />
+                      <strong>Vagas</strong>: {object.data.status === 'consolidated' ? object.data.consolidation.vacancies : object.data.vacancies}
+                      <strong>Localização</strong>: {object.data.status === 'consolidated' ? object.data.consolidation.location : 'Não definido ainda'}
+                      <p style={{ textAlign: 'justify' }}>
+                        <strong>Ementa</strong>: {object.data.syllabus}</p>
+                      {object.data.ofFields &&
                         object.data.ofFields.map((field) => {
                           return (
-                            <p key={field._id} style={{textAlign: 'justify'}}>
+                            <p key={field._id} style={{ textAlign: 'justify' }}>
                               <strong>{field.request.readableName}</strong>: {field.value}
                             </p>
                           );
                         })
                       }
-                      { object.data.ofFiles &&
+                      {object.data.ofFiles &&
                         object.data.ofFiles.map((file) => {
                           return (
                             <span key={file._id}><a className="btn btn-primary" href={`/file/download/${file._id}`} target="blank_">
@@ -399,17 +431,17 @@ class SeeAllObjectsPane extends Component {
                       <span><a className="btn btn-primary" onClick={() => this.props.setObjectToEdit(object)} target="blank_">
                         Editar
                         </a>{' '}</span>
-                      { object.data.status === 'consolidated' && !certEmitted &&
-                        <a className='btn btn-primary' onClick={() => {this.emitCertificate(object._id, 'enrollment');}}>Emitir certificados</a>
+                      {object.data.status === 'consolidated' && !certEmitted &&
+                        <a className='btn btn-primary' onClick={() => { this.emitCertificate(object._id, 'enrollment'); }}>Emitir certificados</a>
                       }
-                      { object.data.status === 'consolidated' && certEmitted &&
+                      {object.data.status === 'consolidated' && certEmitted &&
                         <span className="badge badge-success">Certificados emitidos</span>
                       }
                     </td>
                     <td>
                       {
                         object.data.ofProposersUsers.map((author) => {
-                          return (<span key={author._id}>{`${author.name} (${author.email})`}<br/></span>)
+                          return (<span key={author._id}>{`${author.name} (${author.email})`}<br /></span>)
                         })
                       }
                     </td>
@@ -431,35 +463,35 @@ class SeeAllObjects extends Component {
   }
 
   render() {
-    if(this.props.listOfPresence.length === 0 && this.props.objectToEdit.length === 0) {
+    if (this.props.listOfPresence.length === 0 && this.props.objectToEdit.length === 0) {
       return (<SeeAllObjectsPane entity={this.props.entity}
-                                loadAllObjects={this.props.loadAllObjects}
-                                setListToPrint={this.props.setListToPrint}
-                                emitCertificate={this.props.emitCertificate}
-                                setObjectToEdit={this.props.setObjectToEdit} 
-                                allObjects={this.props.allObjects} />)
-    } else if(this.props.listOfPresence.length !== 0 && this.props.objectToEdit.length === 0) {
+        loadAllObjects={this.props.loadAllObjects}
+        setListToPrint={this.props.setListToPrint}
+        emitCertificate={this.props.emitCertificate}
+        setObjectToEdit={this.props.setObjectToEdit}
+        allObjects={this.props.allObjects} />)
+    } else if (this.props.listOfPresence.length !== 0 && this.props.objectToEdit.length === 0) {
       return (
         <div>
           <ListOfPresencePane loadAllObjects={this.props.loadAllObjects}
-                                    entity={this.props.entity}
-                                    setListToPrint={this.props.setListToPrint}
-                                    setPresence={this.props.setPresence}
-                                    allObjects={this.props.allObjects}
-                                    listOfPresence={this.props.listOfPresence}
-                                    listOfEnrollments={this.props.listOfEnrollments}
-                                    emitCertificate={this.props.emitCertificate}
-                                    enroll={this.props.enroll}
-                                    exit={this.props.exit}
+            entity={this.props.entity}
+            setListToPrint={this.props.setListToPrint}
+            setPresence={this.props.setPresence}
+            allObjects={this.props.allObjects}
+            listOfPresence={this.props.listOfPresence}
+            listOfEnrollments={this.props.listOfEnrollments}
+            emitCertificate={this.props.emitCertificate}
+            enroll={this.props.enroll}
+            exit={this.props.exit}
           />
         </div>
       )
     } else {
-      return (<EditActivity entity={this.props.activities.entity} 
-                              objectToEdit={this.props.objectToEdit} 
-                              setObjectToEdit={this.props.setObjectToEdit} 
-                              editObject={this.props.editObject} 
-                              eventId={this.props.eventId} />)
+      return (<EditActivity entity={this.props.activities.entity}
+        objectToEdit={this.props.objectToEdit}
+        setObjectToEdit={this.props.setObjectToEdit}
+        editObject={this.props.editObject}
+        eventId={this.props.eventId} />)
     }
   }
 
