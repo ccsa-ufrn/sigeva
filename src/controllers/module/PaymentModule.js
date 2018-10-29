@@ -99,8 +99,7 @@ class PaymentModule extends Module {
    */
   getToApprovePayments() {
     // Get 'to_approve' payments
-    const toApprovePayments = this.moduleObject.ofObjects.filter(
-      receipt => receipt.data.status === 'to_approve');
+    const toApprovePayments = this.moduleObject.ofObjects;
 
     return new Promise((resolve, reject) => {
       // Populate payments with user data and file data
