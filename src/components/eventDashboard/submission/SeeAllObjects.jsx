@@ -309,6 +309,7 @@ class SeeAllObjects extends Component {
                            loadAllObjects={this.props.loadAllObjects} 
                            changeObjectState={this.props.changeObjectState}
                            setObjectToEdit={this.props.setObjectToEdit} 
+                           emitCertificate={this.props.emitCertificate}
                            entity={this.props.entity}/>
       )
     }
