@@ -149,10 +149,11 @@ eventRouter.post('/:id/enroll', simpleAuthorization, (req, res) => {
 
 eventRouter.post('/:id/enrollUser', simpleAuthorization, (req, res) => {
   const roleId = req.body.role; // The role id that the user wants to enroll with
+  const userId = req.body.userId; // The user id that wants to enroll with
 
   // Load the logged user in a User object by the id
   const user = new User();
-  user.loadById(req.body.userId)
+  user.loadById(userId)
     .then(() => {
       // Load the current event by the id
       const event = new Event();
@@ -168,7 +169,7 @@ eventRouter.post('/:id/enrollUser', simpleAuthorization, (req, res) => {
         });
     })
     .catch(() => {
-      res.status(404).json(Response(true, {}, Constants.USER_NOT_FOUND_MSG));
+      res.status(404).json(Response(true, {}, userId));
     });
 });
 
