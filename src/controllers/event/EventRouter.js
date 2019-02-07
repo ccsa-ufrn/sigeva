@@ -153,23 +153,31 @@ eventRouter.post('/:id/enrollUser', simpleAuthorization, (req, res) => {
 
   // Load the logged user in a User object by the id
   const user = new User();
-  user.loadById(userId)
+  const event = new Event();
+  user.loadById(res.locals.user._id)
+    .then(() => event.loadById(req.params.id))
     .then(() => {
-      // Load the current event by the id
-      const event = new Event();
-      event.loadById(req.params.id)
-        .then(() => {
-          return event.enroll(user, roleId);
-        })
-        .then(() => {
-          res.json(Response(false, {}));
-        })
-        .catch(() => {
-          res.status(404).json(Response(true, {}, Constants.EVENT_NOT_FOUND_MSG));
-        });
-    })
-    .catch(() => {
-      res.status(404).json(Response(true, {}, userId));
+      const roles = event.getUserRelationships(res.locals._id).roles;
+      const isCoordinator = roles.reduce((prev, curr) => (prev || curr.name === 'Coordenador'), false);
+      if (isCoordinator) {
+        user.loadById(userId)
+          .then(() => {
+            // Load the current event by the id
+            event.loadById(req.params.id)
+              .then(() => {
+                return event.enroll(user, roleId);
+              })
+              .then(() => {
+                res.json(Response(false, {}));
+              })
+              .catch(() => {
+                res.status(404).json(Response(true, {}, Constants.EVENT_NOT_FOUND_MSG));
+              });
+          })
+          .catch(() => {
+            res.status(404).json(Response(true, {}, userId));
+          });
+      }
     });
 });
 
