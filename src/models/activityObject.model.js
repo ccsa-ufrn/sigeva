@@ -27,6 +27,10 @@ const activityObjectSchema = new Schema({
     type: activityConsolidationSchema,
     default: null,
   },
+  confirmationCode: {
+    type: String,
+    default: '',
+  },
   ofEnrollments: [enrollmentSchema],
 });
 

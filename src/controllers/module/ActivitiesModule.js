@@ -2,6 +2,7 @@ import eachOf from 'async/eachOf';
 import mongoose from 'mongoose';
 import uid from 'uid';
 import moment from 'moment';
+import NodeMailer from 'nodemailer';
 import 'moment/locale/pt-br';
 import Module from './Module';
 import ModuleModel from '../../models/module.model';
@@ -16,6 +17,7 @@ import ActivityConsolidation from '../../models/activityConsolidation.model';
 import Enrollment from '../../models/enrollment.model';
 import CertConn from '../../models/certConnector.model';
 import { textReplace } from '../event/EventHelper';
+import { email } from '../../../config';
 
 
 /** @@ Activities Module
@@ -63,7 +65,23 @@ class ActivitiesModule extends Module {
     });
   }
 
-  submitObject(entity, data) {
+  submitObject(entity, data, confirmationEmail) {
+    const codeGen = (size) => {
+      let text = '';
+      const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+      for (let i = 0; i < size; i += 1) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
+
+      return text;
+    };
+    const code = codeGen(15);
+    let status = 'waiting';
+    if (data.role === 'Discente de Pós-Graduação Stricto Sensu') {
+      status = 'pending_approval';
+      this.sendEmailToCoordinator(data.title, code, email, confirmationEmail);
+    }
     const object = new ModuleObject({
       entity,
       data: new ActivityObject({
@@ -74,7 +92,8 @@ class ActivitiesModule extends Module {
         ofFields: data.ofFields,
         ofFiles: data.ofFiles,
         ofProposersUsers: data.ofProposersUsers.map(u => u._id),
-        status: 'waiting',
+        status: status,
+        confirmationCode: code,
         ofEnrollments: [],
       }),
     });
@@ -83,7 +102,36 @@ class ActivitiesModule extends Module {
     return this.store();
   }
 
-  getAllObjects(entitySlug) {
+  sendEmailToCoordinator(title, code, email, confirmationEmail) {
+    // send mail here
+    const transporter = NodeMailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: email.user,
+        pass: email.password,
+      },
+    });
+    const mailOptions = {
+      from: email.user,
+      to: confirmationEmail,
+      subject: '[Sigeva] Confirmação de evento',
+      html: `<h4>Confirmação de evento</h4>
+      <p>Saudações, um aluno inscreveu a atividade de título ${title} e lhe colocou como coordenador,
+      deste email é para confirmar que o coordenador está ciente de inscrição, caso este seja seu caso
+      por favor acesse o link abaixo
+      </p>
+      <center><a href="http://sigeva.ccsa.ufrn.br/ target="_blank">Criar nova senha</a></center>
+      `,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if(error) {
+        return console.log(error);
+      }
+      console.log('Message sent: ' + info.response);
+    });
+  }
+
+getAllObjects(entitySlug) {
     const objectsOfEntity = this.moduleObject.ofObjects.filter(obj => obj.entity === entitySlug);
     return new Promise((resolve, reject) => {
       ModuleObject.populate(objectsOfEntity, [
@@ -539,8 +587,9 @@ class ActivitiesModule extends Module {
         break;
       case 'submit_object':
         if (submitPermission) {
+          console.log(body);
           return new Promise((resolve) => {
-            this.submitObject(entitySlug, body)
+            this.submitObject(entitySlug, body.data, body.confirmationEmail)
               .then(resolve({}))
               .catch(resolve({}));
           });
@@ -643,6 +692,11 @@ class ActivitiesModule extends Module {
       case 'edit_object':
         if (seeAllPermission) {
           return this.editObject(body);
+        }
+        break;
+      case 'send_email_to_coordinator':
+        if (submitPermission) {
+          return this.sendEmail(body);
         }
         break;
       default:

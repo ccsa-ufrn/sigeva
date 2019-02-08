@@ -96,10 +96,10 @@ export function loadActivitiesEntity(entitySlug) {
   };
 }
 
-export function submitObject(entitySlug, data) {
+export function submitObject(entitySlug, data, confirmationEmail) {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
-
+    console.log(confirmationEmail);
     const config = {
       method: 'POST',
       mode: 'cors',
@@ -108,13 +108,13 @@ export function submitObject(entitySlug, data) {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ data, confirmationEmail }),
     };
 
     fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/submit_object`, config)
       .then(response => response.json())
       .then((json) => {
-        // DO SOMETHING
+        console.log(json);
       });
   };
 }
