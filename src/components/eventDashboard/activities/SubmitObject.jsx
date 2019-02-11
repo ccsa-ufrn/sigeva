@@ -40,6 +40,7 @@ class SubmissionPane extends Component {
       ofFields: [], // value, request
       ofFiles: [],
       ofProposersUsers: [],
+      role: this.props.role,
     }
 
     this.changeTitle = this.changeTitle.bind(this);
@@ -109,7 +110,10 @@ class SubmissionPane extends Component {
   }
 
   doSubmitObject() {
-    this.props.submitObject(this.props.entity.slug, this.state);
+    const emailId = this.props.entity.data.ofProposalRequiredFields.filter(field => field.name === 'confirmation-email').map(fieldFiltered => fieldFiltered._id)[0];
+    const confirmationEmail = this.state.ofFields.filter(el => el.request === emailId).map(field => field.value)[0]
+    console.log(confirmationEmail);
+    this.props.submitObject(this.props.entity.slug, this.state, confirmationEmail);
   }
 
   render() {
@@ -198,7 +202,9 @@ class SubmitObject extends Component {
   }
 
   doSubmitObject(entity, data) {
-    this.props.submitObject(entity, data);
+    const emailId = this.props.activities.entity.data.ofProposalRequiredFields.filter(field => field.name === 'confirmation-email').map(fieldFiltered => fieldFiltered._id)[0];
+    const confirmationEmail = data.ofFields.filter(el => el.request === emailId).map(field => field.value)[0]
+    this.props.submitObject(entity, data, confirmationEmail);
     this.setState({
       submited: true,
     })
@@ -217,10 +223,11 @@ class SubmitObject extends Component {
           return (<h5>Submetido com sucesso!</h5>);
         } else {
           return (<SubmissionPane
-            eventId={this.props.eventId}
+            eventId={this.props.event.id}
             entity={this.props.activities.entity}
             userEmail={this.props.userSession.logged_user.email}
             submitObject={this.doSubmitObject}
+            role={this.props.event.relationship[0].name}
           />);
         }
       } else {

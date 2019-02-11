@@ -7,7 +7,7 @@ import { submitObject } from '../../../actions/activities';
 const mapStateToProps = state => {
   return {
     activities: state.activities,
-    eventId: state.event.id,
+    event: state.event,
     userSession: state.userSession,
   };
 };
@@ -17,8 +17,8 @@ const mapDispatchToProps = dispatch => {
     loadUserIfNeed: () => {
       dispatch(loadUserIfNeed());
     },
-    submitObject: (entity, data) => {
-      dispatch(submitObject(entity, data));
+    submitObject: (entity, data, confirmationEmail) => {
+      dispatch(submitObject(entity, data, confirmationEmail));
     }
   };
 };

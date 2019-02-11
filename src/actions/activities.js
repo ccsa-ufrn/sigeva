@@ -30,6 +30,13 @@ export function setSessions(data) {
   });
 }
 
+export function setStatus(data) {
+  return ({
+    type: Action.SET_STATUS,
+    data,
+  });
+}
+
 export function setObjectToEdit(data) {
   return ({
     type: Action.SET_ACTIVITIES_OBJECT_TO_EDIT,
@@ -96,10 +103,8 @@ export function loadActivitiesEntity(entitySlug) {
   };
 }
 
-export function submitObject(entitySlug, data) {
-  return (dispatch, getState) => {
-    const eventId = getState().event.id;
-
+export function confirmActivity(eventId, code) {
+  return (dispatch) => {
     const config = {
       method: 'POST',
       mode: 'cors',
@@ -108,13 +113,38 @@ export function submitObject(entitySlug, data) {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ eventId, code }),
+    };
+
+    fetch(`${application.url}/api/event/confirm-activity`, config)
+      .then(response => response.json())
+      .then((json) => {
+        dispatch(setStatus(json.data.status));
+      })
+      .catch((err) => {
+        dispatch(setStatus(err.data.status));
+      });
+  };
+}
+
+export function submitObject(entitySlug, data, confirmationEmail) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ data, confirmationEmail }),
     };
 
     fetch(`${application.url}/api/event/${eventId}/module/activities/${entitySlug}/act/submit_object`, config)
       .then(response => response.json())
       .then((json) => {
-        // DO SOMETHING
+        console.log(json);
       });
   };
 }
