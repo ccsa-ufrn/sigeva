@@ -11,6 +11,7 @@ import AccountPageContainer from './account/AccountPageContainer';
 import EventPageContainer from './event/EventPageContainer';
 import EventDashboardPageContainer from './eventDashboard/EventDashboardPageContainer';
 import RecoverPasswordContainer from './recoverPassword/RecoverPasswordContainer';
+import ConfirmActivityContainer from './confirmActivity/ConfirmActivityContainer';
 import NewPasswordContainer from './recoverPassword/NewPasswordContainer';
 import DropzoneTest from './dropzone/DropzoneTest';
 import Certificate from './cert/Certificate';
@@ -25,6 +26,7 @@ const Router = () => (
     <Route exact path='/dashboard/account' component={AccountPageContainer} />
     <Route exact path='/recover-password' component={RecoverPasswordContainer} />
     <Route exact path='/new-password/:uid/:code' component={NewPasswordContainer} />
+    <Route exact path='/confirm-activity/:uid/:code' component={ConfirmActivityContainer} />
     <Route exact path='/event/:id/dashboard/' component={EventDashboardPageContainer} />
     <Route exact path='/event/:id/dashboard/:module' component={EventDashboardPageContainer} />
     <Route exact path='/event/:id/dashboard/:module/:entity' component={EventDashboardPageContainer} />

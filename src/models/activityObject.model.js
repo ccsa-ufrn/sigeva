@@ -27,7 +27,7 @@ const activityObjectSchema = new Schema({
     type: activityConsolidationSchema,
     default: null,
   },
-  confirmationCode: {
+  code: {
     type: String,
     default: '',
   },

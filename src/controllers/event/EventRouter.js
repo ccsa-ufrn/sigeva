@@ -303,6 +303,29 @@ eventRouter.get('/:id/gts/all', (req, res) => {
 });
 
 /**
+ * Used to confirm that coordinator knows about activity
+*/
+eventRouter.post('/confirm-activity', (req, res) => {
+  const event = new Event();
+  const eventId = req.body.eventId;
+  const code = req.body.code;
+  event.loadById(eventId)
+    .then(() => {
+      event.getModule('activities')
+        .then((activities) => {
+          const activityToConfirm = activities.moduleObject.ofObjects.filter(object => object.data.code === code).map(el => el._id)[0];
+          return activities.confirmActivity(activityToConfirm);
+        })
+        .then(() => {
+          res.json(Response(false, { status: 'waiting' }));
+        })
+        .catch(() => {
+          res.json(Response(false, { status: 'error' }));
+        });
+    });
+});
+
+/**
  * Emit certificates
  */
 eventRouter.post('/:id/emitCertificates/:type', simpleAuthorization, (req, res) => {

@@ -93,7 +93,7 @@ class ActivitiesModule extends Module {
         ofFiles: data.ofFiles,
         ofProposersUsers: data.ofProposersUsers.map(u => u._id),
         status: status,
-        confirmationCode: code,
+        code: code,
         ofEnrollments: [],
       }),
     });
@@ -120,18 +120,27 @@ class ActivitiesModule extends Module {
       deste email é para confirmar que o coordenador está ciente de inscrição, caso este seja seu caso
       por favor acesse o link abaixo
       </p>
-      <center><a href="http://sigeva.ccsa.ufrn.br/ target="_blank">Criar nova senha</a></center>
+      <center><a href="sigeva.ccsa.ufrn.br/confirm-activity/${this.event.eventObject._id}/${code}" target="_blank">Confirmar atividade</a></center>
       `,
     };
-    transporter.sendMail(mailOptions, (error, info) => {
-      if(error) {
-        return console.log(error);
-      }
-      console.log('Message sent: ' + info.response);
+    transporter.sendMail(mailOptions)
+  }
+
+  confirmActivity(activityId) {
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': activityId },
+        {
+          $set: {
+            'ofObjects.$.data.status': 'waiting',
+          },
+        }, (err, doc) => {
+          if (!err) resolve({});
+          reject({});
+        });
     });
   }
 
-getAllObjects(entitySlug) {
+  getAllObjects(entitySlug) {
     const objectsOfEntity = this.moduleObject.ofObjects.filter(obj => obj.entity === entitySlug);
     return new Promise((resolve, reject) => {
       ModuleObject.populate(objectsOfEntity, [
@@ -587,7 +596,6 @@ getAllObjects(entitySlug) {
         break;
       case 'submit_object':
         if (submitPermission) {
-          console.log(body);
           return new Promise((resolve) => {
             this.submitObject(entitySlug, body.data, body.confirmationEmail)
               .then(resolve({}))

@@ -10,6 +10,7 @@ const initialActivities = {
   listOfEnrolledSessions: [],
   listOfPresence: [],
   objectToEdit: [],
+  status: 'pending_approval',
 };
 
 const activities = (state = initialActivities, action) => {
@@ -49,6 +50,10 @@ const activities = (state = initialActivities, action) => {
     case Action.SET_ACTIVITIES_OBJECT_TO_EDIT:
       return Object.assign({}, state, {
         objectToEdit: action.data,
+      });
+    case Action.SET_STATUS:
+      return Object.assign({}, state, {
+        status: action.data,
       });
     default:
       return state;
