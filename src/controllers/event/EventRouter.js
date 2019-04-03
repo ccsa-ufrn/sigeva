@@ -290,6 +290,7 @@ eventRouter.get('/:id/gts/all', (req, res) => {
                     name: tg.name,
                     syllabus: tg.description,
                     coordinators: coordsString,
+                    id: tg._id,
                   });
                 });
                 newAreas.push({ name: newArea.name, tgs });
@@ -300,6 +301,67 @@ eventRouter.get('/:id/gts/all', (req, res) => {
         .catch(() => { res.json(Response(true, {})); });
     })
     .catch(() => { res.json(Response(true, {})); });
+});
+
+
+
+/**
+ * get all subs
+// */
+
+
+eventRouter.get('/:id/submissions/all', (req, res) => {
+  const eventId = req.params.id;
+  const event = new Event();
+  const ArrayTGroups = [];
+  event.loadById(eventId)
+    .then(() => {
+      event.getModule('thematicgroups')
+        .then((thematicgroup) => {
+          console.log(thematicgroup.moduleObject.name);
+          thematicgroup.moduleObject.ofObjects.map((obj) => {
+            ArrayTGroups.push(obj.data.name);
+          })
+        })
+    });
+  event.loadById(eventId)
+    .then(() => {
+      event.getModule('submission')
+        .then((submission) => {
+          new Promise((resolve, reject) => {
+            ModuleObject.populate(submission.moduleObject.ofObjects, [
+              { path: 'data.authors', select: 'name', model: 'User' },
+              { path: 'data.files', select: 'extension', model: 'File' },
+
+            ], (err, docs) => {
+              if (err) reject();
+              resolve(docs);
+            });
+          })
+            .then((docs) => {
+              const SubmissionsArray = [];
+              docs.map((single) => {
+                const data = {
+                  title: single.data.title,
+                  abstract: single.data.abstract,
+                  authors: single.data.authors,
+                  tg: single.data.thematicGroup,
+                  entity: single.entity,
+                  files: single.data.files,
+                };
+                SubmissionsArray.push(data);
+              });
+
+              res.status(200).send(SubmissionsArray);
+            });
+        }).catch(() => {
+          res.status(400).send({
+            message: 'Erro ao Mostrar',
+          });
+        });
+    }).catch(() => {
+      res.status(400).send('error');
+    });
 });
 
 /**
