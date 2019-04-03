@@ -168,6 +168,7 @@ class ThematicGroupModule extends Module {
     return new Promise((resolve, reject) => {
       ModuleObject.populate(thematicGroups, [
         { path: 'data.coordinators', select: 'name email', model: 'User' },
+        { path: 'data.area', select: 'name', model: 'thematicGroupArea' },
       ], (err, docs) => {
         if (err) reject();
         resolve(docs);

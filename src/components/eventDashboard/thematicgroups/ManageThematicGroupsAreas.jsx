@@ -18,7 +18,7 @@ class AreasTable extends Component {
           <tbody>
             {
               this.props.areas !== null &&
-              this.props.areas.map((area) => {
+              this.props.areas.sort((a, b) => a.name.localeCompare(b.name)).map((area) => {
                 return (
                   <tr key={area._id}>
                     <td>{area.name}</td>

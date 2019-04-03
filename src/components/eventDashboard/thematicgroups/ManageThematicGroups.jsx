@@ -105,6 +105,7 @@ class ListGTs extends Component {
   }
 
   render() {
+    console.log(this.props.thematicGroups)
     return(
       <div>
         <h5><strong>Lista de Grupos Temáticos</strong></h5>
@@ -117,7 +118,9 @@ class ListGTs extends Component {
           </thead>
           <tbody>
             { this.props.thematicGroups !== null &&
-              this.props.thematicGroups.map((thematicGroup) => {
+              this.props.thematicGroups.sort((a, b) => 
+                a.data.area.name.localeCompare(b.data.area.name) || a.data.name.localeCompare(b.data.name))
+                .map((thematicGroup) => {
                 return (
                   <tr key={thematicGroup._id}>
                     <td>
