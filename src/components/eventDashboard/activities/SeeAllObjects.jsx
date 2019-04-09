@@ -393,9 +393,13 @@ class SeeAllObjectsPane extends Component {
                   <tr key={object._id}>
                     <td>
                       <strong>{object.data.title}</strong>{' '}
-                      {object.data.status === 'consolidated' ?
-                        <span className="badge badge-success">Consolidado</span>
-                        : <span className="badge badge-info">Aguardando consolidação</span>}
+                      {
+                        object.data.status === 'consolidated' ?
+                          <span className="badge badge-success">Consolidado</span> :
+                        object.data.status === 'waiting' ?
+                          <span className="badge badge-info">Aguardando consolidação</span> :
+                          <span className="badge badge-info">Aguardando consentimento do coordenador</span>
+                      }
                       <br />
                       <strong>Turno de preferência</strong>:{' '}
                       {object.data.shift === 0 ? 'Manhã' :
