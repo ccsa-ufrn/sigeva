@@ -104,6 +104,7 @@ export function loadActivitiesEntity(entitySlug) {
 }
 
 export function confirmActivity(eventId, code) {
+  console.log('Function foi usada');
   return (dispatch) => {
     const config = {
       method: 'POST',
@@ -178,7 +179,6 @@ export function loadAllObjects(entitySlug) {
 }
 
 export function createSession(entitySlug, initialDate, finalDate) {
-  console.log(initialDate);
   return (dispatch, getState) => {
     const eventId = getState().event.id;
 

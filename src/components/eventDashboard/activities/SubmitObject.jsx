@@ -112,7 +112,6 @@ class SubmissionPane extends Component {
   doSubmitObject() {
     const emailId = this.props.entity.data.ofProposalRequiredFields.filter(field => field.name === 'confirmation-email').map(fieldFiltered => fieldFiltered._id)[0];
     const confirmationEmail = this.state.ofFields.filter(el => el.request === emailId).map(field => field.value)[0]
-    console.log(confirmationEmail);
     this.props.submitObject(this.props.entity.slug, this.state, confirmationEmail);
   }
 

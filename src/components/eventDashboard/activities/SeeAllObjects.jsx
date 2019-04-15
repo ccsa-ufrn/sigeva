@@ -95,7 +95,7 @@ class EditActivity extends Component {
         </div>
         <div className="form-group">
           <label htmlFor="form-shift">Turno de preferência</label>
-          <select defaultValue={this.state.shift} id="form-shift" className="form-control" onChange={this.changeShift}>
+          <select value={this.state.shift} id="form-shift" className="form-control" onChange={this.changeShift}>
             <option value={0}>Manhã</option>
             <option value={1}>Tarde</option>
             <option value={2}>Noite</option>

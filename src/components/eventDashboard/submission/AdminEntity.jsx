@@ -86,7 +86,6 @@ class AdminEntityPane extends Component {
   }
 
   render() {
-    console.log(this.props.entity);
     return(
       <div>
       { this.props.entity &&
