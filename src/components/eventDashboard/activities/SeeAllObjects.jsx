@@ -45,7 +45,7 @@ class EditActivity extends Component {
         syllabus: this.props.objectToEdit.data.syllabus,
         shift: parseInt(this.props.objectToEdit.data.shift),
         vacancies: parseInt(this.props.objectToEdit.data.vacancies),
-        ofProposersUsers: this.props.objectToEdit.data.ofProposersUsers.map(author => author._id),
+        ofProposersUsers: this.props.objectToEdit.data.ofProposersUsers,
         _id: this.props.objectToEdit._id,
       })
     }

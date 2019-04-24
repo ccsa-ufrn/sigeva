@@ -429,7 +429,6 @@ class ActivitiesModule extends Module {
             'ofObjects.$.data.syllabus': objectToEdit.syllabus,
             'ofObjects.$.data.shift': parseInt(objectToEdit.shift, 10),
             'ofObjects.$.data.vacancies': parseInt(objectToEdit.vacancies, 10),
-            'ofObjects.$.data.thematicGroup': mongoose.Types.ObjectId(objectToEdit.thematicGroup),
             'ofObjects.$.data.ofProposersUsers': objectToEdit.ofProposersUsers.map(user => mongoose.Types.ObjectId(user._id)),
           },
         }, { new: true }, (err, doc) => {

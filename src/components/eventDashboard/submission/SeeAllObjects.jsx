@@ -50,7 +50,7 @@ class EditSubmission extends Component {
         abstract: this.props.objectToEdit.data.abstract,
         keywords: this.props.objectToEdit.data.keywords,
         thematicGroup: this.props.objectToEdit.data.thematicGroup.data._id,
-        users: this.props.objectToEdit.data.authors.map(authors => authors._id),
+        users: this.props.objectToEdit.data.authors,
         _id: this.props.objectToEdit._id,
         files: [],
       })
