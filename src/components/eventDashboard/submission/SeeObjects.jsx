@@ -29,7 +29,7 @@ class SeeObjects extends Component {
                 return (
                   <tr key={object._id}>
                     <td>{object.data.title} -
-                    <a data-toggle="collapse" href={`#clps-${object.data._id}`} aria-expanded="false" role="button" aria-controls={`#clps-${object.data._id}`}>  Expandir</a>
+                    <a data-toggle="collapse" href={`#clps-${object.data._id}`} aria-expanded="false" role="button" aria-controls={`#clps-${object.data._id}`}>   Apresentação & Comentários</a>
                       <div className="collapse" id={`clps-${object.data._id}`}>
                         <span>Datas da apresentação:{' '}
                         { object.data.consolidation &&
@@ -51,6 +51,8 @@ class SeeObjects extends Component {
                         { !object.data.consolidation &&
                           <span>Localização da apresentação - Por favor consultar em seminario.ccsa.ufrn.br</span>
                         }
+                        <br/>
+                        <span>Comentários dos coordenadores do GT:{' '}{object.data.comment}</span>
                       </div>
                     </td>
                     <td>{object.data.authors.map((author)=> `${author.name} - `)}</td>
