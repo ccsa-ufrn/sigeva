@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import SeeAllObjects from './SeeAllObjects';
-import { loadAllObjects, setListToPrint, setObjectToEdit, setPresence, enroll, exit, emitCertificate, emitOneCertificate, editObject } from '../../../actions/activities';
+import { loadAllObjects, setListToPrint, setObjectToEdit, setPresence, enroll, exit, emitCertificate, emitOneCertificate, editObject, deleteObject } from '../../../actions/activities';
 import { loadEnrollments } from '../../../actions/report';
 
 const mapStateToProps = state => {
@@ -43,6 +43,9 @@ const mapDispatchToProps = dispatch => {
     },
     editObject: (entitySlug, objectToEdit) => {
       dispatch(editObject(entitySlug, objectToEdit));
+    },
+    deleteObject: (entitySlug, objectId) => {
+      dispatch(deleteObject(entitySlug, objectId));
     }
   };
 };

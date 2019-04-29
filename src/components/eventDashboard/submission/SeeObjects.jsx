@@ -25,7 +25,7 @@ class SeeObjects extends Component {
           </thead>
           <tbody>
             { this.props.submission.userObjects &&
-              this.props.submission.userObjects.map((object) => {
+              this.props.submission.userObjects.filter(obj => obj.data.deleted != true).map((object) => {
                 return (
                   <tr key={object._id}>
                     <td>{object.data.title} -

@@ -385,7 +385,7 @@ class SeeAllObjectsPane extends Component {
           <tbody>
             {
               this.props.allObjects &&
-              this.props.allObjects.map((object) => {
+              this.props.allObjects.filter(obj => !obj.data.deleted).map((object) => {
                 const certEmitted = object.data.ofEnrollments.reduce((prev, curr) => {
                   return (prev || curr.cert);
                 }, false);
@@ -435,6 +435,9 @@ class SeeAllObjectsPane extends Component {
                       <span><a className="btn btn-primary" onClick={() => this.props.setObjectToEdit(object)} target="blank_">
                         Editar
                         </a>{' '}</span>
+                      <span><a className="btn btn-danger" onClick={() => this.props.deleteObject(this.props.entity, object._id)} target="blank_">
+                        Deletar 
+                        </a>{' '}</span>
                       {object.data.status === 'consolidated' && !certEmitted &&
                         <a className='btn btn-primary' onClick={() => { this.emitCertificate(object._id, 'enrollment'); }}>Emitir certificados</a>
                       }
@@ -473,6 +476,7 @@ class SeeAllObjects extends Component {
         setListToPrint={this.props.setListToPrint}
         emitCertificate={this.props.emitCertificate}
         setObjectToEdit={this.props.setObjectToEdit}
+        deleteObject={this.props.deleteObject}
         allObjects={this.props.allObjects} />)
     } else if (this.props.listOfPresence.length !== 0 && this.props.objectToEdit.length === 0) {
       return (

@@ -221,7 +221,7 @@ class SeeAllObjectsPane extends Component {
           </thead>
           <tbody>
             { this.props.allObjects &&
-              this.props.allObjects.map((object) => {
+              this.props.allObjects.filter(obj => !obj.data.deleted).map((object) => {
                 return (
                   <tr key={object._id}>
                     <td><strong>{object.data.title}</strong><br/>
@@ -281,6 +281,7 @@ class SeeAllObjectsPane extends Component {
                         </div>
                       }
                       <button className="btn btn-sm btn-dark" onClick={() => this.props.setObjectToEdit(object)}>Editar submissão</button>
+                      <button className="btn btn-sm btn-danger" onClick={() => this.props.deleteObject(this.props.entity, object._id)}>Deletar submissão</button>
                     </td>
                   </tr>
                 );
@@ -310,6 +311,7 @@ class SeeAllObjects extends Component {
                            changeObjectState={this.props.changeObjectState}
                            setObjectToEdit={this.props.setObjectToEdit} 
                            emitCertificate={this.props.emitCertificate}
+                           deleteObject={this.props.deleteObject}
                            entity={this.props.entity}/>
       )
     }

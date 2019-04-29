@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import SeeAllObjects from './SeeAllObjects';
 import { loadThematicGroups } from '../../../actions/thematicGroups';
-import { loadAllObjects, changeObjectState, emitCertificate, setObjectToEdit, editObject } from '../../../actions/submission';
+import { loadAllObjects, changeObjectState, emitCertificate, setObjectToEdit, editObject, deleteObject } from '../../../actions/submission';
 
 const mapStateToProps = state => {
   return {
@@ -33,6 +33,9 @@ const mapDispatchToProps = dispatch => {
     editObject: (entitySlug, objectState) => {
       dispatch(editObject(entitySlug, objectState));
     },
+    deleteObject: (entitySlug, objectId) => {
+      dispatch(deleteObject(entitySlug, objectId));
+    }
   };
 };
 

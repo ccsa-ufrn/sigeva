@@ -83,7 +83,7 @@ class SeeToApproveSubmissions extends Component {
                     <table className="table">
                       <tbody>
                         { tg_.objects.length > 0 ?
-                          tg_.objects.map((obj_) => {
+                          tg_.objects.filter(obj => !obj.data.deleted).map((obj_) => {
                             return (
                               <tr key={obj_._id}>
                                 <td>

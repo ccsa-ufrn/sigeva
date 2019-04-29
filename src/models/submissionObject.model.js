@@ -15,6 +15,10 @@ const submissionObjectSchema = new Schema({
     type: String,
     default: 'waiting_evaluation', // waiting_evaluation, rejected, approved, present
   },
+  deleted: {
+    type: Boolean,
+    default: false,
+  },
   cert: {
     type: String,
     default: null,

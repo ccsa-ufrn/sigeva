@@ -428,6 +428,20 @@ class SubmissionModule extends Module {
     });
   }
 
+  deleteObject(objectId) {
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': objectId },
+        {
+          $set: {
+            'ofObjects.$.data.deleted': true,
+          },
+        }, { new: true }, (err, doc) => {
+          if (!err) resolve(doc);
+          reject({});
+        });
+    });
+  }
+
   saveComment(objectId, newComment) {
     return new Promise((resolve, reject) => {
       ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': objectId },
@@ -567,6 +581,12 @@ class SubmissionModule extends Module {
       case 'edit_object':
         if (seeAllPermission) {
           return this.editObject(body);
+        }
+        break;
+      case 'delete_object':
+        if (seeAllPermission) {
+          const objId = body.objectId;
+          return this.deleteObject(objId);
         }
         break;
       default:

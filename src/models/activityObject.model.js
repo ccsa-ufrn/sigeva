@@ -23,6 +23,10 @@ const activityObjectSchema = new Schema({
     type: String,
     default: 'waiting',
   },
+  deleted: {
+    type: Boolean,
+    default: false,
+  },
   consolidation: {
     type: activityConsolidationSchema,
     default: null,

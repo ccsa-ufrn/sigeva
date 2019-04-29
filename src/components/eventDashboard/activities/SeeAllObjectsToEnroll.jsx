@@ -95,7 +95,7 @@ class SeeAllObjectsToEnrollPane extends Component {
             {
               this.props.allObjectsToEnroll &&
               this.props.listOfEnrolledSessions &&
-              this.props.allObjectsToEnroll.map((object) => {
+              this.props.allObjectsToEnroll.filter(obj => !obj.data.deleted).map((object) => {
                 return (
                   <tr key={object._id}>
                     <td>

@@ -186,7 +186,7 @@ class ConsolidateObject extends Component {
           </thead>
           <tbody>
             { this.props.allObjects &&
-              this.props.allObjects.filter(s => s.data.status == "waiting").map((object) => {
+              this.props.allObjects.filter(s => s.data.status == "waiting" && !s.data.deleted).map((object) => {
                 return (
                   <ObjectConsolidation key={object._id} object={object} sessions={this.props.sessions} consolidateActivity={this.props.consolidateActivity} />
                 );

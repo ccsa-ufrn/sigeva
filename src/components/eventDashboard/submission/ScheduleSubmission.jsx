@@ -186,7 +186,7 @@ class ScheduleSubmission extends Component {
           </thead>
           <tbody>
             { this.props.allObjects &&
-              this.props.allObjects.filter((object) => (object.data.consolidation === undefined || object.data.consolidation === null) && object.data.state === 'approved' ).map(object => {
+              this.props.allObjects.filter((object) => (object.data.consolidation === undefined || object.data.consolidation === null) && object.data.state === 'approved' && !object.data.deleted ).map(object => {
                 return (
                     <tr key={object._id}>
                       <td>

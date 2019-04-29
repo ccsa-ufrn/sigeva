@@ -438,6 +438,21 @@ class ActivitiesModule extends Module {
     });
   }
 
+  deleteObject(objectId) {
+    console.log(objectId);
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({ _id: this.moduleObject._id, 'ofObjects._id': objectId },
+        {
+          $set: {
+            'ofObjects.$.data.deleted': true,
+          },
+        }, { new: true }, (err, doc) => {
+          if (!err) resolve(doc);
+          reject({});
+        });
+    });
+  }
+
   getCertificate(entitySlug, type, objectId, userId) {
     const entity = this.getEntityBySlug(entitySlug);
 
@@ -704,6 +719,12 @@ class ActivitiesModule extends Module {
       case 'send_email_to_coordinator':
         if (submitPermission) {
           return this.sendEmail(body);
+        }
+        break;
+      case 'delete_object':
+        if (seeAllPermission) {
+          const objectId = body.objectId;
+          return this.deleteObject(objectId);
         }
         break;
       default:

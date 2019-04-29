@@ -97,7 +97,7 @@ class SeeAllObjectsSubmitedPane extends Component {
           <tbody>
             {
               this.props.allObjectsSubmited &&
-              this.props.allObjectsSubmited.map((object) => {
+              this.props.allObjectsSubmited.filter(obj => !obj.data.deleted).map((object) => {
                 return (
                   <tr key={object._id}>
                     <td>
