@@ -126,12 +126,12 @@ class ConsolidateObject extends Component {
           <div className="col-md-6">
             <br/>
             <label htmlFor="form-intialDate">Horário de começar</label>
-            <DatePicker className="form-control" showTimeSelect timeFormat="HH:mm" timeIntervals={15} dateFormat="LLL" timeCaption="Hora" selected={this.state.initialDate} onChange={this.changeInitialDate} />
+            <DatePicker className="form-control" showTimeSelect timeFormat="HH:mm" timeIntervals={5} dateFormat="LLL" timeCaption="Hora" selected={this.state.initialDate} onChange={this.changeInitialDate} />
           </div>
           <div className="col-md-6">
             <br/>
             <label htmlFor="form-intialDate">Horário de terminar</label>
-            <DatePicker className="form-control" showTimeSelect timeFormat="HH:mm" timeIntervals={15} dateFormat="LLL" timeCaption="Hora" selected={this.state.finalDate} onChange={this.changeFinalDate} />
+            <DatePicker className="form-control" showTimeSelect timeFormat="HH:mm" timeIntervals={5} dateFormat="LLL" timeCaption="Hora" selected={this.state.finalDate} onChange={this.changeFinalDate} />
           </div>
           <div className="col-md-12">
             <br/>
