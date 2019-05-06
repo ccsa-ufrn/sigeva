@@ -151,7 +151,7 @@ class ConsolidateObject extends Component {
                   <table>
                     <tbody>
                     { this.props.allObjects &&
-                      this.props.allObjects.filter( obj=>obj.data.status !== "waiting" ).filter((object) => {
+                      this.props.allObjects.filter( obj=>obj.data.status === "consolidated" ).filter((object) => {
                         if (object.data.consolidation !== undefined) {
                           return object.data.consolidation.sessions.reduce((previous, currentSess) => {
                             return previous || currentSess._id == session._id;
