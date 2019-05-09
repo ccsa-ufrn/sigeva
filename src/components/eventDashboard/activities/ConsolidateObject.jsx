@@ -47,7 +47,9 @@ class ObjectConsolidation extends Component {
   }
 
   consolidateActivity() {
-    this.props.consolidateActivity(this.props.object.entity, this.props.object._id, this.state.selectedSessions, this.state.location, this.state.vacancies);
+    if(this.state.selectedSessions.length > 0) { 
+      this.props.consolidateActivity(this.props.object.entity, this.props.object._id, this.state.selectedSessions, this.state.location, this.state.vacancies);
+    }
   }
 
   render() {
@@ -177,6 +179,27 @@ class ConsolidateObject extends Component {
             );
           })
         }
+        <div className="card">
+          <div className="card-body">
+            <div className="card-title">Sem data</div>
+            <table>
+              <tbody>
+              { this.props.allObjects &&
+                this.props.allObjects.filter( obj=>obj.data.status === "consolidated" && obj.data.consolidation.sessions.length == 0).map((activity) => {
+                  return (
+                    <tr key={activity._id}>
+                      <td>
+                        <strong>{activity.data.title}</strong> <a onClick={() => {this.props.deconsolidateActivity(this.props.entity, activity._id)}}>Desconsolidar</a><br/>
+                        {activity.data.consolidation.location} ({activity.data.consolidation.vacancies} vagas)
+                      </td>
+                    </tr>
+                  );
+                })
+              }
+              </tbody>
+            </table>
+          </div>
+        </div>
         <br/><h5><strong>Atividades não consolidadas</strong></h5>
         <table className="table">
           <thead>
