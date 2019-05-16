@@ -139,7 +139,7 @@ class ListGTs extends Component {
                     <td>
                       {
                         thematicGroup.data.coordinators.map((coord) => {
-                          return (<div key={coord._id}><span>{coord.name}</span><br/></div>);
+                          return (<div key={coord._id}><span>{coord.name} - {coord.email}</span><br/></div>);
                         })
                       }
                     </td>
