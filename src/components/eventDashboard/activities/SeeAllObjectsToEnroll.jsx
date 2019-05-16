@@ -107,7 +107,7 @@ class SeeAllObjectsToEnrollPane extends Component {
                           const initialDate = new Date(session.initialDate)
                           const finalDate = new Date(session.finalDate)
                           return (
-                             `${initialDate.getDate()}/${initialDate.getMonth()+1}/${initialDate.getFullYear()} a partir de ${initialDate.getHours()}:${initialDate.getMinutes()} até ${finalDate.getHours()}:${finalDate.getMinutes()}` + '\n'
+                             `${initialDate.getDate()}/${initialDate.getMonth()+1}/${initialDate.getFullYear()} a partir de ${('0'+initialDate.getHours()).slice(-2)}:${('0'+initialDate.getMinutes()).slice(-2)} até ${('0'+finalDate.getHours()).slice(-2)}:${('0'+finalDate.getMinutes()).slice(-2)}` + '\n'
                           );
                         })
                       }

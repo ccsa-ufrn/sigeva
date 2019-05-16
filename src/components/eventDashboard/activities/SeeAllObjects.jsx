@@ -409,12 +409,12 @@ class SeeAllObjectsPane extends Component {
                       <br />
                       <strong>Vagas</strong>: {object.data.status === 'consolidated' ? object.data.consolidation.vacancies : object.data.vacancies}
                       <strong>Localização</strong>: {object.data.status === 'consolidated' ? object.data.consolidation.location : 'Não definido ainda'}
-                      <p style={{ textAlign: 'justify' }}>
+                      <p className="activity-syllabus" style={{ textAlign: 'justify' }}>
                         <strong>Ementa</strong>: {object.data.syllabus}</p>
                       {object.data.ofFields &&
                         object.data.ofFields.map((field) => {
                           return (
-                            <p key={field._id} style={{ textAlign: 'justify' }}>
+                            <p key={field._id} className={field.request.name} style={{ textAlign: 'justify' }}>
                               <strong>{field.request.readableName}</strong>: {field.value}
                             </p>
                           );

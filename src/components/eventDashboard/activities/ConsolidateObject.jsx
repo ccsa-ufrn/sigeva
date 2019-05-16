@@ -66,7 +66,7 @@ class ObjectConsolidation extends Component {
               const finalDate = new Date(session.finalDate);
                 return (
                   <div key={session._id}>
-                    <input onChange={(e) => { this.changeSelection(e, session._id); }} type="checkbox" key={session._id} /> {`${initialDate.getDate()}/${initialDate.getMonth()+1}/${initialDate.getFullYear()} a partir de ${initialDate.getHours()}:${initialDate.getMinutes()} até ${finalDate.getHours()}:${finalDate.getMinutes()}`}
+                    <input onChange={(e) => { this.changeSelection(e, session._id); }} type="checkbox" key={session._id} /> {`${initialDate.getDate()}/${initialDate.getMonth()+1}/${initialDate.getFullYear()} a partir de ${("0"+initialDate.getHours()).slice(-2)}:${("0"+initialDate.getMinutes()).slice(-2)} até ${("0"+finalDate.getHours()).slice(-2)}:${("0"+finalDate.getMinutes()).slice(-2)}`}
                   </div>
                 );
               })
@@ -149,7 +149,7 @@ class ConsolidateObject extends Component {
             return(
               <div key={session._id} className="card">
                 <div className="card-body">
-                  <div className="card-title">{`${initialDate.getDate()}/${initialDate.getMonth()+1}/${initialDate.getFullYear()} a partir de ${initialDate.getHours()}:${initialDate.getMinutes()} até ${finalDate.getHours()}:${finalDate.getMinutes()}`}</div>
+                  <div className="card-title">{`${initialDate.getDate()}/${initialDate.getMonth()+1}/${initialDate.getFullYear()} a partir de ${("0"+initialDate.getHours()).slice(-2)}:${("0"+initialDate.getMinutes()).slice(-2)} até ${("0"+finalDate.getHours()).slice(-2)}:${("0"+finalDate.getMinutes()).slice(-2)}`}</div>
                   <table>
                     <tbody>
                     { this.props.allObjects &&
