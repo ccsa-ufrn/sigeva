@@ -385,7 +385,7 @@ class SeeAllObjectsPane extends Component {
           <tbody>
             {
               this.props.allObjects &&
-              this.props.allObjects.filter(obj => !obj.data.deleted).map((object) => {
+              this.props.allObjects.filter(obj => !obj.data.deleted).sort((a, b) => (a.data.title > b.data.title) ? 1 : ((b.data.title > a.data.title) ? -1 : 0)).map((object) => {
                 const certEmitted = object.data.ofEnrollments.reduce((prev, curr) => {
                   return (prev || curr.cert);
                 }, false);
