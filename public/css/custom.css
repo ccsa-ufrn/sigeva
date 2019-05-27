@@ -273,3 +273,17 @@ h5 strong {
 
 }
 }
+.print-border-none{
+  border:none !important;
+  padding:4px !important;
+}
+.none-tr {
+  border:none !important;
+  padding:4px !important;
+
+}
+.none-th{
+  border:none !important;
+  padding:4px !important;
+}
+
