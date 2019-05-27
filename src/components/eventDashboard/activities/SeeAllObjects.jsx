@@ -173,8 +173,8 @@ class ListOfPresencePane extends Component {
 
   render() {
     return (
-      <div id="printable">
-        <h5>Lista de Presença{' '}
+      <div>
+          <h5>Lista de Presença{' '}
           {this.props.listOfPresence &&
             `(${this.props.listOfPresence.data.ofEnrollments.length})`
           }
@@ -226,6 +226,15 @@ class ListOfPresencePane extends Component {
 
         {/*  table to print */}
         <table className='table d-print-block table-print only-print-style' id="printable" >
+          <thead className='d-print-block'>
+              <h5>{this.props.listOfPresence.data.title}{' '}</h5>
+              {this.props.listOfPresence.data.ofProposersUsers.map(user => {
+                  return (
+                      <p id={user._id}>{user.name}</p>
+                    );
+              })
+            }
+          </thead>
           <thead>
             <tr>
               <th className="left-th">Nome</th>
