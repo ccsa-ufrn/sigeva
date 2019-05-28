@@ -226,15 +226,28 @@ class ListOfPresencePane extends Component {
 
         {/*  table to print */}
         <table className='table d-print-block table-print only-print-style' id="printable" >
-          <thead className='d-print-block'>
-              <h5>{this.props.listOfPresence.data.title}{' '}</h5>
-              {this.props.listOfPresence.data.ofProposersUsers.map(user => {
-                  return (
-                      <p id={user._id}>{user.name}</p>
-                    );
-              })
+        <thead className='d-print-block print-border-none'>
+        <tr className="none-tr">
+          <th className="none-th">
+            <img src="https://seminario.ccsa.ufrn.br/assets/ng2/marca.png" width="200px" height="80px" alt=""></img>
+          </th>
+        </tr>
+        <tr className="none-tr">
+          <th className="none-th">
+            <h5>{this.props.listOfPresence.data.title}{' '}</h5>
+          </th>
+        </tr>
+        <tr className="none-tr">
+          <th className="none-th">
+            {this.props.listOfPresence.data.ofProposersUsers.map(user => {
+              return (
+                <p id={user._id}>{user.name}</p>
+              );
+            })
             }
-          </thead>
+          </th>
+        </tr>
+      </thead>
           <thead>
             <tr>
               <th className="left-th">Nome</th>
@@ -445,7 +458,7 @@ class SeeAllObjectsPane extends Component {
                         Editar
                         </a>{' '}</span>
                       <span><a className="btn btn-danger" onClick={() => this.props.deleteObject(this.props.entity, object._id)} target="blank_">
-                        Deletar 
+                        Deletar
                         </a>{' '}</span>
                       {object.data.status === 'consolidated' && !certEmitted &&
                         <a className='btn btn-primary' onClick={() => { this.emitCertificate(object._id, 'enrollment'); }}>Emitir certificados</a>
