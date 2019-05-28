@@ -105,6 +105,10 @@ class SeeAllObjectsEnrolledPane extends Component {
                         })
                       }
                       <br/>
+                      <strong>Local</strong>:{' '}
+                      { object.data.consolidation &&
+                          <span>{ object.data.consolidation.location }</span> 
+                      }
                       <br/>
                       <p style={{textAlign: 'justify'}}>
                       <strong>Ementa</strong>: { object.data.syllabus }</p>
