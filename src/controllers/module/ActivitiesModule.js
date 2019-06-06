@@ -468,7 +468,12 @@ class ActivitiesModule extends Module {
             if (enroll.present === false) {
               if (entitySlug === 'roundtable' || entitySlug === 'conference') {
                 // discover the date
-                const date = object.data.consolidation.sessions[0].date;
+                let date = undefined;
+                if (object.data.consolidation.sessions[0].date) {
+                    date = object.data.consolidation.sessions[0].date;
+                } else {
+                    date = object.data.consolidation.sessions[0].initialDate
+                }
                 const day = moment(date).format('DD');
                 const month = moment(date).format('MMMM');
                 const year = moment(date).format('YYYY');
