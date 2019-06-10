@@ -9,6 +9,13 @@ export function setCerts(data) {
   });
 }
 
+export function setObjectToEdit(data) {
+  return ({
+    type: Action.SET_CUSTOMCERT_OBJECT_TO_EDIT,
+    data,
+  });
+}
+
 export function loadCerts() {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
@@ -49,6 +56,31 @@ export function createNew(text) {
     };
 
     fetch(`${application.url}/api/event/${eventId}/module/cert/cert/act/create_certificate`, config)
+      .then(response => response.json())
+      .then((json) => {
+        if (!json.error) {
+          dispatch(loadCerts());
+        }
+      });
+  };
+}
+
+export function editObject(objectToEdit) {
+  return (dispatch, getState) => {
+    const eventId = getState().event.id;
+
+    const config = {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ objectToEdit }),
+    };
+
+    fetch(`${application.url}/api/event/${eventId}/module/cert/cert/act/edit_object`, config)
       .then(response => response.json())
       .then((json) => {
         if (!json.error) {

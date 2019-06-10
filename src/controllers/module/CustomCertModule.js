@@ -1,6 +1,7 @@
 import uid from 'uid';
 import Module from './Module';
 import ModuleObject from '../../models/moduleObject.model';
+import ModuleModel from '../../models/module.model';
 import CertCon from '../../models/certConnector.model';
 
 class CustomCertModule extends Module {
@@ -65,6 +66,20 @@ class CustomCertModule extends Module {
     return this.moduleObject.ofObjects;
   }
 
+  editObject(objectToEdit) {
+    return new Promise((resolve, reject) => {
+      ModuleModel.findOneAndUpdate({_id: this.moduleObject._id, 'ofObjects._id': objectToEdit._id },
+        {
+          $set: {
+            'ofObjects.$.data.text': objectToEdit.text,
+          },
+        }, { new: true }, (err, doc) => {
+          if (!err) resolve(doc);
+          reject({});
+        });
+    });
+  }
+
   /**
    * Runs a action performed by the user
    * @param user logged User instance
@@ -95,6 +110,11 @@ class CustomCertModule extends Module {
       case 'create_certificate':
         if (createCertificatePermission) {
           return this.emitCertificate(body.text);
+        }
+        break;
+      case 'edit_object':
+        if (createCertificatePermission) {
+          return this.editObject(body.objectToEdit);
         }
         break;
       case 'get_certs':

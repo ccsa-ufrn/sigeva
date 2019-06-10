@@ -16,6 +16,9 @@ class CertItem extends Component {
         <td>
           <a href={`/certificado/${this.props.code}`} target="_blank">Ver certificado</a>
         </td>
+        <td>
+          <a className="btn" onClick={() => this.props.setObjectToEdit(this.props.certItem)}>Editar Certificado</a>
+        </td>
       </tr>
     );
   }
@@ -34,7 +37,9 @@ class ListCertificates extends Component {
             this.props.certs.map((certItem) => {
               return (
                 <CertItem
+                  setObjectToEdit={this.props.setObjectToEdit}
                   key={certItem._id}
+                  certItem={certItem}
                   text={certItem.data.text}
                   code={certItem.data.code}
                   />
