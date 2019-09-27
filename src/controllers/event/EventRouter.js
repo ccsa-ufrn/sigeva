@@ -348,6 +348,7 @@ eventRouter.get('/:id/submissions/all', (req, res) => {
                   tg: single.data.thematicGroup,
                   entity: single.entity,
                   files: single.data.files,
+                  state: single.data.state,
                 };
                 SubmissionsArray.push(data);
               });
