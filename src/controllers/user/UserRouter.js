@@ -98,7 +98,7 @@ userRouter.get('/me', simpleAuthorization, (req, res) => {
   user.loadById(res.locals.user._id) // Load from id validated by simpleAuthorization
     .then(() => {
       // The user exists
-      user.toFormatedUser('cpf institution phone')
+      user.toFormatedUser('cpf institution phone specialNeeds')
         .then((formatedUser) => {
           res.json(Response(false, formatedUser));
         }).catch((e) => {
