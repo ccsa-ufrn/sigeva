@@ -18,8 +18,11 @@ export default function () {
   }
 
   mongoose.connect(uri, {
-    useMongoClient: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
   });
+
+  mongoose.set('useFindAndModify', false);
 
   // CONNECTION EVENTS
   // When successfully connected

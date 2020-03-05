@@ -12,19 +12,17 @@ const fileRequirementRouter = Router();
 fileRequirementRouter.post('/upload/:id', simpleAuthorization, (req, res) => {
   const fileReq = new FileRequirement();
   const databaseFile = new File();
-
   fileReq.loadById(req.params.id)
     .then((docRequirement) => {
       const path = `${fileDir}/${docRequirement.fileType}`;
       if (!fs.existsSync(path)) {
+        console.log(path);
         fs.mkdirSync(path);
       }
-
       if (req.files.file) {
         const file = req.files.file;
         const fileNameSplited = file.name.split('.');
         const fileExt = fileNameSplited[fileNameSplited.length - 1];
-
         databaseFile.setData(docRequirement._id, res.locals.user._id, fileExt);
         databaseFile.store()
           .then((docFile) => {

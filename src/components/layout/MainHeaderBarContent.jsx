@@ -6,7 +6,7 @@ class MainHeaderBarContent extends Component {
     super(props);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.loadUserInfo();
   }
 

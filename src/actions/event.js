@@ -144,7 +144,6 @@ export function loadEventIfNeed(id) {
 export function enrollUser(role) {
   return (dispatch, getState) => {
     const eventId = getState().event.id;
-
     const config = {
       method: 'POST',
       mode: 'cors',

@@ -18,7 +18,7 @@ let store = createStore(
   initialState,
   applyMiddleware(
     thunkMiddleware
-  )
+  ),
 );
 
 const App = () => (

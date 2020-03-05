@@ -124,7 +124,6 @@ eventRouter.get('/:id/relationship', simpleAuthorization, (req, res) => {
  */
 eventRouter.post('/:id/enroll', simpleAuthorization, (req, res) => {
   const roleId = req.body.role; // The role id that the user wants to enroll with
-
   // Load the logged user in a User object by the id
   const user = new User();
   user.loadById(res.locals.user._id)
