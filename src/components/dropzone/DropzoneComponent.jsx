@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import DefaultDropzone from 'react-dropzone';
+import pdfjsLib from 'pdfjs';
 import fetch from 'isomorphic-fetch';
 
 import { application } from '../../../config'
@@ -9,6 +10,7 @@ export default class DropzoneComponent extends Component {
     super(props);
     this.state = {
       extensionError: false,
+      numberOfPagesError: false,
     };
   }
 
@@ -19,7 +21,20 @@ export default class DropzoneComponent extends Component {
     });
 
     if (acceptedFiles.length > 0) {
-      this.props.sendFile(formData);
+      var reader = new FileReader();
+      reader.readAsBinaryString(acceptedFiles[0]);
+      reader.onloadend = function () {
+        var count = reader.result.match(/\/Type[\s]*\/Page[^s]/g).length;
+        console.log(count)
+        if (count < 2) {
+          this.setState({
+            numberOfPagesError: true
+          })
+        } else {
+          this.props.sendFile(formData);
+        }
+      }.bind(this)
+          
     } else {
       this.setState({
         extensionError: true,
@@ -94,6 +109,11 @@ export default class DropzoneComponent extends Component {
             { this.state.extensionError &&
               <div className='dropzone-error'>
                 A extensão do arquivo inserido é incompatível com as extensões aceitáveis
+              </div>
+            }
+            { this.state.numberOfPagesError &&
+              <div className='dropzone-error'>
+                Você tem certeza que não esqueceu de colocar seu comprovante de vínculo? Caso seja profissional do turismo ou ouvinte apenas adicione uma página em branco
               </div>
             }
             <div className='dropzone-description'>

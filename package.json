@@ -29,7 +29,7 @@
   "homepage": "https://github.com/ccsa-ufrn/sigeva#readme",
   "dependencies": {
     "async": "^2.5.0",
-    "bcrypt": "^5.0.0",
+    "bcrypt": "^4.0.0",
     "body-parser": "^1.19.0",
     "bootstrap": "^3.4.1",
     "cookie-parser": "^1.4.3",
@@ -54,6 +54,7 @@
     "react-to-print": "https://registry.npmjs.org/react-to-print/-/react-to-print-1.0.14.tgz",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
+    "pdfjs": "2.4.1",
     "uid": "0.0.2"
   },
   "devDependencies": {
