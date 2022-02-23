@@ -21,20 +21,23 @@ export default class DropzoneComponent extends Component {
     });
 
     if (acceptedFiles.length > 0) {
-      var reader = new FileReader();
-      reader.readAsBinaryString(acceptedFiles[0]);
-      reader.onloadend = function () {
-        var count = reader.result.match(/\/Type[\s]*\/Page[^s]/g).length;
-        console.log(count)
-        if (count < 2) {
-          this.setState({
-            numberOfPagesError: true
-          })
-        } else {
-          this.props.sendFile(formData);
-        }
-      }.bind(this)
-          
+      if (this.props.fileRequirement.fileType === 'receipt') {
+        var reader = new FileReader();
+        reader.readAsBinaryString(acceptedFiles[0]);
+        reader.onloadend = function () {
+          var count = reader.result.match(/\/Type[\s]*\/Page[^s]/g).length;
+          console.log(count)
+          if (count < 2) {
+            this.setState({
+              numberOfPagesError: true
+            })
+          } else {
+            this.props.sendFile(formData);
+          }
+        }.bind(this)
+      } else {
+        this.props.sendFile(formData)
+      }
     } else {
       this.setState({
         extensionError: true,
