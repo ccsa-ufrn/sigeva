@@ -238,7 +238,12 @@ class SeeAllObjectsPane extends Component {
                         })
                       }
                     </td>
-                    <td>{object.data.thematicGroup.data.name}</td>
+                    {object.data.thematicGroup &&
+                     <td>{object.data.thematicGroup.data.name}</td>
+}
+                    {!object.data.thematicGroup &&
+                     <td></td>
+}
                     <td>
                     { object.data.state === 'waiting_evaluation' ?
                       <div>
