@@ -221,7 +221,7 @@ class SeeAllObjectsPane extends Component {
           </thead>
           <tbody>
             { this.props.allObjects &&
-              this.props.allObjects.filter(obj => !obj.data.deleted).map((object) => {
+              this.props.allObjects.filter(obj => !obj.data.deleted).sort((a, b) => (a.data.thematicGroup.data.name > b.data.thematicGroup.data.name)).map((object) => {
                 return (
                   <tr key={object._id}>
                     <td><strong>{object.data.title}</strong><br/>
