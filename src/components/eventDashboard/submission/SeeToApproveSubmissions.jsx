@@ -102,7 +102,7 @@ class SeeToApproveSubmissions extends Component {
                                         </div>
                                         {
                                           obj_.data.files.map((file) => {
-                                            if (this.props.submission.entity.data) {
+                                            if (this && this.props && this.submission && this.props.submission.entity && this.props.submission.entity.data) {
                                               const hiddenRequiredFile = this.props.submission.entity.data.ofRequiredFiles.find(fl => fl.fileType == "hidden");
                                               if (hiddenRequiredFile) {
                                                 if (file.fileRequirement == hiddenRequiredFile.fileRequirement) {
