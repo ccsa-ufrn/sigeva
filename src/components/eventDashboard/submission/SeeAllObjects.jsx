@@ -256,7 +256,9 @@ class SeeAllObjectsPane extends Component {
                           object.data.state === 'rejected' ?
                             <span className="badge badge-danger">Trabalho rejeitado</span> :
                           object.data.state === 'present' ?
-                            <span className="badge badge-success">Trabalho apresentado</span> :
+                            <span className="badge badge-success">Trabalho apresentado</span> : 
+                          object.data.state === 'rejected' ?
+                            <span className="badge badge-success">Trabalho rejeitado</span> :
                             <span className="badge badge-danger">Indefinido</span>
                         }
                       </div>
