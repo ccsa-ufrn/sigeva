@@ -65,6 +65,7 @@ class SeeEnrollments extends Component {
   }
 
   loadUser(uId) {
+    console.log(uId)
     this.props.loadUser(uId);
   }
 
@@ -127,7 +128,8 @@ class SeeEnrollments extends Component {
                         {user.name} ({user.email})
                       </td>
                       <td>
-                        <a href="#" onClick={() => { this.loadUser(user._id) }} className="btn btn-success">Relatório detalhado</a>
+                        
+                        <button onClick={() => { this.props.loadUser(user._id) }} className="btn btn-success">Relatório detalhado</button>
                       </td>
                     </tr>
                   )
