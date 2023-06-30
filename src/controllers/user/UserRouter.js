@@ -149,7 +149,7 @@ userRouter.post("/recover-password", (req, res) => {
         .then((generatedCode) => {
           // send mail here
           const transporter = NodeMailer.createTransport({
-            host: "https://mx5.ufrn.br",
+            host: "mx5.ufrn.br",
             port: 465,
             secure: true, // upgrade later with STARTTLS
             auth: {
