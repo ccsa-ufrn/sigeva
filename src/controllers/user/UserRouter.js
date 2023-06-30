@@ -170,7 +170,7 @@ userRouter.post("/recover-password", (req, res) => {
             `,
           };
           transporter.sendMail(mailOptions, (err) => {
-            // if (err) res.json(Response(true, {}));
+            if (err) { console.log(err)};
             res.json(Response(false, {}));
           });
         })
