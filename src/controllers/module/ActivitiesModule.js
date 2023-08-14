@@ -802,11 +802,28 @@ class ActivitiesModule extends Module {
    * @param subaction action that will be dispacthed
    */
   act(user, roles, body, entitySlug, subaction) {
+    const entityId = this.getEntityBySlug(entitySlug)._id;
+    switch (subaction) {
+      case "get_all_objects":
+        if (seeAllPermission || enrollInObject) {
+          return this.getAllObjects(entitySlug);
+        }
+        break;
+      case "get_sessions":
+        if (consolidatePermission) {
+          return this.getSessions(
+            this.event.eventObject._id,
+            this.getEntityBySlug(entitySlug)._id
+          );
+        }
+        break;
+      default:
+      // Do nothing
+    }
     const context = this.getUserContext(roles);
     if (!context) {
       return null;
     }
-    const entityId = this.getEntityBySlug(entitySlug)._id;
     const permissionsOnEntity = context.permissions.filter((perm) => {
       return String(perm.entity) === String(entityId);
     });
@@ -855,11 +872,6 @@ class ActivitiesModule extends Module {
           });
         }
         break;
-      case "get_all_objects":
-        if (seeAllPermission || enrollInObject) {
-          return this.getAllObjects(entitySlug);
-        }
-        break;
       case "create_session":
         if (consolidatePermission) {
           const initialDate = body.initialDate;
@@ -869,14 +881,6 @@ class ActivitiesModule extends Module {
             this.getEntityBySlug(entitySlug)._id,
             initialDate,
             finalDate
-          );
-        }
-        break;
-      case "get_sessions":
-        if (consolidatePermission) {
-          return this.getSessions(
-            this.event.eventObject._id,
-            this.getEntityBySlug(entitySlug)._id
           );
         }
         break;
