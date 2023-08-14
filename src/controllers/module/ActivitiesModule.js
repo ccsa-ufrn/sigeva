@@ -805,18 +805,12 @@ class ActivitiesModule extends Module {
     const entityId = this.getEntityBySlug(entitySlug)._id;
     switch (subaction) {
       case "get_all_objects":
-        if (seeAllPermission || enrollInObject) {
-          return this.getAllObjects(entitySlug);
-        }
-        break;
+        return this.getAllObjects(entitySlug);
       case "get_sessions":
-        if (consolidatePermission) {
-          return this.getSessions(
-            this.event.eventObject._id,
-            this.getEntityBySlug(entitySlug)._id
-          );
-        }
-        break;
+        return this.getSessions(
+          this.event.eventObject._id,
+          this.getEntityBySlug(entitySlug)._id
+        );
       default:
       // Do nothing
     }
