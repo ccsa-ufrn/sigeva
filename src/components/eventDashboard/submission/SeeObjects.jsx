@@ -57,7 +57,7 @@ class SeeObjects extends Component {
                       'Aprovado' :
                       object.data.state == 'present' ?
                       'Apresentado' :
-                      'Indefinido'
+                      'Rejeitado'
                     }
                     { object.data.state === 'present' &&
                       object.data.cert &&
