@@ -202,7 +202,13 @@ class ListOfPresencePane extends Component {
                       user.present === false && !user.cert ? <td>Certificado faltando</td> :
                         <td>Certificado emitido</td>
                     }
-                    <td>{user.user.name}({user.user.email})</td>
+                    <td>{user.user.name}({user.user.email}) - {" "}
+                    {this.props.listOfEnrollments.find(
+                          (enrollment) => enrollment.email === user.email,
+                        ).payment.approved === true
+                          ? "Pagou"
+                          : "Não pagou"}
+                    </td>
                     <td></td>
                   </tr>
                 );
