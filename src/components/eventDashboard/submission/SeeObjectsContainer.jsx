@@ -6,6 +6,7 @@ import { loadUserObjects } from '../../../actions/submission';
 const mapStateToProps = state => {
   return {
     submission: state.submission,
+    listOfEnrollments: state.report.enrollments,
   };
 };
 

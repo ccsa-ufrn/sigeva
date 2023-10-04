@@ -17,7 +17,7 @@ class EditSubmission extends Component {
     if (thematicGroups.length > 0) {
       thematicGroup = this.props.objectToEdit.data.thematicGroup.data._id;
     }
-    
+
     let authors = null;
     if (this.props.objectToEdit.data.authors.length > 0) {
       authors = this.props.objectToEdit.data.authors;
@@ -234,7 +234,13 @@ class SeeAllObjectsPane extends Component {
                     <td>
                       {
                         object.data.authors.map((author) => {
-                          return (<span key={author._id}>{`${author.name} (${author.email})`}<br/></span>)
+                          return (<span key={author._id}>{`${author.name} (${author.email})`} - (
+                    {this.props.listOfEnrollments && this.props.listOfEnrollments.find(
+                          (enrollment) => enrollment.email === user.email,
+                        ).payment.approved === true
+                          ? "Pagou"
+                          : "Não pagou"}
+                          <br/></span>)
                         })
                       }
                     </td>
@@ -256,7 +262,7 @@ class SeeAllObjectsPane extends Component {
                           object.data.state === 'rejected' ?
                             <span className="badge badge-danger">Trabalho rejeitado</span> :
                           object.data.state === 'present' ?
-                            <span className="badge badge-success">Trabalho apresentado</span> : 
+                            <span className="badge badge-success">Trabalho apresentado</span> :
                           object.data.state === 'rejected' ?
                             <span className="badge badge-success">Trabalho rejeitado</span> :
                             <span className="badge badge-danger">Indefinido</span>
@@ -305,18 +311,19 @@ class SeeAllObjects extends Component {
 
   render() {
     if(this.props.submission.objectToEdit.length !== 0) {
-      return (<EditSubmission entity={this.props.submission.entity} 
+      return (<EditSubmission entity={this.props.submission.entity}
                               thematicGroups={this.props.thematicGroups}
-                              objectToEdit={this.props.submission.objectToEdit} 
-                              setObjectToEdit={this.props.setObjectToEdit} 
-                              editObject={this.props.editObject} 
+                              objectToEdit={this.props.submission.objectToEdit}
+                              setObjectToEdit={this.props.setObjectToEdit}
+                              editObject={this.props.editObject}
                               eventId={this.props.eventId} />)
     } else {
       return (
-        <SeeAllObjectsPane allObjects={this.props.submission.allObjects} 
-                           loadAllObjects={this.props.loadAllObjects} 
+        <SeeAllObjectsPane allObjects={this.props.submission.allObjects}
+                           listOfEnrollments={this.props.listOfEnrollments}
+                           loadAllObjects={this.props.loadAllObjects}
                            changeObjectState={this.props.changeObjectState}
-                           setObjectToEdit={this.props.setObjectToEdit} 
+                           setObjectToEdit={this.props.setObjectToEdit}
                            emitCertificate={this.props.emitCertificate}
                            deleteObject={this.props.deleteObject}
                            entity={this.props.entity}/>
