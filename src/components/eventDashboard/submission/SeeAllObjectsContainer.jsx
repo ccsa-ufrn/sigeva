@@ -8,6 +8,7 @@ const mapStateToProps = state => {
   return {
     userSession: state.userSession,
     thematicGroups: state.thematicGroups.thematicGroups,
+    listOfEnrollments: state.report.enrollments,
     submission: state.submission,
     eventId: state.event.id,
   };
