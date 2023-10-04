@@ -237,10 +237,12 @@ class SeeAllObjectsPane extends Component {
                         object.data.authors.map((author) => {
                           return (<span key={author._id}>{`${author.name} (${author.email})`} - (
                     {this.props.listOfEnrollments && this.props.listOfEnrollments.find(
-                          (enrollment) => enrollment.email === user.email,
+                          (enrollment) => enrollment.email === user.user.email,
+                        ) && this.props.listOfEnrollments.find(
+                          (enrollment) => enrollment.email === user.user.email,
                         ).payment.approved === true
-                          ? "Pagou"
-                          : "Não pagou"}
+                          ? <span style={{ color: "green" }}>Pagou</span>
+                          : <span style={{ color: "red"}}>Não pagou</span>}
                           <br/></span>)
                         })
                       }

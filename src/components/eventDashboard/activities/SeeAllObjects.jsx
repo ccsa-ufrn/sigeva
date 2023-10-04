@@ -206,9 +206,9 @@ class ListOfPresencePane extends Component {
                     }
                     <td>{user.user.name}({user.user.email}) - {" "}
                     {this.props.listOfEnrollments && this.props.listOfEnrollments.find(
-                          (enrollment) => enrollment.email === user.email,
+                          (enrollment) => enrollment.email === user.user.email,
                         ) && this.props.listOfEnrollments.find(
-                          (enrollment) => enrollment.email === user.email,
+                          (enrollment) => enrollment.email === user.user.email,
                         ).payment.approved === true
                           ? <span style={{ color: "green" }}>Pagou</span>
                           : <span style={{ color: "red"}}>Não pagou</span>}
