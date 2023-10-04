@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import SeeAllObjects from './SeeAllObjects';
 import { loadThematicGroups } from '../../../actions/thematicGroups';
 import { loadAllObjects, changeObjectState, emitCertificate, setObjectToEdit, editObject, deleteObject } from '../../../actions/submission';
+import { loadEnrollments } from '../../../actions/report';
 
 const mapStateToProps = state => {
   return {
@@ -27,6 +28,9 @@ const mapDispatchToProps = dispatch => {
     },
     setObjectToEdit: (object) => {
       dispatch(setObjectToEdit(object));
+    },
+    loadEnrollments: () => {
+      dispatch(loadEnrollments());
     },
     loadThematicGroups: () => {
       dispatch(loadThematicGroups());

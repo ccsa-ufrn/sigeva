@@ -312,6 +312,10 @@ class SeeAllObjectsPane extends Component {
 
 class SeeAllObjects extends Component {
 
+  componentDidMount() {
+    this.props.loadEnrollments();
+  }
+
   render() {
     if(this.props.submission.objectToEdit.length !== 0) {
       return (<EditSubmission entity={this.props.submission.entity}
