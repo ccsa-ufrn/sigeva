@@ -171,6 +171,8 @@ class ListOfPresencePane extends Component {
     this.props.emitCertificate(this.props.entity, objectId, type);
   }
 
+  console.log(this.props.listOfEnrollments)
+
   render() {
     return (
       <div>
