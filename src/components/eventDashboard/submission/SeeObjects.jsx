@@ -32,18 +32,7 @@ class SeeObjects extends Component {
                     <a data-toggle="collapse" href={`#clps-${object.data._id}`} aria-expanded="false" role="button" aria-controls={`#clps-${object.data._id}`}>   Apresentação & Comentários</a>
                       <div className="collapse" id={`clps-${object.data._id}`}>
                         <span>Datas da apresentação:{' '}
-                        { object.data.consolidation &&
-                          object.data.consolidation.sessions.map((session) => {
-                            const initialDate = new Date(session.initialDate);
-                            const finalDate = new Date(session.finalDate);
-                            return (
-                              <span key={session._id}>{`${initialDate.getDate()}/${initialDate.getMonth()+1}/${initialDate.getFullYear()} a partir de ${initialDate.getHours()}:${initialDate.getMinutes()}`}</span>
-                            )
-                          })
-                        }
-                        { !object.data.consolidation &&
-                            <span>Datas podem ser encontradas em seminario.ccsa.ufrn.br</span>
-                        }
+                        <span>Datas podem ser encontradas em seminario.ccsa.ufrn.br/programacao</span>
                         <br/></span>
                         { object.data.consolidation &&
                           <span>{object.data.consolidation.location}</span>
@@ -68,7 +57,7 @@ class SeeObjects extends Component {
                       'Aprovado' :
                       object.data.state == 'present' ?
                       'Apresentado' :
-                      'Indefinido'
+                      'Rejeitado'
                     }
                     { object.data.state === 'present' &&
                       object.data.cert &&
