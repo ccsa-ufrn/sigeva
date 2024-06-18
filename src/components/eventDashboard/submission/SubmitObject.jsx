@@ -46,6 +46,8 @@ class SubmissionPane extends Component {
     let thematicGroups = [];
     if (this.props.entity.slug == 'teachingcases') {
       thematicGroups = this.props.thematicGroups.filter((el => el.data.name === 'Casos para Ensino'));
+    } else if (this.props.entity.slug == 'extensionreport') {
+      thematicGroups = this.props.thematicGroups.filter((el => el.data.name === 'Relato de Experiências Extensionistas'))
     } else {
       thematicGroups = this.props.thematicGroups.filter((el => el.data.name !== 'Casos para Ensino'));
     }
