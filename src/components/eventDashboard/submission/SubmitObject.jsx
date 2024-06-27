@@ -49,7 +49,7 @@ class SubmissionPane extends Component {
     } else if (this.props.entity.slug == 'extensionreport') {
       thematicGroups = this.props.thematicGroups.filter((el => el.data.name === 'Relato de Experiências Extensionistas'))
     } else {
-      thematicGroups = this.props.thematicGroups.filter((el => el.data.name !== 'Casos para Ensino'));
+      thematicGroups = this.props.thematicGroups.filter((el => el.data.name !== 'Casos para Ensino' && el.data.name !== 'Relato de Experiências Extensionistas'));
     }
 
     let thematicGroup = null;
@@ -115,8 +115,10 @@ class SubmissionPane extends Component {
 
     if (this.props.entity.slug == 'teachingcases') {
       thematicGroups = this.props.thematicGroups.filter((el => el.data.name === 'Casos para Ensino'));
+    } else if (this.props.entity.slug == 'extensionreport') {
+      thematicGroups = this.props.thematicGroups.filter((el => el.data.name === 'Relato de Experiências Extensionistas'))
     } else {
-      thematicGroups = this.props.thematicGroups.filter((el => el.data.name !== 'Casos para Ensino'));
+      thematicGroups = this.props.thematicGroups.filter((el => el.data.name !== 'Casos para Ensino' && el.data.name !== 'Relato de Experiências Extensionistas'));
     }
 
     if (this.state.thematicGroups.length != thematicGroups.length) {
