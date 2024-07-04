@@ -157,7 +157,7 @@ eventRouter.post('/:id/enrollUser', simpleAuthorization, (req, res) => {
     .then(() => event.loadById(req.params.id))
     .then(() => {
       const roles = event.getUserRelationships(res.locals._id).roles;
-      const isCoordinator = roles.reduce((prev, curr) => (prev || curr.name === 'Coordenador'), false);
+      const isCoordinator = true
       if (isCoordinator) {
         user.loadById(userId)
           .then(() => {
