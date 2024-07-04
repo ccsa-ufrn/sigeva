@@ -151,16 +151,19 @@ eventRouter.post('/:id/enrollUser', simpleAuthorization, (req, res) => {
   const userId = req.body.userId; // The user id that wants to enroll with
 
   // Load the logged user in a User object by the id
+  console.log('USER ID', userId)
   const user = new User();
   const event = new Event();
   user.loadById(res.locals.user._id)
     .then(() => event.loadById(req.params.id))
     .then(() => {
       const roles = event.getUserRelationships(res.locals._id).roles;
+      console.log('EVENT', event)
       const isCoordinator = true
       if (isCoordinator) {
         user.loadById(userId)
           .then(() => {
+            console.log('USER', user)
             // Load the current event by the id
             event.loadById(req.params.id)
               .then(() => {
