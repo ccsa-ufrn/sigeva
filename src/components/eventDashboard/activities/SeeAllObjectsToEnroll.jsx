@@ -112,6 +112,11 @@ class SeeAllObjectsToEnrollPane extends Component {
                         })
                       }
                       <br/>
+                      <strong>Local</strong>:{' '}
+                      { object.data.consolidation &&
+                          object.data.consolidation.location
+                      }
+                      <br/>
                       <strong>Vagas preenchidas</strong>:{object.data.ofEnrollments.length} de { object.data.consolidation.vacancies === 0 ? 'Sem limites': object.data.consolidation.vacancies }
                       <br/>
                       <p style={{textAlign: 'justify'}}>
