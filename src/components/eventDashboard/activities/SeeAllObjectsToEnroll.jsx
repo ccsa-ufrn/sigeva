@@ -84,7 +84,7 @@ class SeeAllObjectsToEnrollPane extends Component {
             `(${this.props.allObjectsToEnroll.length})`
           }
         </strong></h5>
-        <h2><strong style="text-color: red;">ATENÇÃO: </strong> As inscrições em atividades vão até amanhã dia 22 de Setembro, após isso, os alunos podem participar das atividades no dia, DESDE QUE hajam vagas, haverá uma lista para colocar suas informações, se o aluno tiver com a situação de pagamento regularizada(isento ou com pagamento aprovad0), nós conseguimos incluir o certificado após o evento sem maiores problemas</h2>
+        <h2><strong style={{ color: 'red'}}>ATENÇÃO: </strong> As inscrições em atividades vão até amanhã dia 22 de Setembro, após isso, os alunos podem participar das atividades no dia, DESDE QUE hajam vagas, haverá uma lista para colocar suas informações, se o aluno tiver com a situação de pagamento regularizada(isento ou com pagamento aprovad0), nós conseguimos incluir o certificado após o evento sem maiores problemas</h2>
         <table className='table'>
           <thead>
             <tr>

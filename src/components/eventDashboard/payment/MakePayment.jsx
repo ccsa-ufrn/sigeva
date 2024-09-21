@@ -8,7 +8,7 @@ class PaymentInstructions extends Component {
     return (
       <div>
         <h5><strong>Instruções para efetuar pagamento</strong></h5><br/>
-        <h2><strong style="text-color: red;">ATENÇÃO: </strong> As inscrições em atividades vão até amanhã dia 22 de Setembro, após isso, os alunos podem participar das atividades no dia, DESDE QUE hajam vagas, haverá uma lista para colocar suas informações, se o aluno tiver com a situação de pagamento regularizada(isento ou com pagamento aprovad0), nós conseguimos incluir o certificado após o evento sem maiores problemas</h2>
+        <h2><strong style={{ color: 'red' }}>ATENÇÃO: </strong> As inscrições em atividades vão até amanhã dia 22 de Setembro, após isso, os alunos podem participar das atividades no dia, DESDE QUE hajam vagas, haverá uma lista para colocar suas informações, se o aluno tiver com a situação de pagamento regularizada(isento ou com pagamento aprovad0), nós conseguimos incluir o certificado após o evento sem maiores problemas</h2>
         <p dangerouslySetInnerHTML={{__html: (this.props.instructions)}}></p>
       </div>
     );
