@@ -18,6 +18,7 @@ class OutOfDateWarning extends Component {
     return(
       <div className='alert alert-danger' role='alert'>
         <h5><strong>Acesso indisponível</strong></h5>
+        <p>Após o dia 22, os alunos podem participar das atividades no dia, desde que hajam vagas, haverá uma lista para colocar suas informações, se o aluno tiver com a situação de pagamento regularizada(isento ou com pagamento aprovado), nós conseguimos incluir o certificado após o evento sem maiores problemas</p>
         {message}
       </div>
     );
