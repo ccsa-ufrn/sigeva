@@ -1,90 +1,93 @@
-import fetch from 'isomorphic-fetch';
-import { application } from '../../config';
-import * as Action from './constants';
+import fetch from "isomorphic-fetch";
+import { application } from "../../config";
+import * as Action from "./constants";
 
 export function setUserSessionToken(token) {
-  return ({
+  return {
     type: Action.SET_USER_SESSION_TOKEN,
     token,
-  });
+  };
 }
 
 export function setUserData(data) {
-  return ({
+  return {
     type: Action.SET_USER_SESSION_DATA,
     data,
-  });
+  };
 }
 
-function fetchUserMe(token) {
+function fetchUserMe(token, url) {
   const config = {
-    method: 'GET',
-    mode: 'cors',
+    method: "GET",
+    mode: "cors",
     timeout: 3000,
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       Authorization: token,
     },
-    credentials: 'include',
+    credentials: "include",
   };
-
-  return fetch(`${application.url}/api/user/me`, config)
-    .then((response) => {
+  if (url) {
+    return fetch(`${url}/api/user/me`, config).then((response) => {
       return response.json();
     });
+  }
+
+  return fetch(`${application.url}/api/user/me`, config).then((response) => {
+    return response.json();
+  });
 }
 
 // Thunk redux action that loads user from database if needed
 export function loadUserIfNeed() {
   return (dispatch, getState) => {
-    if (getState().userSession.logged_user === null &&
-        getState().userSession.token !== null) {
+    if (
+      getState().userSession.logged_user === null &&
+      getState().userSession.token !== null
+    ) {
       // User not logged yet
-      fetchUserMe(getState().userSession.token)
-        .then((json) => {
-          dispatch(setUserData(json.data));
-        });
+      fetchUserMe(getState().userSession.token).then((json) => {
+        dispatch(setUserData(json.data));
+      });
     }
   };
 }
 
 // Function used by server-side rendering
 export function initializeUser(token, callback) {
-  fetchUserMe(token)
-    .then((json) => {
-      callback(json.data);
-    });
+  fetchUserMe(token, "http://localhost:3000").then((json) => {
+    callback(json.data);
+  });
 }
 
 export function reloadUser() {
   return (dispatch, getState) => {
     if (getState().userSession.logged_user) {
-      fetchUserMe()
-        .then((json) => {
-          dispatch(setUserData(json.data));
-        });
+      fetchUserMe().then((json) => {
+        dispatch(setUserData(json.data));
+      });
     }
   };
 }
 
 export function clearUserSessionData() {
-  return ({
+  return {
     type: Action.CLEAR_USER_SESSION_DATA,
-  });
+  };
 }
 
 export function logoutUserSession() {
   return (dispatch) => {
     const config = {
-      method: 'GET',
-      mode: 'cors',
+      method: "GET",
+      mode: "cors",
       timeout: 3000,
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-      credentials: 'include',
+      credentials: "include",
     };
     dispatch(clearUserSessionData());
     return fetch(`${application.url}/api/user/logout`, config)
@@ -102,18 +105,18 @@ export function logoutUserSession() {
 export function updateUser(data) {
   return (dispatch) => {
     const config = {
-      method: 'PUT',
-      mode: 'cors',
+      method: "PUT",
+      mode: "cors",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify(data),
     };
 
     fetch(`${application.url}/api/user`, config)
-      .then(response => response.json())
+      .then((response) => response.json())
       .then(() => {
         // dispatch(reloadUser());
       });
